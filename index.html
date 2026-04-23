@@ -254,6 +254,12 @@
         gap: 16px;
       }
 
+      .settings-head-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
       .settings-title {
         margin: 0;
         color: #d8d8d8;
@@ -386,23 +392,6 @@
         right: 11.4%;
       }
 
-      .hands.calibration-mode {
-        pointer-events: auto;
-      }
-
-      .hands.calibration-mode .hand.right {
-        pointer-events: none;
-      }
-
-      .hands.calibration-mode .hand.right .finger {
-        cursor: grab;
-        pointer-events: auto;
-      }
-
-      .hands.calibration-mode .hand.right .finger.dragging {
-        cursor: grabbing;
-      }
-
       .finger {
         display: block;
         position: absolute;
@@ -528,34 +517,34 @@
       }
 
       .key.key-correct {
-        border-color: #8fd3a2;
+        border-color: #98e0ab;
         background:
-          radial-gradient(circle at 50% 50%, rgb(104 255 151 / 0.2), transparent 50%),
-          linear-gradient(180deg, #1b241d 0%, #121812 100%);
-        color: #dcffe5;
+          radial-gradient(circle at 50% 50%, rgb(104 255 151 / 0.234), transparent 50%),
+          linear-gradient(180deg, #1d2a20 0%, #141c15 100%);
+        color: #e7ffed;
         box-shadow:
-          inset 0 0 0 1px rgb(142 255 173 / 0.2),
-          inset 0 0 18px rgb(104 255 151 / 0.09);
+          inset 0 0 0 1px rgb(142 255 173 / 0.208),
+          inset 0 0 23px rgb(104 255 151 / 0.091);
       }
 
       .key.key-correct .label {
-        color: #e8ffee;
+        color: #f3fff6;
         text-shadow: none;
       }
 
       .key.key-wrong {
-        border-color: #d38f8f;
+        border-color: #e09b9b;
         background:
-          radial-gradient(circle at 50% 50%, rgb(255 104 104 / 0.2), transparent 50%),
-          linear-gradient(180deg, #241b1b 0%, #181212 100%);
-        color: #ffe0e0;
+          radial-gradient(circle at 50% 50%, rgb(255 104 104 / 0.234), transparent 50%),
+          linear-gradient(180deg, #2a1d1d 0%, #1c1414 100%);
+        color: #ffe7e7;
         box-shadow:
-          inset 0 0 0 1px rgb(255 142 142 / 0.2),
-          inset 0 0 18px rgb(255 104 104 / 0.09);
+          inset 0 0 0 1px rgb(255 142 142 / 0.208),
+          inset 0 0 23px rgb(255 104 104 / 0.091);
       }
 
       .key.key-wrong .label {
-        color: #ffeaea;
+        color: #fff1f1;
         text-shadow: none;
       }
 
@@ -767,20 +756,6 @@
         gap: 18px;
       }
 
-      .finger-map-top {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) auto;
-        gap: 12px;
-        align-items: end;
-      }
-
-      .finger-map-actions {
-        display: flex;
-        gap: 8px;
-        flex-wrap: wrap;
-        justify-content: flex-end;
-      }
-
       .secondary-btn {
         min-height: 42px;
         border: 1px solid var(--line-soft);
@@ -809,6 +784,34 @@
         color: var(--quiet);
         font-size: 13px;
         line-height: 1.45;
+      }
+
+      .finger-sync-banner {
+        display: none;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 12px 14px;
+        border: 1px solid #575757;
+        border-radius: 10px;
+        background: #171717;
+      }
+
+      .finger-sync-banner.visible {
+        display: flex;
+      }
+
+      .finger-sync-text {
+        color: #f0f0f0;
+        font-size: 13px;
+        line-height: 1.45;
+      }
+
+      .finger-sync-actions {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
       }
 
       .finger-map-list {
@@ -886,6 +889,33 @@
         color: var(--quiet);
       }
 
+      .finger-key-chip.add-btn {
+        border-color: #575757;
+        background: #212121;
+        color: #f2f2f2;
+        cursor: pointer;
+        font-weight: 700;
+        padding-inline: 12px;
+      }
+
+      .finger-key-chip.add-btn:hover {
+        border-color: #7a7a7a;
+        background: #292929;
+      }
+
+      .finger-key-chip.add-input {
+        width: 54px;
+        min-width: 54px;
+        max-width: 54px;
+        padding-inline: 0;
+        text-align: center;
+        outline: 0;
+      }
+
+      .finger-key-chip.add-input::placeholder {
+        color: #8e8e8e;
+      }
+
       .apply-btn {
         height: 42px;
         border: 0;
@@ -901,38 +931,6 @@
         min-height: 20px;
         color: var(--muted);
         font-size: 14px;
-      }
-
-      .calibration-banner {
-        position: fixed;
-        left: 50%;
-        bottom: 22px;
-        z-index: 20;
-        display: none;
-        align-items: center;
-        gap: 10px;
-        padding: 10px 12px;
-        border: 1px solid var(--line-soft);
-        border-radius: 10px;
-        background: rgb(17 17 17 / 0.94);
-        box-shadow: 0 10px 30px rgb(0 0 0 / 0.28);
-        transform: translateX(-50%);
-        backdrop-filter: blur(12px);
-      }
-
-      .calibration-banner.visible {
-        display: flex;
-      }
-
-      .calibration-banner-text {
-        color: #f0f0f0;
-        font-size: 13px;
-        white-space: nowrap;
-      }
-
-      .calibration-banner .secondary-btn {
-        min-height: 36px;
-        padding: 0 12px;
       }
 
       @media (max-width: 1300px) {
@@ -1004,11 +1002,6 @@
       <div class="status" id="status" role="status" aria-live="polite"></div>
     </main>
 
-    <div class="calibration-banner" id="calibrationBanner" aria-live="polite">
-      <span class="calibration-banner-text" id="calibrationBannerText">Режим настройки рук активен.</span>
-      <button class="secondary-btn" id="calibrationDone" type="button">Готово</button>
-    </div>
-
     <dialog class="settings-dialog" id="settingsDialog" aria-labelledby="settingsTitle">
       <div class="settings-panel">
         <div class="settings-head">
@@ -1042,22 +1035,20 @@
       <div class="settings-panel finger-map-layout">
         <div class="settings-head">
           <h2 class="settings-title" id="fingerMapTitle">Карта пальцев</h2>
-          <button class="settings-close" id="fingerMapClose" type="button" aria-label="Закрыть">×</button>
-        </div>
-
-        <div class="finger-map-top">
-          <label class="field">
-            <span id="fingerSelectLabel">Палец</span>
-            <select id="fingerSelect"></select>
-          </label>
-          <div class="finger-map-actions">
-            <button class="secondary-btn" id="handCalibrate" type="button">Настроить руки</button>
-            <button class="secondary-btn" id="handReset" type="button">Сбросить руки</button>
-            <button class="secondary-btn" id="fingerReassign" type="button">Переназначить</button>
+          <div class="settings-head-actions">
+            <button class="secondary-btn" id="fingerMapResetAll" type="button">Сбросить настройки</button>
+            <button class="settings-close" id="fingerMapClose" type="button" aria-label="Закрыть">×</button>
           </div>
         </div>
 
         <p class="finger-map-help" id="fingerMapHelp">Выберите палец, чтобы подсветить его клавиши на клавиатуре.</p>
+        <div class="finger-sync-banner" id="fingerSyncBanner" aria-live="polite">
+          <div class="finger-sync-text" id="fingerSyncText"></div>
+          <div class="finger-sync-actions">
+            <button class="secondary-btn" id="fingerSyncConfirm" type="button">Добавить</button>
+            <button class="secondary-btn" id="fingerSyncDismiss" type="button">Не сейчас</button>
+          </div>
+        </div>
         <div class="finger-map-list" id="fingerMapList" aria-live="polite"></div>
       </div>
     </dialog>
@@ -1119,22 +1110,19 @@
       const settingsDialog = document.querySelector("#settingsDialog");
       const settingsTitle = document.querySelector("#settingsTitle");
       const settingsClose = document.querySelector("#settingsClose");
-      const calibrationBanner = document.querySelector("#calibrationBanner");
-      const calibrationBannerText = document.querySelector("#calibrationBannerText");
-      const calibrationDone = document.querySelector("#calibrationDone");
       const languageLabel = document.querySelector("#languageLabel");
       const moduleLabel = document.querySelector("#moduleLabel");
       const fingerMapOpen = document.querySelector("#fingerMapOpen");
       const fingerMapDialog = document.querySelector("#fingerMapDialog");
       const fingerMapClose = document.querySelector("#fingerMapClose");
+      const fingerMapResetAll = document.querySelector("#fingerMapResetAll");
       const fingerMapTitle = document.querySelector("#fingerMapTitle");
       const fingerMapSectionLabel = document.querySelector("#fingerMapSectionLabel");
-      const fingerSelectLabel = document.querySelector("#fingerSelectLabel");
       const fingerMapHelp = document.querySelector("#fingerMapHelp");
-      const fingerSelect = document.querySelector("#fingerSelect");
-      const handCalibrate = document.querySelector("#handCalibrate");
-      const handReset = document.querySelector("#handReset");
-      const fingerReassign = document.querySelector("#fingerReassign");
+      const fingerSyncBanner = document.querySelector("#fingerSyncBanner");
+      const fingerSyncText = document.querySelector("#fingerSyncText");
+      const fingerSyncConfirm = document.querySelector("#fingerSyncConfirm");
+      const fingerSyncDismiss = document.querySelector("#fingerSyncDismiss");
       const fingerMapList = document.querySelector("#fingerMapList");
       const languageTabs = document.querySelector("#languageTabs");
       const practiceSample = document.querySelector("#practiceSample");
@@ -1154,9 +1142,11 @@
       let editMode = false;
       let practiceLineIndex = 0;
       let activeFingerId = saved.activeFingerId || "left-index";
-      let fingerReassignMode = false;
-      let handCalibrationMode = false;
-      let handCalibrationDrag = null;
+      let addFingerInputId = null;
+      let pendingFingerSync = null;
+      let correctPracticeKeyId = null;
+      let wrongPracticeKeyId = null;
+      let lastPhysicalPracticeKeyId = null;
 
       const practiceModules = {
         module1: {
@@ -1776,11 +1766,48 @@
         "right-thumb": { x: -551.150217, y: 369.546408 }
       };
 
-      function cloneHandCalibration(source) {
-        return JSON.parse(JSON.stringify(source));
-      }
-
-      let handCalibrationState = null;
+      const mirroredKeyIds = {
+        digit1: "digit0",
+        digit2: "digit9",
+        digit3: "digit8",
+        digit4: "digit7",
+        digit5: "digit6",
+        digit6: "digit5",
+        digit7: "digit4",
+        digit8: "digit3",
+        digit9: "digit2",
+        digit0: "digit1",
+        q: "p",
+        w: "o",
+        e: "i",
+        r: "u",
+        t: "y",
+        y: "t",
+        u: "r",
+        i: "e",
+        o: "w",
+        p: "q",
+        a: "semicolon",
+        s: "l",
+        d: "k",
+        f: "j",
+        g: "h",
+        h: "g",
+        j: "f",
+        k: "d",
+        l: "s",
+        semicolon: "a",
+        z: "slash",
+        x: "period",
+        c: "comma",
+        v: "m",
+        b: "n",
+        n: "b",
+        m: "v",
+        comma: "c",
+        period: "x",
+        slash: "z"
+      };
 
       const uiText = {
         de: {
@@ -1790,34 +1817,27 @@
           fingerMap: "Fingerkarte",
           openFingerMap: "Fingerkarte öffnen",
           finger: "Finger",
-          calibrateHands: "Hände anpassen",
-          calibrateHandsActive: "Hände ziehen…",
-          resetHands: "Hände zurücksetzen",
-          done: "Fertig",
-          reassign: "Neu zuweisen",
-          reassignActive: "Taste wählen…",
           fingerHelp: "Finger auswählen, um die zugehörigen Tasten auf der Tastatur hervorzuheben.",
-          fingerReassignHelp: "Neu zuweisen ist aktiv. Klicken Sie auf eine Taste auf der Tastatur.",
-          handCalibrationHelp: "Ziehen Sie einzelne Finger der rechten Hand. Der passende Finger links wird automatisch gespiegelt.",
-          handCalibrationBanner: "Finger-Anpassung ist aktiv. Ziehen Sie Finger der rechten Hand und klicken Sie dann auf Fertig.",
           emptyFinger: "Noch keine Tasten",
           keyCount: "Tasten",
-          reassigned: "Taste \"{key}\" ist jetzt {finger}.",
-          highlightStatus: "{finger} markiert.",
-          handCalibrationSaved: "Position der Hände gespeichert.",
-          handCalibrationReset: "Position der Hände zurückgesetzt.",
+          fingerSyncPrompt: "\"{key}\" auch für {finger} hinzufügen?",
+          addMirror: "Hinzufügen",
+          dismissMirror: "Nicht jetzt",
+          fingerSyncApplied: "\"{key}\" wurde auch {finger} zugewiesen.",
+          resetSettings: "Einstellungen zurücksetzen",
+          settingsReset: "Fingerkarte zurückgesetzt.",
           close: "Schließen",
           fingerNames: {
-            "left-pinky": "Kleiner L",
-            "left-ring": "Ring L",
-            "left-middle": "Mittel L",
-            "left-index": "Zeige L",
-            "left-thumb": "Daumen L",
-            "right-thumb": "Daumen R",
-            "right-index": "Zeige R",
-            "right-middle": "Mittel R",
-            "right-ring": "Ring R",
-            "right-pinky": "Kleiner R"
+            "left-pinky": "Linker kleiner Finger",
+            "left-ring": "Linker Ringfinger",
+            "left-middle": "Linker Mittelfinger",
+            "left-index": "Linker Zeigefinger",
+            "left-thumb": "Linker Daumen",
+            "right-thumb": "Rechter Daumen",
+            "right-index": "Rechter Zeigefinger",
+            "right-middle": "Rechter Mittelfinger",
+            "right-ring": "Rechter Ringfinger",
+            "right-pinky": "Rechter kleiner Finger"
           }
         },
         en: {
@@ -1827,22 +1847,15 @@
           fingerMap: "Finger Map",
           openFingerMap: "Open Finger Map",
           finger: "Finger",
-          calibrateHands: "Adjust Hands",
-          calibrateHandsActive: "Drag Hands…",
-          resetHands: "Reset Hands",
-          done: "Done",
-          reassign: "Reassign",
-          reassignActive: "Pick a key…",
           fingerHelp: "Select a finger to highlight its keys on the keyboard.",
-          fingerReassignHelp: "Reassign is active. Click a physical key on the keyboard.",
-          handCalibrationHelp: "Drag individual fingers on the right hand. The matching left finger mirrors automatically.",
-          handCalibrationBanner: "Finger adjustment is active. Drag right-hand fingers, then click Done.",
           emptyFinger: "No keys yet",
           keyCount: "keys",
-          reassigned: "Key \"{key}\" is now assigned to {finger}.",
-          highlightStatus: "{finger} highlighted.",
-          handCalibrationSaved: "Hand position saved.",
-          handCalibrationReset: "Hand position reset.",
+          fingerSyncPrompt: "Add \"{key}\" to {finger} too?",
+          addMirror: "Add",
+          dismissMirror: "Not now",
+          fingerSyncApplied: "\"{key}\" was also assigned to {finger}.",
+          resetSettings: "Reset Settings",
+          settingsReset: "Finger map reset.",
           close: "Close",
           fingerNames: {
             "left-pinky": "Left Pinky",
@@ -1864,34 +1877,27 @@
           fingerMap: "Карта пальцев",
           openFingerMap: "Открыть карту пальцев",
           finger: "Палец",
-          calibrateHands: "Настроить руки",
-          calibrateHandsActive: "Двигайте руки…",
-          resetHands: "Сбросить руки",
-          done: "Готово",
-          reassign: "Переназначить",
-          reassignActive: "Выберите клавишу…",
           fingerHelp: "Выберите палец, чтобы подсветить его клавиши на клавиатуре.",
-          fingerReassignHelp: "Режим переназначения активен. Кликните по физической клавише на клавиатуре.",
-          handCalibrationHelp: "Перетаскивай отдельные пальцы правой руки. Парный палец слева будет двигаться зеркально.",
-          handCalibrationBanner: "Режим настройки пальцев активен. Перетаскивай пальцы правой руки и потом нажми Готово.",
           emptyFinger: "Пока нет клавиш",
           keyCount: "клавиш",
-          reassigned: "Клавиша \"{key}\" теперь назначена на {finger}.",
-          highlightStatus: "Подсвечен палец: {finger}.",
-          handCalibrationSaved: "Положение рук сохранено.",
-          handCalibrationReset: "Положение рук сброшено.",
+          fingerSyncPrompt: "Добавить \"{key}\" также для пальца \"{finger}\"?",
+          addMirror: "Добавить",
+          dismissMirror: "Не сейчас",
+          fingerSyncApplied: "Клавиша \"{key}\" также назначена пальцу \"{finger}\".",
+          resetSettings: "Сбросить настройки",
+          settingsReset: "Карта пальцев сброшена.",
           close: "Закрыть",
           fingerNames: {
-            "left-pinky": "Л мизинец",
-            "left-ring": "Л безым.",
-            "left-middle": "Л средний",
-            "left-index": "Л указат.",
-            "left-thumb": "Л большой",
-            "right-thumb": "П большой",
-            "right-index": "П указат.",
-            "right-middle": "П средний",
-            "right-ring": "П безым.",
-            "right-pinky": "П мизинец"
+            "left-pinky": "Левый мизинец",
+            "left-ring": "Левый безымянный",
+            "left-middle": "Левый средний",
+            "left-index": "Левый указательный",
+            "left-thumb": "Левый большой палец",
+            "right-thumb": "Правый большой палец",
+            "right-index": "Правый указательный",
+            "right-middle": "Правый средний",
+            "right-ring": "Правый безымянный",
+            "right-pinky": "Правый мизинец"
           }
         }
       };
@@ -1955,16 +1961,60 @@
         return label.replace(/\n/g, " ").trim() || keyTitle(keyId);
       }
 
+      function assignKeyToFinger(keyId, fingerId) {
+        const copy = fingerMap();
+        fingerIds.forEach(currentFingerId => {
+          copy[currentFingerId] = copy[currentFingerId].filter(mappedKeyId => mappedKeyId !== keyId);
+        });
+        copy[fingerId].push(keyId);
+        persist();
+      }
+
+      function normalizeFingerKeyInput(value) {
+        return value.trim().replace(/\s+/g, " ").toLowerCase();
+      }
+
+      function resolveKeyIdFromInput(value) {
+        const normalizedValue = normalizeFingerKeyInput(value);
+        if (!normalizedValue) return null;
+
+        return keyIds().find(keyId => {
+          const variants = new Set([
+            visibleKeyLabel(keyId),
+            keyTitle(keyId),
+            labelsFor(currentLanguage)[keyId] ?? ""
+          ]);
+
+          return [...variants].some(variant => normalizeFingerKeyInput(String(variant).replace(/\n/g, " ")) === normalizedValue);
+        }) || null;
+      }
+
+      function submitFingerKeyInput(fingerId, value) {
+        const keyId = resolveKeyIdFromInput(value);
+        addFingerInputId = null;
+
+        if (!keyId) {
+          renderFingerMapPanel();
+          setStatus("Клавиша не найдена.");
+          return;
+        }
+
+        assignKeyToFinger(keyId, fingerId);
+        activeFingerId = fingerId;
+        saved.activeFingerId = fingerId;
+        persist();
+        maybeSuggestMirroredFingerKey(fingerId, keyId);
+        renderFingerMapPanel();
+        renderKeyboard();
+        setStatus(`Клавиша "${visibleKeyLabel(keyId)}" теперь у пальца "${fingerName(fingerId)}".`);
+      }
+
       function activeFingerKeys() {
         if (!fingerMapDialog.open) {
           return new Set();
         }
 
         return new Set(fingerMap()[activeFingerId] || []);
-      }
-
-      function handCalibration() {
-        return ensureHandCalibrationState();
       }
 
       function mirroredFingerId(fingerId) {
@@ -1979,46 +2029,28 @@
         return fingerId;
       }
 
-      function fingerNodeById(fingerId) {
-        return document.querySelector(`.finger[data-finger="${fingerId}"]`);
-      }
+      function maybeSuggestMirroredFingerKey(sourceFingerId, sourceKeyId) {
+        const targetFingerId = mirroredFingerId(sourceFingerId);
+        const targetKeyId = mirroredKeyIds[sourceKeyId] || null;
 
-      function calibrationStorageBox() {
-        return {
-          width: keyboardWrap.offsetWidth || keyboardScale.clientWidth || 0,
-          height: keyboardWrap.offsetHeight || 0
+        if (!targetKeyId || targetFingerId === sourceFingerId) {
+          pendingFingerSync = null;
+          return;
+        }
+
+        if (fingerMap()[targetFingerId]?.includes(targetKeyId)) {
+          pendingFingerSync = null;
+          return;
+        }
+
+        pendingFingerSync = {
+          fingerId: targetFingerId,
+          keyId: targetKeyId
         };
       }
 
-      function defaultHandCalibration() {
-        const { width, height } = calibrationStorageBox();
-        const calibration = {};
-
-        rightFingerNodes.forEach(node => {
-          const fingerId = node.dataset.finger;
-          const fixedEntry = fixedHandCalibrationPx[fingerId] || { x: 0, y: 0 };
-          calibration[fingerId] = {
-            x: width ? fixedEntry.x / width : 0,
-            y: height ? fixedEntry.y / height : 0
-          };
-        });
-
-        return calibration;
-      }
-
-      function ensureHandCalibrationState() {
-        if (!handCalibrationState) {
-          handCalibrationState = defaultHandCalibration();
-        }
-
-        return handCalibrationState;
-      }
-
-      function setHandCalibration(fingerId, x, y) {
-        const safeX = Number.isFinite(x) ? Number(x.toFixed(6)) : 0;
-        const safeY = Number.isFinite(y) ? Number(y.toFixed(6)) : 0;
-        ensureHandCalibrationState()[fingerId] = { x: safeX, y: safeY };
-        applyHandCalibration();
+      function fingerNodeById(fingerId) {
+        return document.querySelector(`.finger[data-finger="${fingerId}"]`);
       }
 
       function applyHandCalibration() {
@@ -2027,44 +2059,42 @@
         rightHand.style.setProperty("--hand-offset-x", "0px");
         rightHand.style.setProperty("--hand-offset-y", "0px");
 
-        const { width, height } = calibrationStorageBox();
+        const width = keyboardWrap.offsetWidth || keyboardScale.clientWidth || 0;
+        const height = keyboardWrap.offsetHeight || 0;
         if (!width || !height) return;
 
-        const calibration = handCalibration();
         rightFingerNodes.forEach(node => {
           const fingerId = node.dataset.finger;
-          const { x, y } = calibration[fingerId] || { x: 0, y: 0 };
-          node.style.setProperty("--finger-x", `${x * width}px`);
-          node.style.setProperty("--finger-y", `${y * height}px`);
+          const fixedEntry = fixedHandCalibrationPx[fingerId] || { x: 0, y: 0 };
+          node.style.setProperty("--finger-x", `${fixedEntry.x}px`);
+          node.style.setProperty("--finger-y", `${fixedEntry.y}px`);
 
           const mirroredNode = fingerNodeById(mirroredFingerId(fingerId));
           if (mirroredNode) {
-            mirroredNode.style.setProperty("--finger-x", `${-x * width}px`);
-            mirroredNode.style.setProperty("--finger-y", `${y * height}px`);
+            mirroredNode.style.setProperty("--finger-x", `${-fixedEntry.x}px`);
+            mirroredNode.style.setProperty("--finger-y", `${fixedEntry.y}px`);
           }
         });
       }
 
       function updateFingerHelpText() {
+        fingerMapHelp.textContent = textFor().fingerHelp;
+      }
+
+      function renderFingerSyncBanner() {
         const text = textFor();
-        if (handCalibrationMode) {
-          fingerMapHelp.textContent = text.handCalibrationHelp;
+        if (!pendingFingerSync) {
+          fingerSyncBanner.classList.remove("visible");
+          fingerSyncText.textContent = "";
           return;
         }
 
-        fingerMapHelp.textContent = fingerReassignMode ? text.fingerReassignHelp : text.fingerHelp;
-      }
-
-      function renderFingerSelect() {
-        const currentValue = activeFingerId;
-        fingerSelect.innerHTML = "";
-        fingerIds.forEach(fingerId => {
-          const option = document.createElement("option");
-          option.value = fingerId;
-          option.textContent = fingerName(fingerId);
-          fingerSelect.append(option);
-        });
-        fingerSelect.value = currentValue;
+        fingerSyncText.textContent = text.fingerSyncPrompt
+          .replace("{key}", visibleKeyLabel(pendingFingerSync.keyId))
+          .replace("{finger}", fingerName(pendingFingerSync.fingerId));
+        fingerSyncConfirm.textContent = text.addMirror;
+        fingerSyncDismiss.textContent = text.dismissMirror;
+        fingerSyncBanner.classList.add("visible");
       }
 
       function renderFingerMapList() {
@@ -2113,6 +2143,39 @@
             keyGrid.append(chip);
           }
 
+          if (addFingerInputId === fingerId) {
+            const input = document.createElement("input");
+            input.type = "text";
+            input.className = "finger-key-chip add-input";
+            input.maxLength = 1;
+            input.autocomplete = "off";
+            input.addEventListener("keydown", event => {
+              if (event.key === "Enter") {
+                submitFingerKeyInput(fingerId, input.value);
+              } else if (event.key === "Escape") {
+                addFingerInputId = null;
+                renderFingerMapPanel();
+              }
+            });
+            input.addEventListener("blur", () => {
+              if (addFingerInputId === fingerId) {
+                submitFingerKeyInput(fingerId, input.value);
+              }
+            });
+            keyGrid.append(input);
+            setTimeout(() => input.focus(), 0);
+          } else {
+            const addButton = document.createElement("button");
+            addButton.type = "button";
+            addButton.className = "finger-key-chip add-btn";
+            addButton.textContent = "+";
+            addButton.addEventListener("click", () => {
+              addFingerInputId = fingerId;
+              renderFingerMapPanel();
+            });
+            keyGrid.append(addButton);
+          }
+
           card.append(keyGrid);
           fingerMapList.append(card);
         });
@@ -2123,24 +2186,11 @@
         fingerMapTitle.textContent = text.fingerMap;
         fingerMapSectionLabel.textContent = text.fingerMap;
         fingerMapOpen.textContent = text.openFingerMap;
-        fingerSelectLabel.textContent = text.finger;
         fingerMapClose.setAttribute("aria-label", text.close);
-        handCalibrate.textContent = handCalibrationMode ? text.calibrateHandsActive : text.calibrateHands;
-        handCalibrate.classList.toggle("active", handCalibrationMode);
-        handReset.textContent = text.resetHands;
-        fingerReassign.textContent = fingerReassignMode ? text.reassignActive : text.reassign;
-        fingerReassign.classList.toggle("active", fingerReassignMode);
-        handsLayer.classList.toggle("calibration-mode", handCalibrationMode);
-        renderFingerSelect();
-        renderFingerMapList();
+        fingerMapResetAll.textContent = text.resetSettings;
         updateFingerHelpText();
-      }
-
-      function renderCalibrationBanner() {
-        const text = textFor();
-        calibrationBannerText.textContent = text.handCalibrationBanner;
-        calibrationDone.textContent = text.done;
-        calibrationBanner.classList.toggle("visible", handCalibrationMode);
+        renderFingerSyncBanner();
+        renderFingerMapList();
       }
 
       function setActiveFinger(fingerId) {
@@ -2149,15 +2199,6 @@
         persist();
         renderFingerMapPanel();
         renderKeyboard();
-      }
-
-      function assignKeyToFinger(keyId, fingerId) {
-        const copy = fingerMap();
-        fingerIds.forEach(currentFingerId => {
-          copy[currentFingerId] = copy[currentFingerId].filter(mappedKeyId => mappedKeyId !== keyId);
-        });
-        copy[fingerId].push(keyId);
-        persist();
       }
 
       function keyTitle(id) {
@@ -2236,11 +2277,17 @@
 
         geometry.forEach(([keyId]) => {
           const rawLabel = labels[keyId] ?? "";
-          if (!rawLabel || rawLabel.length > 3) return;
+          if (!rawLabel) return;
+
+          const printableSymbols = rawLabel
+            .split("\n")
+            .map(part => part.trim())
+            .filter(part => [...part].length === 1);
+
+          if (!printableSymbols.length) return;
 
           const variants = new Set();
-          [...rawLabel].forEach(symbol => {
-            if (symbol === "\n" || symbol === "\r" || symbol === "\t") return;
+          printableSymbols.forEach(symbol => {
             variants.add(symbol);
             variants.add(symbol.toLowerCase());
             variants.add(symbol.toUpperCase());
@@ -2304,6 +2351,55 @@
         return practiceTargetForIndex(index);
       }
 
+      function keyIdFromEventCode(code) {
+        const directMap = {
+          Backquote: "backquote",
+          Minus: "minus",
+          Equal: "equal",
+          BracketLeft: "bracketLeft",
+          BracketRight: "bracketRight",
+          Backslash: "backslash",
+          Semicolon: "semicolon",
+          Quote: "quote",
+          Comma: "comma",
+          Period: "period",
+          Slash: "slash",
+          Space: "space",
+          Enter: "enter",
+          Tab: "tab"
+        };
+
+        if (directMap[code]) return directMap[code];
+        if (code.startsWith("Key")) return code.slice(3).toLowerCase();
+        if (code.startsWith("Digit")) return `digit${code.slice(5)}`;
+        return null;
+      }
+
+      function flashPracticeCorrect(keyId) {
+        correctPracticeKeyId = keyId || null;
+        renderKeyboard();
+
+        clearTimeout(flashPracticeCorrect.timer);
+        flashPracticeCorrect.timer = setTimeout(() => {
+          correctPracticeKeyId = null;
+          renderKeyboard();
+        }, 180);
+      }
+
+      function flashPracticeError(keyId) {
+        wrongPracticeKeyId = keyId || null;
+        correctPracticeKeyId = null;
+        practiceInput.classList.add("error");
+        renderKeyboard();
+
+        clearTimeout(flashPracticeError.timer);
+        flashPracticeError.timer = setTimeout(() => {
+          wrongPracticeKeyId = null;
+          practiceInput.classList.remove("error");
+          renderKeyboard();
+        }, 260);
+      }
+
       function renderPracticeGuides() {
         const { fingerId } = currentPracticeTarget();
 
@@ -2324,12 +2420,34 @@
       function handlePracticeInput() {
         const expected = currentPracticeLines()[practiceLineIndex];
         const typed = practiceInput.value;
+        let index = 0;
 
-        practiceInput.classList.toggle("error", !expected.startsWith(typed));
+        while (index < typed.length && index < expected.length && typed[index] === expected[index]) {
+          index += 1;
+        }
+
+        if (typed.length > index) {
+          const wrongCharacter = typed[index];
+          const fallbackWrongKeyId = practiceKeyCandidates(wrongCharacter)[0] || null;
+          const wrongKeyId = lastPhysicalPracticeKeyId || fallbackWrongKeyId;
+
+          practiceInput.value = typed.slice(0, index);
+          renderPracticeSampleText();
+          flashPracticeError(wrongKeyId);
+          return;
+        }
+
+        if (typed.length > 0 && typed.length > expected.length ? false : typed.length === index && typed.length > 0) {
+          const correctKeyId = lastPhysicalPracticeKeyId || practiceTargetForIndex(index - 1).keyId;
+          flashPracticeCorrect(correctKeyId);
+        }
+
+        wrongPracticeKeyId = null;
+        practiceInput.classList.remove("error");
         renderPracticeSampleText();
         renderKeyboard();
 
-        if (typed === expected) {
+        if (practiceInput.value === expected) {
           practiceLineIndex = (practiceLineIndex + 1) % currentPracticeLines().length;
           renderPracticeLine();
         }
@@ -2392,8 +2510,10 @@
         geometry.forEach(([id, row, column, span, extra = "", rowSpan = 1]) => {
           const key = document.createElement("button");
           const isPracticeKey = practiceTarget.keyId === id;
+          const isCorrectPracticeKey = correctPracticeKeyId === id;
+          const isWrongPracticeKey = wrongPracticeKeyId === id;
           key.type = "button";
-          key.className = `key ${extra}${editMode && id === selectedKey ? " selected" : ""}${highlightedKeys.has(id) ? " key-finger-map" : ""}${isPracticeKey ? " key-lit" : ""}`.trim();
+          key.className = `key ${extra}${editMode && id === selectedKey ? " selected" : ""}${highlightedKeys.has(id) ? " key-finger-map" : ""}${isPracticeKey ? " key-lit" : ""}${isCorrectPracticeKey ? " key-correct" : ""}${isWrongPracticeKey ? " key-wrong" : ""}`.trim();
           key.dataset.key = id;
           if (id === "space") {
             key.classList.toggle("space-left", isPracticeKey && practiceTarget.spaceSide === "left");
@@ -2436,15 +2556,6 @@
       }
 
       function handleKeyboardKeyClick(id) {
-        if (fingerReassignMode) {
-          assignKeyToFinger(id, activeFingerId);
-          fingerReassignMode = false;
-          renderFingerMapPanel();
-          renderKeyboard();
-          setStatus(textFor().reassigned.replace("{key}", visibleKeyLabel(id)).replace("{finger}", fingerName(activeFingerId)));
-          return;
-        }
-
         selectKey(id);
       }
 
@@ -2492,7 +2603,6 @@
         renderModuleButtons();
         renderPracticeLine();
         renderFingerMapPanel();
-        renderCalibrationBanner();
         renderKeyboard();
         renderSelect();
         selectKey(selectedKey);
@@ -2501,12 +2611,6 @@
 
       if (saved.fingers) {
         delete saved.fingers;
-        persist();
-      }
-
-      if (saved.handCalibration || saved.handCalibrationSpace) {
-        delete saved.handCalibration;
-        delete saved.handCalibrationSpace;
         persist();
       }
 
@@ -2524,57 +2628,6 @@
         document.documentElement.style.setProperty("--keyboard-scale", String(scale));
         document.documentElement.style.setProperty("--keyboard-stage-height", `${keyboardDesignHeight * scale}px`);
         applyHandCalibration();
-      }
-
-      function startHandCalibrationDrag(event) {
-        if (!handCalibrationMode) return;
-
-        const target = event.target.closest('.hand.right .finger[data-finger^="right-"]');
-        if (!target) return;
-
-        const rect = keyboardWrap.getBoundingClientRect();
-        const width = rect.width || 0;
-        const height = rect.height || 0;
-        if (!width || !height) return;
-
-        const calibration = handCalibration();
-        const fingerId = target.dataset.finger;
-        const { x, y } = calibration[fingerId] || { x: 0, y: 0 };
-        handCalibrationDrag = {
-          fingerId,
-          node: target,
-          pointerId: event.pointerId,
-          startX: event.clientX,
-          startY: event.clientY,
-          originX: x,
-          originY: y,
-          width,
-          height
-        };
-
-        target.classList.add("dragging");
-        target.setPointerCapture(event.pointerId);
-        event.preventDefault();
-      }
-
-      function moveHandCalibrationDrag(event) {
-        if (!handCalibrationDrag || event.pointerId !== handCalibrationDrag.pointerId) return;
-
-        const nextX = handCalibrationDrag.originX + (event.clientX - handCalibrationDrag.startX) / handCalibrationDrag.width;
-        const nextY = handCalibrationDrag.originY + (event.clientY - handCalibrationDrag.startY) / handCalibrationDrag.height;
-        setHandCalibration(handCalibrationDrag.fingerId, nextX, nextY);
-      }
-
-      function stopHandCalibrationDrag(event) {
-        if (!handCalibrationDrag || event.pointerId !== handCalibrationDrag.pointerId) return;
-
-        if (handCalibrationDrag.node?.hasPointerCapture(event.pointerId)) {
-          handCalibrationDrag.node.releasePointerCapture(event.pointerId);
-        }
-
-        handCalibrationDrag.node?.classList.remove("dragging");
-        handCalibrationDrag = null;
-        setStatus(textFor().handCalibrationSaved);
       }
 
       keySelect.addEventListener("change", event => selectKey(event.target.value));
@@ -2634,60 +2687,47 @@
       });
 
       fingerMapDialog.addEventListener("close", () => {
-        fingerReassignMode = false;
+        pendingFingerSync = null;
         renderFingerMapPanel();
-        renderCalibrationBanner();
         renderKeyboard();
         practiceInput.focus();
       });
 
-      fingerSelect.addEventListener("change", event => {
-        setActiveFinger(event.target.value);
-        setStatus(textFor().highlightStatus.replace("{finger}", fingerName(event.target.value)));
-      });
-
-      fingerReassign.addEventListener("click", () => {
-        handCalibrationMode = false;
-        fingerReassignMode = !fingerReassignMode;
-        renderFingerMapPanel();
-        renderCalibrationBanner();
-      });
-
-      handCalibrate.addEventListener("click", () => {
-        fingerReassignMode = false;
-        handCalibrationMode = !handCalibrationMode;
-        renderFingerMapPanel();
-        renderCalibrationBanner();
-        if (handCalibrationMode) {
-          fingerMapDialog.close();
-        }
-      });
-
-      handReset.addEventListener("click", () => {
-        handCalibrationMode = false;
-        handCalibrationDrag = null;
-        rightFingerNodes.forEach(node => node.classList.remove("dragging"));
-        handCalibrationState = defaultHandCalibration();
+      fingerMapResetAll.addEventListener("click", () => {
+        activeFingerId = "left-index";
+        pendingFingerSync = null;
+        addFingerInputId = null;
+        saved.activeFingerId = activeFingerId;
+        saved.fingerMap = JSON.parse(JSON.stringify(defaultFingerMap));
+        persist();
         applyHandCalibration();
         renderFingerMapPanel();
-        renderCalibrationBanner();
-        setStatus(textFor().handCalibrationReset);
+        renderKeyboard();
+        setStatus(textFor().settingsReset);
       });
 
-      calibrationDone.addEventListener("click", () => {
-        handCalibrationMode = false;
-        handCalibrationDrag = null;
-        rightFingerNodes.forEach(node => node.classList.remove("dragging"));
+      fingerSyncConfirm.addEventListener("click", () => {
+        if (!pendingFingerSync) return;
+
+        const { fingerId, keyId } = pendingFingerSync;
+        assignKeyToFinger(keyId, fingerId);
+        activeFingerId = fingerId;
+        saved.activeFingerId = fingerId;
+        pendingFingerSync = null;
+        persist();
         renderFingerMapPanel();
-        renderCalibrationBanner();
-        setStatus(textFor().handCalibrationSaved);
+        renderKeyboard();
+        setStatus(textFor().fingerSyncApplied.replace("{key}", visibleKeyLabel(keyId)).replace("{finger}", fingerName(fingerId)));
       });
 
-      rightHand.addEventListener("pointerdown", startHandCalibrationDrag);
-      rightHand.addEventListener("pointermove", moveHandCalibrationDrag);
-      rightHand.addEventListener("pointerup", stopHandCalibrationDrag);
-      rightHand.addEventListener("pointercancel", stopHandCalibrationDrag);
+      fingerSyncDismiss.addEventListener("click", () => {
+        pendingFingerSync = null;
+        renderFingerMapPanel();
+      });
 
+      practiceInput.addEventListener("keydown", event => {
+        lastPhysicalPracticeKeyId = keyIdFromEventCode(event.code);
+      });
       practiceInput.addEventListener("input", handlePracticeInput);
       render();
       practiceInput.focus();
