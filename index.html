@@ -102,6 +102,7 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
+        margin-left: auto;
         width: 44px;
         height: 44px;
         border: 1px solid var(--line-soft);
@@ -389,15 +390,6 @@
         inset: 0;
         z-index: 2;
         pointer-events: none;
-      }
-
-      .hands.finger-editor-mode {
-        pointer-events: auto;
-      }
-
-      .hands.finger-editor-mode .finger {
-        cursor: pointer;
-        pointer-events: visiblePainted;
       }
 
       .hand {
@@ -945,7 +937,7 @@
         width: 8px;
         height: 8px;
         border-radius: 999px;
-        background: #7b7b7b;
+        background: transparent;
         transition: background 140ms ease, transform 140ms ease;
       }
 
@@ -1208,13 +1200,6 @@
         <div class="keyboard-editor-head">
           <div class="keyboard-editor-title" id="keyboardEditorTitle">Режим настройки аппликатуры</div>
         </div>
-        <div class="finger-sync-banner" id="keyboardEditorSyncBanner">
-          <div class="finger-sync-text" id="keyboardEditorSyncText"></div>
-          <div class="finger-sync-actions">
-            <button class="secondary-btn" id="keyboardEditorSyncConfirm" type="button">Добавить</button>
-            <button class="secondary-btn" id="keyboardEditorSyncDismiss" type="button">Не сейчас</button>
-          </div>
-        </div>
         <div class="keyboard-editor-actions">
           <button class="ghost-btn keyboard-editor-reset" id="keyboardEditorReset" type="button">Вернуть настройки по умолчанию</button>
           <div class="keyboard-editor-actions-right">
@@ -1282,13 +1267,6 @@
         </div>
 
         <p class="finger-map-help" id="fingerMapHelp">Выберите палец, чтобы подсветить его клавиши на клавиатуре.</p>
-        <div class="finger-sync-banner" id="fingerSyncBanner" aria-live="polite">
-          <div class="finger-sync-text" id="fingerSyncText"></div>
-          <div class="finger-sync-actions">
-            <button class="secondary-btn" id="fingerSyncConfirm" type="button">Добавить</button>
-            <button class="secondary-btn" id="fingerSyncDismiss" type="button">Не сейчас</button>
-          </div>
-        </div>
         <div class="finger-map-list" id="fingerMapList" aria-live="polite"></div>
         <div class="dialog-actions finger-map-actions">
           <button class="ghost-btn finger-map-reset" id="fingerMapReset" type="button">Вернуть настройки по умолчанию</button>
@@ -1371,18 +1349,9 @@
       const fingerMapTitle = document.querySelector("#fingerMapTitle");
       const fingerMapSectionLabel = document.querySelector("#fingerMapSectionLabel");
       const fingerMapHelp = document.querySelector("#fingerMapHelp");
-      const fingerSyncBanner = document.querySelector("#fingerSyncBanner");
-      const fingerSyncText = document.querySelector("#fingerSyncText");
-      const fingerSyncConfirm = document.querySelector("#fingerSyncConfirm");
-      const fingerSyncDismiss = document.querySelector("#fingerSyncDismiss");
       const keyboardEditorPanel = document.querySelector("#keyboardEditorPanel");
       const keyboardEditorTitle = document.querySelector("#keyboardEditorTitle");
-      const keyboardEditorCurrent = document.querySelector("#keyboardEditorCurrent");
       const keyboardFingerPicker = document.querySelector("#keyboardFingerPicker");
-      const keyboardEditorSyncBanner = document.querySelector("#keyboardEditorSyncBanner");
-      const keyboardEditorSyncText = document.querySelector("#keyboardEditorSyncText");
-      const keyboardEditorSyncConfirm = document.querySelector("#keyboardEditorSyncConfirm");
-      const keyboardEditorSyncDismiss = document.querySelector("#keyboardEditorSyncDismiss");
       const keyboardEditorReset = document.querySelector("#keyboardEditorReset");
       const keyboardEditorCancel = document.querySelector("#keyboardEditorCancel");
       const keyboardEditorSave = document.querySelector("#keyboardEditorSave");
@@ -1408,8 +1377,8 @@
       let activeFingerId = saved.activeFingerId || "left-index";
       let draftSettings = null;
       let addFingerInputId = null;
-      let pendingFingerSync = null;
       let draftFingerMap = null;
+      let draftFingerPreviousOwners = {};
       let draftActiveFingerId = activeFingerId;
       let fingerKeyboardMode = false;
       let correctPracticeKeyId = null;
@@ -2014,16 +1983,16 @@
       ];
 
       const defaultFingerMap = {
-        "left-pinky": ["backquote", "digit1", "tab", "q", "caps", "a", "shiftLeft", "z", "fn", "control"],
+        "left-pinky": ["backquote", "digit1", "tab", "q", "caps", "a", "shiftLeft", "isoIntl", "z", "fn", "control"],
         "left-ring": ["digit2", "w", "s", "x"],
         "left-middle": ["digit3", "e", "d", "c"],
         "left-index": ["digit4", "digit5", "r", "t", "f", "g", "v", "b"],
-        "left-thumb": ["optionLeft", "commandLeft"],
+        "left-thumb": ["space", "optionLeft", "commandLeft"],
         "right-thumb": ["space", "commandRight", "optionRight"],
         "right-index": ["digit6", "digit7", "y", "u", "h", "j", "n", "m"],
         "right-middle": ["digit8", "i", "k", "comma"],
         "right-ring": ["digit9", "o", "l", "period"],
-        "right-pinky": ["digit0", "minus", "equal", "delete", "p", "bracketLeft", "bracketRight", "backslash", "enter", "semicolon", "quote", "slash", "shiftRight", "arrowLeft", "arrowUp", "arrowDown", "arrowRight", "isoIntl"]
+        "right-pinky": ["digit0", "minus", "equal", "delete", "p", "bracketLeft", "bracketRight", "backslash", "enter", "semicolon", "quote", "slash", "shiftRight", "arrowLeft", "arrowUp", "arrowDown", "arrowRight"]
       };
 
       const fixedHandCalibrationPx = {
@@ -2083,10 +2052,6 @@
           fingerKeyboardHelp: "Tastaturmodus ist aktiv. Finger auswählen und Tasten auf der Tastatur anklicken, dann unten speichern.",
           emptyFinger: "Noch keine Tasten",
           keyCount: "Tasten",
-          fingerSyncPrompt: "\"{key}\" auch für {finger} hinzufügen?",
-          addMirror: "Hinzufügen",
-          dismissMirror: "Nicht jetzt",
-          fingerSyncApplied: "\"{key}\" wurde auch {finger} zugewiesen.",
           keyboardMode: "Tastaturmodus",
           keyboardModeActive: "Tastaturmodus aktiv",
           fingerEditorModeTitle: "Appликatur bearbeiten",
@@ -2125,10 +2090,6 @@
           fingerKeyboardHelp: "Keyboard mode is active. Choose a finger, click keys on the keyboard, then save below.",
           emptyFinger: "No keys yet",
           keyCount: "keys",
-          fingerSyncPrompt: "Add \"{key}\" to {finger} too?",
-          addMirror: "Add",
-          dismissMirror: "Not now",
-          fingerSyncApplied: "\"{key}\" was also assigned to {finger}.",
           keyboardMode: "Keyboard Mode",
           keyboardModeActive: "Keyboard Mode Active",
           fingerEditorModeTitle: "Fingering Mapping Mode",
@@ -2167,10 +2128,6 @@
           fingerKeyboardHelp: "Режим клавиатуры активен. Выберите палец, нажимайте клавиши на клавиатуре и потом сохраните внизу.",
           emptyFinger: "Пока нет клавиш",
           keyCount: "клавиш",
-          fingerSyncPrompt: "Добавить \"{key}\" также для пальца \"{finger}\"?",
-          addMirror: "Добавить",
-          dismissMirror: "Не сейчас",
-          fingerSyncApplied: "Клавиша \"{key}\" также назначена пальцу \"{finger}\".",
           keyboardMode: "Режим клавиатуры",
           keyboardModeActive: "Режим клавиатуры активен",
           fingerEditorModeTitle: "Режим настройки аппликатуры",
@@ -2271,9 +2228,9 @@
 
       function openFingerMapDraft() {
         draftFingerMap = cloneFingerMapState(fingerMap());
+        draftFingerPreviousOwners = {};
         draftActiveFingerId = activeFingerId;
         addFingerInputId = null;
-        pendingFingerSync = null;
         fingerKeyboardMode = false;
       }
 
@@ -2312,6 +2269,26 @@
           }
         });
 
+        fingerIds.forEach(fingerId => {
+          if (fingerId !== "left-thumb" && fingerId !== "right-thumb") {
+            saved.fingerMap[fingerId] = saved.fingerMap[fingerId].filter(keyId => keyId !== "space");
+          }
+        });
+        if (!saved.fingerMap["left-thumb"].includes("space")) {
+          saved.fingerMap["left-thumb"].unshift("space");
+        }
+        if (!saved.fingerMap["right-thumb"].includes("space")) {
+          saved.fingerMap["right-thumb"].unshift("space");
+        }
+        saved.fingerMap["right-pinky"] = saved.fingerMap["right-pinky"].filter(keyId => keyId !== "isoIntl");
+        if (!saved.fingerMap["left-pinky"].includes("isoIntl")) {
+          saved.fingerMap["left-pinky"].push("isoIntl");
+        }
+        saved.fingerMap["right-ring"] = saved.fingerMap["right-ring"].filter(keyId => keyId !== "bracketRight");
+        if (!saved.fingerMap["right-pinky"].includes("bracketRight")) {
+          saved.fingerMap["right-pinky"].push("bracketRight");
+        }
+
         return saved.fingerMap;
       }
 
@@ -2324,14 +2301,56 @@
         return label.replace(/\n/g, " ").trim() || keyTitle(keyId);
       }
 
+      function currentOwnerForKey(keyId, map = currentFingerMapState()) {
+        return fingerIds.find(fingerId => map[fingerId]?.includes(keyId)) || null;
+      }
+
       function assignKeyToFinger(keyId, fingerId, map = currentFingerMapState()) {
         const copy = map;
+        if (keyId === "space" && (fingerId === "left-thumb" || fingerId === "right-thumb")) {
+          fingerIds.forEach(currentFingerId => {
+            if (currentFingerId !== "left-thumb" && currentFingerId !== "right-thumb") {
+              copy[currentFingerId] = copy[currentFingerId].filter(mappedKeyId => mappedKeyId !== keyId);
+            }
+          });
+          if (!copy[fingerId].includes(keyId)) {
+            copy[fingerId].unshift(keyId);
+          }
+          const mirroredThumb = fingerId === "left-thumb" ? "right-thumb" : "left-thumb";
+          if (!copy[mirroredThumb].includes(keyId)) {
+            copy[mirroredThumb].unshift(keyId);
+          }
+          return;
+        }
+
         fingerIds.forEach(currentFingerId => {
           copy[currentFingerId] = copy[currentFingerId].filter(mappedKeyId => mappedKeyId !== keyId);
         });
         if (!copy[fingerId].includes(keyId)) {
           copy[fingerId].push(keyId);
         }
+      }
+
+      function assignOrRestoreKeyForFinger(keyId, fingerId, map = currentFingerMapState()) {
+        if (keyId === "space") {
+          assignKeyToFinger(keyId, fingerId, map);
+          return;
+        }
+
+        const currentOwner = currentOwnerForKey(keyId, map);
+        const previousOwner = draftFingerPreviousOwners[keyId] || null;
+
+        if (currentOwner === fingerId && previousOwner && previousOwner !== fingerId) {
+          assignKeyToFinger(keyId, previousOwner, map);
+          delete draftFingerPreviousOwners[keyId];
+          return;
+        }
+
+        if (currentOwner && currentOwner !== fingerId) {
+          draftFingerPreviousOwners[keyId] = currentOwner;
+        }
+
+        assignKeyToFinger(keyId, fingerId, map);
       }
 
       function normalizeFingerKeyInput(value) {
@@ -2363,9 +2382,8 @@
           return;
         }
 
-        assignKeyToFinger(keyId, fingerId, currentFingerMapState());
+        assignOrRestoreKeyForFinger(keyId, fingerId, currentFingerMapState());
         draftActiveFingerId = fingerId;
-        maybeSuggestMirroredFingerKey(fingerId, keyId);
         renderFingerMapPanel();
         renderKeyboard();
         setStatus(textFor().draftKeyAssigned.replace("{key}", visibleKeyLabel(keyId)).replace("{finger}", fingerName(fingerId)));
@@ -2389,26 +2407,6 @@
         }
 
         return fingerId;
-      }
-
-      function maybeSuggestMirroredFingerKey(sourceFingerId, sourceKeyId) {
-        const targetFingerId = mirroredFingerId(sourceFingerId);
-        const targetKeyId = mirroredKeyIds[sourceKeyId] || null;
-
-        if (!targetKeyId || targetFingerId === sourceFingerId) {
-          pendingFingerSync = null;
-          return;
-        }
-
-        if (currentFingerMapState()[targetFingerId]?.includes(targetKeyId)) {
-          pendingFingerSync = null;
-          return;
-        }
-
-        pendingFingerSync = {
-          fingerId: targetFingerId,
-          keyId: targetKeyId
-        };
       }
 
       function fingerNodeById(fingerId) {
@@ -2485,29 +2483,6 @@
         if (fingerKeyboardMode) {
           practiceInput.blur();
         }
-      }
-
-      function renderFingerSyncBanner() {
-        const text = textFor();
-        if (!pendingFingerSync) {
-          fingerSyncBanner.classList.remove("visible");
-          fingerSyncText.textContent = "";
-          keyboardEditorSyncBanner.classList.remove("visible");
-          keyboardEditorSyncText.textContent = "";
-          return;
-        }
-
-        const syncText = text.fingerSyncPrompt
-          .replace("{key}", visibleKeyLabel(pendingFingerSync.keyId))
-          .replace("{finger}", fingerName(pendingFingerSync.fingerId));
-        fingerSyncText.textContent = syncText;
-        keyboardEditorSyncText.textContent = syncText;
-        fingerSyncConfirm.textContent = text.addMirror;
-        fingerSyncDismiss.textContent = text.dismissMirror;
-        keyboardEditorSyncConfirm.textContent = text.addMirror;
-        keyboardEditorSyncDismiss.textContent = text.dismissMirror;
-        fingerSyncBanner.classList.toggle("visible", fingerMapDialog.open && !fingerKeyboardMode);
-        keyboardEditorSyncBanner.classList.toggle("visible", fingerKeyboardMode);
       }
 
       function renderFingerMapList() {
@@ -2606,7 +2581,6 @@
         fingerMapCancel.textContent = text.cancel;
         fingerMapSave.textContent = text.save;
         updateFingerHelpText();
-        renderFingerSyncBanner();
         renderFingerMapList();
         renderKeyboardEditorPanel();
       }
@@ -2979,8 +2953,7 @@
 
       function handleKeyboardKeyClick(id) {
         if (fingerKeyboardMode) {
-          assignKeyToFinger(id, currentFingerSelection(), currentFingerMapState());
-          maybeSuggestMirroredFingerKey(currentFingerSelection(), id);
+          assignOrRestoreKeyForFinger(id, currentFingerSelection(), currentFingerMapState());
           renderFingerMapPanel();
           renderKeyboard();
           setStatus(textFor().draftKeyAssigned.replace("{key}", visibleKeyLabel(id)).replace("{finger}", fingerName(currentFingerSelection())));
@@ -2988,6 +2961,25 @@
         }
 
         selectKey(id);
+      }
+
+      function handleFingerKeyboardPhysicalInput(event) {
+        if (!fingerKeyboardMode) return;
+        if (event.repeat || event.metaKey || event.ctrlKey || event.altKey) return;
+
+        const target = event.target;
+        if (target instanceof HTMLElement) {
+          const tagName = target.tagName;
+          if (target.isContentEditable || tagName === "INPUT" || tagName === "TEXTAREA" || tagName === "SELECT" || tagName === "BUTTON") {
+            return;
+          }
+        }
+
+        const keyId = keyIdFromEventCode(event.code);
+        if (!keyId) return;
+
+        event.preventDefault();
+        handleKeyboardKeyClick(keyId);
       }
 
       function renderSelect() {
@@ -3140,8 +3132,8 @@
       fingerMapDialog.addEventListener("close", () => {
         addFingerInputId = null;
         if (!fingerKeyboardMode) {
-          pendingFingerSync = null;
           draftFingerMap = null;
+          draftFingerPreviousOwners = {};
           draftActiveFingerId = activeFingerId;
         }
         renderFingerMapPanel();
@@ -3162,9 +3154,9 @@
       });
 
       fingerMapReset.addEventListener("click", () => {
-        pendingFingerSync = null;
         addFingerInputId = null;
         draftFingerMap = cloneFingerMapState(defaultFingerMap);
+        draftFingerPreviousOwners = {};
         draftActiveFingerId = "left-index";
         renderFingerMapPanel();
         renderKeyboard();
@@ -3176,10 +3168,10 @@
         saved.activeFingerId = activeFingerId;
         saved.fingerMap = cloneFingerMapState(currentFingerMapState());
         persist();
-        pendingFingerSync = null;
         addFingerInputId = null;
         fingerKeyboardMode = false;
         draftFingerMap = cloneFingerMapState(saved.fingerMap);
+        draftFingerPreviousOwners = {};
         renderFingerMapPanel();
         renderKeyboard();
         fingerMapDialog.close();
@@ -3191,64 +3183,30 @@
         saved.activeFingerId = activeFingerId;
         saved.fingerMap = cloneFingerMapState(currentFingerMapState());
         persist();
-        pendingFingerSync = null;
         fingerKeyboardMode = false;
         draftFingerMap = null;
+        draftFingerPreviousOwners = {};
         renderFingerMapPanel();
         renderKeyboard();
         setStatus(textFor().fingerMapSaved);
       });
 
       keyboardEditorCancel.addEventListener("click", () => {
-        pendingFingerSync = null;
         fingerKeyboardMode = false;
         draftFingerMap = null;
+        draftFingerPreviousOwners = {};
         draftActiveFingerId = activeFingerId;
         renderFingerMapPanel();
         renderKeyboard();
       });
 
       keyboardEditorReset.addEventListener("click", () => {
-        pendingFingerSync = null;
         draftFingerMap = cloneFingerMapState(defaultFingerMap);
+        draftFingerPreviousOwners = {};
         draftActiveFingerId = "left-index";
         renderFingerMapPanel();
         renderKeyboard();
         setStatus(textFor().settingsReset);
-      });
-
-      fingerSyncConfirm.addEventListener("click", () => {
-        if (!pendingFingerSync) return;
-
-        const { fingerId, keyId } = pendingFingerSync;
-        assignKeyToFinger(keyId, fingerId, currentFingerMapState());
-        draftActiveFingerId = fingerId;
-        pendingFingerSync = null;
-        renderFingerMapPanel();
-        renderKeyboard();
-        setStatus(textFor().fingerSyncApplied.replace("{key}", visibleKeyLabel(keyId)).replace("{finger}", fingerName(fingerId)));
-      });
-
-      fingerSyncDismiss.addEventListener("click", () => {
-        pendingFingerSync = null;
-        renderFingerMapPanel();
-      });
-
-      keyboardEditorSyncConfirm.addEventListener("click", () => {
-        if (!pendingFingerSync) return;
-
-        const { fingerId, keyId } = pendingFingerSync;
-        assignKeyToFinger(keyId, fingerId, currentFingerMapState());
-        draftActiveFingerId = fingerId;
-        pendingFingerSync = null;
-        renderFingerMapPanel();
-        renderKeyboard();
-        setStatus(textFor().fingerSyncApplied.replace("{key}", visibleKeyLabel(keyId)).replace("{finger}", fingerName(fingerId)));
-      });
-
-      keyboardEditorSyncDismiss.addEventListener("click", () => {
-        pendingFingerSync = null;
-        renderFingerMapPanel();
       });
 
       keyboardFingerPicker.addEventListener("click", event => {
@@ -3259,14 +3217,7 @@
         renderKeyboard();
       });
 
-      handsLayer.addEventListener("click", event => {
-        const fingerNode = event.target.closest(".finger[data-finger]");
-        if (!fingerKeyboardMode || !fingerNode) return;
-        draftActiveFingerId = fingerNode.dataset.finger;
-        renderFingerMapPanel();
-        renderKeyboard();
-      });
-
+      document.addEventListener("keydown", handleFingerKeyboardPhysicalInput);
       practiceInput.addEventListener("keydown", event => {
         lastPhysicalPracticeKeyId = keyIdFromEventCode(event.code);
       });
