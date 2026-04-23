@@ -58,8 +58,8 @@
 
       .topbar {
         display: flex;
-        justify-content: flex-end;
-        align-items: end;
+        justify-content: space-between;
+        align-items: flex-start;
         margin-bottom: 24px;
       }
 
@@ -76,6 +76,19 @@
         color: var(--muted);
         font-size: 15px;
         line-height: 1.45;
+      }
+
+      .page-title {
+        margin: 0;
+        color: #f0f0f0;
+        font-size: 30px;
+        font-weight: 800;
+        line-height: 1.05;
+        letter-spacing: 0;
+      }
+
+      .page-title:empty {
+        display: none;
       }
 
       .controls {
@@ -174,6 +187,10 @@
         display: grid;
         gap: 10px;
         margin-bottom: 26px;
+      }
+
+      .trainer.hidden {
+        display: none;
       }
 
       .practice-sample,
@@ -374,6 +391,15 @@
         pointer-events: none;
       }
 
+      .hands.finger-editor-mode {
+        pointer-events: auto;
+      }
+
+      .hands.finger-editor-mode .finger {
+        cursor: pointer;
+        pointer-events: visiblePainted;
+      }
+
       .hand {
         position: absolute;
         top: 32.2%;
@@ -459,6 +485,20 @@
         grid-template-columns: repeat(262, 1fr);
         width: var(--keyboard-width);
         padding: var(--keyboard-padding);
+      }
+
+      .keyboard-finger-picker {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 5px;
+        z-index: 3;
+        display: none;
+        height: 34px;
+      }
+
+      .keyboard-finger-picker.visible {
+        display: block;
       }
 
       .key {
@@ -687,6 +727,42 @@
         stroke: var(--line);
       }
 
+      .key-enter.key-finger-map,
+      .key-enter.key-lit,
+      .key-enter.key-correct,
+      .key-enter.key-wrong {
+        border: 0;
+        background: transparent;
+        box-shadow: none;
+      }
+
+      .key-enter.key-finger-map .enter-shape {
+        fill: #141414;
+        stroke: var(--accent);
+      }
+
+      .key-enter.key-lit .enter-shape {
+        fill: #141414;
+        stroke: #b8b8b8;
+      }
+
+      .key-enter.key-correct .enter-shape {
+        fill: #121812;
+        stroke: #8fd3a2;
+      }
+
+      .key-enter.key-wrong .enter-shape {
+        fill: #181212;
+        stroke: #d38f8f;
+      }
+
+      .key-enter.key-finger-map .enter-symbol,
+      .key-enter.key-lit .enter-symbol,
+      .key-enter.key-correct .enter-symbol,
+      .key-enter.key-wrong .enter-symbol {
+        color: #f0f0f0;
+      }
+
       .key-enter .label {
         position: relative;
         z-index: 1;
@@ -791,6 +867,137 @@
       .dialog-actions {
         display: flex;
         justify-content: flex-end;
+      }
+
+      .finger-map-actions {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 18px;
+      }
+
+      .finger-map-actions-right {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 28px;
+        flex-wrap: wrap;
+      }
+
+      .finger-map-reset {
+        justify-self: start;
+        text-align: left;
+        white-space: nowrap;
+      }
+
+      .keyboard-editor-panel {
+        display: none;
+        gap: 12px;
+        margin-top: 14px;
+        padding: 14px 16px;
+        border: 1px solid var(--line-soft);
+        border-radius: 10px;
+        background: #101010;
+      }
+
+      .keyboard-editor-panel.visible {
+        display: grid;
+      }
+
+      .keyboard-editor-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .keyboard-editor-title {
+        color: #f0f0f0;
+        font-size: 14px;
+        font-weight: 800;
+      }
+
+      .keyboard-editor-current {
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .finger-picker {
+        position: absolute;
+        top: 72.7%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 26px;
+        height: 26px;
+        border: 1px solid #4e4e4e;
+        border-radius: 999px;
+        background: transparent;
+        color: transparent;
+        cursor: pointer;
+        padding: 0;
+        transform: translate(-50%, -50%);
+        transition: border-color 140ms ease, background 140ms ease, transform 140ms ease;
+      }
+
+      .finger-picker::after {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background: #7b7b7b;
+        transition: background 140ms ease, transform 140ms ease;
+      }
+
+      .finger-picker:hover {
+        border-color: #8c8c8c;
+        background: #171717;
+      }
+
+      .finger-picker.active {
+        border-color: #d6d6d6;
+        background: #1f1f1f;
+      }
+
+      .finger-picker.active::after {
+        background: #f0f0f0;
+        transform: scale(1.15);
+      }
+
+      .keyboard-editor-actions {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 18px;
+      }
+
+      .keyboard-editor-actions-right {
+        display: flex;
+        align-items: center;
+        gap: 28px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+
+      .keyboard-editor-reset {
+        justify-self: start;
+        text-align: left;
+        white-space: nowrap;
+      }
+
+      .ghost-btn {
+        min-height: 42px;
+        border: 0;
+        background: transparent;
+        color: var(--quiet);
+        cursor: pointer;
+        font-weight: 700;
+        padding: 0 8px;
+        transition: color 140ms ease, opacity 140ms ease;
+      }
+
+      .ghost-btn:hover {
+        color: #f0f0f0;
       }
 
       .finger-sync-banner {
@@ -950,7 +1157,7 @@
         }
 
         .topbar {
-          justify-content: flex-end;
+          justify-content: space-between;
         }
 
         .controls {
@@ -963,6 +1170,7 @@
   <body>
     <main class="app">
       <header class="topbar">
+        <h1 class="page-title" id="pageTitle"></h1>
         <button class="settings-btn" id="settingsToggle" type="button" aria-label="Настройки">
           <span class="settings-icon" aria-hidden="true">⚙️</span>
         </button>
@@ -992,8 +1200,29 @@
             </div>
           </div>
           <div class="keyboard" id="keyboard"></div>
+          <div class="keyboard-finger-picker" id="keyboardFingerPicker" aria-label="Выбор пальца"></div>
         </section>
       </div>
+
+      <section class="keyboard-editor-panel" id="keyboardEditorPanel" aria-live="polite">
+        <div class="keyboard-editor-head">
+          <div class="keyboard-editor-title" id="keyboardEditorTitle">Режим настройки аппликатуры</div>
+        </div>
+        <div class="finger-sync-banner" id="keyboardEditorSyncBanner">
+          <div class="finger-sync-text" id="keyboardEditorSyncText"></div>
+          <div class="finger-sync-actions">
+            <button class="secondary-btn" id="keyboardEditorSyncConfirm" type="button">Добавить</button>
+            <button class="secondary-btn" id="keyboardEditorSyncDismiss" type="button">Не сейчас</button>
+          </div>
+        </div>
+        <div class="keyboard-editor-actions">
+          <button class="ghost-btn keyboard-editor-reset" id="keyboardEditorReset" type="button">Вернуть настройки по умолчанию</button>
+          <div class="keyboard-editor-actions-right">
+            <button class="ghost-btn" id="keyboardEditorCancel" type="button">Отменить</button>
+            <button class="apply-btn" id="keyboardEditorSave" type="button">Сохранить</button>
+          </div>
+        </div>
+      </section>
 
       <section class="editor" aria-label="Редактор выбранной клавиши">
         <label class="field">
@@ -1048,7 +1277,6 @@
           <h2 class="settings-title" id="fingerMapTitle">Карта пальцев</h2>
           <div class="settings-head-actions">
             <button class="secondary-btn" id="fingerMapKeyboardMode" type="button">Режим клавиатуры</button>
-            <button class="secondary-btn" id="fingerMapResetAll" type="button">Сбросить настройки</button>
             <button class="settings-close" id="fingerMapClose" type="button" aria-label="Закрыть">×</button>
           </div>
         </div>
@@ -1062,8 +1290,12 @@
           </div>
         </div>
         <div class="finger-map-list" id="fingerMapList" aria-live="polite"></div>
-        <div class="dialog-actions">
-          <button class="apply-btn" id="fingerMapSave" type="button">Сохранить</button>
+        <div class="dialog-actions finger-map-actions">
+          <button class="ghost-btn finger-map-reset" id="fingerMapReset" type="button">Вернуть настройки по умолчанию</button>
+          <div class="finger-map-actions-right">
+            <button class="ghost-btn" id="fingerMapCancel" type="button">Отменить</button>
+            <button class="apply-btn" id="fingerMapSave" type="button">Сохранить</button>
+          </div>
         </div>
       </div>
     </dialog>
@@ -1119,9 +1351,10 @@
       const handsLayer = document.querySelector("#handsLayer");
       const leftHand = document.querySelector(".hand.left");
       const rightHand = document.querySelector(".hand.right");
-      const leftFingerNodes = Array.from(document.querySelectorAll('.hand.left .finger[data-finger]'));
-      const rightFingerNodes = Array.from(document.querySelectorAll('.hand.right .finger[data-finger]'));
+      let leftFingerNodes = Array.from(document.querySelectorAll('.hand.left .finger[data-finger]'));
+      let rightFingerNodes = Array.from(document.querySelectorAll('.hand.right .finger[data-finger]'));
       const settingsToggle = document.querySelector("#settingsToggle");
+      const pageTitle = document.querySelector("#pageTitle");
       const settingsDialog = document.querySelector("#settingsDialog");
       const settingsTitle = document.querySelector("#settingsTitle");
       const settingsClose = document.querySelector("#settingsClose");
@@ -1132,7 +1365,8 @@
       const fingerMapDialog = document.querySelector("#fingerMapDialog");
       const fingerMapClose = document.querySelector("#fingerMapClose");
       const fingerMapKeyboardMode = document.querySelector("#fingerMapKeyboardMode");
-      const fingerMapResetAll = document.querySelector("#fingerMapResetAll");
+      const fingerMapReset = document.querySelector("#fingerMapReset");
+      const fingerMapCancel = document.querySelector("#fingerMapCancel");
       const fingerMapSave = document.querySelector("#fingerMapSave");
       const fingerMapTitle = document.querySelector("#fingerMapTitle");
       const fingerMapSectionLabel = document.querySelector("#fingerMapSectionLabel");
@@ -1141,8 +1375,20 @@
       const fingerSyncText = document.querySelector("#fingerSyncText");
       const fingerSyncConfirm = document.querySelector("#fingerSyncConfirm");
       const fingerSyncDismiss = document.querySelector("#fingerSyncDismiss");
+      const keyboardEditorPanel = document.querySelector("#keyboardEditorPanel");
+      const keyboardEditorTitle = document.querySelector("#keyboardEditorTitle");
+      const keyboardEditorCurrent = document.querySelector("#keyboardEditorCurrent");
+      const keyboardFingerPicker = document.querySelector("#keyboardFingerPicker");
+      const keyboardEditorSyncBanner = document.querySelector("#keyboardEditorSyncBanner");
+      const keyboardEditorSyncText = document.querySelector("#keyboardEditorSyncText");
+      const keyboardEditorSyncConfirm = document.querySelector("#keyboardEditorSyncConfirm");
+      const keyboardEditorSyncDismiss = document.querySelector("#keyboardEditorSyncDismiss");
+      const keyboardEditorReset = document.querySelector("#keyboardEditorReset");
+      const keyboardEditorCancel = document.querySelector("#keyboardEditorCancel");
+      const keyboardEditorSave = document.querySelector("#keyboardEditorSave");
       const fingerMapList = document.querySelector("#fingerMapList");
       const languageTabs = document.querySelector("#languageTabs");
+      const trainer = document.querySelector(".trainer");
       const practiceSample = document.querySelector("#practiceSample");
       const practiceInput = document.querySelector("#practiceInput");
       const practiceModuleList = document.querySelector("#practiceModuleList");
@@ -1843,7 +2089,11 @@
           fingerSyncApplied: "\"{key}\" wurde auch {finger} zugewiesen.",
           keyboardMode: "Tastaturmodus",
           keyboardModeActive: "Tastaturmodus aktiv",
+          fingerEditorModeTitle: "Appликatur bearbeiten",
+          currentFinger: "Ausgewahlt: {finger}",
           save: "Speichern",
+          cancel: "Abbrechen",
+          restoreDefaults: "Standardeinstellungen wiederherstellen",
           settingsSaved: "Einstellungen gespeichert.",
           fingerMapSaved: "Fingerkarte gespeichert.",
           draftKeyAssigned: "\"{key}\" ist jetzt bei {finger}. Zum Übernehmen unten speichern.",
@@ -1881,7 +2131,11 @@
           fingerSyncApplied: "\"{key}\" was also assigned to {finger}.",
           keyboardMode: "Keyboard Mode",
           keyboardModeActive: "Keyboard Mode Active",
+          fingerEditorModeTitle: "Fingering Mapping Mode",
+          currentFinger: "Selected: {finger}",
           save: "Save",
+          cancel: "Cancel",
+          restoreDefaults: "Restore Defaults",
           settingsSaved: "Settings saved.",
           fingerMapSaved: "Finger map saved.",
           draftKeyAssigned: "\"{key}\" is now assigned to {finger}. Save below to apply it.",
@@ -1919,7 +2173,11 @@
           fingerSyncApplied: "Клавиша \"{key}\" также назначена пальцу \"{finger}\".",
           keyboardMode: "Режим клавиатуры",
           keyboardModeActive: "Режим клавиатуры активен",
+          fingerEditorModeTitle: "Режим настройки аппликатуры",
+          currentFinger: "Выбран палец: {finger}",
           save: "Сохранить",
+          cancel: "Отменить",
+          restoreDefaults: "Вернуть настройки по умолчанию",
           settingsSaved: "Настройки сохранены.",
           fingerMapSaved: "Карта пальцев сохранена.",
           draftKeyAssigned: "Клавиша \"{key}\" теперь у пальца \"{finger}\". Для применения нажмите Сохранить.",
@@ -1962,6 +2220,37 @@
         return { ...languages[language].keys, ...(saved[language] || {}) };
       }
 
+      function refreshFingerNodes() {
+        leftFingerNodes = Array.from(document.querySelectorAll('.hand.left .finger[data-finger]'));
+        rightFingerNodes = Array.from(document.querySelectorAll('.hand.right .finger[data-finger]'));
+      }
+
+      async function hydrateFingerSvgs() {
+        const fingerImages = Array.from(document.querySelectorAll('img.finger[data-finger]'));
+
+        await Promise.all(fingerImages.map(async image => {
+          try {
+            const response = await fetch(image.getAttribute("src"));
+            if (!response.ok) return;
+
+            const svgMarkup = await response.text();
+            const parsed = new DOMParser().parseFromString(svgMarkup, "image/svg+xml");
+            const svg = parsed.documentElement;
+            if (!svg || svg.nodeName.toLowerCase() !== "svg") return;
+
+            svg.setAttribute("class", image.className);
+            svg.setAttribute("data-finger", image.dataset.finger || "");
+            svg.setAttribute("aria-hidden", "true");
+            svg.querySelectorAll("[id]").forEach(node => node.removeAttribute("id"));
+            image.replaceWith(svg);
+          } catch {
+            // Keep raster fallback if inline SVG hydration is unavailable.
+          }
+        }));
+
+        refreshFingerNodes();
+      }
+
       function cloneFingerMapState(source) {
         return JSON.parse(JSON.stringify(source));
       }
@@ -1993,7 +2282,7 @@
       }
 
       function currentFingerSelection() {
-        return fingerMapDialog.open ? draftActiveFingerId : activeFingerId;
+        return (fingerMapDialog.open || fingerKeyboardMode) ? draftActiveFingerId : activeFingerId;
       }
 
       function keyIds() {
@@ -2083,7 +2372,7 @@
       }
 
       function activeFingerKeys() {
-        if (!fingerMapDialog.open) {
+        if (!fingerMapDialog.open && !fingerKeyboardMode) {
           return new Set();
         }
 
@@ -2154,20 +2443,71 @@
         fingerMapHelp.textContent = fingerKeyboardMode ? textFor().fingerKeyboardHelp : textFor().fingerHelp;
       }
 
+      function renderKeyboardFingerPicker() {
+        const positions = {
+          "left-pinky": 12.8644,
+          "left-ring": 18.3644,
+          "left-middle": 24.8644,
+          "left-index": 31.5144,
+          "left-thumb": 39.5644,
+          "right-thumb": 53.8,
+          "right-index": 61.85,
+          "right-middle": 68.5,
+          "right-ring": 75,
+          "right-pinky": 80.5
+        };
+
+        keyboardFingerPicker.innerHTML = "";
+        fingerIds.forEach(fingerId => {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = `finger-picker${fingerId === currentFingerSelection() ? " active" : ""}`;
+          button.dataset.finger = fingerId;
+          button.title = fingerName(fingerId);
+          button.setAttribute("aria-label", fingerName(fingerId));
+          button.style.left = `${positions[fingerId] ?? 50}%`;
+          keyboardFingerPicker.append(button);
+        });
+      }
+
+      function renderKeyboardEditorPanel() {
+        const text = textFor();
+        keyboardEditorTitle.textContent = "";
+        keyboardEditorSave.textContent = text.save;
+        keyboardEditorCancel.textContent = text.cancel;
+        keyboardEditorReset.textContent = text.restoreDefaults;
+        renderKeyboardFingerPicker();
+        keyboardFingerPicker.classList.toggle("visible", fingerKeyboardMode);
+        keyboardEditorPanel.classList.toggle("visible", fingerKeyboardMode);
+        trainer.classList.toggle("hidden", fingerKeyboardMode);
+        pageTitle.textContent = fingerKeyboardMode ? text.fingerEditorModeTitle : "";
+
+        if (fingerKeyboardMode) {
+          practiceInput.blur();
+        }
+      }
+
       function renderFingerSyncBanner() {
         const text = textFor();
         if (!pendingFingerSync) {
           fingerSyncBanner.classList.remove("visible");
           fingerSyncText.textContent = "";
+          keyboardEditorSyncBanner.classList.remove("visible");
+          keyboardEditorSyncText.textContent = "";
           return;
         }
 
-        fingerSyncText.textContent = text.fingerSyncPrompt
+        const syncText = text.fingerSyncPrompt
           .replace("{key}", visibleKeyLabel(pendingFingerSync.keyId))
           .replace("{finger}", fingerName(pendingFingerSync.fingerId));
+        fingerSyncText.textContent = syncText;
+        keyboardEditorSyncText.textContent = syncText;
         fingerSyncConfirm.textContent = text.addMirror;
         fingerSyncDismiss.textContent = text.dismissMirror;
-        fingerSyncBanner.classList.add("visible");
+        keyboardEditorSyncConfirm.textContent = text.addMirror;
+        keyboardEditorSyncDismiss.textContent = text.dismissMirror;
+        fingerSyncBanner.classList.toggle("visible", fingerMapDialog.open && !fingerKeyboardMode);
+        keyboardEditorSyncBanner.classList.toggle("visible", fingerKeyboardMode);
       }
 
       function renderFingerMapList() {
@@ -2262,11 +2602,13 @@
         fingerMapClose.setAttribute("aria-label", text.close);
         fingerMapKeyboardMode.textContent = fingerKeyboardMode ? text.keyboardModeActive : text.keyboardMode;
         fingerMapKeyboardMode.classList.toggle("active", fingerKeyboardMode);
-        fingerMapResetAll.textContent = text.resetSettings;
+        fingerMapReset.textContent = text.restoreDefaults;
+        fingerMapCancel.textContent = text.cancel;
         fingerMapSave.textContent = text.save;
         updateFingerHelpText();
         renderFingerSyncBanner();
         renderFingerMapList();
+        renderKeyboardEditorPanel();
       }
 
       function setActiveFinger(fingerId) {
@@ -2482,7 +2824,7 @@
       }
 
       function renderPracticeGuides() {
-        const { fingerId } = currentPracticeTarget();
+        const fingerId = fingerKeyboardMode ? currentFingerSelection() : currentPracticeTarget().fingerId;
 
         document.querySelectorAll(".finger[data-finger]").forEach(node => {
           node.classList.toggle("finger-lit", node.dataset.finger === fingerId);
@@ -2584,13 +2926,14 @@
       function renderKeyboard() {
         const labels = labelsFor(currentLanguage);
         const highlightedKeys = activeFingerKeys();
-        const practiceTarget = currentPracticeTarget();
+        const practiceTarget = fingerKeyboardMode ? { keyId: null, spaceSide: null } : currentPracticeTarget();
+        handsLayer.classList.toggle("finger-editor-mode", fingerKeyboardMode);
         keyboard.innerHTML = "";
         geometry.forEach(([id, row, column, span, extra = "", rowSpan = 1]) => {
           const key = document.createElement("button");
           const isPracticeKey = practiceTarget.keyId === id;
-          const isCorrectPracticeKey = correctPracticeKeyId === id;
-          const isWrongPracticeKey = wrongPracticeKeyId === id;
+          const isCorrectPracticeKey = !fingerKeyboardMode && correctPracticeKeyId === id;
+          const isWrongPracticeKey = !fingerKeyboardMode && wrongPracticeKeyId === id;
           key.type = "button";
           key.className = `key ${extra}${editMode && id === selectedKey ? " selected" : ""}${highlightedKeys.has(id) ? " key-finger-map" : ""}${isPracticeKey ? " key-lit" : ""}${isCorrectPracticeKey ? " key-correct" : ""}${isWrongPracticeKey ? " key-wrong" : ""}`.trim();
           key.dataset.key = id;
@@ -2635,7 +2978,7 @@
       }
 
       function handleKeyboardKeyClick(id) {
-        if (fingerMapDialog.open && fingerKeyboardMode) {
+        if (fingerKeyboardMode) {
           assignKeyToFinger(id, currentFingerSelection(), currentFingerMapState());
           maybeSuggestMirroredFingerKey(currentFingerSelection(), id);
           renderFingerMapPanel();
@@ -2796,22 +3139,29 @@
 
       fingerMapDialog.addEventListener("close", () => {
         addFingerInputId = null;
-        pendingFingerSync = null;
-        fingerKeyboardMode = false;
-        draftFingerMap = null;
-        draftActiveFingerId = activeFingerId;
+        if (!fingerKeyboardMode) {
+          pendingFingerSync = null;
+          draftFingerMap = null;
+          draftActiveFingerId = activeFingerId;
+        }
         renderFingerMapPanel();
         renderKeyboard();
         practiceInput.focus();
       });
 
       fingerMapKeyboardMode.addEventListener("click", () => {
-        fingerKeyboardMode = !fingerKeyboardMode;
+        fingerKeyboardMode = true;
         addFingerInputId = null;
+        fingerMapDialog.close();
         renderFingerMapPanel();
+        renderKeyboard();
       });
 
-      fingerMapResetAll.addEventListener("click", () => {
+      fingerMapCancel.addEventListener("click", () => {
+        fingerMapDialog.close();
+      });
+
+      fingerMapReset.addEventListener("click", () => {
         pendingFingerSync = null;
         addFingerInputId = null;
         draftFingerMap = cloneFingerMapState(defaultFingerMap);
@@ -2836,6 +3186,37 @@
         setStatus(textFor().fingerMapSaved);
       });
 
+      keyboardEditorSave.addEventListener("click", () => {
+        activeFingerId = draftActiveFingerId;
+        saved.activeFingerId = activeFingerId;
+        saved.fingerMap = cloneFingerMapState(currentFingerMapState());
+        persist();
+        pendingFingerSync = null;
+        fingerKeyboardMode = false;
+        draftFingerMap = null;
+        renderFingerMapPanel();
+        renderKeyboard();
+        setStatus(textFor().fingerMapSaved);
+      });
+
+      keyboardEditorCancel.addEventListener("click", () => {
+        pendingFingerSync = null;
+        fingerKeyboardMode = false;
+        draftFingerMap = null;
+        draftActiveFingerId = activeFingerId;
+        renderFingerMapPanel();
+        renderKeyboard();
+      });
+
+      keyboardEditorReset.addEventListener("click", () => {
+        pendingFingerSync = null;
+        draftFingerMap = cloneFingerMapState(defaultFingerMap);
+        draftActiveFingerId = "left-index";
+        renderFingerMapPanel();
+        renderKeyboard();
+        setStatus(textFor().settingsReset);
+      });
+
       fingerSyncConfirm.addEventListener("click", () => {
         if (!pendingFingerSync) return;
 
@@ -2853,12 +3234,47 @@
         renderFingerMapPanel();
       });
 
+      keyboardEditorSyncConfirm.addEventListener("click", () => {
+        if (!pendingFingerSync) return;
+
+        const { fingerId, keyId } = pendingFingerSync;
+        assignKeyToFinger(keyId, fingerId, currentFingerMapState());
+        draftActiveFingerId = fingerId;
+        pendingFingerSync = null;
+        renderFingerMapPanel();
+        renderKeyboard();
+        setStatus(textFor().fingerSyncApplied.replace("{key}", visibleKeyLabel(keyId)).replace("{finger}", fingerName(fingerId)));
+      });
+
+      keyboardEditorSyncDismiss.addEventListener("click", () => {
+        pendingFingerSync = null;
+        renderFingerMapPanel();
+      });
+
+      keyboardFingerPicker.addEventListener("click", event => {
+        const button = event.target.closest(".finger-picker[data-finger]");
+        if (!fingerKeyboardMode || !button) return;
+        draftActiveFingerId = button.dataset.finger;
+        renderFingerMapPanel();
+        renderKeyboard();
+      });
+
+      handsLayer.addEventListener("click", event => {
+        const fingerNode = event.target.closest(".finger[data-finger]");
+        if (!fingerKeyboardMode || !fingerNode) return;
+        draftActiveFingerId = fingerNode.dataset.finger;
+        renderFingerMapPanel();
+        renderKeyboard();
+      });
+
       practiceInput.addEventListener("keydown", event => {
         lastPhysicalPracticeKeyId = keyIdFromEventCode(event.code);
       });
       practiceInput.addEventListener("input", handlePracticeInput);
-      render();
-      practiceInput.focus();
+      hydrateFingerSvgs().finally(() => {
+        render();
+        practiceInput.focus();
+      });
       window.addEventListener("resize", fitKeyboardScene);
     </script>
   </body>
