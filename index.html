@@ -1,0 +1,2697 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Редактор раскладок клавиатуры</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #000;
+        --panel: #111;
+        --panel-strong: #1a1a1a;
+        --key: #111;
+        --key-hover: #1a1a1a;
+        --key-active: #2a2a2a;
+        --line: #444;
+        --line-soft: #444;
+        --text: #aaa;
+        --muted: #cfcfcf;
+        --quiet: #999;
+        --accent: #ccc;
+        --accent-2: #ccc;
+        --danger: #ccc;
+        --key-height: 84px;
+        --key-gap: 12px;
+        --arrow-gap: 2px;
+        --keyboard-scale: 1;
+        --keyboard-stage-height: 0px;
+        --keyboard-width: 100%;
+        --keyboard-padding: 32px 28px 30px;
+        --hand-scale: 0.6;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        min-width: 1180px;
+        min-height: 100vh;
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: "SF Pro Display", "SF Pro Text", "SF Compact Display", "SF Compact Text", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      button,
+      input,
+      select {
+        font: inherit;
+      }
+
+      .app {
+        width: min(1920px, 100%);
+        margin: 0 auto;
+        padding: 28px 34px 36px;
+      }
+
+      .topbar {
+        display: flex;
+        justify-content: flex-end;
+        align-items: end;
+        margin-bottom: 24px;
+      }
+
+      h1 {
+        margin: 0 0 10px;
+        font-size: 30px;
+        line-height: 1.05;
+        letter-spacing: 0;
+      }
+
+      .subtitle {
+        max-width: 720px;
+        margin: 0;
+        color: var(--muted);
+        font-size: 15px;
+        line-height: 1.45;
+      }
+
+      .controls {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 10px;
+      }
+
+      .settings-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        border: 1px solid var(--line-soft);
+        border-radius: 8px;
+        background: var(--panel);
+        color: var(--muted);
+        cursor: pointer;
+        transition: background 140ms ease, color 140ms ease, transform 140ms ease;
+      }
+
+      .settings-btn:hover {
+        background: #1a1a1a;
+        color: #fff;
+      }
+
+      .settings-btn:active {
+        transform: translateY(1px);
+      }
+
+      .settings-icon {
+        font-size: 23px;
+        line-height: 1;
+      }
+
+      .toolbar,
+      .editor,
+      .status {
+        display: none !important;
+      }
+
+      .segmented,
+      .toolbar {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px;
+        border: 1px solid var(--line-soft);
+        border-radius: 8px;
+        background: var(--panel);
+      }
+
+      .mode-btn,
+      .tool-btn {
+        min-height: 38px;
+        border: 0;
+        border-radius: 6px;
+        background: transparent;
+        color: var(--muted);
+        cursor: pointer;
+        transition: background 140ms ease, color 140ms ease, transform 140ms ease;
+      }
+
+      .mode-btn {
+        min-width: 54px;
+        padding: 0 14px;
+        font-weight: 700;
+      }
+
+      .tool-btn {
+        min-width: 40px;
+        padding: 0 11px;
+        font-size: 17px;
+      }
+
+      .mode-btn:hover,
+      .tool-btn:hover {
+        background: #2a2a2a;
+        color: var(--text);
+      }
+
+      .mode-btn.active,
+      .tool-btn.active {
+        background: #ccc;
+        color: #000;
+      }
+
+      .tool-btn:active,
+      .mode-btn:active {
+        transform: translateY(1px);
+      }
+
+      .trainer {
+        display: grid;
+        gap: 10px;
+        margin-bottom: 26px;
+      }
+
+      .practice-sample,
+      .practice-input {
+        width: 100%;
+        min-height: 58px;
+        border: 0;
+        background: transparent;
+        color: var(--text);
+        font-size: 36px;
+        font-weight: 700;
+        line-height: 1.25;
+        letter-spacing: 0;
+      }
+
+      .practice-sample {
+        display: flex;
+        align-items: center;
+        color: #d0d0d0;
+        border-bottom: 1px solid #2f2f2f;
+        white-space: pre;
+      }
+
+      .practice-sample-done {
+        color: #4f4f4f;
+      }
+
+      .practice-sample-current {
+        color: #ffffff;
+        text-shadow:
+          0 0 8px rgb(255 255 255 / 0.2),
+          0 0 18px rgb(255 255 255 / 0.08);
+      }
+
+      .practice-sample-rest {
+        color: var(--text);
+      }
+
+      .practice-input {
+        border-bottom: 2px solid var(--line);
+        color: #f0f0f0;
+        outline: 0;
+        caret-color: #fff;
+      }
+
+      .practice-input:focus {
+        border-bottom-color: #bbb;
+      }
+
+      .practice-input.error {
+        border-bottom-color: #777;
+        color: #b8b8b8;
+      }
+
+      .settings-dialog {
+        width: min(420px, calc(100vw - 40px));
+        border: 1px solid var(--line-soft);
+        border-radius: 8px;
+        background: var(--panel);
+        color: var(--text);
+        padding: 0;
+      }
+
+      .settings-dialog::backdrop {
+        background: rgb(0 0 0 / 0.64);
+      }
+
+      .settings-panel {
+        display: grid;
+        gap: 18px;
+        padding: 18px;
+      }
+
+      .settings-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+      }
+
+      .settings-title {
+        margin: 0;
+        color: #d8d8d8;
+        font-size: 18px;
+        font-weight: 800;
+        line-height: 1;
+      }
+
+      .settings-close {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 34px;
+        height: 34px;
+        border: 0;
+        border-radius: 7px;
+        background: transparent;
+        color: var(--muted);
+        cursor: pointer;
+        font-size: 25px;
+        line-height: 1;
+      }
+
+      .settings-close:hover {
+        background: #2a2a2a;
+        color: #fff;
+      }
+
+      .settings-group {
+        display: grid;
+        gap: 8px;
+      }
+
+      .settings-label {
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .module-list {
+        display: grid;
+        gap: 8px;
+      }
+
+      .module-btn {
+        width: 100%;
+        min-height: 42px;
+        border: 1px solid var(--line-soft);
+        border-radius: 7px;
+        background: #111;
+        color: var(--muted);
+        cursor: pointer;
+        font-weight: 700;
+        text-align: left;
+        padding: 0 12px;
+        transition: background 140ms ease, color 140ms ease, border-color 140ms ease;
+      }
+
+      .module-btn:hover {
+        background: #1a1a1a;
+        color: #fff;
+      }
+
+      .module-btn.active {
+        border-color: #ccc;
+        background: #ccc;
+        color: #000;
+      }
+
+      .nav-btn {
+        width: 100%;
+        min-height: 42px;
+        border: 1px solid var(--line-soft);
+        border-radius: 7px;
+        background: #111;
+        color: var(--muted);
+        cursor: pointer;
+        font-weight: 700;
+        text-align: left;
+        padding: 0 12px;
+        transition: background 140ms ease, color 140ms ease, border-color 140ms ease;
+      }
+
+      .nav-btn:hover {
+        background: #1a1a1a;
+        color: #fff;
+      }
+
+      .keyboard-scale {
+        position: relative;
+        width: 100%;
+        height: var(--keyboard-stage-height);
+      }
+
+      .keyboard-wrap {
+        position: absolute;
+        top: 0;
+        left: 0;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #111;
+        transform: scale(var(--keyboard-scale));
+        transform-origin: top left;
+      }
+
+      .hands {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        pointer-events: none;
+      }
+
+      .hand {
+        position: absolute;
+        top: 32.2%;
+        width: 28%;
+        aspect-ratio: 1;
+        --hand-offset-x: 0px;
+        --hand-offset-y: 0px;
+        transform: translate(var(--hand-offset-x), var(--hand-offset-y)) scale(var(--hand-scale));
+        transform-origin: center top;
+        transition: transform 0.2s ease;
+      }
+
+      .hand.left {
+        left: 4.8%;
+      }
+
+      .hand.right {
+        right: 11.4%;
+      }
+
+      .hands.calibration-mode {
+        pointer-events: auto;
+      }
+
+      .hands.calibration-mode .hand.right {
+        pointer-events: none;
+      }
+
+      .hands.calibration-mode .hand.right .finger {
+        cursor: grab;
+        pointer-events: auto;
+      }
+
+      .hands.calibration-mode .hand.right .finger.dragging {
+        cursor: grabbing;
+      }
+
+      .finger {
+        display: block;
+        position: absolute;
+        height: auto;
+        opacity: 0.22;
+        filter: brightness(1.4);
+        pointer-events: none;
+        transform: translate(var(--finger-x, 0px), var(--finger-y, 0px));
+        user-select: none;
+        -webkit-user-drag: none;
+        transition: opacity 0.15s ease, filter 0.15s ease;
+      }
+
+      .finger.finger-lit {
+        opacity: 0.68;
+        filter:
+          brightness(2.2)
+          drop-shadow(0 0 4px rgb(255 255 255 / 0.42))
+          drop-shadow(0 0 11px rgb(255 255 255 / 0.2));
+      }
+
+      .finger.full {
+        inset: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      .finger.left-thumb {
+        left: 37.79%;
+        top: 14.41%;
+        width: 37.11%;
+        height: 46.39%;
+      }
+
+      .finger.right-thumb {
+        right: 37.79%;
+        top: 14.41%;
+        width: 37.11%;
+        height: 46.39%;
+      }
+
+      .finger.left-index {
+        left: 23.63%;
+        top: 4.67%;
+        width: 53.01%;
+        height: 91.28%;
+      }
+
+      .finger.right-index {
+        right: 23.63%;
+        top: 4.67%;
+        width: 53.01%;
+        height: 91.28%;
+      }
+
+      .keyboard {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        column-gap: 0;
+        row-gap: var(--key-gap);
+        grid-auto-rows: var(--key-height);
+        grid-template-columns: repeat(262, 1fr);
+        width: var(--keyboard-width);
+        padding: var(--keyboard-padding);
+      }
+
+      .key {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 0;
+        height: var(--key-height);
+        min-height: 0;
+        margin: 0;
+        border: 2px solid var(--line);
+        border-radius: 8px;
+        background: var(--key);
+        color: var(--text);
+        cursor: pointer;
+        user-select: none;
+        box-shadow: none;
+        transition: border-color 140ms ease, background 140ms ease, transform 140ms ease;
+      }
+
+      .key:hover {
+        border-color: var(--line);
+        background: var(--key-hover);
+      }
+
+      .key.selected {
+        border-color: var(--line);
+        box-shadow: none;
+      }
+
+      .key.key-lit {
+        border-color: #b8b8b8;
+        background:
+          radial-gradient(circle at 50% 50%, rgb(255 255 255 / 0.18), transparent 50%),
+          linear-gradient(180deg, #1c1c1c 0%, #141414 100%);
+        color: #e8e8e8;
+        box-shadow:
+          inset 0 0 0 1px rgb(255 255 255 / 0.16),
+          inset 0 0 18px rgb(255 255 255 / 0.07);
+      }
+
+      .key.key-lit .label {
+        color: #f2f2f2;
+        text-shadow: none;
+      }
+
+      .key[data-key="space"].key-lit.space-left {
+        background:
+          radial-gradient(circle at 28% 54%, rgb(255 255 255 / 0.2), transparent 26%),
+          linear-gradient(180deg, #1c1c1c 0%, #141414 100%);
+      }
+
+      .key[data-key="space"].key-lit.space-right {
+        background:
+          radial-gradient(circle at 72% 54%, rgb(255 255 255 / 0.2), transparent 26%),
+          linear-gradient(180deg, #1c1c1c 0%, #141414 100%);
+      }
+
+      .key.key-correct {
+        border-color: #8fd3a2;
+        background:
+          radial-gradient(circle at 50% 50%, rgb(104 255 151 / 0.2), transparent 50%),
+          linear-gradient(180deg, #1b241d 0%, #121812 100%);
+        color: #dcffe5;
+        box-shadow:
+          inset 0 0 0 1px rgb(142 255 173 / 0.2),
+          inset 0 0 18px rgb(104 255 151 / 0.09);
+      }
+
+      .key.key-correct .label {
+        color: #e8ffee;
+        text-shadow: none;
+      }
+
+      .key.key-wrong {
+        border-color: #d38f8f;
+        background:
+          radial-gradient(circle at 50% 50%, rgb(255 104 104 / 0.2), transparent 50%),
+          linear-gradient(180deg, #241b1b 0%, #181212 100%);
+        color: #ffe0e0;
+        box-shadow:
+          inset 0 0 0 1px rgb(255 142 142 / 0.2),
+          inset 0 0 18px rgb(255 104 104 / 0.09);
+      }
+
+      .key.key-wrong .label {
+        color: #ffeaea;
+        text-shadow: none;
+      }
+
+      .key.key-finger-map {
+        border-color: var(--accent);
+        background:
+          radial-gradient(circle at 50% 50%, rgb(255 255 255 / 0.16), transparent 56%),
+          linear-gradient(180deg, #1b1b1b 0%, #141414 100%);
+        color: #f0f0f0;
+        box-shadow:
+          inset 0 0 0 1px rgb(255 255 255 / 0.12),
+          inset 0 0 18px rgb(255 255 255 / 0.06);
+      }
+
+      .key.key-finger-map .label {
+        color: #fbfbfb;
+      }
+
+      .key.home::after {
+        content: "";
+        position: absolute;
+        bottom: 16px;
+        left: 50%;
+        width: 16px;
+        height: 2px;
+        transform: translateX(-50%);
+        border-radius: 999px;
+        background: currentColor;
+        opacity: 0.82;
+      }
+
+      .label {
+        width: 100%;
+        padding: 0 8px;
+        overflow: hidden;
+        text-align: center;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: 31px;
+        font-weight: 400;
+        letter-spacing: 0;
+      }
+
+      .key.function .label {
+        padding: 0 4px;
+        color: var(--text);
+        font-size: 18px;
+        font-weight: 520;
+        text-transform: lowercase;
+      }
+
+      .key.iso .label {
+        white-space: pre-line;
+        line-height: 1.58;
+      }
+
+      .key.stacked .label {
+        white-space: pre-line;
+        line-height: 1.66;
+        font-size: 24px;
+      }
+
+      .key.dim {
+        color: var(--quiet);
+      }
+
+      .key.align-left {
+        align-items: flex-end;
+        justify-content: flex-start;
+        padding: 0 14px 12px;
+      }
+
+      .key.align-left .label {
+        text-align: left;
+      }
+
+      .key.align-right {
+        align-items: flex-end;
+        justify-content: flex-end;
+        padding: 0 14px 12px;
+      }
+
+      .key.align-right .label {
+        text-align: right;
+      }
+
+      .key[data-key="control"],
+      .key[data-key="optionLeft"],
+      .key[data-key="commandLeft"],
+      .key[data-key="commandRight"],
+      .key[data-key="optionRight"] {
+        align-items: flex-end;
+        padding: 0 12px 12px;
+      }
+
+      .key-enter {
+        position: relative;
+        align-self: stretch;
+        height: 100%;
+        min-height: 0;
+        border: 0;
+        background: transparent;
+        box-shadow: none;
+        align-items: flex-end;
+        justify-content: flex-end;
+        padding: 0;
+      }
+
+      .key-enter:hover {
+        background: transparent;
+      }
+
+      .key-enter.selected {
+        box-shadow: none;
+      }
+
+      .key-enter svg {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+      }
+
+      .key-enter .enter-shape {
+        fill: var(--key);
+        stroke: var(--line);
+        stroke-width: 2.2;
+        vector-effect: non-scaling-stroke;
+      }
+
+      .key-enter:hover .enter-shape {
+        fill: var(--key-hover);
+        stroke: var(--line);
+      }
+
+      .key-enter.selected .enter-shape {
+        stroke: var(--line);
+      }
+
+      .key-enter .label {
+        position: relative;
+        z-index: 1;
+        width: auto;
+        margin: 0 18px 26px 0;
+        padding: 0;
+        font-size: 36px;
+      }
+
+      .key-enter .enter-symbol {
+        position: absolute;
+        left: 69%;
+        top: 32%;
+        z-index: 1;
+        color: var(--text);
+        font-size: 36px;
+        font-weight: 700;
+        line-height: 1;
+        pointer-events: none;
+        transform: translate(-50%, -50%);
+      }
+
+      .editor {
+        display: grid;
+        grid-template-columns: minmax(260px, 1fr) 220px 170px;
+        gap: 12px;
+        align-items: end;
+        margin-top: 18px;
+        padding: 16px;
+        border: 1px solid var(--line-soft);
+        border-radius: 8px;
+        background: var(--panel);
+      }
+
+      .field {
+        display: grid;
+        gap: 7px;
+      }
+
+      .field span {
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .field input,
+      .field select {
+        width: 100%;
+        height: 42px;
+        border: 1px solid var(--line-soft);
+        border-radius: 7px;
+        background: #111;
+        color: var(--text);
+        padding: 0 12px;
+        outline: 0;
+      }
+
+      .field input:focus,
+      .field select:focus {
+        border-color: var(--line);
+        box-shadow: none;
+      }
+
+      .finger-map-dialog {
+        width: min(780px, calc(100vw - 40px));
+      }
+
+      .finger-map-layout {
+        display: grid;
+        gap: 18px;
+      }
+
+      .finger-map-top {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 12px;
+        align-items: end;
+      }
+
+      .finger-map-actions {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+
+      .secondary-btn {
+        min-height: 42px;
+        border: 1px solid var(--line-soft);
+        border-radius: 7px;
+        background: #111;
+        color: var(--muted);
+        cursor: pointer;
+        font-weight: 700;
+        padding: 0 14px;
+        transition: background 140ms ease, color 140ms ease, border-color 140ms ease;
+      }
+
+      .secondary-btn:hover {
+        background: #1a1a1a;
+        color: #fff;
+      }
+
+      .secondary-btn.active {
+        border-color: var(--accent);
+        background: var(--accent);
+        color: #000;
+      }
+
+      .finger-map-help {
+        margin: 0;
+        color: var(--quiet);
+        font-size: 13px;
+        line-height: 1.45;
+      }
+
+      .finger-map-list {
+        display: grid;
+        gap: 10px;
+      }
+
+      .finger-card {
+        display: grid;
+        gap: 10px;
+        padding: 12px;
+        border: 1px solid var(--line-soft);
+        border-radius: 10px;
+        background: #0f0f0f;
+        transition: border-color 140ms ease, background 140ms ease;
+      }
+
+      .finger-card:hover {
+        border-color: var(--line);
+      }
+
+      .finger-card.active {
+        border-color: var(--accent);
+        background: #151515;
+      }
+
+      .finger-card-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .finger-card-btn {
+        border: 0;
+        background: transparent;
+        color: inherit;
+        cursor: pointer;
+        font: inherit;
+        padding: 0;
+        text-align: left;
+      }
+
+      .finger-card-name {
+        color: #f2f2f2;
+        font-size: 15px;
+        font-weight: 700;
+      }
+
+      .finger-card-meta {
+        color: var(--quiet);
+        font-size: 12px;
+      }
+
+      .finger-key-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .finger-key-chip {
+        min-height: 30px;
+        border: 1px solid #363636;
+        border-radius: 999px;
+        background: #171717;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1;
+        padding: 7px 11px;
+        white-space: nowrap;
+      }
+
+      .finger-key-chip.empty {
+        border-style: dashed;
+        color: var(--quiet);
+      }
+
+      .apply-btn {
+        height: 42px;
+        border: 0;
+        border-radius: 7px;
+        background: #ccc;
+        color: #000;
+        cursor: pointer;
+        font-weight: 800;
+      }
+
+      .status {
+        margin-top: 11px;
+        min-height: 20px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .calibration-banner {
+        position: fixed;
+        left: 50%;
+        bottom: 22px;
+        z-index: 20;
+        display: none;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 12px;
+        border: 1px solid var(--line-soft);
+        border-radius: 10px;
+        background: rgb(17 17 17 / 0.94);
+        box-shadow: 0 10px 30px rgb(0 0 0 / 0.28);
+        transform: translateX(-50%);
+        backdrop-filter: blur(12px);
+      }
+
+      .calibration-banner.visible {
+        display: flex;
+      }
+
+      .calibration-banner-text {
+        color: #f0f0f0;
+        font-size: 13px;
+        white-space: nowrap;
+      }
+
+      .calibration-banner .secondary-btn {
+        min-height: 36px;
+        padding: 0 12px;
+      }
+
+      @media (max-width: 1300px) {
+        body {
+          min-width: 980px;
+        }
+
+        .app {
+          padding: 20px;
+        }
+
+        .topbar {
+          justify-content: flex-end;
+        }
+
+        .controls {
+          justify-content: flex-start;
+        }
+
+      }
+    </style>
+  </head>
+  <body>
+    <main class="app">
+      <header class="topbar">
+        <button class="settings-btn" id="settingsToggle" type="button" aria-label="Настройки">
+          <span class="settings-icon" aria-hidden="true">⚙️</span>
+        </button>
+      </header>
+
+      <section class="trainer" aria-label="Текст для печати">
+        <div class="practice-sample" id="practiceSample"></div>
+        <input class="practice-input" id="practiceInput" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Ввод текста">
+      </section>
+
+      <div class="keyboard-scale" id="keyboardScale">
+        <section class="keyboard-wrap" id="keyboardWrap" aria-label="Клавиатура">
+          <div class="hands" id="handsLayer" aria-label="Пальцы">
+            <div class="hand left">
+              <img class="finger full" data-finger="left-pinky" src="assets/fingers/left-pinky.svg" alt="">
+              <img class="finger full" data-finger="left-ring" src="assets/fingers/left-ring.svg" alt="">
+              <img class="finger full" data-finger="left-middle" src="assets/fingers/left-middle.svg" alt="">
+              <img class="finger left-index" data-finger="left-index" src="assets/fingers/left-index.svg" alt="">
+              <img class="finger left-thumb" data-finger="left-thumb" src="assets/fingers/left-thumb.svg" alt="">
+            </div>
+            <div class="hand right">
+              <img class="finger full" data-finger="right-pinky" src="assets/fingers/right-pinky.svg" alt="">
+              <img class="finger full" data-finger="right-ring" src="assets/fingers/right-ring.svg" alt="">
+              <img class="finger full" data-finger="right-middle" src="assets/fingers/right-middle.svg" alt="">
+              <img class="finger right-index" data-finger="right-index" src="assets/fingers/right-index.svg" alt="">
+              <img class="finger right-thumb" data-finger="right-thumb" src="assets/fingers/right-thumb.svg" alt="">
+            </div>
+          </div>
+          <div class="keyboard" id="keyboard"></div>
+        </section>
+      </div>
+
+      <section class="editor" aria-label="Редактор выбранной клавиши">
+        <label class="field">
+          <span>Выбранная клавиша</span>
+          <select id="keySelect"></select>
+        </label>
+        <label class="field">
+          <span>Подпись</span>
+          <input id="labelInput" type="text" maxlength="18" autocomplete="off" placeholder="Например: Ж">
+        </label>
+        <button class="apply-btn" id="applyLabel" type="button">Применить</button>
+      </section>
+      <div class="status" id="status" role="status" aria-live="polite"></div>
+    </main>
+
+    <div class="calibration-banner" id="calibrationBanner" aria-live="polite">
+      <span class="calibration-banner-text" id="calibrationBannerText">Режим настройки рук активен.</span>
+      <button class="secondary-btn" id="calibrationDone" type="button">Готово</button>
+    </div>
+
+    <dialog class="settings-dialog" id="settingsDialog" aria-labelledby="settingsTitle">
+      <div class="settings-panel">
+        <div class="settings-head">
+          <h2 class="settings-title" id="settingsTitle">Настройки</h2>
+          <button class="settings-close" id="settingsClose" type="button" aria-label="Закрыть">×</button>
+        </div>
+
+        <div class="settings-group">
+          <span class="settings-label" id="languageLabel">Язык</span>
+          <div class="segmented" id="languageTabs" role="tablist" aria-label="Язык клавиатуры"></div>
+        </div>
+
+        <div class="settings-group">
+          <span class="settings-label" id="moduleLabel">Модуль</span>
+          <div class="module-list" id="practiceModuleList"></div>
+        </div>
+
+        <div class="settings-group">
+          <span class="settings-label" id="fingerMapSectionLabel">Карта пальцев</span>
+          <button class="nav-btn" id="fingerMapOpen" type="button">Открыть карту пальцев</button>
+        </div>
+
+        <div class="toolbar" aria-label="Инструменты">
+          <button class="tool-btn active" id="editToggle" type="button" title="Редактировать клавиши" aria-pressed="true">✎</button>
+          <button class="tool-btn" id="resetLayout" type="button" title="Сбросить текущую раскладку">↺</button>
+        </div>
+      </div>
+    </dialog>
+
+    <dialog class="settings-dialog finger-map-dialog" id="fingerMapDialog" aria-labelledby="fingerMapTitle">
+      <div class="settings-panel finger-map-layout">
+        <div class="settings-head">
+          <h2 class="settings-title" id="fingerMapTitle">Карта пальцев</h2>
+          <button class="settings-close" id="fingerMapClose" type="button" aria-label="Закрыть">×</button>
+        </div>
+
+        <div class="finger-map-top">
+          <label class="field">
+            <span id="fingerSelectLabel">Палец</span>
+            <select id="fingerSelect"></select>
+          </label>
+          <div class="finger-map-actions">
+            <button class="secondary-btn" id="handCalibrate" type="button">Настроить руки</button>
+            <button class="secondary-btn" id="handReset" type="button">Сбросить руки</button>
+            <button class="secondary-btn" id="fingerReassign" type="button">Переназначить</button>
+          </div>
+        </div>
+
+        <p class="finger-map-help" id="fingerMapHelp">Выберите палец, чтобы подсветить его клавиши на клавиатуре.</p>
+        <div class="finger-map-list" id="fingerMapList" aria-live="polite"></div>
+      </div>
+    </dialog>
+
+    <script>
+      const storageKey = "keyboard-layout-editor-v1";
+      let keyboardDesignWidth = 0;
+      let keyboardDesignHeight = 0;
+      const languages = {
+        de: {
+          name: "DE",
+          keys: {
+            backquote: "°\n^", digit1: "!\n1", digit2: "\"\n2", digit3: "§\n3", digit4: "$\n4", digit5: "%\n5", digit6: "&\n6", digit7: "/\n7", digit8: "(\n8", digit9: ")\n9", digit0: "=\n0", minus: "?\nß", equal: "`\n´", delete: "⌫",
+            tab: "tab", q: "Q", w: "W", e: "E", r: "R", t: "T", y: "Z", u: "U", i: "I", o: "O", p: "P", bracketLeft: "Ü", bracketRight: "*\n+", backslash: "'\n#",
+            caps: "caps lock", a: "A", s: "S", d: "D", f: "F", g: "G", h: "H", j: "J", k: "K", l: "L", semicolon: "Ö", quote: "Ä", enter: "↵",
+            shiftLeft: "shift", isoIntl: ">\n<", z: "Y", x: "X", c: "C", v: "V", b: "B", n: "N", m: "M", comma: ";\n,", period: ":\n.", slash: "_\n-", shiftRight: "shift",
+            fn: "fn", control: "control", optionLeft: "option", commandLeft: "command", space: "", commandRight: "command", optionRight: "option", arrowLeft: "◂", arrowUp: "▴", arrowDown: "▾", arrowRight: "▸"
+          }
+        },
+        en: {
+          name: "EN",
+          keys: {
+            backquote: "~\n`", digit1: "!\n1", digit2: "@\n2", digit3: "#\n3", digit4: "$\n4", digit5: "%\n5", digit6: "^\n6", digit7: "&\n7", digit8: "*\n8", digit9: "(\n9", digit0: ")\n0", minus: "_\n-", equal: "+\n=", delete: "⌫",
+            tab: "tab", q: "Q", w: "W", e: "E", r: "R", t: "T", y: "Y", u: "U", i: "I", o: "O", p: "P", bracketLeft: "[", bracketRight: "]", backslash: "\\",
+            caps: "caps lock", a: "A", s: "S", d: "D", f: "F", g: "G", h: "H", j: "J", k: "K", l: "L", semicolon: ";", quote: "'", enter: "↵",
+            shiftLeft: "shift", isoIntl: ">\n<", z: "Z", x: "X", c: "C", v: "V", b: "B", n: "N", m: "M", comma: ",", period: ".", slash: "/", shiftRight: "shift",
+            fn: "fn", control: "control", optionLeft: "option", commandLeft: "command", space: "", commandRight: "command", optionRight: "option", arrowLeft: "◂", arrowUp: "▴", arrowDown: "▾", arrowRight: "▸"
+          }
+        },
+        ru: {
+          name: "RU",
+          keys: {
+            backquote: "Ё", digit1: "!\n1", digit2: "\"\n2", digit3: "№\n3", digit4: ";\n4", digit5: "%\n5", digit6: ":\n6", digit7: "?\n7", digit8: "*\n8", digit9: "(\n9", digit0: ")\n0", minus: "_\n-", equal: "+\n=", delete: "⌫",
+            tab: "tab", q: "Й", w: "Ц", e: "У", r: "К", t: "Е", y: "Н", u: "Г", i: "Ш", o: "Щ", p: "З", bracketLeft: "Х", bracketRight: "Ъ", backslash: "\\",
+            caps: "caps lock", a: "Ф", s: "Ы", d: "В", f: "А", g: "П", h: "Р", j: "О", k: "Л", l: "Д", semicolon: "Ж", quote: "Э", enter: "↵",
+            shiftLeft: "shift", isoIntl: ">\n<", z: "Я", x: "Ч", c: "С", v: "М", b: "И", n: "Т", m: "Ь", comma: "Б", period: "Ю", slash: ",\n.", shiftRight: "shift",
+            fn: "fn", control: "control", optionLeft: "option", commandLeft: "command", space: "", commandRight: "command", optionRight: "option", arrowLeft: "◂", arrowUp: "▴", arrowDown: "▾", arrowRight: "▸"
+          }
+        }
+      };
+
+      const geometry = [
+        ["backquote", 1, 3, 16, "stacked"], ["digit1", 1, 21, 16, "stacked"], ["digit2", 1, 39, 16, "stacked"], ["digit3", 1, 57, 16, "stacked"], ["digit4", 1, 75, 16, "stacked"], ["digit5", 1, 93, 16, "stacked"], ["digit6", 1, 111, 16, "stacked"], ["digit7", 1, 129, 16, "stacked"], ["digit8", 1, 147, 16, "stacked"], ["digit9", 1, 165, 16, "stacked"], ["digit0", 1, 183, 16, "stacked"], ["minus", 1, 201, 16, "stacked"], ["equal", 1, 219, 16, "stacked"], ["delete", 1, 237, 24, "function align-right"],
+        ["tab", 2, 3, 25, "function align-left"], ["q", 2, 30, 16], ["w", 2, 48, 16], ["e", 2, 66, 16], ["r", 2, 84, 16], ["t", 2, 102, 16], ["y", 2, 120, 16], ["u", 2, 138, 16], ["i", 2, 156, 16], ["o", 2, 174, 16], ["p", 2, 192, 16], ["bracketLeft", 2, 210, 16], ["bracketRight", 2, 228, 16, "stacked"],
+        ["caps", 3, 3, 29, "function align-left"], ["a", 3, 34, 16], ["s", 3, 52, 16], ["d", 3, 70, 16], ["f", 3, 88, 16, "home"], ["g", 3, 106, 16], ["h", 3, 124, 16], ["j", 3, 142, 16, "home"], ["k", 3, 160, 16], ["l", 3, 178, 16], ["semicolon", 3, 196, 16], ["quote", 3, 214, 16], ["backslash", 3, 232, 16, "stacked"], ["enter", 2, 246, 15, "function key-enter", 2],
+        ["shiftLeft", 4, 3, 20, "function align-left"], ["isoIntl", 4, 25, 16, "iso"], ["z", 4, 43, 16], ["x", 4, 61, 16], ["c", 4, 79, 16], ["v", 4, 97, 16], ["b", 4, 115, 16], ["n", 4, 133, 16], ["m", 4, 151, 16], ["comma", 4, 169, 16, "stacked"], ["period", 4, 187, 16, "stacked"], ["slash", 4, 205, 16, "stacked"], ["shiftRight", 4, 223, 38, "function align-right"],
+        ["fn", 5, 3, 16, "function align-left"], ["control", 5, 21, 16, "function"], ["optionLeft", 5, 39, 16, "function"], ["commandLeft", 5, 57, 20, "function"], ["space", 5, 79, 88], ["commandRight", 5, 169, 20, "function"], ["optionRight", 5, 191, 16, "function"], ["arrowLeft", 5, 209, 16, "function"], ["arrowUp", 5, 227, 16, "function"], ["arrowDown", 5, 227, 16, "function"], ["arrowRight", 5, 245, 16, "function"]
+      ];
+
+      const keyboard = document.querySelector("#keyboard");
+      const keyboardScale = document.querySelector("#keyboardScale");
+      const keyboardWrap = document.querySelector("#keyboardWrap");
+      const handsLayer = document.querySelector("#handsLayer");
+      const leftHand = document.querySelector(".hand.left");
+      const rightHand = document.querySelector(".hand.right");
+      const leftFingerNodes = Array.from(document.querySelectorAll('.hand.left .finger[data-finger]'));
+      const rightFingerNodes = Array.from(document.querySelectorAll('.hand.right .finger[data-finger]'));
+      const settingsToggle = document.querySelector("#settingsToggle");
+      const settingsDialog = document.querySelector("#settingsDialog");
+      const settingsTitle = document.querySelector("#settingsTitle");
+      const settingsClose = document.querySelector("#settingsClose");
+      const calibrationBanner = document.querySelector("#calibrationBanner");
+      const calibrationBannerText = document.querySelector("#calibrationBannerText");
+      const calibrationDone = document.querySelector("#calibrationDone");
+      const languageLabel = document.querySelector("#languageLabel");
+      const moduleLabel = document.querySelector("#moduleLabel");
+      const fingerMapOpen = document.querySelector("#fingerMapOpen");
+      const fingerMapDialog = document.querySelector("#fingerMapDialog");
+      const fingerMapClose = document.querySelector("#fingerMapClose");
+      const fingerMapTitle = document.querySelector("#fingerMapTitle");
+      const fingerMapSectionLabel = document.querySelector("#fingerMapSectionLabel");
+      const fingerSelectLabel = document.querySelector("#fingerSelectLabel");
+      const fingerMapHelp = document.querySelector("#fingerMapHelp");
+      const fingerSelect = document.querySelector("#fingerSelect");
+      const handCalibrate = document.querySelector("#handCalibrate");
+      const handReset = document.querySelector("#handReset");
+      const fingerReassign = document.querySelector("#fingerReassign");
+      const fingerMapList = document.querySelector("#fingerMapList");
+      const languageTabs = document.querySelector("#languageTabs");
+      const practiceSample = document.querySelector("#practiceSample");
+      const practiceInput = document.querySelector("#practiceInput");
+      const practiceModuleList = document.querySelector("#practiceModuleList");
+      const keySelect = document.querySelector("#keySelect");
+      const labelInput = document.querySelector("#labelInput");
+      const applyLabel = document.querySelector("#applyLabel");
+      const editToggle = document.querySelector("#editToggle");
+      const resetLayout = document.querySelector("#resetLayout");
+      const status = document.querySelector("#status");
+
+      let saved = loadSaved();
+      let currentLanguage = saved.currentLanguage || "de";
+      let currentPracticeModule = saved.currentPracticeModule || "module1";
+      let selectedKey = "a";
+      let editMode = false;
+      let practiceLineIndex = 0;
+      let activeFingerId = saved.activeFingerId || "left-index";
+      let fingerReassignMode = false;
+      let handCalibrationMode = false;
+      let handCalibrationDrag = null;
+
+      const practiceModules = {
+        module1: {
+          name: "Модуль 1",
+          lines: [
+            "fj fj fj fj",
+            "jf jf jf jf",
+            "ff jj ff jj",
+            "jj ff jj ff",
+            "fjf jfj fjf jfj",
+            "jfj fjf jfj fjf",
+            "fjj fjj fjj fjj",
+            "jff jff jff jff",
+            "f j f j f j f j",
+            "j f j f j f j f",
+            "dk dk dk dk",
+            "kd kd kd kd",
+            "dd kk dd kk",
+            "kk dd kk dd",
+            "dkd kdk dkd kdk",
+            "kdk dkd kdk dkd",
+            "dkk dkk dkk dkk",
+            "kdd kdd kdd kdd",
+            "d k d k d k d k",
+            "k d k d k d k d",
+            "sl sl sl sl",
+            "ls ls ls ls",
+            "ss ll ss ll",
+            "ll ss ll ss",
+            "sls lsl sls lsl",
+            "lsl sls lsl sls",
+            "sll sll sll sll",
+            "lss lss lss lss",
+            "s l s l s l s l",
+            "l s l s l s l s",
+            "a; a; a; a;",
+            ";a ;a ;a ;a",
+            "aa ;; aa ;;",
+            ";; aa ;; aa",
+            "a;a ;a; a;a ;a;",
+            ";a; a;a ;a; a;a",
+            "a;; a;; a;; a;;",
+            ";aa ;aa ;aa ;aa",
+            "a ; a ; a ; a ;",
+            "; a ; a ; a ; a",
+            "asdf jkl; asdf jkl;",
+            "fdsa ;lkj fdsa ;lkj",
+            "as as df df jk jk l; l;",
+            "sa sa fd fd kj kj ;l ;l",
+            "asd asd jkl jkl",
+            "dsa dsa lkj lkj",
+            "asdf asdf jkl; jkl;",
+            "fjdk fjdk dkfj dkfj",
+            "ajsl ajsl slaj slaj",
+            "fjak ksld fjak ksld",
+            "aaa sss ddd fff",
+            "jjj kkk lll ;;;",
+            "asdf fdsa asdf fdsa",
+            "jkl; ;lkj jkl; ;lkj",
+            "af af sd sd jk jk l; l;",
+            "fa fa ds ds kj kj ;l ;l",
+            "ad ad sf sf jl jl k; k;",
+            "da da fs fs lj lj ;k ;k",
+            "asdfg hjkl; asdfg hjkl;",
+            "gfdsa ;lkjh gfdsa ;lkjh"
+          ]
+        },
+        module2: {
+          name: "Модуль 2",
+          lines: [
+            "fad dad sad lad",
+            "fall sall dall jall",
+            "ask flask task",
+            "all as lad fad",
+            "dad adds sad lads",
+            "falls ask lads",
+            "lass flask daff",
+            "fad fad sad sad",
+            "lad lad ask ask",
+            "fall fall task task",
+            "dash flash flask",
+            "all fall last fast",
+            "sad lass lass fall",
+            "ask asks asked",
+            "fad lads lass",
+            "dark lark sark",
+            "fads falls lasts",
+            "daff lass flask",
+            "fast fast last last",
+            "sadly falsely",
+            "jak jakal jask",
+            "kaf kad saf laf",
+            "dask lask fask",
+            "jad jads jall",
+            "kald fald sald",
+            "fadl daskal",
+            "safda lafda",
+            "kadal sadal",
+            "faska laska",
+            "dafka salfa",
+            "ads adds lads lass",
+            "fad add sad lass",
+            "fall all ask last",
+            "salt lasts falls fast",
+            "flask asks lasts",
+            "sad lad asks",
+            "all lads fall",
+            "fall fast ask",
+            "last flask sad",
+            "dad asks last",
+            "alfa salda falda",
+            "dalsa faska",
+            "sadal falds",
+            "lasda kasda",
+            "dafla salka",
+            "laska daska",
+            "sadak faldak",
+            "lall sads falls",
+            "flask daskal",
+            "fallad laskad",
+            "jkl jkl jkl",
+            "asdf asdf asdf",
+            "fdsa jkl; fdsa jkl;",
+            "afdj slk; afdj slk;",
+            "daks laks faks",
+            "sald fald kald",
+            "jask jals jalf",
+            "kasd lask dask",
+            "fadl sald lask",
+            "fast lass fall"
+          ]
+        },
+        module3: {
+          name: "Модуль 3",
+          lines: [
+            "fast ask fall sad",
+            "add fall ask dad",
+            "last flask sand",
+            "all falls fast",
+            "dad asks last",
+            "sad lad falls",
+            "flask and glass",
+            "ask and add",
+            "fast and last",
+            "sand falls",
+            "glass flask lasts",
+            "dad adds sand",
+            "last fall asks",
+            "sad lads ask",
+            "all dads fall",
+            "fast lads dash",
+            "dash and flash",
+            "flash asks fast",
+            "sand and glass",
+            "flask falls last",
+            "ask dad",
+            "add sand",
+            "fall fast",
+            "last flask",
+            "sad glass",
+            "fast dash",
+            "dad falls",
+            "ask last",
+            "sand flask",
+            "glass falls",
+            "all lads ask fast",
+            "dad asks and falls",
+            "sand and glass fall",
+            "fast lads dash last",
+            "last dads ask",
+            "sad lads fall fast",
+            "dash asks fast",
+            "glass flask and sand",
+            "dad adds and asks",
+            "last sand falls",
+            "fast fast fast last",
+            "last last ask ask",
+            "glass flask glass flask",
+            "sand sand dad dad",
+            "fall fall sad sad",
+            "ask ask dash dash",
+            "flash flash fast fast",
+            "lads lads dads dads",
+            "adds adds asks asks",
+            "lasts lasts falls falls",
+            "fall and ask",
+            "last and add",
+            "sad and fast",
+            "glass and sand",
+            "dash and flash",
+            "dad and lad",
+            "ask and fall",
+            "last and glass",
+            "sand and last",
+            "flask and dad",
+            "fast lads ask last",
+            "glass falls and lasts",
+            "dad asks fast lads",
+            "sand falls last",
+            "dash and flash ask",
+            "sad lads and dads",
+            "all fall fast",
+            "last glass asks",
+            "dad adds sand fast",
+            "flask and glass last",
+            "fast lad",
+            "last dad",
+            "sad flask",
+            "glass fall",
+            "sand ask",
+            "dash last",
+            "flash fall",
+            "dad asks",
+            "lad falls",
+            "ask glass"
+          ]
+        },
+        module4: {
+          name: "Модуль 4",
+          lines: [
+            "dad asks and falls",
+            "fall fast and ask",
+            "sand and flask",
+            "glass falls fast",
+            "last lads ask",
+            "sad dads add sand",
+            "fast lads fall last",
+            "ask dad and fall",
+            "glass and sand last",
+            "dad asks fast",
+            "all lads ask fast",
+            "dad asks and adds",
+            "sad lads fall fast",
+            "glass falls and lasts",
+            "sand and glass fall",
+            "last dads ask fast",
+            "flash and dash last",
+            "dad asks for sand",
+            "all glass falls",
+            "fast lads ask dad",
+            "ask and add sand",
+            "fall and ask dad",
+            "last and fast glass",
+            "sand and flask last",
+            "dad and lad fall",
+            "glass and flask fall",
+            "sad dads ask last",
+            "fast lads add sand",
+            "all lads fall fast",
+            "ask dad for glass",
+            "dad asks last",
+            "sad lad falls",
+            "glass falls fast",
+            "sand lasts all day",
+            "ask fast and fall",
+            "all lads ask dad",
+            "flash falls last",
+            "dad adds sand fast",
+            "glass and sand last",
+            "ask and add fast",
+            "fast lads ask last",
+            "sad dads fall fast",
+            "glass flask and sand",
+            "dad asks and adds sand",
+            "last lads ask for glass",
+            "all dads ask fast",
+            "sand falls and lasts",
+            "flash and dash fall",
+            "glass falls last and fast",
+            "ask dad and add sand",
+            "last glass and sand",
+            "fast dad and lad",
+            "sad lads ask dad",
+            "all flask and glass",
+            "sand and dash last",
+            "flash asks fast lads",
+            "dad falls and asks",
+            "ask all sad lads",
+            "glass lasts and falls",
+            "last dads add sand",
+            "ask for glass",
+            "fall and add sand",
+            "dad asks for flask",
+            "sad lads ask fast",
+            "all dads fall last",
+            "glass and sand fall",
+            "flash asks and lasts",
+            "fast lads add glass",
+            "dad asks and falls fast",
+            "last flask and glass",
+            "all lads ask last",
+            "dad asks for sand and glass",
+            "sad lads fall and ask",
+            "fast dads add sand",
+            "glass falls and lasts fast",
+            "ask dad for flask and glass",
+            "sand and glass fall last",
+            "flash and dash ask fast",
+            "dad asks and all fall",
+            "last lads add sand"
+          ]
+        },
+        module5: { name: "Модуль 5", lines: ["the quick brown fox", "pack my box with five dozen jugs"] }
+      };
+
+      const practiceCharacterMaps = {
+        de: {
+          ";": "ö",
+          "y": "z",
+          "z": "y"
+        },
+        ru: {
+          "q": "й",
+          "w": "ц",
+          "e": "у",
+          "r": "к",
+          "t": "е",
+          "y": "н",
+          "u": "г",
+          "i": "ш",
+          "o": "щ",
+          "p": "з",
+          "a": "ф",
+          "s": "ы",
+          "d": "в",
+          "f": "а",
+          "g": "п",
+          "h": "р",
+          "j": "о",
+          "k": "л",
+          "l": "д",
+          ";": "ж",
+          "z": "я",
+          "x": "ч",
+          "c": "с",
+          "v": "м",
+          "b": "и",
+          "n": "т",
+          "m": "ь",
+          ",": "б",
+          ".": "ю"
+        }
+      };
+
+      const localizedPracticeLines = {
+        module2: {
+          de: [
+            "das dass als all",
+            "fall fass glas hall",
+            "sag jag lag frag",
+            "kalt klar klang glas",
+            "feld fels flach flak",
+            "haft halt hals halb",
+            "darf fand sand land",
+            "glas glas fall fall",
+            "klar kalt als das",
+            "schall falsch flach",
+            "last fast feld glas",
+            "sagt fragt jagt lag",
+            "dass das als falls",
+            "fall fast kalt klar",
+            "glas hals halt hall",
+            "falsch flach schall",
+            "darf darf fand fand",
+            "sand land glas fall",
+            "als das falls klar",
+            "kalt fast hals halt",
+            "jagd lag jagt sag",
+            "klar glas klang",
+            "fall feld fels",
+            "darf frag fragt",
+            "halt hals halb",
+            "dass fast falls",
+            "glas klar kalt",
+            "sand land fand",
+            "flach falsch schall",
+            "fall als das"
+          ],
+          ru: [
+            "да ад сад лад",
+            "зал зал дал дал",
+            "как клад сад",
+            "даль зал лад",
+            "дал дала сад лада",
+            "сад лад клад",
+            "зал клад лад",
+            "да да сад сад",
+            "лад лад как как",
+            "зал зал клад клад",
+            "даль жаль клад",
+            "лад зал сад",
+            "сад лад зал",
+            "как как клад",
+            "дал лад сад",
+            "клад лад зал",
+            "дала лад дала",
+            "сад зал клад",
+            "зал зал лад лад",
+            "сдала сдали",
+            "лад ладка клад",
+            "кадка садик лад",
+            "склад лад склад",
+            "дал дала даль",
+            "клад зал сад",
+            "лад склад",
+            "сад лад",
+            "клад сад",
+            "ладка склад",
+            "да зал сад"
+          ]
+        },
+        module3: {
+          de: [
+            "das glas ist kalt",
+            "der sand liegt da",
+            "fast alle fragen",
+            "karl sagt das klar",
+            "falscher fall",
+            "das feld ist flach",
+            "hans fragt karl",
+            "glas und sand",
+            "klar und kalt",
+            "falls das glas fällt",
+            "der tag ist fast klar",
+            "alle fragen hans",
+            "das land ist flach",
+            "karl fand das glas",
+            "hans sagt alles",
+            "der fall ist klar",
+            "sand und glas",
+            "fast alles klappt",
+            "kalt klar flach",
+            "das glas ist da",
+            "frag hans",
+            "sag karl",
+            "das feld",
+            "klar fall",
+            "kaltes glas",
+            "flacher sand",
+            "hans fragt",
+            "karl sagt",
+            "alles klar",
+            "falls das klappt",
+            "alle sagen das klar",
+            "hans fand glas",
+            "der sand ist kalt",
+            "das land lag flach",
+            "karl fragt hans",
+            "glas fällt fast",
+            "sag das klar",
+            "frag das laut",
+            "hans und karl",
+            "alles ist klar"
+          ],
+          ru: [
+            "сад был рядом",
+            "лад был важен",
+            "как дал влад",
+            "даль стала ясна",
+            "клад был там",
+            "сад и клад",
+            "лад да склад",
+            "как и лад",
+            "сад стал рядом",
+            "клад в саду",
+            "влад дал знак",
+            "лада ждала дома",
+            "сад дал покой",
+            "клад стал важен",
+            "лад был прост",
+            "в саду был клад",
+            "да ладно",
+            "как стало ясно",
+            "сад и даль",
+            "клад и лад",
+            "дай знак",
+            "ждал влад",
+            "лад дал",
+            "сад рядом",
+            "клад дома",
+            "даль ясна",
+            "влад ждал",
+            "лада дала",
+            "сад стал",
+            "клад был",
+            "влад дал знак",
+            "лада ждала сад",
+            "сад был тих",
+            "клад был там",
+            "как дал лад",
+            "даль стала ясна",
+            "сад дал свет",
+            "лад стал прост",
+            "клад в саду",
+            "да все ладно"
+          ]
+        },
+        module4: {
+          de: [
+            "hans fragt karl und sagt alles klar",
+            "das glas fällt fast auf den sand",
+            "karl fand das feld am rand",
+            "alle sagen das ist klar",
+            "der sand liegt kalt im glas",
+            "hans und karl fragen das laut",
+            "falls das klappt ist alles klar",
+            "das land ist flach und kalt",
+            "karl sagt hans fragt das",
+            "alle fanden glas und sand",
+            "der tag ist kalt aber klar",
+            "hans sah das glas fallen",
+            "karl fragt nach dem sand",
+            "das feld liegt am flachen land",
+            "alle sagen es klappt",
+            "falls karl fragt sag das klar",
+            "hans fand den fall fast klar",
+            "glas und sand liegen da",
+            "das alles klingt klar",
+            "karl und hans sagen das",
+            "der fall war fast klar",
+            "das glas lag im sand",
+            "alle fragen nach dem feld",
+            "hans sagt der sand ist kalt",
+            "karl fand glas am rand",
+            "das land war flach und still",
+            "falls alles klappt frag hans",
+            "sag karl alles ist klar",
+            "das glas fällt auf sand",
+            "hans fragt und karl sagt ja",
+            "alle fanden den klaren fall",
+            "sand und glas lagen da",
+            "das feld war kalt",
+            "karl sagt frag hans",
+            "hans fand alles klar",
+            "der sand war flach",
+            "glas fällt fast",
+            "alle sagen klar",
+            "das land lag still",
+            "karl fragt hans"
+          ],
+          ru: [
+            "влад дал знак и ждал ответа",
+            "лада ждала дома и все было ладно",
+            "сад был тих и рядом был клад",
+            "как стало ясно все было просто",
+            "в саду нашли старый клад",
+            "влад спросил и лада дала ответ",
+            "даль была ясна и дорога проста",
+            "сад дал тень и покой",
+            "клад лежал там давно",
+            "лада сказала все ладно",
+            "влад ждал знак у сада",
+            "как только стало ясно",
+            "сад и дом были рядом",
+            "клад был важен для всех",
+            "лада дала владу знак",
+            "все стало ясно к вечеру",
+            "влад нашел клад в саду",
+            "сад был старый и тихий",
+            "лада ждала пока влад придет",
+            "как раз все было ладно",
+            "влад дал саду новый вид",
+            "клад лежал возле дома",
+            "сад стал тихим местом",
+            "лада дала простой ответ",
+            "влад спросил как дела",
+            "все было ясно сразу",
+            "сад рядом с домом",
+            "клад стал важной находкой",
+            "лада ждала добрых слов",
+            "влад дал знак рукой",
+            "как стало ясно всем",
+            "сад был полон света",
+            "клад нашли рядом",
+            "лада сказала ладно",
+            "влад ждал у дома",
+            "сад дал прохладу",
+            "даль была светла",
+            "клад был найден",
+            "все стало ладно",
+            "влад и лада ждали"
+          ]
+        }
+      };
+
+      const fingerIds = [
+        "left-pinky",
+        "left-ring",
+        "left-middle",
+        "left-index",
+        "left-thumb",
+        "right-thumb",
+        "right-index",
+        "right-middle",
+        "right-ring",
+        "right-pinky"
+      ];
+
+      const defaultFingerMap = {
+        "left-pinky": ["backquote", "digit1", "tab", "q", "caps", "a", "shiftLeft", "z", "fn", "control"],
+        "left-ring": ["digit2", "w", "s", "x"],
+        "left-middle": ["digit3", "e", "d", "c"],
+        "left-index": ["digit4", "digit5", "r", "t", "f", "g", "v", "b"],
+        "left-thumb": ["optionLeft", "commandLeft"],
+        "right-thumb": ["space", "commandRight", "optionRight"],
+        "right-index": ["digit6", "digit7", "y", "u", "h", "j", "n", "m"],
+        "right-middle": ["digit8", "i", "k", "comma"],
+        "right-ring": ["digit9", "o", "l", "period"],
+        "right-pinky": ["digit0", "minus", "equal", "delete", "p", "bracketLeft", "bracketRight", "backslash", "enter", "semicolon", "quote", "slash", "shiftRight", "arrowLeft", "arrowUp", "arrowDown", "arrowRight", "isoIntl"]
+      };
+
+      const fixedHandCalibrationPx = {
+        "right-pinky": { x: 167.94351, y: 92.733147 },
+        "right-ring": { x: -54.951939, y: 43.804206 },
+        "right-middle": { x: -235.750203, y: 50.371119 },
+        "right-index": { x: -413.310681, y: 97.829883 },
+        "right-thumb": { x: -551.150217, y: 369.546408 }
+      };
+
+      function cloneHandCalibration(source) {
+        return JSON.parse(JSON.stringify(source));
+      }
+
+      let handCalibrationState = null;
+
+      const uiText = {
+        de: {
+          settings: "Einstellungen",
+          language: "Sprache",
+          module: "Modul",
+          fingerMap: "Fingerkarte",
+          openFingerMap: "Fingerkarte öffnen",
+          finger: "Finger",
+          calibrateHands: "Hände anpassen",
+          calibrateHandsActive: "Hände ziehen…",
+          resetHands: "Hände zurücksetzen",
+          done: "Fertig",
+          reassign: "Neu zuweisen",
+          reassignActive: "Taste wählen…",
+          fingerHelp: "Finger auswählen, um die zugehörigen Tasten auf der Tastatur hervorzuheben.",
+          fingerReassignHelp: "Neu zuweisen ist aktiv. Klicken Sie auf eine Taste auf der Tastatur.",
+          handCalibrationHelp: "Ziehen Sie einzelne Finger der rechten Hand. Der passende Finger links wird automatisch gespiegelt.",
+          handCalibrationBanner: "Finger-Anpassung ist aktiv. Ziehen Sie Finger der rechten Hand und klicken Sie dann auf Fertig.",
+          emptyFinger: "Noch keine Tasten",
+          keyCount: "Tasten",
+          reassigned: "Taste \"{key}\" ist jetzt {finger}.",
+          highlightStatus: "{finger} markiert.",
+          handCalibrationSaved: "Position der Hände gespeichert.",
+          handCalibrationReset: "Position der Hände zurückgesetzt.",
+          close: "Schließen",
+          fingerNames: {
+            "left-pinky": "Kleiner L",
+            "left-ring": "Ring L",
+            "left-middle": "Mittel L",
+            "left-index": "Zeige L",
+            "left-thumb": "Daumen L",
+            "right-thumb": "Daumen R",
+            "right-index": "Zeige R",
+            "right-middle": "Mittel R",
+            "right-ring": "Ring R",
+            "right-pinky": "Kleiner R"
+          }
+        },
+        en: {
+          settings: "Settings",
+          language: "Language",
+          module: "Module",
+          fingerMap: "Finger Map",
+          openFingerMap: "Open Finger Map",
+          finger: "Finger",
+          calibrateHands: "Adjust Hands",
+          calibrateHandsActive: "Drag Hands…",
+          resetHands: "Reset Hands",
+          done: "Done",
+          reassign: "Reassign",
+          reassignActive: "Pick a key…",
+          fingerHelp: "Select a finger to highlight its keys on the keyboard.",
+          fingerReassignHelp: "Reassign is active. Click a physical key on the keyboard.",
+          handCalibrationHelp: "Drag individual fingers on the right hand. The matching left finger mirrors automatically.",
+          handCalibrationBanner: "Finger adjustment is active. Drag right-hand fingers, then click Done.",
+          emptyFinger: "No keys yet",
+          keyCount: "keys",
+          reassigned: "Key \"{key}\" is now assigned to {finger}.",
+          highlightStatus: "{finger} highlighted.",
+          handCalibrationSaved: "Hand position saved.",
+          handCalibrationReset: "Hand position reset.",
+          close: "Close",
+          fingerNames: {
+            "left-pinky": "Left Pinky",
+            "left-ring": "Left Ring",
+            "left-middle": "Left Middle",
+            "left-index": "Left Index",
+            "left-thumb": "Left Thumb",
+            "right-thumb": "Right Thumb",
+            "right-index": "Right Index",
+            "right-middle": "Right Middle",
+            "right-ring": "Right Ring",
+            "right-pinky": "Right Pinky"
+          }
+        },
+        ru: {
+          settings: "Настройки",
+          language: "Язык",
+          module: "Модуль",
+          fingerMap: "Карта пальцев",
+          openFingerMap: "Открыть карту пальцев",
+          finger: "Палец",
+          calibrateHands: "Настроить руки",
+          calibrateHandsActive: "Двигайте руки…",
+          resetHands: "Сбросить руки",
+          done: "Готово",
+          reassign: "Переназначить",
+          reassignActive: "Выберите клавишу…",
+          fingerHelp: "Выберите палец, чтобы подсветить его клавиши на клавиатуре.",
+          fingerReassignHelp: "Режим переназначения активен. Кликните по физической клавише на клавиатуре.",
+          handCalibrationHelp: "Перетаскивай отдельные пальцы правой руки. Парный палец слева будет двигаться зеркально.",
+          handCalibrationBanner: "Режим настройки пальцев активен. Перетаскивай пальцы правой руки и потом нажми Готово.",
+          emptyFinger: "Пока нет клавиш",
+          keyCount: "клавиш",
+          reassigned: "Клавиша \"{key}\" теперь назначена на {finger}.",
+          highlightStatus: "Подсвечен палец: {finger}.",
+          handCalibrationSaved: "Положение рук сохранено.",
+          handCalibrationReset: "Положение рук сброшено.",
+          close: "Закрыть",
+          fingerNames: {
+            "left-pinky": "Л мизинец",
+            "left-ring": "Л безым.",
+            "left-middle": "Л средний",
+            "left-index": "Л указат.",
+            "left-thumb": "Л большой",
+            "right-thumb": "П большой",
+            "right-index": "П указат.",
+            "right-middle": "П средний",
+            "right-ring": "П безым.",
+            "right-pinky": "П мизинец"
+          }
+        }
+      };
+
+      function loadSaved() {
+        try {
+          return JSON.parse(localStorage.getItem(storageKey)) || {};
+        } catch {
+          return {};
+        }
+      }
+
+      function persist() {
+        localStorage.setItem(storageKey, JSON.stringify(saved));
+      }
+
+      function textFor(language = currentLanguage) {
+        return uiText[language] || uiText.en;
+      }
+
+      function labelsFor(language) {
+        return { ...languages[language].keys, ...(saved[language] || {}) };
+      }
+
+      function keyIds() {
+        return geometry.map(([id]) => id);
+      }
+
+      function fingerMap() {
+        if (!saved.fingerMap || typeof saved.fingerMap !== "object") {
+          saved.fingerMap = JSON.parse(JSON.stringify(defaultFingerMap));
+          persist();
+        }
+
+        const validKeys = new Set(keyIds());
+        fingerIds.forEach(fingerId => {
+          if (!Array.isArray(saved.fingerMap[fingerId])) {
+            saved.fingerMap[fingerId] = [];
+          }
+          saved.fingerMap[fingerId] = saved.fingerMap[fingerId].filter((keyId, index, array) => {
+            return validKeys.has(keyId) && array.indexOf(keyId) === index;
+          });
+        });
+
+        keyIds().forEach(keyId => {
+          const owner = fingerIds.find(fingerId => saved.fingerMap[fingerId].includes(keyId));
+          if (!owner) {
+            saved.fingerMap["right-pinky"].push(keyId);
+          }
+        });
+
+        return saved.fingerMap;
+      }
+
+      function fingerName(fingerId, language = currentLanguage) {
+        return textFor(language).fingerNames[fingerId] || fingerId;
+      }
+
+      function visibleKeyLabel(keyId, language = currentLanguage) {
+        const label = labelsFor(language)[keyId] ?? "";
+        return label.replace(/\n/g, " ").trim() || keyTitle(keyId);
+      }
+
+      function activeFingerKeys() {
+        if (!fingerMapDialog.open) {
+          return new Set();
+        }
+
+        return new Set(fingerMap()[activeFingerId] || []);
+      }
+
+      function handCalibration() {
+        return ensureHandCalibrationState();
+      }
+
+      function mirroredFingerId(fingerId) {
+        if (fingerId.startsWith("right-")) {
+          return fingerId.replace("right-", "left-");
+        }
+
+        if (fingerId.startsWith("left-")) {
+          return fingerId.replace("left-", "right-");
+        }
+
+        return fingerId;
+      }
+
+      function fingerNodeById(fingerId) {
+        return document.querySelector(`.finger[data-finger="${fingerId}"]`);
+      }
+
+      function calibrationStorageBox() {
+        return {
+          width: keyboardWrap.offsetWidth || keyboardScale.clientWidth || 0,
+          height: keyboardWrap.offsetHeight || 0
+        };
+      }
+
+      function defaultHandCalibration() {
+        const { width, height } = calibrationStorageBox();
+        const calibration = {};
+
+        rightFingerNodes.forEach(node => {
+          const fingerId = node.dataset.finger;
+          const fixedEntry = fixedHandCalibrationPx[fingerId] || { x: 0, y: 0 };
+          calibration[fingerId] = {
+            x: width ? fixedEntry.x / width : 0,
+            y: height ? fixedEntry.y / height : 0
+          };
+        });
+
+        return calibration;
+      }
+
+      function ensureHandCalibrationState() {
+        if (!handCalibrationState) {
+          handCalibrationState = defaultHandCalibration();
+        }
+
+        return handCalibrationState;
+      }
+
+      function setHandCalibration(fingerId, x, y) {
+        const safeX = Number.isFinite(x) ? Number(x.toFixed(6)) : 0;
+        const safeY = Number.isFinite(y) ? Number(y.toFixed(6)) : 0;
+        ensureHandCalibrationState()[fingerId] = { x: safeX, y: safeY };
+        applyHandCalibration();
+      }
+
+      function applyHandCalibration() {
+        leftHand.style.setProperty("--hand-offset-x", "0px");
+        leftHand.style.setProperty("--hand-offset-y", "0px");
+        rightHand.style.setProperty("--hand-offset-x", "0px");
+        rightHand.style.setProperty("--hand-offset-y", "0px");
+
+        const { width, height } = calibrationStorageBox();
+        if (!width || !height) return;
+
+        const calibration = handCalibration();
+        rightFingerNodes.forEach(node => {
+          const fingerId = node.dataset.finger;
+          const { x, y } = calibration[fingerId] || { x: 0, y: 0 };
+          node.style.setProperty("--finger-x", `${x * width}px`);
+          node.style.setProperty("--finger-y", `${y * height}px`);
+
+          const mirroredNode = fingerNodeById(mirroredFingerId(fingerId));
+          if (mirroredNode) {
+            mirroredNode.style.setProperty("--finger-x", `${-x * width}px`);
+            mirroredNode.style.setProperty("--finger-y", `${y * height}px`);
+          }
+        });
+      }
+
+      function updateFingerHelpText() {
+        const text = textFor();
+        if (handCalibrationMode) {
+          fingerMapHelp.textContent = text.handCalibrationHelp;
+          return;
+        }
+
+        fingerMapHelp.textContent = fingerReassignMode ? text.fingerReassignHelp : text.fingerHelp;
+      }
+
+      function renderFingerSelect() {
+        const currentValue = activeFingerId;
+        fingerSelect.innerHTML = "";
+        fingerIds.forEach(fingerId => {
+          const option = document.createElement("option");
+          option.value = fingerId;
+          option.textContent = fingerName(fingerId);
+          fingerSelect.append(option);
+        });
+        fingerSelect.value = currentValue;
+      }
+
+      function renderFingerMapList() {
+        const copy = fingerMap();
+        const text = textFor();
+        fingerMapList.innerHTML = "";
+
+        fingerIds.forEach(fingerId => {
+          const card = document.createElement("section");
+          card.className = `finger-card${fingerId === activeFingerId ? " active" : ""}`;
+
+          const head = document.createElement("div");
+          head.className = "finger-card-head";
+
+          const choose = document.createElement("button");
+          choose.type = "button";
+          choose.className = "finger-card-btn";
+          choose.addEventListener("click", () => setActiveFinger(fingerId));
+
+          const name = document.createElement("div");
+          name.className = "finger-card-name";
+          name.textContent = fingerName(fingerId);
+
+          const meta = document.createElement("div");
+          meta.className = "finger-card-meta";
+          meta.textContent = `${copy[fingerId].length} ${text.keyCount}`;
+
+          choose.append(name, meta);
+          head.append(choose);
+          card.append(head);
+
+          const keyGrid = document.createElement("div");
+          keyGrid.className = "finger-key-grid";
+
+          if (copy[fingerId].length) {
+            copy[fingerId].forEach(keyId => {
+              const chip = document.createElement("span");
+              chip.className = "finger-key-chip";
+              chip.textContent = visibleKeyLabel(keyId);
+              keyGrid.append(chip);
+            });
+          } else {
+            const chip = document.createElement("span");
+            chip.className = "finger-key-chip empty";
+            chip.textContent = text.emptyFinger;
+            keyGrid.append(chip);
+          }
+
+          card.append(keyGrid);
+          fingerMapList.append(card);
+        });
+      }
+
+      function renderFingerMapPanel() {
+        const text = textFor();
+        fingerMapTitle.textContent = text.fingerMap;
+        fingerMapSectionLabel.textContent = text.fingerMap;
+        fingerMapOpen.textContent = text.openFingerMap;
+        fingerSelectLabel.textContent = text.finger;
+        fingerMapClose.setAttribute("aria-label", text.close);
+        handCalibrate.textContent = handCalibrationMode ? text.calibrateHandsActive : text.calibrateHands;
+        handCalibrate.classList.toggle("active", handCalibrationMode);
+        handReset.textContent = text.resetHands;
+        fingerReassign.textContent = fingerReassignMode ? text.reassignActive : text.reassign;
+        fingerReassign.classList.toggle("active", fingerReassignMode);
+        handsLayer.classList.toggle("calibration-mode", handCalibrationMode);
+        renderFingerSelect();
+        renderFingerMapList();
+        updateFingerHelpText();
+      }
+
+      function renderCalibrationBanner() {
+        const text = textFor();
+        calibrationBannerText.textContent = text.handCalibrationBanner;
+        calibrationDone.textContent = text.done;
+        calibrationBanner.classList.toggle("visible", handCalibrationMode);
+      }
+
+      function setActiveFinger(fingerId) {
+        activeFingerId = fingerId;
+        saved.activeFingerId = fingerId;
+        persist();
+        renderFingerMapPanel();
+        renderKeyboard();
+      }
+
+      function assignKeyToFinger(keyId, fingerId) {
+        const copy = fingerMap();
+        fingerIds.forEach(currentFingerId => {
+          copy[currentFingerId] = copy[currentFingerId].filter(mappedKeyId => mappedKeyId !== keyId);
+        });
+        copy[fingerId].push(keyId);
+        persist();
+      }
+
+      function keyTitle(id) {
+        return id.replace(/([A-Z])/g, " $1").replace(/^./, letter => letter.toUpperCase());
+      }
+
+      function setStatus(message) {
+        status.textContent = message;
+        clearTimeout(setStatus.timer);
+        setStatus.timer = setTimeout(() => {
+          status.textContent = "";
+        }, 2600);
+      }
+
+      function localizePracticeLine(line, language) {
+        const map = practiceCharacterMaps[language];
+        if (!map) return line;
+
+        return [...line].map(character => map[character] || character).join("");
+      }
+
+      function currentPracticeLines() {
+        const module = practiceModules[currentPracticeModule] || practiceModules.module1;
+        const localizedLines = localizedPracticeLines[currentPracticeModule]?.[currentLanguage];
+        if (localizedLines) return localizedLines;
+
+        return module.lines.map(line => localizePracticeLine(line, currentLanguage));
+      }
+
+      function currentPracticeCursor() {
+        const expected = currentPracticeLines()[practiceLineIndex] || "";
+        const typed = practiceInput.value;
+        let index = 0;
+
+        while (index < typed.length && index < expected.length && typed[index] === expected[index]) {
+          index += 1;
+        }
+
+        return {
+          expected,
+          typed,
+          index,
+          character: expected[index] || ""
+        };
+      }
+
+      function renderPracticeSampleText() {
+        const { expected, index } = currentPracticeCursor();
+        const doneText = expected.slice(0, index);
+        const currentText = expected[index] || "";
+        const restText = expected.slice(index + (currentText ? 1 : 0));
+
+        practiceSample.innerHTML = "";
+
+        const done = document.createElement("span");
+        done.className = "practice-sample-done";
+        done.textContent = doneText;
+
+        const current = document.createElement("span");
+        current.className = "practice-sample-current";
+        current.textContent = currentText;
+
+        const rest = document.createElement("span");
+        rest.className = "practice-sample-rest";
+        rest.textContent = restText;
+
+        practiceSample.append(done, current, rest);
+      }
+
+      function practiceKeyCandidates(character) {
+        if (!character) return [];
+        if (character === " ") return ["space"];
+
+        const labels = labelsFor(currentLanguage);
+        const candidates = [];
+
+        geometry.forEach(([keyId]) => {
+          const rawLabel = labels[keyId] ?? "";
+          if (!rawLabel || rawLabel.length > 3) return;
+
+          const variants = new Set();
+          [...rawLabel].forEach(symbol => {
+            if (symbol === "\n" || symbol === "\r" || symbol === "\t") return;
+            variants.add(symbol);
+            variants.add(symbol.toLowerCase());
+            variants.add(symbol.toUpperCase());
+          });
+
+          if (variants.has(character)) {
+            candidates.push(keyId);
+          }
+        });
+
+        return candidates;
+      }
+
+      function handForFinger(fingerId) {
+        if (!fingerId) return null;
+        if (fingerId.startsWith("left-")) return "left";
+        if (fingerId.startsWith("right-")) return "right";
+        return null;
+      }
+
+      function mappedFingerForKey(keyId) {
+        return fingerIds.find(fingerId => fingerMap()[fingerId]?.includes(keyId)) || null;
+      }
+
+      function practiceTargetForIndex(index) {
+        const expected = currentPracticeLines()[practiceLineIndex] || "";
+        const character = expected[index] || "";
+        const [keyId] = practiceKeyCandidates(character);
+
+        if (!keyId) {
+          return { keyId: null, fingerId: null, character, spaceSide: null };
+        }
+
+        if (keyId !== "space") {
+          return {
+            keyId,
+            fingerId: mappedFingerForKey(keyId),
+            character,
+            spaceSide: null
+          };
+        }
+
+        let previousHand = null;
+        for (let previousIndex = index - 1; previousIndex >= 0; previousIndex -= 1) {
+          const previousTarget = practiceTargetForIndex(previousIndex);
+          previousHand = handForFinger(previousTarget.fingerId);
+          if (previousHand) break;
+        }
+
+        const nextHand = previousHand === "right" ? "left" : "right";
+        return {
+          keyId,
+          fingerId: `${nextHand}-thumb`,
+          character,
+          spaceSide: nextHand
+        };
+      }
+
+      function currentPracticeTarget() {
+        const { index } = currentPracticeCursor();
+        return practiceTargetForIndex(index);
+      }
+
+      function renderPracticeGuides() {
+        const { fingerId } = currentPracticeTarget();
+
+        document.querySelectorAll(".finger[data-finger]").forEach(node => {
+          node.classList.toggle("finger-lit", node.dataset.finger === fingerId);
+        });
+      }
+
+      function renderPracticeLine() {
+        const lines = currentPracticeLines();
+        practiceLineIndex %= lines.length;
+        practiceInput.value = "";
+        practiceInput.classList.remove("error");
+        renderPracticeSampleText();
+        renderKeyboard();
+      }
+
+      function handlePracticeInput() {
+        const expected = currentPracticeLines()[practiceLineIndex];
+        const typed = practiceInput.value;
+
+        practiceInput.classList.toggle("error", !expected.startsWith(typed));
+        renderPracticeSampleText();
+        renderKeyboard();
+
+        if (typed === expected) {
+          practiceLineIndex = (practiceLineIndex + 1) % currentPracticeLines().length;
+          renderPracticeLine();
+        }
+      }
+
+      function renderModuleButtons() {
+        if (!practiceModules[currentPracticeModule]) {
+          currentPracticeModule = "module1";
+        }
+
+        practiceModuleList.innerHTML = "";
+        Object.entries(practiceModules).forEach(([id, module]) => {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = `module-btn${id === currentPracticeModule ? " active" : ""}`;
+          button.textContent = module.name;
+          button.addEventListener("click", () => {
+            currentPracticeModule = id;
+            saved.currentPracticeModule = id;
+            persist();
+            practiceLineIndex = 0;
+            renderModuleButtons();
+            renderPracticeLine();
+          });
+          practiceModuleList.append(button);
+        });
+      }
+
+      function renderTabs() {
+        const text = textFor();
+        languageTabs.innerHTML = "";
+        Object.entries(languages).forEach(([id, language]) => {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = `mode-btn${id === currentLanguage ? " active" : ""}`;
+          button.textContent = language.name;
+          button.setAttribute("role", "tab");
+          button.setAttribute("aria-selected", String(id === currentLanguage));
+          button.addEventListener("click", () => {
+            currentLanguage = id;
+            saved.currentLanguage = id;
+            persist();
+            practiceLineIndex = 0;
+            render();
+          });
+          languageTabs.append(button);
+        });
+        settingsTitle.textContent = text.settings;
+        settingsToggle.setAttribute("aria-label", text.settings);
+        settingsClose.setAttribute("aria-label", text.close);
+        languageLabel.textContent = text.language;
+        moduleLabel.textContent = text.module;
+      }
+
+      function renderKeyboard() {
+        const labels = labelsFor(currentLanguage);
+        const highlightedKeys = activeFingerKeys();
+        const practiceTarget = currentPracticeTarget();
+        keyboard.innerHTML = "";
+        geometry.forEach(([id, row, column, span, extra = "", rowSpan = 1]) => {
+          const key = document.createElement("button");
+          const isPracticeKey = practiceTarget.keyId === id;
+          key.type = "button";
+          key.className = `key ${extra}${editMode && id === selectedKey ? " selected" : ""}${highlightedKeys.has(id) ? " key-finger-map" : ""}${isPracticeKey ? " key-lit" : ""}`.trim();
+          key.dataset.key = id;
+          if (id === "space") {
+            key.classList.toggle("space-left", isPracticeKey && practiceTarget.spaceSide === "left");
+            key.classList.toggle("space-right", isPracticeKey && practiceTarget.spaceSide === "right");
+          }
+          key.style.gridColumn = `${column} / span ${span}`;
+          key.style.gridRow = `${row} / span ${rowSpan}`;
+          if (id === "arrowLeft" || id === "arrowUp" || id === "arrowDown" || id === "arrowRight") {
+            key.style.height = "calc((var(--key-height) - var(--arrow-gap)) / 2)";
+            key.style.alignSelf = id === "arrowUp" ? "start" : "end";
+          }
+
+          if (id === "enter") {
+            const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            svg.setAttribute("viewBox", "0 0 100 100");
+            svg.setAttribute("preserveAspectRatio", "none");
+            svg.setAttribute("aria-hidden", "true");
+
+            const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+            path.setAttribute("class", "enter-shape");
+            path.setAttribute("d", "M7 1 H93 Q99 1 99 7 V93 Q99 99 93 99 H32 Q26 99 26 93 V47 Q26 44 23 44 H7 Q1 44 1 38 V7 Q1 1 7 1 Z");
+            svg.append(path);
+
+            const symbol = document.createElement("span");
+            symbol.setAttribute("class", "enter-symbol");
+            symbol.textContent = labels[id] ?? "";
+            key.append(svg);
+            key.append(symbol);
+          }
+
+          const label = document.createElement("span");
+          label.className = "label";
+          label.textContent = id === "enter" ? "" : labels[id] ?? "";
+          key.append(label);
+          key.setAttribute("aria-label", `${keyTitle(id)}: ${labels[id] || "пусто"}`);
+          key.addEventListener("click", () => handleKeyboardKeyClick(id));
+          keyboard.append(key);
+        });
+        renderPracticeGuides();
+      }
+
+      function handleKeyboardKeyClick(id) {
+        if (fingerReassignMode) {
+          assignKeyToFinger(id, activeFingerId);
+          fingerReassignMode = false;
+          renderFingerMapPanel();
+          renderKeyboard();
+          setStatus(textFor().reassigned.replace("{key}", visibleKeyLabel(id)).replace("{finger}", fingerName(activeFingerId)));
+          return;
+        }
+
+        selectKey(id);
+      }
+
+      function renderSelect() {
+        keySelect.innerHTML = "";
+        geometry.forEach(([id]) => {
+          const option = document.createElement("option");
+          option.value = id;
+          option.textContent = keyTitle(id);
+          keySelect.append(option);
+        });
+        keySelect.value = selectedKey;
+      }
+
+      function selectKey(id) {
+        selectedKey = id;
+        const labels = labelsFor(currentLanguage);
+        keySelect.value = id;
+        labelInput.value = labels[id] ?? "";
+        renderKeyboard();
+        if (editMode) {
+          labelInput.focus();
+          labelInput.select();
+        }
+      }
+
+      function applyCurrentLabel() {
+        const value = labelInput.value.trim();
+        saved[currentLanguage] = saved[currentLanguage] || {};
+        const baseValue = languages[currentLanguage].keys[selectedKey] ?? "";
+
+        if (value === baseValue) {
+          delete saved[currentLanguage][selectedKey];
+        } else {
+          saved[currentLanguage][selectedKey] = value;
+        }
+
+        persist();
+        renderKeyboard();
+        setStatus(`Клавиша "${keyTitle(selectedKey)}" обновлена для ${languages[currentLanguage].name}.`);
+      }
+
+      function render() {
+        renderTabs();
+        renderModuleButtons();
+        renderPracticeLine();
+        renderFingerMapPanel();
+        renderCalibrationBanner();
+        renderKeyboard();
+        renderSelect();
+        selectKey(selectedKey);
+        fitKeyboardScene();
+      }
+
+      if (saved.fingers) {
+        delete saved.fingers;
+        persist();
+      }
+
+      if (saved.handCalibration || saved.handCalibrationSpace) {
+        delete saved.handCalibration;
+        delete saved.handCalibrationSpace;
+        persist();
+      }
+
+      function fitKeyboardScene() {
+        const availableWidth = keyboardScale.clientWidth;
+        if (!availableWidth) return;
+
+        if (!keyboardDesignWidth) {
+          keyboardDesignWidth = availableWidth;
+          keyboardWrap.style.width = `${keyboardDesignWidth}px`;
+          keyboardDesignHeight = keyboardWrap.offsetHeight;
+        }
+
+        const scale = availableWidth / keyboardDesignWidth;
+        document.documentElement.style.setProperty("--keyboard-scale", String(scale));
+        document.documentElement.style.setProperty("--keyboard-stage-height", `${keyboardDesignHeight * scale}px`);
+        applyHandCalibration();
+      }
+
+      function startHandCalibrationDrag(event) {
+        if (!handCalibrationMode) return;
+
+        const target = event.target.closest('.hand.right .finger[data-finger^="right-"]');
+        if (!target) return;
+
+        const rect = keyboardWrap.getBoundingClientRect();
+        const width = rect.width || 0;
+        const height = rect.height || 0;
+        if (!width || !height) return;
+
+        const calibration = handCalibration();
+        const fingerId = target.dataset.finger;
+        const { x, y } = calibration[fingerId] || { x: 0, y: 0 };
+        handCalibrationDrag = {
+          fingerId,
+          node: target,
+          pointerId: event.pointerId,
+          startX: event.clientX,
+          startY: event.clientY,
+          originX: x,
+          originY: y,
+          width,
+          height
+        };
+
+        target.classList.add("dragging");
+        target.setPointerCapture(event.pointerId);
+        event.preventDefault();
+      }
+
+      function moveHandCalibrationDrag(event) {
+        if (!handCalibrationDrag || event.pointerId !== handCalibrationDrag.pointerId) return;
+
+        const nextX = handCalibrationDrag.originX + (event.clientX - handCalibrationDrag.startX) / handCalibrationDrag.width;
+        const nextY = handCalibrationDrag.originY + (event.clientY - handCalibrationDrag.startY) / handCalibrationDrag.height;
+        setHandCalibration(handCalibrationDrag.fingerId, nextX, nextY);
+      }
+
+      function stopHandCalibrationDrag(event) {
+        if (!handCalibrationDrag || event.pointerId !== handCalibrationDrag.pointerId) return;
+
+        if (handCalibrationDrag.node?.hasPointerCapture(event.pointerId)) {
+          handCalibrationDrag.node.releasePointerCapture(event.pointerId);
+        }
+
+        handCalibrationDrag.node?.classList.remove("dragging");
+        handCalibrationDrag = null;
+        setStatus(textFor().handCalibrationSaved);
+      }
+
+      keySelect.addEventListener("change", event => selectKey(event.target.value));
+      applyLabel.addEventListener("click", applyCurrentLabel);
+      labelInput.addEventListener("keydown", event => {
+        if (event.key === "Enter") {
+          applyCurrentLabel();
+        }
+      });
+
+      editToggle.addEventListener("click", () => {
+        editMode = !editMode;
+        editToggle.classList.toggle("active", editMode);
+        editToggle.setAttribute("aria-pressed", String(editMode));
+        document.querySelector(".editor").style.display = editMode ? "grid" : "none";
+      });
+
+      resetLayout.addEventListener("click", () => {
+        delete saved[currentLanguage];
+        persist();
+        render();
+        setStatus(`Раскладка ${languages[currentLanguage].name} сброшена.`);
+      });
+
+      settingsToggle.addEventListener("click", () => {
+        settingsDialog.showModal();
+      });
+
+      settingsClose.addEventListener("click", () => {
+        settingsDialog.close();
+      });
+
+      settingsDialog.addEventListener("click", event => {
+        if (event.target === settingsDialog) {
+          settingsDialog.close();
+        }
+      });
+
+      settingsDialog.addEventListener("close", () => {
+        practiceInput.focus();
+      });
+
+      fingerMapOpen.addEventListener("click", () => {
+        settingsDialog.close();
+        fingerMapDialog.showModal();
+        renderFingerMapPanel();
+      });
+
+      fingerMapClose.addEventListener("click", () => {
+        fingerMapDialog.close();
+      });
+
+      fingerMapDialog.addEventListener("click", event => {
+        if (event.target === fingerMapDialog) {
+          fingerMapDialog.close();
+        }
+      });
+
+      fingerMapDialog.addEventListener("close", () => {
+        fingerReassignMode = false;
+        renderFingerMapPanel();
+        renderCalibrationBanner();
+        renderKeyboard();
+        practiceInput.focus();
+      });
+
+      fingerSelect.addEventListener("change", event => {
+        setActiveFinger(event.target.value);
+        setStatus(textFor().highlightStatus.replace("{finger}", fingerName(event.target.value)));
+      });
+
+      fingerReassign.addEventListener("click", () => {
+        handCalibrationMode = false;
+        fingerReassignMode = !fingerReassignMode;
+        renderFingerMapPanel();
+        renderCalibrationBanner();
+      });
+
+      handCalibrate.addEventListener("click", () => {
+        fingerReassignMode = false;
+        handCalibrationMode = !handCalibrationMode;
+        renderFingerMapPanel();
+        renderCalibrationBanner();
+        if (handCalibrationMode) {
+          fingerMapDialog.close();
+        }
+      });
+
+      handReset.addEventListener("click", () => {
+        handCalibrationMode = false;
+        handCalibrationDrag = null;
+        rightFingerNodes.forEach(node => node.classList.remove("dragging"));
+        handCalibrationState = defaultHandCalibration();
+        applyHandCalibration();
+        renderFingerMapPanel();
+        renderCalibrationBanner();
+        setStatus(textFor().handCalibrationReset);
+      });
+
+      calibrationDone.addEventListener("click", () => {
+        handCalibrationMode = false;
+        handCalibrationDrag = null;
+        rightFingerNodes.forEach(node => node.classList.remove("dragging"));
+        renderFingerMapPanel();
+        renderCalibrationBanner();
+        setStatus(textFor().handCalibrationSaved);
+      });
+
+      rightHand.addEventListener("pointerdown", startHandCalibrationDrag);
+      rightHand.addEventListener("pointermove", moveHandCalibrationDrag);
+      rightHand.addEventListener("pointerup", stopHandCalibrationDrag);
+      rightHand.addEventListener("pointercancel", stopHandCalibrationDrag);
+
+      practiceInput.addEventListener("input", handlePracticeInput);
+      render();
+      practiceInput.focus();
+      window.addEventListener("resize", fitKeyboardScene);
+    </script>
+  </body>
+</html>
