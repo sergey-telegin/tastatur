@@ -1,19 +1,4 @@
-function openSettingsDraft() {
-  draftSettings = {
-    language: currentLanguage,
-    module: currentPracticeModule
-  };
-}
-
-function currentSettingsDraft() {
-  return draftSettings || {
-    language: currentLanguage,
-    module: currentPracticeModule
-  };
-}
-
 function openSettingsDialog() {
-  openSettingsDraft();
   settingsDialog.showModal();
   renderTabs();
   renderModuleButtons();
@@ -23,8 +8,7 @@ function closeSettingsDialog() {
   settingsDialog.close();
 }
 
-function applySettingsDraft() {
-  const nextSettings = currentSettingsDraft();
+function applySettings(nextSettings, { closeDialog = false } = {}) {
   const nextModules = practiceModulesFor(nextSettings.language);
 
   currentLanguage = nextSettings.language;
@@ -32,14 +16,14 @@ function applySettingsDraft() {
   saved.currentLanguage = currentLanguage;
   saved.currentPracticeModule = currentPracticeModule;
   practiceLineIndex = 0;
+  resetPracticeMetrics();
   persist();
-  draftSettings = null;
   render();
-  settingsDialog.close();
-  setStatus(textFor().settingsSaved);
+  if (closeDialog) {
+    settingsDialog.close();
+  }
 }
 
 function handleSettingsDialogClose() {
-  draftSettings = null;
   focusPracticeInputSoon();
 }

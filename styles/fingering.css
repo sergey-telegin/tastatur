@@ -37,7 +37,6 @@
 
 .keyboard-editor-panel {
   display: none;
-  gap: 12px;
   margin-top: 14px;
   padding: 14px 16px;
   border: 1px solid var(--line-soft);
@@ -47,24 +46,6 @@
 
 .keyboard-editor-panel.visible {
   display: grid;
-}
-
-.keyboard-editor-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.keyboard-editor-title {
-  color: #f0f0f0;
-  font-size: 14px;
-  font-weight: 800;
-}
-
-.keyboard-editor-current {
-  color: var(--muted);
-  font-size: 13px;
 }
 
 .finger-picker {
@@ -116,6 +97,13 @@
   gap: 18px;
 }
 
+.keyboard-editor-actions-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
 .keyboard-editor-actions-right {
   display: flex;
   align-items: center;
@@ -128,6 +116,10 @@
   justify-self: start;
   text-align: left;
   white-space: nowrap;
+}
+
+.keyboard-editor-toggle {
+  min-height: 38px;
 }
 
 .finger-map-list {

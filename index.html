@@ -16,6 +16,16 @@
       </header>
 
       <section class="trainer" aria-label="Текст для печати">
+        <div class="practice-stats" aria-label="Статистика печати">
+          <div class="practice-stat">
+            <span class="practice-stat-label" id="practiceAccuracyLabel">Точность</span>
+            <span class="practice-stat-value" id="practiceAccuracyValue">100%</span>
+          </div>
+          <div class="practice-stat">
+            <span class="practice-stat-label" id="practiceSpeedLabel">Скорость</span>
+            <span class="practice-stat-value" id="practiceSpeedValue">0 зн/мин</span>
+          </div>
+        </div>
         <div class="practice-sample" id="practiceSample"></div>
         <input class="practice-input" id="practiceInput" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Ввод текста">
       </section>
@@ -44,11 +54,11 @@
       </div>
 
       <section class="keyboard-editor-panel" id="keyboardEditorPanel" aria-live="polite">
-        <div class="keyboard-editor-head">
-          <div class="keyboard-editor-title" id="keyboardEditorTitle">Режим настройки аппликатуры</div>
-        </div>
         <div class="keyboard-editor-actions">
-          <button class="ghost-btn keyboard-editor-reset" id="keyboardEditorReset" type="button">Вернуть настройки по умолчанию</button>
+          <div class="keyboard-editor-actions-left">
+            <button class="ghost-btn keyboard-editor-reset" id="keyboardEditorReset" type="button">Вернуть настройки по умолчанию</button>
+            <button class="secondary-btn keyboard-editor-toggle" id="keyboardEditorShowAll" type="button">Показать все пальцы</button>
+          </div>
           <div class="keyboard-editor-actions-right">
             <button class="ghost-btn" id="keyboardEditorCancel" type="button">Отменить</button>
             <button class="apply-btn" id="keyboardEditorSave" type="button">Сохранить</button>
@@ -97,9 +107,6 @@
           <button class="tool-btn" id="resetLayout" type="button" title="Сбросить текущую раскладку">↺</button>
         </div>
 
-        <div class="dialog-actions">
-          <button class="apply-btn" id="settingsSave" type="button">Сохранить</button>
-        </div>
       </div>
     </dialog>
 

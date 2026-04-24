@@ -68,9 +68,86 @@ function keyboardKeyClassName({ id, extra, isSelected, isFingerMapped, isPractic
   return `key ${extra}${isSelected ? " selected" : ""}${isFingerMapped ? " key-finger-map" : ""}${isPracticeKey ? " key-lit" : ""}${isCorrectPracticeKey ? " key-correct" : ""}${isWrongPracticeKey ? " key-wrong" : ""}`.trim();
 }
 
+function fingerAssignmentPalette(fingerId) {
+  const palettes = {
+    "left-thumb": {
+      border: "#8dc9f6",
+      text: "#d9efff",
+      glow: "rgb(141 201 246 / 0.132)",
+      wash: "rgb(141 201 246 / 0.108)"
+    },
+    "right-thumb": {
+      border: "#8dc9f6",
+      text: "#d9efff",
+      glow: "rgb(141 201 246 / 0.132)",
+      wash: "rgb(141 201 246 / 0.108)"
+    },
+    "left-pinky": {
+      border: "#7be1a1",
+      text: "#ddffea",
+      glow: "rgb(123 225 161 / 0.132)",
+      wash: "rgb(123 225 161 / 0.108)"
+    },
+    "right-pinky": {
+      border: "#7be1a1",
+      text: "#ddffea",
+      glow: "rgb(123 225 161 / 0.132)",
+      wash: "rgb(123 225 161 / 0.108)"
+    },
+    "left-ring": {
+      border: "#79d7f1",
+      text: "#dcf8ff",
+      glow: "rgb(121 215 241 / 0.132)",
+      wash: "rgb(121 215 241 / 0.108)"
+    },
+    "right-ring": {
+      border: "#79d7f1",
+      text: "#dcf8ff",
+      glow: "rgb(121 215 241 / 0.132)",
+      wash: "rgb(121 215 241 / 0.108)"
+    },
+    "left-middle": {
+      border: "#ffd86f",
+      text: "#fff6d6",
+      glow: "rgb(255 216 111 / 0.132)",
+      wash: "rgb(255 216 111 / 0.108)"
+    },
+    "right-middle": {
+      border: "#ffd86f",
+      text: "#fff6d6",
+      glow: "rgb(255 216 111 / 0.132)",
+      wash: "rgb(255 216 111 / 0.108)"
+    },
+    "left-index": {
+      border: "#e09b9b",
+      text: "#fff1f1",
+      glow: "rgb(255 104 104 / 0.132)",
+      wash: "rgb(255 104 104 / 0.108)"
+    },
+    "right-index": {
+      border: "#98e0ab",
+      text: "#f3fff6",
+      glow: "rgb(104 255 151 / 0.132)",
+      wash: "rgb(104 255 151 / 0.108)"
+    }
+  };
+
+  return palettes[fingerId] || palettes["left-index"];
+}
+
+function applyFingerAssignmentTheme(key, fingerId) {
+  const palette = fingerAssignmentPalette(fingerId);
+  key.classList.add("key-finger-all");
+  key.style.setProperty("--finger-assignment-border", palette.border);
+  key.style.setProperty("--finger-assignment-text", palette.text);
+  key.style.setProperty("--finger-assignment-glow", palette.glow);
+  key.style.setProperty("--finger-assignment-wash", palette.wash);
+}
+
 function renderKeyboard() {
   const labels = labelsFor(currentLanguage);
   const highlightedKeys = activeFingerKeys();
+  const allFingerOwners = fingerKeyboardMode && showAllFingerAssignments ? allFingerKeyOwners() : null;
   const practiceTarget = fingerKeyboardMode ? { keyId: null, spaceSide: null } : currentPracticeTarget();
 
   handsLayer.classList.toggle("finger-editor-mode", fingerKeyboardMode);
@@ -78,7 +155,7 @@ function renderKeyboard() {
 
   geometry.forEach(([id, row, column, span, extra = "", rowSpan = 1]) => {
     const key = document.createElement("button");
-    const isPracticeKey = practiceTarget.keyId === id;
+    const isPracticeKey = practiceTarget.keyId === id || practiceTarget.secondaryKeyId === id;
     const isCorrectPracticeKey = !fingerKeyboardMode && correctPracticeKeyId === id;
     const isWrongPracticeKey = !fingerKeyboardMode && wrongPracticeKeyId === id;
 
@@ -93,6 +170,10 @@ function renderKeyboard() {
       isWrongPracticeKey
     });
     key.dataset.key = id;
+
+    if (allFingerOwners?.[id]) {
+      applyFingerAssignmentTheme(key, allFingerOwners[id]);
+    }
 
     if (id === "space") {
       key.classList.toggle("space-left", isPracticeKey && practiceTarget.spaceSide === "left");

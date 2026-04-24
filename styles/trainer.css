@@ -4,6 +4,37 @@
   margin-bottom: 26px;
 }
 
+.practice-stats {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.practice-stat {
+  display: grid;
+  gap: 4px;
+  min-width: 140px;
+  padding: 10px 12px;
+  border: 1px solid var(--line-soft);
+  border-radius: 10px;
+  background: #101010;
+}
+
+.practice-stat-label {
+  color: var(--quiet);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.practice-stat-value {
+  color: #f0f0f0;
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1;
+}
+
 .trainer.hidden {
   display: none;
 }

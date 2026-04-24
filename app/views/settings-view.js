@@ -1,7 +1,6 @@
 function renderModuleButtons() {
-  const settingsState = currentSettingsDraft();
-  const modules = practiceModulesFor(settingsState.language);
-  const selectedModule = modules[settingsState.module] ? settingsState.module : "module1";
+  const modules = practiceModulesFor(currentLanguage);
+  const selectedModule = modules[currentPracticeModule] ? currentPracticeModule : "module1";
 
   practiceModuleList.innerHTML = "";
   Object.entries(modules).forEach(([id, module]) => {
@@ -10,31 +9,26 @@ function renderModuleButtons() {
     button.className = `module-btn${id === selectedModule ? " active" : ""}`;
     button.textContent = module.name;
     button.addEventListener("click", () => {
-      if (draftSettings) {
-        draftSettings.module = id;
-      }
+      applySettings({ language: currentLanguage, module: id });
       renderModuleButtons();
-    });
+    }); 
     practiceModuleList.append(button);
   });
 }
 
 function renderTabs() {
   const text = textFor();
-  const settingsState = currentSettingsDraft();
   languageTabs.innerHTML = "";
 
   Object.entries(languages).forEach(([id, language]) => {
     const button = document.createElement("button");
     button.type = "button";
-    button.className = `mode-btn${id === settingsState.language ? " active" : ""}`;
+    button.className = `mode-btn${id === currentLanguage ? " active" : ""}`;
     button.textContent = language.name;
     button.setAttribute("role", "tab");
-    button.setAttribute("aria-selected", String(id === settingsState.language));
+    button.setAttribute("aria-selected", String(id === currentLanguage));
     button.addEventListener("click", () => {
-      if (draftSettings) {
-        draftSettings.language = id;
-      }
+      applySettings({ language: id, module: currentPracticeModule });
       renderTabs();
       renderModuleButtons();
     });
@@ -46,5 +40,4 @@ function renderTabs() {
   settingsClose.setAttribute("aria-label", text.close);
   languageLabel.textContent = text.language;
   moduleLabel.textContent = text.module;
-  settingsSave.textContent = text.save;
 }

@@ -39,16 +39,10 @@ function bindAppEvents() {
     handleSettingsDialogClose();
   });
 
-  settingsSave.addEventListener("click", () => {
-    applySettingsDraft();
-  });
-
   fingerMapOpen.addEventListener("click", () => {
     settingsDialog.close();
     openFingerMapDraft();
-    fingerMapDialog.showModal();
-    renderFingerMapPanel();
-    renderKeyboard();
+    enterFingerKeyboardMode();
   });
 
   fingerMapClose.addEventListener("click", () => {
@@ -94,6 +88,10 @@ function bindAppEvents() {
 
   keyboardEditorReset.addEventListener("click", () => {
     resetFingerMapDraft();
+  });
+
+  keyboardEditorShowAll.addEventListener("click", () => {
+    toggleShowAllFingerAssignments();
   });
 
   keyboardFingerPicker.addEventListener("click", event => {

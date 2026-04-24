@@ -33,6 +33,20 @@ function renderCurrentPracticeSampleText() {
   renderPracticeSampleText(expected, index);
 }
 
+function resetPracticeMetrics() {
+  practiceErrorCount = 0;
+  practiceCorrectCharCount = 0;
+  practiceSessionStartedAt = 0;
+  practiceLastMatchedIndex = 0;
+  renderPracticeStats();
+}
+
+function ensurePracticeSessionStarted() {
+  if (!practiceSessionStartedAt) {
+    practiceSessionStartedAt = Date.now();
+  }
+}
+
 function handForFinger(fingerId) {
   if (!fingerId) return null;
   if (fingerId.startsWith("left-")) return "left";
@@ -45,21 +59,51 @@ function mappedFingerForKey(keyId) {
   return fingerIds.find(fingerId => map[fingerId]?.includes(keyId)) || null;
 }
 
+function isUppercaseLetter(character) {
+  if (!character) return false;
+  return character.toLowerCase() !== character.toUpperCase() && character === character.toUpperCase();
+}
+
+function oppositeShiftTargetForFinger(fingerId) {
+  const hand = handForFinger(fingerId);
+  if (hand === "left") {
+    return { keyId: "shiftRight", fingerId: "right-pinky" };
+  }
+
+  if (hand === "right") {
+    return { keyId: "shiftLeft", fingerId: "left-pinky" };
+  }
+
+  return { keyId: null, fingerId: null };
+}
+
 function practiceTargetForIndex(index) {
   const expected = currentPracticeLines()[practiceLineIndex] || "";
   const character = expected[index] || "";
   const [keyId] = findKeyCandidatesForCharacter(character, labelsFor(currentLanguage), geometry);
 
   if (!keyId) {
-    return { keyId: null, fingerId: null, character, spaceSide: null };
+    return {
+      keyId: null,
+      fingerId: null,
+      character,
+      spaceSide: null,
+      secondaryKeyId: null,
+      secondaryFingerId: null
+    };
   }
 
   if (keyId !== "space") {
+    const fingerId = mappedFingerForKey(keyId);
+    const shiftTarget = isUppercaseLetter(character) ? oppositeShiftTargetForFinger(fingerId) : { keyId: null, fingerId: null };
+
     return {
       keyId,
-      fingerId: mappedFingerForKey(keyId),
+      fingerId,
       character,
-      spaceSide: null
+      spaceSide: null,
+      secondaryKeyId: shiftTarget.keyId,
+      secondaryFingerId: shiftTarget.fingerId
     };
   }
 
@@ -75,7 +119,9 @@ function practiceTargetForIndex(index) {
     keyId,
     fingerId: `${nextHand}-thumb`,
     character,
-    spaceSide: nextHand
+    spaceSide: nextHand,
+    secondaryKeyId: null,
+    secondaryFingerId: null
   };
 }
 
@@ -110,15 +156,22 @@ function flashPracticeError(keyId) {
 }
 
 function renderCurrentPracticeGuides() {
-  const fingerId = fingerKeyboardMode ? currentFingerSelection() : currentPracticeTarget().fingerId;
-  renderPracticeGuides(fingerId);
+  if (fingerKeyboardMode) {
+    renderPracticeGuides(currentFingerSelection());
+    return;
+  }
+
+  const target = currentPracticeTarget();
+  renderPracticeGuides([target.fingerId, target.secondaryFingerId]);
 }
 
 function renderPracticeLine() {
   const lines = currentPracticeLines();
   practiceLineIndex %= lines.length;
+  practiceLastMatchedIndex = 0;
   resetPracticeInputValue();
   renderCurrentPracticeSampleText();
+  renderPracticeStats();
   renderKeyboard();
 }
 
@@ -132,15 +185,28 @@ function handlePracticeInput() {
   }
 
   if (typed.length > index) {
+    ensurePracticeSessionStarted();
+    practiceErrorCount += 1;
     const wrongCharacter = typed[index];
     const fallbackWrongKeyId = findKeyCandidatesForCharacter(wrongCharacter, labelsFor(currentLanguage), geometry)[0] || null;
     const wrongKeyId = lastPhysicalPracticeKeyId || fallbackWrongKeyId;
 
     practiceInput.value = typed.slice(0, index);
+    practiceLastMatchedIndex = index;
     renderCurrentPracticeSampleText();
+    renderPracticeStats();
     flashPracticeError(wrongKeyId);
     return;
   }
+
+  if (index > 0 || typed.length > 0) {
+    ensurePracticeSessionStarted();
+  }
+
+  if (index > practiceLastMatchedIndex) {
+    practiceCorrectCharCount += index - practiceLastMatchedIndex;
+  }
+  practiceLastMatchedIndex = index;
 
   if (typed.length > 0 && typed.length <= expected.length && typed.length === index) {
     const correctKeyId = lastPhysicalPracticeKeyId || practiceTargetForIndex(index - 1).keyId;
@@ -150,6 +216,7 @@ function handlePracticeInput() {
   wrongPracticeKeyId = null;
   setPracticeInputError(false);
   renderCurrentPracticeSampleText();
+  renderPracticeStats();
   renderKeyboard();
 
   if (practiceInput.value === expected) {

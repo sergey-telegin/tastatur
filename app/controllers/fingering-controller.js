@@ -1,9 +1,23 @@
 function activeFingerKeys() {
+  if (showAllFingerAssignments) {
+    return new Set();
+  }
+
   if (!fingerMapDialog.open && !fingerKeyboardMode) {
     return new Set();
   }
 
   return new Set(currentFingerMapState()[currentFingerSelection()] || []);
+}
+
+function allFingerKeyOwners(map = currentFingerMapState()) {
+  const owners = {};
+  fingerIds.forEach(fingerId => {
+    (map[fingerId] || []).forEach(keyId => {
+      owners[keyId] = fingerId;
+    });
+  });
+  return owners;
 }
 
 function setActiveFinger(fingerId) {
@@ -29,6 +43,7 @@ function closeFingerMapDraftIfNeeded() {
 
 function enterFingerKeyboardMode() {
   fingerKeyboardMode = true;
+  showAllFingerAssignments = false;
   addFingerInputId = null;
   fingerMapDialog.close();
   renderFingerMapPanel();
@@ -52,6 +67,7 @@ function saveFingerMapDraft({ closeDialog = false, keepDraft = false } = {}) {
   persist();
   addFingerInputId = null;
   fingerKeyboardMode = false;
+  showAllFingerAssignments = false;
   draftFingerPreviousOwners = {};
   draftFingerMap = keepDraft ? cloneFingerMapState(saved.fingerMap) : null;
   renderFingerMapPanel();
@@ -64,9 +80,17 @@ function saveFingerMapDraft({ closeDialog = false, keepDraft = false } = {}) {
 
 function cancelFingerKeyboardMode() {
   fingerKeyboardMode = false;
+  showAllFingerAssignments = false;
   draftFingerMap = null;
   draftFingerPreviousOwners = {};
   draftActiveFingerId = activeFingerId;
+  renderFingerMapPanel();
+  renderKeyboard();
+}
+
+function toggleShowAllFingerAssignments() {
+  if (!fingerKeyboardMode) return;
+  showAllFingerAssignments = !showAllFingerAssignments;
   renderFingerMapPanel();
   renderKeyboard();
 }

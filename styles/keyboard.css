@@ -146,6 +146,24 @@
   color: #fbfbfb;
 }
 
+.key.key-finger-all {
+  border-color: var(--finger-assignment-border);
+  background:
+    radial-gradient(circle at 50% 50%, var(--finger-assignment-wash), transparent 58%),
+    linear-gradient(180deg, #1b1b1b 0%, #141414 100%);
+  color: var(--finger-assignment-text);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--finger-assignment-border) 36%, white 10%),
+    inset 0 0 18px color-mix(in srgb, var(--finger-assignment-border) 16%, transparent),
+    0 8px 24px var(--finger-assignment-glow);
+}
+
+.key.key-finger-all .label {
+  color: var(--finger-assignment-text);
+  text-shadow:
+    0 0 8px color-mix(in srgb, var(--finger-assignment-border) 22%, transparent);
+}
+
 .key.home::after {
   content: "";
   position: absolute;
@@ -269,6 +287,7 @@
 }
 
 .key-enter.key-finger-map,
+.key-enter.key-finger-all,
 .key-enter.key-lit,
 .key-enter.key-correct,
 .key-enter.key-wrong {
@@ -280,6 +299,12 @@
 .key-enter.key-finger-map .enter-shape {
   fill: #141414;
   stroke: var(--accent);
+}
+
+.key-enter.key-finger-all .enter-shape {
+  fill: #141414;
+  stroke: var(--finger-assignment-border);
+  filter: drop-shadow(0 8px 24px var(--finger-assignment-glow));
 }
 
 .key-enter.key-lit .enter-shape {
@@ -298,10 +323,11 @@
 }
 
 .key-enter.key-finger-map .enter-symbol,
+.key-enter.key-finger-all .enter-symbol,
 .key-enter.key-lit .enter-symbol,
 .key-enter.key-correct .enter-symbol,
 .key-enter.key-wrong .enter-symbol {
-  color: #f0f0f0;
+  color: var(--finger-assignment-text, #f0f0f0);
 }
 
 .key-enter .label {
