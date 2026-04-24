@@ -1,0 +1,191 @@
+const languages = {
+  de: {
+    name: "DE",
+    keys: {
+      backquote: "°\n^", digit1: "!\n1", digit2: "\"\n2", digit3: "§\n3", digit4: "$\n4", digit5: "%\n5", digit6: "&\n6", digit7: "/\n7", digit8: "(\n8", digit9: ")\n9", digit0: "=\n0", minus: "?\nß", equal: "`\n´", delete: "⌫",
+      tab: "tab", q: "Q", w: "W", e: "E", r: "R", t: "T", y: "Z", u: "U", i: "I", o: "O", p: "P", bracketLeft: "Ü", bracketRight: "*\n+", backslash: "'\n#",
+      caps: "caps lock", a: "A", s: "S", d: "D", f: "F", g: "G", h: "H", j: "J", k: "K", l: "L", semicolon: "Ö", quote: "Ä", enter: "↵",
+      shiftLeft: "shift", isoIntl: ">\n<", z: "Y", x: "X", c: "C", v: "V", b: "B", n: "N", m: "M", comma: ";\n,", period: ":\n.", slash: "_\n-", shiftRight: "shift",
+      fn: "fn", control: "control", optionLeft: "option", commandLeft: "command", space: "", commandRight: "command", optionRight: "option", arrowLeft: "◂", arrowUp: "▴", arrowDown: "▾", arrowRight: "▸"
+    }
+  },
+  en: {
+    name: "EN",
+    keys: {
+      backquote: "~\n`", digit1: "!\n1", digit2: "@\n2", digit3: "#\n3", digit4: "$\n4", digit5: "%\n5", digit6: "^\n6", digit7: "&\n7", digit8: "*\n8", digit9: "(\n9", digit0: ")\n0", minus: "_\n-", equal: "+\n=", delete: "⌫",
+      tab: "tab", q: "Q", w: "W", e: "E", r: "R", t: "T", y: "Y", u: "U", i: "I", o: "O", p: "P", bracketLeft: "[", bracketRight: "]", backslash: "\\",
+      caps: "caps lock", a: "A", s: "S", d: "D", f: "F", g: "G", h: "H", j: "J", k: "K", l: "L", semicolon: ";", quote: "'", enter: "↵",
+      shiftLeft: "shift", isoIntl: ">\n<", z: "Z", x: "X", c: "C", v: "V", b: "B", n: "N", m: "M", comma: ",", period: ".", slash: "/", shiftRight: "shift",
+      fn: "fn", control: "control", optionLeft: "option", commandLeft: "command", space: "", commandRight: "command", optionRight: "option", arrowLeft: "◂", arrowUp: "▴", arrowDown: "▾", arrowRight: "▸"
+    }
+  },
+  ru: {
+    name: "RU",
+    keys: {
+      backquote: "Ё", digit1: "!\n1", digit2: "\"\n2", digit3: "№\n3", digit4: ";\n4", digit5: "%\n5", digit6: ":\n6", digit7: "?\n7", digit8: "*\n8", digit9: "(\n9", digit0: ")\n0", minus: "_\n-", equal: "+\n=", delete: "⌫",
+      tab: "tab", q: "Й", w: "Ц", e: "У", r: "К", t: "Е", y: "Н", u: "Г", i: "Ш", o: "Щ", p: "З", bracketLeft: "Х", bracketRight: "Ъ", backslash: "\\",
+      caps: "caps lock", a: "Ф", s: "Ы", d: "В", f: "А", g: "П", h: "Р", j: "О", k: "Л", l: "Д", semicolon: "Ж", quote: "Э", enter: "↵",
+      shiftLeft: "shift", isoIntl: ">\n<", z: "Я", x: "Ч", c: "С", v: "М", b: "И", n: "Т", m: "Ь", comma: "Б", period: "Ю", slash: ",\n.", shiftRight: "shift",
+      fn: "fn", control: "control", optionLeft: "option", commandLeft: "command", space: "", commandRight: "command", optionRight: "option", arrowLeft: "◂", arrowUp: "▴", arrowDown: "▾", arrowRight: "▸"
+    }
+  }
+};
+
+const geometry = [
+  ["backquote", 1, 3, 16, "stacked"], ["digit1", 1, 21, 16, "stacked"], ["digit2", 1, 39, 16, "stacked"], ["digit3", 1, 57, 16, "stacked"], ["digit4", 1, 75, 16, "stacked"], ["digit5", 1, 93, 16, "stacked"], ["digit6", 1, 111, 16, "stacked"], ["digit7", 1, 129, 16, "stacked"], ["digit8", 1, 147, 16, "stacked"], ["digit9", 1, 165, 16, "stacked"], ["digit0", 1, 183, 16, "stacked"], ["minus", 1, 201, 16, "stacked"], ["equal", 1, 219, 16, "stacked"], ["delete", 1, 237, 24, "function align-right"],
+  ["tab", 2, 3, 25, "function align-left"], ["q", 2, 30, 16], ["w", 2, 48, 16], ["e", 2, 66, 16], ["r", 2, 84, 16], ["t", 2, 102, 16], ["y", 2, 120, 16], ["u", 2, 138, 16], ["i", 2, 156, 16], ["o", 2, 174, 16], ["p", 2, 192, 16], ["bracketLeft", 2, 210, 16], ["bracketRight", 2, 228, 16, "stacked"],
+  ["caps", 3, 3, 29, "function align-left"], ["a", 3, 34, 16], ["s", 3, 52, 16], ["d", 3, 70, 16], ["f", 3, 88, 16, "home"], ["g", 3, 106, 16], ["h", 3, 124, 16], ["j", 3, 142, 16, "home"], ["k", 3, 160, 16], ["l", 3, 178, 16], ["semicolon", 3, 196, 16], ["quote", 3, 214, 16], ["backslash", 3, 232, 16, "stacked"], ["enter", 2, 246, 15, "function key-enter", 2],
+  ["shiftLeft", 4, 3, 20, "function align-left"], ["isoIntl", 4, 25, 16, "iso"], ["z", 4, 43, 16], ["x", 4, 61, 16], ["c", 4, 79, 16], ["v", 4, 97, 16], ["b", 4, 115, 16], ["n", 4, 133, 16], ["m", 4, 151, 16], ["comma", 4, 169, 16, "stacked"], ["period", 4, 187, 16, "stacked"], ["slash", 4, 205, 16, "stacked"], ["shiftRight", 4, 223, 38, "function align-right"],
+  ["fn", 5, 3, 16, "function align-left"], ["control", 5, 21, 16, "function"], ["optionLeft", 5, 39, 16, "function"], ["commandLeft", 5, 57, 20, "function"], ["space", 5, 79, 88], ["commandRight", 5, 169, 20, "function"], ["optionRight", 5, 191, 16, "function"], ["arrowLeft", 5, 209, 16, "function"], ["arrowUp", 5, 227, 16, "function"], ["arrowDown", 5, 227, 16, "function"], ["arrowRight", 5, 245, 16, "function"]
+];
+
+const fingerIds = [
+  "left-pinky",
+  "left-ring",
+  "left-middle",
+  "left-index",
+  "left-thumb",
+  "right-thumb",
+  "right-index",
+  "right-middle",
+  "right-ring",
+  "right-pinky"
+];
+
+const defaultFingerMap = {
+  "left-pinky": ["backquote", "digit1", "tab", "q", "caps", "a", "shiftLeft", "isoIntl", "z", "fn", "control"],
+  "left-ring": ["digit2", "w", "s", "x"],
+  "left-middle": ["digit3", "e", "d", "c"],
+  "left-index": ["digit4", "digit5", "r", "t", "f", "g", "v", "b"],
+  "left-thumb": ["space", "optionLeft", "commandLeft"],
+  "right-thumb": ["space", "commandRight", "optionRight"],
+  "right-index": ["digit6", "digit7", "y", "u", "h", "j", "n", "m"],
+  "right-middle": ["digit8", "i", "k", "comma"],
+  "right-ring": ["digit9", "o", "l", "period"],
+  "right-pinky": ["digit0", "minus", "equal", "delete", "p", "bracketLeft", "bracketRight", "backslash", "enter", "semicolon", "quote", "slash", "shiftRight", "arrowLeft", "arrowUp", "arrowDown", "arrowRight"]
+};
+
+const fixedHandCalibrationPx = {
+  "right-pinky": { x: 167.94351, y: 92.733147 },
+  "right-ring": { x: -54.951939, y: 43.804206 },
+  "right-middle": { x: -235.750203, y: 50.371119 },
+  "right-index": { x: -413.310681, y: 97.829883 },
+  "right-thumb": { x: -551.150217, y: 369.546408 }
+};
+
+const uiText = {
+  de: {
+    settings: "Einstellungen",
+    language: "Sprache",
+    module: "Modul",
+    fingerMap: "Fingerkarte",
+    openFingerMap: "Fingerkarte öffnen",
+    finger: "Finger",
+    fingerHelp: "Finger auswählen, um die zugehörigen Tasten auf der Tastatur hervorzuheben.",
+    fingerKeyboardHelp: "Tastaturmodus ist aktiv. Finger auswählen und Tasten auf der Tastatur anklicken, dann unten speichern.",
+    emptyFinger: "Noch keine Tasten",
+    keyCount: "Tasten",
+    keyboardMode: "Tastaturmodus",
+    keyboardModeActive: "Tastaturmodus aktiv",
+    fingerEditorModeTitle: "Appликatur bearbeiten",
+    currentFinger: "Ausgewahlt: {finger}",
+    save: "Speichern",
+    cancel: "Abbrechen",
+    restoreDefaults: "Standardeinstellungen wiederherstellen",
+    settingsSaved: "Einstellungen gespeichert.",
+    fingerMapSaved: "Fingerkarte gespeichert.",
+    draftKeyAssigned: "\"{key}\" ist jetzt bei {finger}. Zum Übernehmen unten speichern.",
+    keyNotFound: "Taste nicht gefunden.",
+    resetSettings: "Einstellungen zurücksetzen",
+    settingsReset: "Fingerkarte zurückgesetzt.",
+    close: "Schließen",
+    fingerNames: {
+      "left-pinky": "Linker kleiner Finger",
+      "left-ring": "Linker Ringfinger",
+      "left-middle": "Linker Mittelfinger",
+      "left-index": "Linker Zeigefinger",
+      "left-thumb": "Linker Daumen",
+      "right-thumb": "Rechter Daumen",
+      "right-index": "Rechter Zeigefinger",
+      "right-middle": "Rechter Mittelfinger",
+      "right-ring": "Rechter Ringfinger",
+      "right-pinky": "Rechter kleiner Finger"
+    }
+  },
+  en: {
+    settings: "Settings",
+    language: "Language",
+    module: "Module",
+    fingerMap: "Finger Map",
+    openFingerMap: "Open Finger Map",
+    finger: "Finger",
+    fingerHelp: "Select a finger to highlight its keys on the keyboard.",
+    fingerKeyboardHelp: "Keyboard mode is active. Choose a finger, click keys on the keyboard, then save below.",
+    emptyFinger: "No keys yet",
+    keyCount: "keys",
+    keyboardMode: "Keyboard Mode",
+    keyboardModeActive: "Keyboard Mode Active",
+    fingerEditorModeTitle: "Fingering Mapping Mode",
+    currentFinger: "Selected: {finger}",
+    save: "Save",
+    cancel: "Cancel",
+    restoreDefaults: "Restore Defaults",
+    settingsSaved: "Settings saved.",
+    fingerMapSaved: "Finger map saved.",
+    draftKeyAssigned: "\"{key}\" is now assigned to {finger}. Save below to apply it.",
+    keyNotFound: "Key not found.",
+    resetSettings: "Reset Settings",
+    settingsReset: "Finger map reset.",
+    close: "Close",
+    fingerNames: {
+      "left-pinky": "Left Pinky",
+      "left-ring": "Left Ring",
+      "left-middle": "Left Middle",
+      "left-index": "Left Index",
+      "left-thumb": "Left Thumb",
+      "right-thumb": "Right Thumb",
+      "right-index": "Right Index",
+      "right-middle": "Right Middle",
+      "right-ring": "Right Ring",
+      "right-pinky": "Right Pinky"
+    }
+  },
+  ru: {
+    settings: "Настройки",
+    language: "Язык",
+    module: "Модуль",
+    fingerMap: "Карта пальцев",
+    openFingerMap: "Открыть карту пальцев",
+    finger: "Палец",
+    fingerHelp: "Выберите палец, чтобы подсветить его клавиши на клавиатуре.",
+    fingerKeyboardHelp: "Режим клавиатуры активен. Выберите палец, нажимайте клавиши на клавиатуре и потом сохраните внизу.",
+    emptyFinger: "Пока нет клавиш",
+    keyCount: "клавиш",
+    keyboardMode: "Режим клавиатуры",
+    keyboardModeActive: "Режим клавиатуры активен",
+    fingerEditorModeTitle: "Режим настройки аппликатуры",
+    currentFinger: "Выбран палец: {finger}",
+    save: "Сохранить",
+    cancel: "Отменить",
+    restoreDefaults: "Вернуть настройки по умолчанию",
+    settingsSaved: "Настройки сохранены.",
+    fingerMapSaved: "Карта пальцев сохранена.",
+    draftKeyAssigned: "Клавиша \"{key}\" теперь у пальца \"{finger}\". Для применения нажмите Сохранить.",
+    keyNotFound: "Клавиша не найдена.",
+    resetSettings: "Сбросить настройки",
+    settingsReset: "Карта пальцев сброшена.",
+    close: "Закрыть",
+    fingerNames: {
+      "left-pinky": "Левый мизинец",
+      "left-ring": "Левый безымянный",
+      "left-middle": "Левый средний",
+      "left-index": "Левый указательный",
+      "left-thumb": "Левый большой палец",
+      "right-thumb": "Правый большой палец",
+      "right-index": "Правый указательный",
+      "right-middle": "Правый средний",
+      "right-ring": "Правый безымянный",
+      "right-pinky": "Правый мизинец"
+    }
+  }
+};

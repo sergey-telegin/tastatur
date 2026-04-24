@@ -1,0 +1,33 @@
+let currentLanguage = "de";
+let currentPracticeModule = "module1";
+let selectedKey = "a";
+let editMode = false;
+let practiceLineIndex = 0;
+let activeFingerId = "left-index";
+let draftSettings = null;
+let addFingerInputId = null;
+let draftFingerMap = null;
+let draftFingerPreviousOwners = {};
+let draftActiveFingerId = "left-index";
+let fingerKeyboardMode = false;
+let correctPracticeKeyId = null;
+let wrongPracticeKeyId = null;
+let lastPhysicalPracticeKeyId = null;
+
+function initializeAppState(savedState = {}) {
+  currentLanguage = savedState.currentLanguage || "de";
+  currentPracticeModule = savedState.currentPracticeModule || "module1";
+  selectedKey = "a";
+  editMode = false;
+  practiceLineIndex = 0;
+  activeFingerId = savedState.activeFingerId || "left-index";
+  draftSettings = null;
+  addFingerInputId = null;
+  draftFingerMap = null;
+  draftFingerPreviousOwners = {};
+  draftActiveFingerId = activeFingerId;
+  fingerKeyboardMode = false;
+  correctPracticeKeyId = null;
+  wrongPracticeKeyId = null;
+  lastPhysicalPracticeKeyId = null;
+}

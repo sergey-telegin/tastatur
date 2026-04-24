@@ -1,0 +1,82 @@
+.app {
+  width: min(1920px, 100%);
+  margin: 0 auto;
+  padding: 28px 34px 36px;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+
+h1 {
+  margin: 0 0 10px;
+  font-size: 30px;
+  line-height: 1.05;
+  letter-spacing: 0;
+}
+
+.subtitle {
+  max-width: 720px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+.page-title {
+  margin: 0;
+  color: #f0f0f0;
+  font-size: 30px;
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: 0;
+}
+
+.page-title:empty {
+  display: none;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.settings-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--line-soft);
+  border-radius: 8px;
+  background: var(--panel);
+  color: var(--muted);
+  cursor: pointer;
+  transition: background 140ms ease, color 140ms ease, transform 140ms ease;
+}
+
+.settings-btn:hover {
+  background: #1a1a1a;
+  color: #fff;
+}
+
+.settings-btn:active {
+  transform: translateY(1px);
+}
+
+.settings-icon {
+  font-size: 23px;
+  line-height: 1;
+}
+
+.toolbar,
+.editor,
+.status {
+  display: none !important;
+}

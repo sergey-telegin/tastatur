@@ -1,0 +1,271 @@
+.segmented,
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px;
+  border: 1px solid var(--line-soft);
+  border-radius: 8px;
+  background: var(--panel);
+}
+
+.mode-btn,
+.tool-btn {
+  min-height: 38px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  transition: background 140ms ease, color 140ms ease, transform 140ms ease;
+}
+
+.mode-btn {
+  min-width: 54px;
+  padding: 0 14px;
+  font-weight: 700;
+}
+
+.tool-btn {
+  min-width: 40px;
+  padding: 0 11px;
+  font-size: 17px;
+}
+
+.mode-btn:hover,
+.tool-btn:hover {
+  background: #2a2a2a;
+  color: var(--text);
+}
+
+.mode-btn.active,
+.tool-btn.active {
+  background: #ccc;
+  color: #000;
+}
+
+.tool-btn:active,
+.mode-btn:active {
+  transform: translateY(1px);
+}
+
+.settings-dialog {
+  width: min(420px, calc(100vw - 40px));
+  border: 1px solid var(--line-soft);
+  border-radius: 8px;
+  background: var(--panel);
+  color: var(--text);
+  padding: 0;
+}
+
+.settings-dialog::backdrop {
+  background: rgb(0 0 0 / 0.64);
+}
+
+.settings-panel {
+  display: grid;
+  gap: 18px;
+  padding: 18px;
+}
+
+.settings-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.settings-head-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.settings-title {
+  margin: 0;
+  color: #d8d8d8;
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.settings-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 25px;
+  line-height: 1;
+}
+
+.settings-close:hover {
+  background: #2a2a2a;
+  color: #fff;
+}
+
+.settings-group {
+  display: grid;
+  gap: 8px;
+}
+
+.settings-label {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.module-list {
+  display: grid;
+  gap: 8px;
+}
+
+.module-btn {
+  width: 100%;
+  min-height: 42px;
+  border: 1px solid var(--line-soft);
+  border-radius: 7px;
+  background: #111;
+  color: var(--muted);
+  cursor: pointer;
+  font-weight: 700;
+  text-align: left;
+  padding: 0 12px;
+  transition: background 140ms ease, color 140ms ease, border-color 140ms ease;
+}
+
+.module-btn:hover {
+  background: #1a1a1a;
+  color: #fff;
+}
+
+.module-btn.active {
+  border-color: #ccc;
+  background: #ccc;
+  color: #000;
+}
+
+.nav-btn {
+  width: 100%;
+  min-height: 42px;
+  border: 1px solid var(--line-soft);
+  border-radius: 7px;
+  background: #111;
+  color: var(--muted);
+  cursor: pointer;
+  font-weight: 700;
+  text-align: left;
+  padding: 0 12px;
+  transition: background 140ms ease, color 140ms ease, border-color 140ms ease;
+}
+
+.nav-btn:hover {
+  background: #1a1a1a;
+  color: #fff;
+}
+
+.editor {
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) 220px 170px;
+  gap: 12px;
+  align-items: end;
+  margin-top: 18px;
+  padding: 16px;
+  border: 1px solid var(--line-soft);
+  border-radius: 8px;
+  background: var(--panel);
+}
+
+.field {
+  display: grid;
+  gap: 7px;
+}
+
+.field span {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.field input,
+.field select {
+  width: 100%;
+  height: 42px;
+  border: 1px solid var(--line-soft);
+  border-radius: 7px;
+  background: #111;
+  color: var(--text);
+  padding: 0 12px;
+  outline: 0;
+}
+
+.field input:focus,
+.field select:focus {
+  border-color: var(--line);
+  box-shadow: none;
+}
+
+.secondary-btn {
+  min-height: 42px;
+  border: 1px solid var(--line-soft);
+  border-radius: 7px;
+  background: #111;
+  color: var(--muted);
+  cursor: pointer;
+  font-weight: 700;
+  padding: 0 14px;
+  transition: background 140ms ease, color 140ms ease, border-color 140ms ease;
+}
+
+.secondary-btn:hover {
+  background: #1a1a1a;
+  color: #fff;
+}
+
+.secondary-btn.active {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #000;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.ghost-btn {
+  min-height: 42px;
+  border: 0;
+  background: transparent;
+  color: var(--quiet);
+  cursor: pointer;
+  font-weight: 700;
+  padding: 0 8px;
+  transition: color 140ms ease, opacity 140ms ease;
+}
+
+.ghost-btn:hover {
+  color: #f0f0f0;
+}
+
+.apply-btn {
+  height: 42px;
+  border: 0;
+  border-radius: 7px;
+  background: #ccc;
+  color: #000;
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.status {
+  margin-top: 11px;
+  min-height: 20px;
+  color: var(--muted);
+  font-size: 14px;
+}

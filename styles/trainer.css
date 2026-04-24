@@ -1,0 +1,61 @@
+.trainer {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 26px;
+}
+
+.trainer.hidden {
+  display: none;
+}
+
+.practice-sample,
+.practice-input {
+  width: 100%;
+  min-height: 58px;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: 0;
+}
+
+.practice-sample {
+  display: flex;
+  align-items: center;
+  color: #d0d0d0;
+  border-bottom: 1px solid #2f2f2f;
+  white-space: pre;
+}
+
+.practice-sample-done {
+  color: #4f4f4f;
+}
+
+.practice-sample-current {
+  color: #ffffff;
+  text-shadow:
+    0 0 8px rgb(255 255 255 / 0.2),
+    0 0 18px rgb(255 255 255 / 0.08);
+}
+
+.practice-sample-rest {
+  color: var(--text);
+}
+
+.practice-input {
+  border-bottom: 2px solid var(--line);
+  color: #f0f0f0;
+  outline: 0;
+  caret-color: #fff;
+}
+
+.practice-input:focus {
+  border-bottom-color: #bbb;
+}
+
+.practice-input.error {
+  border-bottom-color: #777;
+  color: #b8b8b8;
+}

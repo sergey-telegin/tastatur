@@ -1,0 +1,17 @@
+@media (max-width: 1300px) {
+  body {
+    min-width: 980px;
+  }
+
+  .app {
+    padding: 20px;
+  }
+
+  .topbar {
+    justify-content: space-between;
+  }
+
+  .controls {
+    justify-content: flex-start;
+  }
+}

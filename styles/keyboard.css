@@ -1,0 +1,327 @@
+.keyboard-scale {
+  position: relative;
+  width: 100%;
+  height: var(--keyboard-stage-height);
+}
+
+.keyboard-wrap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #111;
+  transform: scale(var(--keyboard-scale));
+  transform-origin: top left;
+}
+
+.keyboard {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  column-gap: 0;
+  row-gap: var(--key-gap);
+  grid-auto-rows: var(--key-height);
+  grid-template-columns: repeat(262, 1fr);
+  width: var(--keyboard-width);
+  padding: var(--keyboard-padding);
+}
+
+.keyboard-finger-picker {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 5px;
+  z-index: 3;
+  display: none;
+  height: 34px;
+}
+
+.keyboard-finger-picker.visible {
+  display: block;
+}
+
+.key {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  height: var(--key-height);
+  min-height: 0;
+  margin: 0;
+  border: 2px solid var(--line);
+  border-radius: 8px;
+  background: var(--key);
+  color: var(--text);
+  cursor: pointer;
+  user-select: none;
+  box-shadow: none;
+  transition: border-color 140ms ease, background 140ms ease, transform 140ms ease;
+}
+
+.key:hover {
+  border-color: var(--line);
+  background: var(--key-hover);
+}
+
+.key.selected {
+  border-color: var(--line);
+  box-shadow: none;
+}
+
+.key.key-lit {
+  border-color: #b8b8b8;
+  background:
+    radial-gradient(circle at 50% 50%, rgb(255 255 255 / 0.18), transparent 50%),
+    linear-gradient(180deg, #1c1c1c 0%, #141414 100%);
+  color: #e8e8e8;
+  box-shadow:
+    inset 0 0 0 1px rgb(255 255 255 / 0.16),
+    inset 0 0 18px rgb(255 255 255 / 0.07);
+}
+
+.key.key-lit .label {
+  color: #f2f2f2;
+  text-shadow: none;
+}
+
+.key[data-key="space"].key-lit.space-left {
+  background:
+    radial-gradient(circle at 28% 54%, rgb(255 255 255 / 0.2), transparent 26%),
+    linear-gradient(180deg, #1c1c1c 0%, #141414 100%);
+}
+
+.key[data-key="space"].key-lit.space-right {
+  background:
+    radial-gradient(circle at 72% 54%, rgb(255 255 255 / 0.2), transparent 26%),
+    linear-gradient(180deg, #1c1c1c 0%, #141414 100%);
+}
+
+.key.key-correct {
+  border-color: #98e0ab;
+  background:
+    radial-gradient(circle at 50% 50%, rgb(104 255 151 / 0.234), transparent 50%),
+    linear-gradient(180deg, #1d2a20 0%, #141c15 100%);
+  color: #e7ffed;
+  box-shadow:
+    inset 0 0 0 1px rgb(142 255 173 / 0.208),
+    inset 0 0 23px rgb(104 255 151 / 0.091);
+}
+
+.key.key-correct .label {
+  color: #f3fff6;
+  text-shadow: none;
+}
+
+.key.key-wrong {
+  border-color: #e09b9b;
+  background:
+    radial-gradient(circle at 50% 50%, rgb(255 104 104 / 0.234), transparent 50%),
+    linear-gradient(180deg, #2a1d1d 0%, #1c1414 100%);
+  color: #ffe7e7;
+  box-shadow:
+    inset 0 0 0 1px rgb(255 142 142 / 0.208),
+    inset 0 0 23px rgb(255 104 104 / 0.091);
+}
+
+.key.key-wrong .label {
+  color: #fff1f1;
+  text-shadow: none;
+}
+
+.key.key-finger-map {
+  border-color: var(--accent);
+  background:
+    radial-gradient(circle at 50% 50%, rgb(255 255 255 / 0.16), transparent 56%),
+    linear-gradient(180deg, #1b1b1b 0%, #141414 100%);
+  color: #f0f0f0;
+  box-shadow:
+    inset 0 0 0 1px rgb(255 255 255 / 0.12),
+    inset 0 0 18px rgb(255 255 255 / 0.06);
+}
+
+.key.key-finger-map .label {
+  color: #fbfbfb;
+}
+
+.key.home::after {
+  content: "";
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  width: 16px;
+  height: 2px;
+  transform: translateX(-50%);
+  border-radius: 999px;
+  background: currentColor;
+  opacity: 0.82;
+}
+
+.label {
+  width: 100%;
+  padding: 0 8px;
+  overflow: hidden;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 31px;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+.key.function .label {
+  padding: 0 4px;
+  color: var(--text);
+  font-size: 18px;
+  font-weight: 520;
+  text-transform: lowercase;
+}
+
+.key.iso .label {
+  white-space: pre-line;
+  line-height: 1.58;
+}
+
+.key.stacked .label {
+  white-space: pre-line;
+  line-height: 1.66;
+  font-size: 24px;
+}
+
+.key.dim {
+  color: var(--quiet);
+}
+
+.key.align-left {
+  align-items: flex-end;
+  justify-content: flex-start;
+  padding: 0 14px 12px;
+}
+
+.key.align-left .label {
+  text-align: left;
+}
+
+.key.align-right {
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: 0 14px 12px;
+}
+
+.key.align-right .label {
+  text-align: right;
+}
+
+.key[data-key="control"],
+.key[data-key="optionLeft"],
+.key[data-key="commandLeft"],
+.key[data-key="commandRight"],
+.key[data-key="optionRight"] {
+  align-items: flex-end;
+  padding: 0 12px 12px;
+}
+
+.key-enter {
+  position: relative;
+  align-self: stretch;
+  height: 100%;
+  min-height: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: 0;
+}
+
+.key-enter:hover {
+  background: transparent;
+}
+
+.key-enter.selected {
+  box-shadow: none;
+}
+
+.key-enter svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.key-enter .enter-shape {
+  fill: var(--key);
+  stroke: var(--line);
+  stroke-width: 2.2;
+  vector-effect: non-scaling-stroke;
+}
+
+.key-enter:hover .enter-shape {
+  fill: var(--key-hover);
+  stroke: var(--line);
+}
+
+.key-enter.selected .enter-shape {
+  stroke: var(--line);
+}
+
+.key-enter.key-finger-map,
+.key-enter.key-lit,
+.key-enter.key-correct,
+.key-enter.key-wrong {
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.key-enter.key-finger-map .enter-shape {
+  fill: #141414;
+  stroke: var(--accent);
+}
+
+.key-enter.key-lit .enter-shape {
+  fill: #141414;
+  stroke: #b8b8b8;
+}
+
+.key-enter.key-correct .enter-shape {
+  fill: #121812;
+  stroke: #8fd3a2;
+}
+
+.key-enter.key-wrong .enter-shape {
+  fill: #181212;
+  stroke: #d38f8f;
+}
+
+.key-enter.key-finger-map .enter-symbol,
+.key-enter.key-lit .enter-symbol,
+.key-enter.key-correct .enter-symbol,
+.key-enter.key-wrong .enter-symbol {
+  color: #f0f0f0;
+}
+
+.key-enter .label {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  margin: 0 18px 26px 0;
+  padding: 0;
+  font-size: 36px;
+}
+
+.key-enter .enter-symbol {
+  position: absolute;
+  left: 69%;
+  top: 32%;
+  z-index: 1;
+  color: var(--text);
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 1;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+}

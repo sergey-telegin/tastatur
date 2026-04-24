@@ -1,0 +1,233 @@
+.finger-map-dialog {
+  width: min(780px, calc(100vw - 40px));
+}
+
+.finger-map-layout {
+  display: grid;
+  gap: 18px;
+}
+
+.finger-map-help {
+  margin: 0;
+  color: var(--quiet);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.finger-map-actions {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 18px;
+}
+
+.finger-map-actions-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 28px;
+  flex-wrap: wrap;
+}
+
+.finger-map-reset {
+  justify-self: start;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.keyboard-editor-panel {
+  display: none;
+  gap: 12px;
+  margin-top: 14px;
+  padding: 14px 16px;
+  border: 1px solid var(--line-soft);
+  border-radius: 10px;
+  background: #101010;
+}
+
+.keyboard-editor-panel.visible {
+  display: grid;
+}
+
+.keyboard-editor-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.keyboard-editor-title {
+  color: #f0f0f0;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.keyboard-editor-current {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.finger-picker {
+  position: absolute;
+  top: 72.7%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border: 1px solid #4e4e4e;
+  border-radius: 999px;
+  background: transparent;
+  color: transparent;
+  cursor: pointer;
+  padding: 0;
+  transform: translate(-50%, -50%);
+  transition: border-color 140ms ease, background 140ms ease, transform 140ms ease;
+}
+
+.finger-picker::after {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: transparent;
+  transition: background 140ms ease, transform 140ms ease;
+}
+
+.finger-picker:hover {
+  border-color: #8c8c8c;
+  background: #171717;
+}
+
+.finger-picker.active {
+  border-color: #d6d6d6;
+  background: #1f1f1f;
+}
+
+.finger-picker.active::after {
+  background: #f0f0f0;
+  transform: scale(1.15);
+}
+
+.keyboard-editor-actions {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 18px;
+}
+
+.keyboard-editor-actions-right {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.keyboard-editor-reset {
+  justify-self: start;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.finger-map-list {
+  display: grid;
+  gap: 10px;
+}
+
+.finger-card {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid var(--line-soft);
+  border-radius: 10px;
+  background: #0f0f0f;
+  transition: border-color 140ms ease, background 140ms ease;
+}
+
+.finger-card:hover {
+  border-color: var(--line);
+}
+
+.finger-card.active {
+  border-color: var(--accent);
+  background: #151515;
+}
+
+.finger-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.finger-card-btn {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  padding: 0;
+  text-align: left;
+}
+
+.finger-card-name {
+  color: #f2f2f2;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.finger-card-meta {
+  color: var(--quiet);
+  font-size: 12px;
+}
+
+.finger-key-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.finger-key-chip {
+  min-height: 30px;
+  border: 1px solid #363636;
+  border-radius: 999px;
+  background: #171717;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1;
+  padding: 7px 11px;
+  white-space: nowrap;
+}
+
+.finger-key-chip.empty {
+  border-style: dashed;
+  color: var(--quiet);
+}
+
+.finger-key-chip.add-btn {
+  border-color: #575757;
+  background: #212121;
+  color: #f2f2f2;
+  cursor: pointer;
+  font-weight: 700;
+  padding-inline: 12px;
+}
+
+.finger-key-chip.add-btn:hover {
+  border-color: #7a7a7a;
+  background: #292929;
+}
+
+.finger-key-chip.add-input {
+  width: 54px;
+  min-width: 54px;
+  max-width: 54px;
+  padding-inline: 0;
+  text-align: center;
+  outline: 0;
+}
+
+.finger-key-chip.add-input::placeholder {
+  color: #8e8e8e;
+}
