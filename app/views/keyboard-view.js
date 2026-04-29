@@ -155,7 +155,7 @@ function renderKeyboard() {
 
   geometry.forEach(([id, row, column, span, extra = "", rowSpan = 1]) => {
     const key = document.createElement("button");
-    const isPracticeKey = practiceTarget.keyId === id || practiceTarget.secondaryKeyId === id;
+    const isPracticeKey = practiceTarget.keyId === id || practiceTarget.secondaryKeyId === id || technicalPracticeKeyId === id;
     const isCorrectPracticeKey = !fingerKeyboardMode && correctPracticeKeyId === id;
     const isWrongPracticeKey = !fingerKeyboardMode && wrongPracticeKeyId === id;
 

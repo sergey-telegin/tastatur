@@ -101,7 +101,40 @@ function bindAppEvents() {
 
   document.addEventListener("keydown", handleFingerKeyboardPhysicalInput);
   practiceInput.addEventListener("keydown", event => {
-    lastPhysicalPracticeKeyId = keyIdFromEventCode(event.code);
+    const keyId = keyIdFromEventCode(event.code);
+    lastPhysicalPracticeKeyId = keyId;
+
+    if (fingerKeyboardMode) return;
+
+    if (practiceAwaitingEnter) {
+      if (keyId === "enter") {
+        event.preventDefault();
+        flashPracticeCorrect("enter");
+        advancePracticeLine();
+      } else if (keyId) {
+        event.preventDefault();
+      }
+      return;
+    }
+
+    if (!keyId) return;
+
+    const isTechnicalKey =
+      event.key === "Shift" ||
+      event.key === "Alt" ||
+      event.key === "AltGraph" ||
+      event.key === "Control" ||
+      event.key === "Meta" ||
+      event.key === "CapsLock" ||
+      event.key === "Tab" ||
+      event.key === "Enter" ||
+      event.key === "Backspace" ||
+      event.key === "Delete" ||
+      event.key.startsWith("Arrow");
+
+    if (isTechnicalKey) {
+      flashPracticeTechnical(keyId);
+    }
   });
   practiceInput.addEventListener("input", handlePracticeInput);
   trainer.addEventListener("pointerdown", focusPracticeInputFromInteraction);

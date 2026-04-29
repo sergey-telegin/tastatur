@@ -6,9 +6,10 @@
 
 .topbar {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 24px;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 14px;
+  flex-wrap: nowrap;
 }
 
 h1 {
@@ -37,6 +38,14 @@ h1 {
 
 .page-title:empty {
   display: none;
+}
+
+.practice-progress {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+  flex: 1 1 auto;
 }
 
 .controls {

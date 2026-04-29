@@ -40,6 +40,8 @@ function renderKeyboardEditorPanel() {
   keyboardFingerPicker.classList.toggle("visible", fingerKeyboardMode);
   keyboardEditorPanel.classList.toggle("visible", fingerKeyboardMode);
   trainer.classList.toggle("hidden", fingerKeyboardMode);
+  practiceProgress.classList.toggle("hidden", fingerKeyboardMode);
+  practiceStats.classList.toggle("hidden", fingerKeyboardMode);
   pageTitle.textContent = fingerKeyboardMode ? text.fingerEditorModeTitle : "";
 
   if (fingerKeyboardMode) {

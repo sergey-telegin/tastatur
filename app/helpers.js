@@ -14,3 +14,7 @@ function visibleKeyLabel(keyId, language = currentLanguage) {
   const label = labelsFor(language)[keyId] ?? "";
   return label.replace(/\n/g, " ").trim() || keyTitle(keyId);
 }
+
+function formatModuleProgressText(completedLines, totalLines, language = currentLanguage) {
+  return `${completedLines} / ${totalLines} ${textFor(language).moduleLines}`;
+}

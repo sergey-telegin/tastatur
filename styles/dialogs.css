@@ -126,6 +126,13 @@
   gap: 8px;
 }
 
+.module-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 42px;
+  gap: 8px;
+  align-items: stretch;
+}
+
 .module-btn {
   width: 100%;
   min-height: 42px;
@@ -134,10 +141,12 @@
   background: #111;
   color: var(--muted);
   cursor: pointer;
-  font-weight: 700;
   text-align: left;
   padding: 0 12px;
   transition: background 140ms ease, color 140ms ease, border-color 140ms ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .module-btn:hover {
@@ -149,6 +158,46 @@
   border-color: #ccc;
   background: #ccc;
   color: #000;
+}
+
+.module-btn-name {
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.2;
+  min-width: 0;
+}
+
+.module-btn-percent {
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.module-btn-percent {
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.module-reset-btn {
+  width: 42px;
+  min-height: 42px;
+  border: 1px solid var(--line-soft);
+  border-radius: 7px;
+  background: #111;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 17px;
+  line-height: 1;
+  transition: background 140ms ease, color 140ms ease, border-color 140ms ease, transform 140ms ease;
+}
+
+.module-reset-btn:hover {
+  background: #1a1a1a;
+  color: #fff;
+}
+
+.module-reset-btn:active {
+  transform: translateY(1px);
 }
 
 .nav-btn {

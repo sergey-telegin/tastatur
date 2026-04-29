@@ -9,6 +9,11 @@ function migrateSavedState(savedState) {
     changed = true;
   }
 
+  if (!nextState.practiceProgress || typeof nextState.practiceProgress !== "object" || Array.isArray(nextState.practiceProgress)) {
+    nextState.practiceProgress = {};
+    changed = true;
+  }
+
   return { savedState: nextState, changed };
 }
 

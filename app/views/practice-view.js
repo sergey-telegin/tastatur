@@ -44,6 +44,16 @@ function renderPracticeStats() {
   practiceSpeedValue.textContent = `${currentPracticeSpeed()} ${text.practiceSpeedUnit}`;
 }
 
+function renderPracticeProgress() {
+  const progress = moduleProgressFor(currentLanguage, currentPracticeModule);
+  practiceProgressText.textContent = formatModuleProgressText(
+    progress.completedLines,
+    progress.totalLines,
+    currentLanguage
+  );
+  practiceProgressBar.style.width = `${progress.percent}%`;
+}
+
 function setPracticeInputError(isError) {
   practiceInput.classList.toggle("error", Boolean(isError));
 }

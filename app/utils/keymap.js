@@ -64,7 +64,20 @@ function keyIdFromEventCode(code) {
     Slash: "slash",
     Space: "space",
     Enter: "enter",
-    Tab: "tab"
+    Tab: "tab",
+    Backspace: "delete",
+    CapsLock: "caps",
+    ShiftLeft: "shiftLeft",
+    ShiftRight: "shiftRight",
+    ControlLeft: "control",
+    AltLeft: "optionLeft",
+    MetaLeft: "commandLeft",
+    MetaRight: "commandRight",
+    AltRight: "optionRight",
+    ArrowLeft: "arrowLeft",
+    ArrowUp: "arrowUp",
+    ArrowDown: "arrowDown",
+    ArrowRight: "arrowRight"
   };
 
   if (directMap[code]) return directMap[code];

@@ -1,18 +1,39 @@
 function renderModuleButtons() {
   const modules = practiceModulesFor(currentLanguage);
   const selectedModule = modules[currentPracticeModule] ? currentPracticeModule : "module1";
+  const text = textFor();
 
   practiceModuleList.innerHTML = "";
   Object.entries(modules).forEach(([id, module]) => {
+    const progress = moduleProgressFor(currentLanguage, id);
+    const row = document.createElement("div");
+    row.className = "module-row";
+
     const button = document.createElement("button");
     button.type = "button";
     button.className = `module-btn${id === selectedModule ? " active" : ""}`;
-    button.textContent = module.name;
+    button.innerHTML = `
+      <span class="module-btn-name">${module.name}</span>
+      <span class="module-btn-percent">${progress.percent}%</span>
+    `;
     button.addEventListener("click", () => {
       applySettings({ language: currentLanguage, module: id });
       renderModuleButtons();
-    }); 
-    practiceModuleList.append(button);
+    });
+
+    const resetButton = document.createElement("button");
+    resetButton.type = "button";
+    resetButton.className = "module-reset-btn";
+    resetButton.textContent = "↺";
+    resetButton.title = text.resetModuleProgress;
+    resetButton.setAttribute("aria-label", `${text.resetModuleProgress}: ${module.name}`);
+    resetButton.addEventListener("click", event => {
+      event.stopPropagation();
+      resetModuleProgress(id, currentLanguage);
+    });
+
+    row.append(button, resetButton);
+    practiceModuleList.append(row);
   });
 }
 

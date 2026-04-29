@@ -2,6 +2,80 @@ function practiceModulesFor(language = currentLanguage) {
   return practiceContent[language]?.modules || practiceContent.en?.modules || {};
 }
 
+function practiceProgressStore() {
+  if (!saved.practiceProgress || typeof saved.practiceProgress !== "object" || Array.isArray(saved.practiceProgress)) {
+    saved.practiceProgress = {};
+  }
+  return saved.practiceProgress;
+}
+
+function languagePracticeProgressStore(language = currentLanguage) {
+  const store = practiceProgressStore();
+  if (!store[language] || typeof store[language] !== "object" || Array.isArray(store[language])) {
+    store[language] = {};
+  }
+  return store[language];
+}
+
+function normalizePracticeProgressEntry(entry, totalLines) {
+  const safeTotal = Math.max(0, Number(totalLines) || 0);
+  let currentLine = Number.isFinite(entry?.currentLine) ? Math.max(0, Math.trunc(entry.currentLine)) : 0;
+  let completedLines = Number.isFinite(entry?.completedLines) ? Math.max(0, Math.trunc(entry.completedLines)) : currentLine;
+
+  if (safeTotal === 0) {
+    return { currentLine: 0, completedLines: 0, isComplete: true };
+  }
+
+  if (currentLine >= safeTotal || completedLines >= safeTotal) {
+    return { currentLine: safeTotal, completedLines: safeTotal, isComplete: true };
+  }
+
+  completedLines = Math.max(completedLines, Math.min(currentLine, safeTotal));
+
+  return {
+    currentLine: Math.min(currentLine, safeTotal - 1),
+    completedLines: Math.min(completedLines, safeTotal),
+    isComplete: false
+  };
+}
+
+function moduleProgressFor(language = currentLanguage, moduleId = currentPracticeModule) {
+  const totalLines = ((practiceModulesFor(language)[moduleId] || {}).lines || []).length;
+  const entry = languagePracticeProgressStore(language)[moduleId];
+  const normalized = normalizePracticeProgressEntry(entry, totalLines);
+  return {
+    ...normalized,
+    totalLines,
+    percent: totalLines > 0 ? Math.round((normalized.completedLines / totalLines) * 100) : 0
+  };
+}
+
+function persistModuleProgress(language = currentLanguage, moduleId = currentPracticeModule, nextProgress = {}) {
+  const totalLines = ((practiceModulesFor(language)[moduleId] || {}).lines || []).length;
+  const normalized = normalizePracticeProgressEntry(nextProgress, totalLines);
+  languagePracticeProgressStore(language)[moduleId] = {
+    currentLine: normalized.currentLine,
+    completedLines: normalized.completedLines
+  };
+  persist();
+  return {
+    ...normalized,
+    totalLines,
+    percent: totalLines > 0 ? Math.round((normalized.completedLines / totalLines) * 100) : 0
+  };
+}
+
+function restoreCurrentPracticeProgress() {
+  const progress = moduleProgressFor(currentLanguage, currentPracticeModule);
+  practiceCompletedLines = progress.completedLines;
+  practiceAwaitingEnter = false;
+  practiceLineIndex = progress.isComplete
+    ? Math.max(progress.totalLines - 1, 0)
+    : progress.currentLine;
+  practiceLastMatchedIndex = 0;
+  return progress;
+}
+
 function currentPracticeModuleData(language = currentLanguage, moduleId = currentPracticeModule) {
   const modules = practiceModulesFor(language);
   return modules[moduleId] || modules.module1 || Object.values(modules)[0] || { name: "", lines: [] };
@@ -78,6 +152,17 @@ function oppositeShiftTargetForFinger(fingerId) {
 }
 
 function practiceTargetForIndex(index) {
+  if (practiceAwaitingEnter) {
+    return {
+      keyId: "enter",
+      fingerId: "right-pinky",
+      character: "",
+      spaceSide: null,
+      secondaryKeyId: null,
+      secondaryFingerId: null
+    };
+  }
+
   const expected = currentPracticeLines()[practiceLineIndex] || "";
   const character = expected[index] || "";
   const [keyId] = findKeyCandidatesForCharacter(character, labelsFor(currentLanguage), geometry);
@@ -130,6 +215,19 @@ function currentPracticeTarget() {
   return practiceTargetForIndex(index);
 }
 
+function flashPracticeTechnical(keyId) {
+  if (!keyId) return;
+
+  technicalPracticeKeyId = keyId;
+  renderKeyboard();
+
+  clearTimeout(flashPracticeTechnical.timer);
+  flashPracticeTechnical.timer = setTimeout(() => {
+    technicalPracticeKeyId = null;
+    renderKeyboard();
+  }, 140);
+}
+
 function flashPracticeCorrect(keyId) {
   correctPracticeKeyId = keyId || null;
   renderKeyboard();
@@ -167,15 +265,44 @@ function renderCurrentPracticeGuides() {
 
 function renderPracticeLine() {
   const lines = currentPracticeLines();
-  practiceLineIndex %= lines.length;
+  if (lines.length) {
+    practiceLineIndex = Math.min(practiceLineIndex, lines.length - 1);
+  } else {
+    practiceLineIndex = 0;
+  }
   practiceLastMatchedIndex = 0;
   resetPracticeInputValue();
   renderCurrentPracticeSampleText();
   renderPracticeStats();
+  renderPracticeProgress();
   renderKeyboard();
 }
 
+function advancePracticeLine() {
+  const totalLines = currentPracticeLines().length;
+  const nextCompletedLines = Math.min(practiceCompletedLines + 1, totalLines);
+  const isComplete = nextCompletedLines >= totalLines;
+
+  practiceCompletedLines = nextCompletedLines;
+  practiceLineIndex = isComplete
+    ? Math.max(totalLines - 1, 0)
+    : Math.min(practiceLineIndex + 1, totalLines - 1);
+
+  persistModuleProgress(currentLanguage, currentPracticeModule, {
+    currentLine: isComplete ? totalLines : practiceLineIndex,
+    completedLines: nextCompletedLines
+  });
+
+  practiceAwaitingEnter = false;
+  renderPracticeLine();
+}
+
 function handlePracticeInput() {
+  if (practiceAwaitingEnter) {
+    practiceInput.value = currentPracticeLines()[practiceLineIndex] || "";
+    return;
+  }
+
   const expected = currentPracticeLines()[practiceLineIndex];
   const typed = practiceInput.value;
   let index = 0;
@@ -220,7 +347,7 @@ function handlePracticeInput() {
   renderKeyboard();
 
   if (practiceInput.value === expected) {
-    practiceLineIndex = (practiceLineIndex + 1) % currentPracticeLines().length;
-    renderPracticeLine();
+    practiceAwaitingEnter = true;
+    renderKeyboard();
   }
 }

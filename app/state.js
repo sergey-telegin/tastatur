@@ -12,11 +12,14 @@ let fingerKeyboardMode = false;
 let showAllFingerAssignments = false;
 let correctPracticeKeyId = null;
 let wrongPracticeKeyId = null;
+let technicalPracticeKeyId = null;
 let lastPhysicalPracticeKeyId = null;
 let practiceErrorCount = 0;
 let practiceCorrectCharCount = 0;
 let practiceSessionStartedAt = 0;
 let practiceLastMatchedIndex = 0;
+let practiceAwaitingEnter = false;
+let practiceCompletedLines = 0;
 
 function initializeAppState(savedState = {}) {
   currentLanguage = savedState.currentLanguage || "de";
@@ -33,9 +36,12 @@ function initializeAppState(savedState = {}) {
   showAllFingerAssignments = false;
   correctPracticeKeyId = null;
   wrongPracticeKeyId = null;
+  technicalPracticeKeyId = null;
   lastPhysicalPracticeKeyId = null;
   practiceErrorCount = 0;
   practiceCorrectCharCount = 0;
   practiceSessionStartedAt = 0;
   practiceLastMatchedIndex = 0;
+  practiceAwaitingEnter = false;
+  practiceCompletedLines = 0;
 }

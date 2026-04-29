@@ -10,12 +10,12 @@
     <main class="app">
       <header class="topbar">
         <h1 class="page-title" id="pageTitle"></h1>
-        <button class="settings-btn" id="settingsToggle" type="button" aria-label="Настройки">
-          <span class="settings-icon" aria-hidden="true">⚙️</span>
-        </button>
-      </header>
-
-      <section class="trainer" aria-label="Текст для печати">
+        <div class="practice-progress" aria-label="Прогресс модуля">
+          <span class="practice-progress-text" id="practiceProgressText">0 / 0 строк</span>
+          <div class="practice-progress-bar" aria-hidden="true">
+            <span class="practice-progress-bar-fill" id="practiceProgressBar"></span>
+          </div>
+        </div>
         <div class="practice-stats" aria-label="Статистика печати">
           <div class="practice-stat">
             <span class="practice-stat-label" id="practiceAccuracyLabel">Точность</span>
@@ -26,6 +26,12 @@
             <span class="practice-stat-value" id="practiceSpeedValue">0 зн/мин</span>
           </div>
         </div>
+        <button class="settings-btn" id="settingsToggle" type="button" aria-label="Настройки">
+          <span class="settings-icon" aria-hidden="true">⚙️</span>
+        </button>
+      </header>
+
+      <section class="trainer" aria-label="Текст для печати">
         <div class="practice-sample" id="practiceSample"></div>
         <input class="practice-input" id="practiceInput" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Ввод текста">
       </section>

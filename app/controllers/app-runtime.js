@@ -36,6 +36,7 @@ function focusPracticeInputFromInteraction(event) {
 function render() {
   renderTabs();
   renderModuleButtons();
+  restoreCurrentPracticeProgress();
   renderPracticeLine();
   renderFingerMapPanel();
   renderKeyboard();
