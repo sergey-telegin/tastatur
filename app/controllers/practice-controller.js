@@ -402,7 +402,11 @@ function applyPracticeKeyInput(event) {
     }
 
     if (keyId && (event.key === "Backspace" || printableCharacterFromKeyEvent(event))) {
-      flashPracticeTechnical(keyId);
+      ensurePracticeSessionStarted();
+      practiceErrorCount += 1;
+      renderPracticeStats();
+      playErrorSound();
+      flashPracticeError(keyId);
       return true;
     }
 

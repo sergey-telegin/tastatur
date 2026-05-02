@@ -128,17 +128,29 @@ function playErrorSound() {
 
 function playEnterSound() {
   playFilteredNoise({
-    duration: 0.026,
-    volume: 0.042,
-    frequency: 1900,
-    q: 1.1
-  });
-  playFilteredNoise({
-    start: 0.036,
     duration: 0.018,
-    volume: 0.026,
-    frequency: 2600,
-    q: 1.4
+    volume: 0.05,
+    frequency: 1500,
+    q: 1.2
   });
-  playTone({ start: 0.012, frequency: 120, duration: 0.07, volume: 0.02, type: "sine", slideTo: 78 });
+  playTone({ start: 0.004, frequency: 105, duration: 0.075, volume: 0.026, type: "sine", slideTo: 70 });
+
+  [0.032, 0.052, 0.072, 0.092, 0.112].forEach(start => {
+    playFilteredNoise({
+      start,
+      duration: 0.012,
+      volume: 0.018,
+      frequency: randomBetween(2200, 3300),
+      q: 1.6
+    });
+  });
+
+  playFilteredNoise({
+    start: 0.16,
+    duration: 0.018,
+    volume: 0.06,
+    frequency: 1450,
+    q: 1.25
+  });
+  playTone({ start: 0.164, frequency: 96, duration: 0.08, volume: 0.031, type: "sine", slideTo: 64 });
 }
