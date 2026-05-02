@@ -41,6 +41,16 @@ function resetModuleProgress(moduleId = currentPracticeModule, language = curren
   setStatus(textFor(language).moduleProgressReset);
 }
 
+function toggleKeySound() {
+  keySoundEnabled = !keySoundEnabled;
+  saved.keySoundEnabled = keySoundEnabled;
+  persist();
+  renderKeySoundToggle();
+  if (keySoundEnabled) {
+    playKeySound();
+  }
+}
+
 function handleSettingsDialogClose() {
   focusPracticeInputSoon();
 }

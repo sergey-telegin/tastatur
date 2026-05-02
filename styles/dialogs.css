@@ -219,6 +219,67 @@
   color: #fff;
 }
 
+.sound-toggle {
+  min-height: 42px;
+  border: 1px solid var(--line-soft);
+  border-radius: 7px;
+  background: #111;
+  color: var(--muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 12px;
+  text-align: left;
+  transition: background 140ms ease, color 140ms ease, border-color 140ms ease;
+}
+
+.sound-toggle:hover {
+  background: #1a1a1a;
+  color: #fff;
+}
+
+.sound-toggle.active {
+  border-color: #ccc;
+  color: #fff;
+}
+
+.sound-toggle-track {
+  width: 40px;
+  height: 22px;
+  border-radius: 999px;
+  background: #2a2a2a;
+  display: inline-flex;
+  align-items: center;
+  padding: 3px;
+  flex: 0 0 auto;
+  transition: background 140ms ease;
+}
+
+.sound-toggle-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #999;
+  transition: transform 140ms ease, background 140ms ease;
+}
+
+.sound-toggle.active .sound-toggle-track {
+  background: #ccc;
+}
+
+.sound-toggle.active .sound-toggle-thumb {
+  background: #000;
+  transform: translateX(18px);
+}
+
+.sound-toggle-text {
+  min-width: 0;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
 .editor {
   display: grid;
   grid-template-columns: minmax(260px, 1fr) 220px 170px;

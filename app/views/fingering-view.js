@@ -25,14 +25,13 @@ function renderKeyboardFingerPicker() {
     button.title = fingerName(fingerId);
     button.setAttribute("aria-label", fingerName(fingerId));
     button.style.left = `${positions[fingerId] ?? 50}%`;
+    applyFingerAssignmentTheme(button, fingerId);
     keyboardFingerPicker.append(button);
   });
 }
 
 function renderKeyboardEditorPanel() {
   const text = textFor();
-  keyboardEditorShowAll.textContent = showAllFingerAssignments ? text.hideAllFingers : text.showAllFingers;
-  keyboardEditorShowAll.classList.toggle("active", showAllFingerAssignments);
   keyboardEditorSave.textContent = text.save;
   keyboardEditorCancel.textContent = text.cancel;
   keyboardEditorReset.textContent = text.restoreDefaults;

@@ -322,6 +322,7 @@ function handlePracticeInput() {
     practiceLastMatchedIndex = index;
     renderCurrentPracticeSampleText();
     renderPracticeStats();
+    playErrorSound();
     flashPracticeError(wrongKeyId);
     return;
   }
@@ -349,5 +350,105 @@ function handlePracticeInput() {
   if (practiceInput.value === expected) {
     practiceAwaitingEnter = true;
     renderKeyboard();
+  }
+}
+
+function isTrainerTextEntryTarget(target) {
+  if (!(target instanceof HTMLElement)) return false;
+  const tagName = target.tagName;
+  return target.isContentEditable || tagName === "INPUT" || tagName === "TEXTAREA" || tagName === "SELECT";
+}
+
+function isPracticeInputPaused() {
+  return fingerKeyboardMode || settingsDialog.open || fingerMapDialog.open;
+}
+
+function isSystemKeyCombination(event) {
+  if (event.altKey) return true;
+  return event.metaKey || event.ctrlKey;
+}
+
+function printableCharacterFromKeyEvent(event) {
+  if (event.key === "Spacebar") return " ";
+  if (event.key.length === 1) return event.key;
+  return null;
+}
+
+function applyPracticeKeyInput(event) {
+  const keyId = keyIdFromEventCode(event.code);
+  lastPhysicalPracticeKeyId = keyId;
+
+  if (practiceAwaitingEnter) {
+    if (event.key === "Enter" || keyId === "enter") {
+      flashPracticeCorrect("enter");
+      playEnterSound();
+      advancePracticeLine();
+      return true;
+    }
+
+    if (keyId && (event.key === "Backspace" || printableCharacterFromKeyEvent(event))) {
+      flashPracticeTechnical(keyId);
+      return true;
+    }
+
+    return false;
+  }
+
+  if (event.key === "Backspace") {
+    if (practiceInput.value.length > 0) {
+      practiceInput.value = practiceInput.value.slice(0, -1);
+      handlePracticeInput();
+      playKeySound();
+    } else if (keyId) {
+      flashPracticeTechnical(keyId);
+    }
+    return true;
+  }
+
+  const character = printableCharacterFromKeyEvent(event);
+  if (character !== null) {
+    const previousLength = practiceInput.value.length;
+    practiceInput.value += character;
+    handlePracticeInput();
+    if (practiceInput.value.length > previousLength) {
+      playKeySound();
+    }
+    return true;
+  }
+
+  if (keyId) {
+    const isTechnicalKey =
+      event.key === "Shift" ||
+      event.key === "CapsLock" ||
+      event.key === "Enter" ||
+      event.key === "Delete" ||
+      event.key.startsWith("Arrow");
+
+    if (isTechnicalKey) {
+      flashPracticeTechnical(keyId);
+    }
+  }
+
+  return false;
+}
+
+function handleGlobalKeyDown(event) {
+  if (event.defaultPrevented || event.isComposing || isPracticeInputPaused() || isSystemKeyCombination(event)) return;
+
+  const target = event.target;
+  if (isTrainerTextEntryTarget(target) && target !== practiceInput) return;
+
+  const shouldHandle =
+    event.key === "Backspace" ||
+    event.key === "Enter" ||
+    printableCharacterFromKeyEvent(event) !== null;
+
+  if (!shouldHandle) {
+    applyPracticeKeyInput(event);
+    return;
+  }
+
+  if (applyPracticeKeyInput(event)) {
+    event.preventDefault();
   }
 }

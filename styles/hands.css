@@ -38,12 +38,61 @@
   transition: opacity 0.15s ease, filter 0.15s ease;
 }
 
+.finger.finger-assignment-colored {
+  opacity: 0.46;
+  filter: var(--finger-assignment-filter, brightness(1.05));
+}
+
+.finger.finger-assignment-colored[data-finger="left-thumb"],
+.finger.finger-assignment-colored[data-finger="right-thumb"] {
+  --finger-assignment-filter: brightness(1.42) contrast(0.9);
+}
+
+.finger.finger-assignment-colored[data-finger="left-pinky"] {
+  --finger-assignment-filter: sepia(0.8) saturate(1.6) hue-rotate(75deg) brightness(1.18);
+}
+
+.finger.finger-assignment-colored[data-finger="left-ring"] {
+  --finger-assignment-filter: sepia(0.85) saturate(1.7) hue-rotate(145deg) brightness(1.16);
+}
+
+.finger.finger-assignment-colored[data-finger="right-ring"],
+.finger.finger-assignment-colored[data-finger="left-middle"] {
+  --finger-assignment-filter: sepia(0.75) saturate(1.7) hue-rotate(352deg) brightness(1.28);
+}
+
+.finger.finger-assignment-colored[data-finger="right-middle"] {
+  --finger-assignment-filter: sepia(0.85) saturate(1.7) hue-rotate(145deg) brightness(1.16);
+}
+
+.finger.finger-assignment-colored[data-finger="left-index"],
+.finger.finger-assignment-colored[data-finger="right-pinky"] {
+  --finger-assignment-filter: sepia(0.8) saturate(1.25) hue-rotate(305deg) brightness(1.12);
+}
+
+.finger.finger-assignment-colored[data-finger="right-index"] {
+  --finger-assignment-filter: sepia(0.8) saturate(1.55) hue-rotate(78deg) brightness(1.17);
+}
+
+.finger.finger-assignment-colored path {
+  fill: color-mix(in srgb, var(--finger-assignment-border) 62%, #a8a8a8 38%);
+}
+
 .finger.finger-lit {
   opacity: 0.68;
   filter:
     brightness(2.2)
     drop-shadow(0 0 4px rgb(255 255 255 / 0.42))
     drop-shadow(0 0 11px rgb(255 255 255 / 0.2));
+}
+
+.finger.finger-assignment-colored.finger-lit {
+  opacity: 0.9;
+  filter:
+    var(--finger-assignment-filter, brightness(1.32))
+    brightness(1.18)
+    drop-shadow(0 0 5px color-mix(in srgb, var(--finger-assignment-border) 56%, transparent))
+    drop-shadow(0 0 15px color-mix(in srgb, var(--finger-assignment-border) 30%, transparent));
 }
 
 .finger.full {

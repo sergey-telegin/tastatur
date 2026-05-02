@@ -72,21 +72,37 @@
   height: 8px;
   border-radius: 999px;
   background: transparent;
+  opacity: 0;
   transition: background 140ms ease, transform 140ms ease;
 }
 
+.finger-picker.key-finger-all {
+  border-color: color-mix(in srgb, var(--finger-assignment-border) 42%, #4e4e4e 58%);
+  background: color-mix(in srgb, var(--finger-assignment-wash) 22%, transparent);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--finger-assignment-border) 5%, transparent);
+}
+
+.finger-picker.key-finger-all::after {
+  background: transparent;
+}
+
 .finger-picker:hover {
-  border-color: #8c8c8c;
-  background: #171717;
+  border-color: color-mix(in srgb, var(--finger-assignment-border) 62%, #7a7a7a 38%);
+  background: color-mix(in srgb, var(--finger-assignment-wash) 36%, #171717 64%);
 }
 
 .finger-picker.active {
-  border-color: #d6d6d6;
-  background: #1f1f1f;
+  border-color: var(--finger-assignment-border);
+  background: color-mix(in srgb, var(--finger-assignment-wash) 92%, #1f1f1f 8%);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--finger-assignment-border) 28%, white 8%),
+    0 0 14px color-mix(in srgb, var(--finger-assignment-border) 22%, transparent);
 }
 
 .finger-picker.active::after {
-  background: #f0f0f0;
+  background: var(--finger-assignment-border);
+  opacity: 1;
   transform: scale(1.15);
 }
 
@@ -116,10 +132,6 @@
   justify-self: start;
   text-align: left;
   white-space: nowrap;
-}
-
-.keyboard-editor-toggle {
-  min-height: 38px;
 }
 
 .finger-map-list {

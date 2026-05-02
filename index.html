@@ -63,7 +63,6 @@
         <div class="keyboard-editor-actions">
           <div class="keyboard-editor-actions-left">
             <button class="ghost-btn keyboard-editor-reset" id="keyboardEditorReset" type="button">Вернуть настройки по умолчанию</button>
-            <button class="secondary-btn keyboard-editor-toggle" id="keyboardEditorShowAll" type="button">Показать все пальцы</button>
           </div>
           <div class="keyboard-editor-actions-right">
             <button class="ghost-btn" id="keyboardEditorCancel" type="button">Отменить</button>
@@ -108,6 +107,14 @@
           <button class="nav-btn" id="fingerMapOpen" type="button">Открыть карту пальцев</button>
         </div>
 
+        <div class="settings-group">
+          <span class="settings-label" id="soundLabel">Звук</span>
+          <button class="sound-toggle" id="keySoundToggle" type="button" aria-pressed="true">
+            <span class="sound-toggle-track" aria-hidden="true"><span class="sound-toggle-thumb"></span></span>
+            <span class="sound-toggle-text" id="keySoundToggleText">Звук клавиш включён</span>
+          </button>
+        </div>
+
         <div class="toolbar" aria-label="Инструменты">
           <button class="tool-btn active" id="editToggle" type="button" title="Редактировать клавиши" aria-pressed="true">✎</button>
           <button class="tool-btn" id="resetLayout" type="button" title="Сбросить текущую раскладку">↺</button>
@@ -144,6 +151,7 @@
     <script src="app/state.js"></script>
     <script src="app/storage.js"></script>
     <script src="app/helpers.js"></script>
+    <script src="app/audio.js"></script>
     <script src="app/utils/keymap.js"></script>
     <script src="app/utils/finger-map.js"></script>
     <script src="app/views/keyboard-view.js"></script>

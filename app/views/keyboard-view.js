@@ -71,16 +71,16 @@ function keyboardKeyClassName({ id, extra, isSelected, isFingerMapped, isPractic
 function fingerAssignmentPalette(fingerId) {
   const palettes = {
     "left-thumb": {
-      border: "#8dc9f6",
-      text: "#d9efff",
-      glow: "rgb(141 201 246 / 0.132)",
-      wash: "rgb(141 201 246 / 0.108)"
+      border: "#b8b8b8",
+      text: "#f2f2f2",
+      glow: "rgb(255 255 255 / 0.132)",
+      wash: "rgb(255 255 255 / 0.108)"
     },
     "right-thumb": {
-      border: "#8dc9f6",
-      text: "#d9efff",
-      glow: "rgb(141 201 246 / 0.132)",
-      wash: "rgb(141 201 246 / 0.108)"
+      border: "#b8b8b8",
+      text: "#f2f2f2",
+      glow: "rgb(255 255 255 / 0.132)",
+      wash: "rgb(255 255 255 / 0.108)"
     },
     "left-pinky": {
       border: "#7be1a1",
@@ -89,10 +89,10 @@ function fingerAssignmentPalette(fingerId) {
       wash: "rgb(123 225 161 / 0.108)"
     },
     "right-pinky": {
-      border: "#7be1a1",
-      text: "#ddffea",
-      glow: "rgb(123 225 161 / 0.132)",
-      wash: "rgb(123 225 161 / 0.108)"
+      border: "#e09b9b",
+      text: "#fff1f1",
+      glow: "rgb(255 104 104 / 0.132)",
+      wash: "rgb(255 104 104 / 0.108)"
     },
     "left-ring": {
       border: "#79d7f1",
@@ -101,10 +101,10 @@ function fingerAssignmentPalette(fingerId) {
       wash: "rgb(121 215 241 / 0.108)"
     },
     "right-ring": {
-      border: "#79d7f1",
-      text: "#dcf8ff",
-      glow: "rgb(121 215 241 / 0.132)",
-      wash: "rgb(121 215 241 / 0.108)"
+      border: "#ffd86f",
+      text: "#fff6d6",
+      glow: "rgb(255 216 111 / 0.132)",
+      wash: "rgb(255 216 111 / 0.108)"
     },
     "left-middle": {
       border: "#ffd86f",
@@ -113,10 +113,10 @@ function fingerAssignmentPalette(fingerId) {
       wash: "rgb(255 216 111 / 0.108)"
     },
     "right-middle": {
-      border: "#ffd86f",
-      text: "#fff6d6",
-      glow: "rgb(255 216 111 / 0.132)",
-      wash: "rgb(255 216 111 / 0.108)"
+      border: "#79d7f1",
+      text: "#dcf8ff",
+      glow: "rgb(121 215 241 / 0.132)",
+      wash: "rgb(121 215 241 / 0.108)"
     },
     "left-index": {
       border: "#e09b9b",
@@ -138,19 +138,39 @@ function fingerAssignmentPalette(fingerId) {
 function applyFingerAssignmentTheme(key, fingerId) {
   const palette = fingerAssignmentPalette(fingerId);
   key.classList.add("key-finger-all");
+  key.classList.toggle("key-finger-selected", fingerKeyboardMode && fingerId === currentFingerSelection());
   key.style.setProperty("--finger-assignment-border", palette.border);
   key.style.setProperty("--finger-assignment-text", palette.text);
   key.style.setProperty("--finger-assignment-glow", palette.glow);
   key.style.setProperty("--finger-assignment-wash", palette.wash);
 }
 
+function applyFingerVisualTheme(finger, fingerId) {
+  const palette = fingerAssignmentPalette(fingerId);
+  finger.classList.add("finger-assignment-colored");
+  finger.style.setProperty("--finger-assignment-border", palette.border);
+}
+
+function renderFingerVisualThemes() {
+  document.querySelectorAll(".finger[data-finger]").forEach(finger => {
+    if (!fingerKeyboardMode) {
+      finger.classList.remove("finger-assignment-colored");
+      finger.style.removeProperty("--finger-assignment-border");
+      return;
+    }
+
+    applyFingerVisualTheme(finger, finger.dataset.finger);
+  });
+}
+
 function renderKeyboard() {
   const labels = labelsFor(currentLanguage);
   const highlightedKeys = activeFingerKeys();
-  const allFingerOwners = fingerKeyboardMode && showAllFingerAssignments ? allFingerKeyOwners() : null;
+  const allFingerOwners = fingerKeyboardMode ? allFingerKeyOwners() : null;
   const practiceTarget = fingerKeyboardMode ? { keyId: null, spaceSide: null } : currentPracticeTarget();
 
   handsLayer.classList.toggle("finger-editor-mode", fingerKeyboardMode);
+  renderFingerVisualThemes();
   keyboard.innerHTML = "";
 
   geometry.forEach(([id, row, column, span, extra = "", rowSpan = 1]) => {

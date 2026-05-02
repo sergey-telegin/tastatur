@@ -61,4 +61,13 @@ function renderTabs() {
   settingsClose.setAttribute("aria-label", text.close);
   languageLabel.textContent = text.language;
   moduleLabel.textContent = text.module;
+  soundLabel.textContent = text.sound;
+  renderKeySoundToggle();
+}
+
+function renderKeySoundToggle() {
+  const text = textFor();
+  keySoundToggle.classList.toggle("active", keySoundEnabled);
+  keySoundToggle.setAttribute("aria-pressed", String(keySoundEnabled));
+  keySoundToggleText.textContent = keySoundEnabled ? text.keySoundOn : text.keySoundOff;
 }

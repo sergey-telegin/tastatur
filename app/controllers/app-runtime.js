@@ -24,7 +24,7 @@ function focusPracticeInputSoon() {
 
 function focusPracticeInputFromInteraction(event) {
   if (fingerKeyboardMode || settingsDialog.open || fingerMapDialog.open) return;
-  if (event.target instanceof HTMLElement && event.target.closest("button, select, dialog")) return;
+  if (isTrainerTextEntryTarget(event.target) || (event.target instanceof HTMLElement && event.target.closest("select, dialog"))) return;
 
   requestAnimationFrame(() => {
     if (!fingerKeyboardMode && !settingsDialog.open && !fingerMapDialog.open) {
