@@ -87,7 +87,7 @@ function currentPracticeLines() {
 
 function currentPracticeCursor() {
   const expected = currentPracticeLines()[practiceLineIndex] || "";
-  const typed = practiceInput.value;
+  const typed = practiceTypedValue;
   let index = 0;
 
   while (index < typed.length && index < expected.length && typed[index] === expected[index]) {
@@ -299,12 +299,12 @@ function advancePracticeLine() {
 
 function handlePracticeInput() {
   if (practiceAwaitingEnter) {
-    practiceInput.value = currentPracticeLines()[practiceLineIndex] || "";
+    practiceTypedValue = currentPracticeLines()[practiceLineIndex] || "";
     return;
   }
 
   const expected = currentPracticeLines()[practiceLineIndex];
-  const typed = practiceInput.value;
+  const typed = practiceTypedValue;
   let index = 0;
 
   while (index < typed.length && index < expected.length && typed[index] === expected[index]) {
@@ -318,7 +318,7 @@ function handlePracticeInput() {
     const fallbackWrongKeyId = findKeyCandidatesForCharacter(wrongCharacter, labelsFor(currentLanguage), geometry)[0] || null;
     const wrongKeyId = lastPhysicalPracticeKeyId || fallbackWrongKeyId;
 
-    practiceInput.value = typed.slice(0, index);
+    practiceTypedValue = typed.slice(0, index);
     practiceLastMatchedIndex = index;
     renderCurrentPracticeSampleText();
     renderPracticeStats();
@@ -347,8 +347,9 @@ function handlePracticeInput() {
   renderPracticeStats();
   renderKeyboard();
 
-  if (practiceInput.value === expected) {
+  if (practiceTypedValue === expected) {
     practiceAwaitingEnter = true;
+    renderCurrentPracticeSampleText();
     renderKeyboard();
   }
 }
@@ -369,9 +370,23 @@ function isSystemKeyCombination(event) {
 }
 
 function printableCharacterFromKeyEvent(event) {
-  if (event.key === "Spacebar") return " ";
-  if (event.key.length === 1) return event.key;
-  return null;
+  const keyId = keyIdFromEventCode(event.code);
+  if (keyId === "space") return " ";
+  if (!keyId) return null;
+
+  const printableSymbols = extractPrintableKeySymbols(labelsFor(currentLanguage)[keyId] ?? "");
+  if (!printableSymbols.length) return null;
+
+  if (printableSymbols.length > 1) {
+    return event.shiftKey ? printableSymbols[0] : printableSymbols[printableSymbols.length - 1];
+  }
+
+  const [symbol] = printableSymbols;
+  if (symbol.toLowerCase() !== symbol.toUpperCase()) {
+    return event.shiftKey ? symbol.toUpperCase() : symbol.toLowerCase();
+  }
+
+  return symbol;
 }
 
 function applyPracticeKeyInput(event) {
@@ -395,8 +410,8 @@ function applyPracticeKeyInput(event) {
   }
 
   if (event.key === "Backspace") {
-    if (practiceInput.value.length > 0) {
-      practiceInput.value = practiceInput.value.slice(0, -1);
+    if (practiceTypedValue.length > 0) {
+      practiceTypedValue = practiceTypedValue.slice(0, -1);
       handlePracticeInput();
       playKeySound();
     } else if (keyId) {
@@ -407,10 +422,10 @@ function applyPracticeKeyInput(event) {
 
   const character = printableCharacterFromKeyEvent(event);
   if (character !== null) {
-    const previousLength = practiceInput.value.length;
-    practiceInput.value += character;
+    const previousLength = practiceTypedValue.length;
+    practiceTypedValue += character;
     handlePracticeInput();
-    if (practiceInput.value.length > previousLength) {
+    if (practiceTypedValue.length > previousLength) {
       playKeySound();
     }
     return true;
@@ -436,7 +451,7 @@ function handleGlobalKeyDown(event) {
   if (event.defaultPrevented || event.isComposing || isPracticeInputPaused() || isSystemKeyCombination(event)) return;
 
   const target = event.target;
-  if (isTrainerTextEntryTarget(target) && target !== practiceInput) return;
+  if (isTrainerTextEntryTarget(target)) return;
 
   const shouldHandle =
     event.key === "Backspace" ||

@@ -7,30 +7,11 @@ function setStatus(message) {
 }
 
 function focusPracticeInputSoon() {
-  if (fingerKeyboardMode || settingsDialog.open || fingerMapDialog.open) return;
-
-  requestAnimationFrame(() => {
-    if (!fingerKeyboardMode && !settingsDialog.open && !fingerMapDialog.open) {
-      practiceInput.focus();
-    }
-  });
-
-  setTimeout(() => {
-    if (!fingerKeyboardMode && !settingsDialog.open && !fingerMapDialog.open && document.activeElement !== practiceInput) {
-      practiceInput.focus();
-    }
-  }, 80);
+  // Global keydown is the input source; there is no visible practice field to focus.
 }
 
 function focusPracticeInputFromInteraction(event) {
-  if (fingerKeyboardMode || settingsDialog.open || fingerMapDialog.open) return;
-  if (isTrainerTextEntryTarget(event.target) || (event.target instanceof HTMLElement && event.target.closest("select, dialog"))) return;
-
-  requestAnimationFrame(() => {
-    if (!fingerKeyboardMode && !settingsDialog.open && !fingerMapDialog.open) {
-      practiceInput.focus();
-    }
-  });
+  // Kept as a no-op for existing event bindings; typing continues through window keydown.
 }
 
 function render() {

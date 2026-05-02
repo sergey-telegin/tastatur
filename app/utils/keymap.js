@@ -66,6 +66,7 @@ function keyIdFromEventCode(code) {
     Enter: "enter",
     Tab: "tab",
     Backspace: "delete",
+    IntlBackslash: "isoIntl",
     CapsLock: "caps",
     ShiftLeft: "shiftLeft",
     ShiftRight: "shiftRight",

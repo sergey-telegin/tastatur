@@ -1,7 +1,8 @@
 .trainer {
-  display: grid;
-  gap: 10px;
+  display: flex;
+  align-items: center;
   margin-bottom: 26px;
+  min-height: 126px;
 }
 
 .practice-progress-text {
@@ -78,8 +79,7 @@
   display: none;
 }
 
-.practice-sample,
-.practice-input {
+.practice-sample {
   width: 100%;
   min-height: 58px;
   border: 0;
@@ -92,40 +92,68 @@
 }
 
 .practice-sample {
-  display: flex;
+  display: grid;
   align-items: center;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   color: #d0d0d0;
   border-bottom: 1px solid #2f2f2f;
   white-space: pre;
 }
 
 .practice-sample-done {
-  color: #4f4f4f;
+  color: var(--text);
+  min-width: 0;
+  overflow: hidden;
+  text-align: right;
+  text-overflow: clip;
 }
 
 .practice-sample-current {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0.68em;
   color: #ffffff;
   text-shadow:
+    0 0 8px rgb(255 255 255 / 0.2),
+    0 0 18px rgb(255 255 255 / 0.08);
+  animation: practice-current-blink 1s step-end infinite;
+}
+
+.practice-sample-marker {
+  width: 0.72em;
+  min-width: 0.72em;
+  font-family: "Apple Symbols", "Segoe UI Symbol", "Noto Sans Symbols", sans-serif;
+  font-size: 0.9em;
+  line-height: 1;
+}
+
+.practice-sample-space-cursor {
+  width: 0.56em;
+  min-width: 0.56em;
+  height: 0.9em;
+  border-radius: 4px;
+  background: currentColor;
+  box-shadow:
     0 0 8px rgb(255 255 255 / 0.2),
     0 0 18px rgb(255 255 255 / 0.08);
 }
 
 .practice-sample-rest {
-  color: var(--text);
+  color: #4f4f4f;
+  min-width: 0;
+  overflow: hidden;
+  text-align: left;
+  text-overflow: clip;
 }
 
-.practice-input {
-  border-bottom: 2px solid var(--line);
-  color: #f0f0f0;
-  outline: 0;
-  caret-color: #fff;
-}
-
-.practice-input:focus {
-  border-bottom-color: #bbb;
-}
-
-.practice-input.error {
+.practice-sample.error {
   border-bottom-color: #777;
-  color: #b8b8b8;
+}
+
+@keyframes practice-current-blink {
+  50% {
+    opacity: 0;
+    text-shadow: none;
+  }
 }

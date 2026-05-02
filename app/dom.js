@@ -41,7 +41,6 @@ const practiceAccuracyValue = document.querySelector("#practiceAccuracyValue");
 const practiceSpeedLabel = document.querySelector("#practiceSpeedLabel");
 const practiceSpeedValue = document.querySelector("#practiceSpeedValue");
 const practiceSample = document.querySelector("#practiceSample");
-const practiceInput = document.querySelector("#practiceInput");
 const practiceProgressText = document.querySelector("#practiceProgressText");
 const practiceProgressBar = document.querySelector("#practiceProgressBar");
 const practiceModuleList = document.querySelector("#practiceModuleList");

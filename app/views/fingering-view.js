@@ -43,9 +43,6 @@ function renderKeyboardEditorPanel() {
   practiceStats.classList.toggle("hidden", fingerKeyboardMode);
   pageTitle.textContent = fingerKeyboardMode ? text.fingerEditorModeTitle : "";
 
-  if (fingerKeyboardMode) {
-    practiceInput.blur();
-  }
 }
 
 function renderFingerMapPanel() {

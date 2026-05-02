@@ -20,6 +20,7 @@ let practiceLastMatchedIndex = 0;
 let practiceAwaitingEnter = false;
 let practiceCompletedLines = 0;
 let keySoundEnabled = true;
+let practiceTypedValue = "";
 
 function initializeAppState(savedState = {}) {
   currentLanguage = savedState.currentLanguage || "de";
@@ -44,4 +45,5 @@ function initializeAppState(savedState = {}) {
   practiceAwaitingEnter = false;
   practiceCompletedLines = 0;
   keySoundEnabled = savedState.keySoundEnabled !== false;
+  practiceTypedValue = "";
 }

@@ -1,7 +1,8 @@
 function renderPracticeSampleText(expected, index) {
   const doneText = expected.slice(0, index);
-  const currentText = expected[index] || "";
-  const restText = expected.slice(index + (currentText ? 1 : 0));
+  const rawCurrentText = practiceAwaitingEnter ? "↵" : expected[index] || "";
+  const isSpaceMarker = rawCurrentText === " ";
+  const restText = expected.slice(index + (rawCurrentText && !practiceAwaitingEnter ? 1 : 0));
 
   practiceSample.innerHTML = "";
 
@@ -11,7 +12,9 @@ function renderPracticeSampleText(expected, index) {
 
   const current = document.createElement("span");
   current.className = "practice-sample-current";
-  current.textContent = currentText;
+  current.classList.toggle("practice-sample-marker", practiceAwaitingEnter);
+  current.classList.toggle("practice-sample-space-cursor", isSpaceMarker);
+  current.textContent = isSpaceMarker ? "" : rawCurrentText;
 
   const rest = document.createElement("span");
   rest.className = "practice-sample-rest";
@@ -55,11 +58,11 @@ function renderPracticeProgress() {
 }
 
 function setPracticeInputError(isError) {
-  practiceInput.classList.toggle("error", Boolean(isError));
+  practiceSample.classList.toggle("error", Boolean(isError));
 }
 
 function resetPracticeInputValue() {
-  practiceInput.value = "";
+  practiceTypedValue = "";
   setPracticeInputError(false);
 }
 
