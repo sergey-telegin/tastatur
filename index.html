@@ -27,7 +27,11 @@
           </div>
         </div>
         <button class="settings-btn" id="settingsToggle" type="button" aria-label="Настройки">
-          <span class="settings-icon" aria-hidden="true">⚙️</span>
+          <span class="settings-icon burger-icon" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+          </span>
         </button>
       </header>
 
@@ -87,38 +91,134 @@
     <dialog class="settings-dialog" id="settingsDialog" aria-labelledby="settingsTitle">
       <div class="settings-panel">
         <div class="settings-head">
-          <h2 class="settings-title" id="settingsTitle">Настройки</h2>
+          <h2 class="settings-title visually-hidden" id="settingsTitle">Настройки</h2>
           <button class="settings-close" id="settingsClose" type="button" aria-label="Закрыть">×</button>
         </div>
 
-        <div class="settings-group">
-          <span class="settings-label" id="languageLabel">Язык</span>
-          <div class="segmented" id="languageTabs" role="tablist" aria-label="Язык клавиатуры"></div>
+        <div class="app-menu">
+          <section class="menu-section" aria-label="Основные">
+            <div class="settings-row">
+              <span class="settings-label" id="soundLabel">Звук</span>
+              <button class="sound-toggle compact-toggle" id="keySoundToggle" type="button" aria-pressed="true">
+                <span class="sound-toggle-track" aria-hidden="true"><span class="sound-toggle-thumb"></span></span>
+                <span class="sound-toggle-text" id="keySoundToggleText">Вкл</span>
+              </button>
+            </div>
+            <div class="settings-group" aria-label="Язык">
+              <span class="settings-label visually-hidden" id="languageLabel">Язык</span>
+              <div class="segmented" id="languageTabs" role="tablist" aria-label="Язык клавиатуры"></div>
+            </div>
+          </section>
+
+          <section class="menu-section menu-section-flat" aria-label="Программа обучения">
+            <button class="nav-btn menu-nav-btn" id="learningProgramOpen" type="button">
+              <span id="learningProgramOpenText">Программа обучения</span>
+            </button>
+          </section>
+
+          <section class="menu-section menu-section-flat" aria-label="Статистика">
+            <button class="nav-btn menu-nav-btn" id="statsOpen" type="button">
+              <span id="statsOpenText">Статистика</span>
+            </button>
+          </section>
+
+          <section class="menu-section menu-section-flat" aria-label="Настройка аппликатуры">
+            <button class="nav-btn menu-nav-btn" id="fingerMapOpen" type="button">
+              <span>Привязка клавиш к пальцам</span>
+            </button>
+          </section>
+
+          <section class="menu-section" aria-label="Отображение">
+            <div class="settings-row">
+              <span class="settings-label" id="keyHighlightLabel">Подсветка клавиш</span>
+              <button class="sound-toggle compact-toggle" id="keyHighlightToggle" type="button" aria-pressed="true">
+                <span class="sound-toggle-track" aria-hidden="true"><span class="sound-toggle-thumb"></span></span>
+                <span class="sound-toggle-text" id="keyHighlightToggleText">Вкл</span>
+              </button>
+            </div>
+            <div class="settings-row">
+              <span class="settings-label" id="fingerHighlightLabel">Подсветка пальцев</span>
+              <button class="sound-toggle compact-toggle" id="fingerHighlightToggle" type="button" aria-pressed="true">
+                <span class="sound-toggle-track" aria-hidden="true"><span class="sound-toggle-thumb"></span></span>
+                <span class="sound-toggle-text" id="fingerHighlightToggleText">Вкл</span>
+              </button>
+            </div>
+            <div class="settings-row">
+              <span class="settings-label" id="pressHighlightLabel">Подсветка нажатий</span>
+              <button class="sound-toggle compact-toggle" id="pressHighlightToggle" type="button" aria-pressed="true">
+                <span class="sound-toggle-track" aria-hidden="true"><span class="sound-toggle-thumb"></span></span>
+                <span class="sound-toggle-text" id="pressHighlightToggleText">Вкл</span>
+              </button>
+            </div>
+            <div class="settings-row">
+              <span class="settings-label" id="showFingersLabel">Показывать пальцы</span>
+              <button class="sound-toggle compact-toggle" id="showFingersToggle" type="button" aria-pressed="true">
+                <span class="sound-toggle-track" aria-hidden="true"><span class="sound-toggle-thumb"></span></span>
+                <span class="sound-toggle-text" id="showFingersToggleText">Вкл</span>
+              </button>
+            </div>
+            <div class="settings-row">
+              <span class="settings-label" id="alternateLinesLabel">Режим “через строку”</span>
+              <button class="sound-toggle compact-toggle" id="alternateLinesToggle" type="button" aria-pressed="false">
+                <span class="sound-toggle-track" aria-hidden="true"><span class="sound-toggle-thumb"></span></span>
+                <span class="sound-toggle-text" id="alternateLinesToggleText">Выкл</span>
+              </button>
+            </div>
+          </section>
+
+          <section class="menu-section menu-section-flat" aria-label="Помощь">
+            <button class="nav-btn menu-nav-btn" id="helpOpen" type="button">
+              <span id="helpOpenText">Помощь</span>
+            </button>
+          </section>
         </div>
 
+      </div>
+    </dialog>
+
+    <dialog class="settings-dialog app-section-dialog" id="learningProgramDialog" aria-labelledby="learningProgramTitle">
+      <div class="settings-panel">
+        <div class="settings-head">
+          <h2 class="settings-title visually-hidden" id="learningProgramTitle">Программа обучения</h2>
+          <button class="settings-close" id="learningProgramClose" type="button" aria-label="Закрыть">×</button>
+        </div>
         <div class="settings-group">
-          <span class="settings-label" id="moduleLabel">Модуль</span>
+          <span class="settings-label visually-hidden" id="moduleLabel">Все модули</span>
           <div class="module-list" id="practiceModuleList"></div>
         </div>
+        <div class="menu-summary visually-hidden">
+          <span class="settings-label" id="programCurrentProgressLabel">Прогресс текущего модуля</span>
+          <strong id="programCurrentProgress">0 / 0 строк</strong>
+        </div>
+        <button class="nav-btn danger-nav-btn visually-hidden" id="currentModuleProgressReset" type="button">Сбросить прогресс текущего модуля</button>
+      </div>
+    </dialog>
 
+    <dialog class="settings-dialog app-section-dialog" id="statsDialog" aria-labelledby="statsTitle">
+      <div class="settings-panel">
+        <div class="settings-head">
+          <h2 class="settings-title visually-hidden" id="statsTitle">Статистика</h2>
+          <button class="settings-close" id="statsClose" type="button" aria-label="Закрыть">×</button>
+        </div>
+        <div class="stats-grid" id="statsOverview" aria-live="polite"></div>
         <div class="settings-group">
-          <span class="settings-label" id="fingerMapSectionLabel">Карта пальцев</span>
-          <button class="nav-btn" id="fingerMapOpen" type="button">Открыть карту пальцев</button>
+          <span class="settings-label" id="statsDailyLabel">Показатели по дням</span>
+          <div class="daily-stats-list" id="dailyStatsList"></div>
         </div>
+      </div>
+    </dialog>
 
-        <div class="settings-group">
-          <span class="settings-label" id="soundLabel">Звук</span>
-          <button class="sound-toggle" id="keySoundToggle" type="button" aria-pressed="true">
-            <span class="sound-toggle-track" aria-hidden="true"><span class="sound-toggle-thumb"></span></span>
-            <span class="sound-toggle-text" id="keySoundToggleText">Звук клавиш включён</span>
-          </button>
+    <dialog class="settings-dialog app-section-dialog" id="helpDialog" aria-labelledby="helpTitle">
+      <div class="settings-panel">
+        <div class="settings-head">
+          <h2 class="settings-title" id="helpTitle">Помощь</h2>
+          <button class="settings-close" id="helpClose" type="button" aria-label="Закрыть">×</button>
         </div>
-
-        <div class="toolbar" aria-label="Инструменты">
-          <button class="tool-btn active" id="editToggle" type="button" title="Редактировать клавиши" aria-pressed="true">✎</button>
-          <button class="tool-btn" id="resetLayout" type="button" title="Сбросить текущую раскладку">↺</button>
+        <div class="help-list">
+          <p id="helpTextPractice">Печатайте строку на экране. После завершения строки нажмите Enter, чтобы перейти дальше.</p>
+          <p id="helpTextProgram">В программе обучения можно выбрать модуль и сбросить прогресс текущего модуля.</p>
+          <p id="helpTextFingering">В настройке аппликатуры выберите палец и назначайте клавиши прямо на клавиатуре.</p>
         </div>
-
       </div>
     </dialog>
 

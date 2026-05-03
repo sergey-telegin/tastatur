@@ -29,7 +29,7 @@ h1 {
 
 .page-title {
   margin: 0;
-  color: #f0f0f0;
+  color: var(--muted);
   font-size: 30px;
   font-weight: 800;
   line-height: 1.05;
@@ -80,8 +80,22 @@ h1 {
 }
 
 .settings-icon {
-  font-size: 23px;
-  line-height: 1;
+  width: 22px;
+  height: 16px;
+}
+
+.burger-icon {
+  display: grid;
+  gap: 5px;
+  align-content: center;
+}
+
+.burger-icon span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  border-radius: 999px;
+  background: currentColor;
 }
 
 .toolbar,

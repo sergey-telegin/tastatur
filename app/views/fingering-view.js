@@ -48,7 +48,9 @@ function renderKeyboardEditorPanel() {
 function renderFingerMapPanel() {
   const text = textFor();
   fingerMapTitle.textContent = text.fingerMap;
-  fingerMapSectionLabel.textContent = text.fingerMap;
+  if (fingerMapSectionLabel) {
+    fingerMapSectionLabel.textContent = text.fingerMap;
+  }
   fingerMapOpen.textContent = text.openFingerMap;
   fingerMapClose.setAttribute("aria-label", text.close);
   fingerMapKeyboardMode.textContent = fingerKeyboardMode ? text.keyboardModeActive : text.keyboardMode;

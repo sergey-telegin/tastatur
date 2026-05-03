@@ -170,14 +170,15 @@ function renderKeyboard() {
   const practiceTarget = fingerKeyboardMode ? { keyId: null, spaceSide: null } : currentPracticeTarget();
 
   handsLayer.classList.toggle("finger-editor-mode", fingerKeyboardMode);
+  handsLayer.classList.toggle("hidden", !fingerKeyboardMode && !showFingersEnabled);
   renderFingerVisualThemes();
   keyboard.innerHTML = "";
 
   geometry.forEach(([id, row, column, span, extra = "", rowSpan = 1]) => {
     const key = document.createElement("button");
-    const isPracticeKey = practiceTarget.keyId === id || practiceTarget.secondaryKeyId === id || technicalPracticeKeyId === id;
-    const isCorrectPracticeKey = !fingerKeyboardMode && correctPracticeKeyId === id;
-    const isWrongPracticeKey = !fingerKeyboardMode && wrongPracticeKeyId === id;
+    const isPracticeKey = keyHighlightEnabled && (practiceTarget.keyId === id || practiceTarget.secondaryKeyId === id || technicalPracticeKeyId === id);
+    const isCorrectPracticeKey = pressHighlightEnabled && !fingerKeyboardMode && correctPracticeKeyId === id;
+    const isWrongPracticeKey = pressHighlightEnabled && !fingerKeyboardMode && wrongPracticeKeyId === id;
 
     key.type = "button";
     key.className = keyboardKeyClassName({

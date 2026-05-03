@@ -16,10 +16,18 @@ let lastPhysicalPracticeKeyId = null;
 let practiceErrorCount = 0;
 let practiceCorrectCharCount = 0;
 let practiceSessionStartedAt = 0;
+let practicePausedAt = 0;
+let practicePausedDurationMs = 0;
+let practiceStatsTimerId = null;
 let practiceLastMatchedIndex = 0;
 let practiceAwaitingEnter = false;
 let practiceCompletedLines = 0;
 let keySoundEnabled = true;
+let keyHighlightEnabled = true;
+let fingerHighlightEnabled = true;
+let pressHighlightEnabled = true;
+let showFingersEnabled = true;
+let alternateLinesEnabled = false;
 let practiceTypedValue = "";
 
 function initializeAppState(savedState = {}) {
@@ -41,9 +49,17 @@ function initializeAppState(savedState = {}) {
   practiceErrorCount = 0;
   practiceCorrectCharCount = 0;
   practiceSessionStartedAt = 0;
+  practicePausedAt = 0;
+  practicePausedDurationMs = 0;
+  practiceStatsTimerId = null;
   practiceLastMatchedIndex = 0;
   practiceAwaitingEnter = false;
   practiceCompletedLines = 0;
   keySoundEnabled = savedState.keySoundEnabled !== false;
+  keyHighlightEnabled = savedState.keyHighlightEnabled !== false;
+  fingerHighlightEnabled = savedState.fingerHighlightEnabled !== false;
+  pressHighlightEnabled = savedState.pressHighlightEnabled !== false;
+  showFingersEnabled = savedState.showFingersEnabled !== false;
+  alternateLinesEnabled = savedState.alternateLinesEnabled === true;
   practiceTypedValue = "";
 }

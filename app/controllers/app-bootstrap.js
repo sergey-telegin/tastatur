@@ -7,25 +7,34 @@ function bindAppEvents() {
     }
   });
 
-  editToggle.addEventListener("click", () => {
-    editMode = !editMode;
-    editToggle.classList.toggle("active", editMode);
-    editToggle.setAttribute("aria-pressed", String(editMode));
-    document.querySelector(".editor").style.display = editMode ? "grid" : "none";
-  });
+  if (editToggle) {
+    editToggle.addEventListener("click", () => {
+      editMode = !editMode;
+      editToggle.classList.toggle("active", editMode);
+      editToggle.setAttribute("aria-pressed", String(editMode));
+      document.querySelector(".editor").style.display = editMode ? "grid" : "none";
+    });
+  }
 
-  resetLayout.addEventListener("click", () => {
-    delete saved[currentLanguage];
-    persist();
-    render();
-    setStatus(`Раскладка ${languages[currentLanguage].name} сброшена.`);
-  });
+  if (resetLayout) {
+    resetLayout.addEventListener("click", () => {
+      delete saved[currentLanguage];
+      persist();
+      render();
+      setStatus(`Раскладка ${languages[currentLanguage].name} сброшена.`);
+    });
+  }
 
   settingsToggle.addEventListener("click", () => {
     openSettingsDialog();
   });
 
   keySoundToggle.addEventListener("click", toggleKeySound);
+  keyHighlightToggle.addEventListener("click", () => toggleDisplaySetting("keyHighlightEnabled"));
+  fingerHighlightToggle.addEventListener("click", () => toggleDisplaySetting("fingerHighlightEnabled"));
+  pressHighlightToggle.addEventListener("click", () => toggleDisplaySetting("pressHighlightEnabled"));
+  showFingersToggle.addEventListener("click", () => toggleDisplaySetting("showFingersEnabled"));
+  alternateLinesToggle.addEventListener("click", () => toggleDisplaySetting("alternateLinesEnabled"));
 
   settingsClose.addEventListener("click", () => {
     closeSettingsDialog();
@@ -41,10 +50,69 @@ function bindAppEvents() {
     handleSettingsDialogClose();
   });
 
+  learningProgramOpen.addEventListener("click", () => {
+    openLearningProgramDialog();
+  });
+
+  learningProgramClose.addEventListener("click", () => {
+    closeLearningProgramDialog();
+  });
+
+  learningProgramDialog.addEventListener("click", event => {
+    if (event.target === learningProgramDialog) {
+      closeLearningProgramDialog();
+    }
+  });
+
+  learningProgramDialog.addEventListener("close", () => {
+    handleSettingsDialogClose();
+  });
+
+  currentModuleProgressReset.addEventListener("click", () => {
+    resetModuleProgress(currentPracticeModule, currentLanguage);
+  });
+
+  statsOpen.addEventListener("click", () => {
+    openStatsDialog();
+  });
+
+  statsClose.addEventListener("click", () => {
+    closeStatsDialog();
+  });
+
+  statsDialog.addEventListener("click", event => {
+    if (event.target === statsDialog) {
+      closeStatsDialog();
+    }
+  });
+
+  statsDialog.addEventListener("close", () => {
+    handleSettingsDialogClose();
+  });
+
+  helpOpen.addEventListener("click", () => {
+    openHelpDialog();
+  });
+
+  helpClose.addEventListener("click", () => {
+    closeHelpDialog();
+  });
+
+  helpDialog.addEventListener("click", event => {
+    if (event.target === helpDialog) {
+      closeHelpDialog();
+    }
+  });
+
+  helpDialog.addEventListener("close", () => {
+    handleSettingsDialogClose();
+  });
+
   fingerMapOpen.addEventListener("click", () => {
     settingsDialog.close();
     openFingerMapDraft();
     enterFingerKeyboardMode();
+    updatePracticeTimerPauseState();
   });
 
   fingerMapClose.addEventListener("click", () => {
@@ -61,6 +129,7 @@ function bindAppEvents() {
     closeFingerMapDraftIfNeeded();
     renderFingerMapPanel();
     renderKeyboard();
+    setTimeout(updatePracticeTimerPauseState, 0);
     focusPracticeInputSoon();
   });
 

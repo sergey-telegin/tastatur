@@ -111,13 +111,79 @@ function resetPracticeMetrics() {
   practiceErrorCount = 0;
   practiceCorrectCharCount = 0;
   practiceSessionStartedAt = 0;
+  practicePausedAt = 0;
+  practicePausedDurationMs = 0;
   practiceLastMatchedIndex = 0;
+  stopPracticeStatsTicker();
   renderPracticeStats();
+}
+
+function startPracticeStatsTicker() {
+  if (practiceStatsTimerId) return;
+
+  practiceStatsTimerId = setInterval(() => {
+    if (!practiceSessionStartedAt) {
+      stopPracticeStatsTicker();
+      return;
+    }
+
+    renderPracticeStats();
+  }, 1000);
+}
+
+function stopPracticeStatsTicker() {
+  if (!practiceStatsTimerId) return;
+
+  clearInterval(practiceStatsTimerId);
+  practiceStatsTimerId = null;
 }
 
 function ensurePracticeSessionStarted() {
   if (!practiceSessionStartedAt) {
     practiceSessionStartedAt = Date.now();
+    practicePausedAt = 0;
+    practicePausedDurationMs = 0;
+  }
+  startPracticeStatsTicker();
+}
+
+function currentPracticeActiveElapsedMs() {
+  if (!practiceSessionStartedAt) return 0;
+
+  const now = Date.now();
+  const currentPauseMs = practicePausedAt ? now - practicePausedAt : 0;
+  return Math.max(0, now - practiceSessionStartedAt - practicePausedDurationMs - currentPauseMs);
+}
+
+function shouldPausePracticeTimer() {
+  return (
+    settingsDialog.open ||
+    learningProgramDialog.open ||
+    statsDialog.open ||
+    helpDialog.open ||
+    fingerMapDialog.open
+  );
+}
+
+function pausePracticeTimer() {
+  if (!practiceSessionStartedAt || practicePausedAt) return;
+  practicePausedAt = Date.now();
+  renderPracticeStats();
+}
+
+function resumePracticeTimer() {
+  if (!practicePausedAt) return;
+
+  practicePausedDurationMs += Date.now() - practicePausedAt;
+  practicePausedAt = 0;
+  renderPracticeStats();
+}
+
+function updatePracticeTimerPauseState() {
+  if (shouldPausePracticeTimer()) {
+    pausePracticeTimer();
+  } else {
+    resumePracticeTimer();
   }
 }
 
@@ -280,13 +346,14 @@ function renderPracticeLine() {
 
 function advancePracticeLine() {
   const totalLines = currentPracticeLines().length;
-  const nextCompletedLines = Math.min(practiceCompletedLines + 1, totalLines);
+  const lineStep = alternateLinesEnabled ? 2 : 1;
+  const nextCompletedLines = Math.min(practiceCompletedLines + lineStep, totalLines);
   const isComplete = nextCompletedLines >= totalLines;
 
   practiceCompletedLines = nextCompletedLines;
   practiceLineIndex = isComplete
     ? Math.max(totalLines - 1, 0)
-    : Math.min(practiceLineIndex + 1, totalLines - 1);
+    : Math.min(practiceLineIndex + lineStep, totalLines - 1);
 
   persistModuleProgress(currentLanguage, currentPracticeModule, {
     currentLine: isComplete ? totalLines : practiceLineIndex,
@@ -361,7 +428,14 @@ function isTrainerTextEntryTarget(target) {
 }
 
 function isPracticeInputPaused() {
-  return fingerKeyboardMode || settingsDialog.open || fingerMapDialog.open;
+  return (
+    fingerKeyboardMode ||
+    settingsDialog.open ||
+    learningProgramDialog.open ||
+    statsDialog.open ||
+    helpDialog.open ||
+    fingerMapDialog.open
+  );
 }
 
 function isSystemKeyCombination(event) {

@@ -26,7 +26,7 @@ function renderPracticeSampleText(expected, index) {
 function currentPracticeSpeed() {
   if (!practiceSessionStartedAt || practiceCorrectCharCount <= 0) return 0;
 
-  const elapsedMs = Date.now() - practiceSessionStartedAt;
+  const elapsedMs = currentPracticeActiveElapsedMs();
   if (elapsedMs <= 0) return 0;
 
   return Math.round((practiceCorrectCharCount * 60000) / elapsedMs);
@@ -45,6 +45,7 @@ function renderPracticeStats() {
   practiceSpeedLabel.textContent = text.practiceSpeed;
   practiceAccuracyValue.textContent = `${currentPracticeAccuracy()}%`;
   practiceSpeedValue.textContent = `${currentPracticeSpeed()} ${text.practiceSpeedUnit}`;
+  renderStatsDialog();
 }
 
 function renderPracticeProgress() {
@@ -67,8 +68,11 @@ function resetPracticeInputValue() {
 }
 
 function renderPracticeGuides(fingerIds) {
+  const shouldHighlightFingers = fingerKeyboardMode || fingerHighlightEnabled;
   const activeFingerIds = new Set(
-    (Array.isArray(fingerIds) ? fingerIds : [fingerIds]).filter(Boolean)
+    shouldHighlightFingers
+      ? (Array.isArray(fingerIds) ? fingerIds : [fingerIds]).filter(Boolean)
+      : []
   );
 
   document.querySelectorAll(".finger[data-finger]").forEach(node => {
