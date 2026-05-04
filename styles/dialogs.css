@@ -224,36 +224,69 @@
   gap: 8px;
 }
 
+.program-module-title {
+  margin: 12px 0 2px;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.program-module-title:first-child {
+  margin-top: 0;
+}
+
 .module-row {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 42px;
-  gap: 8px;
+  gap: 6px;
   align-items: stretch;
 }
 
 .module-btn {
   width: 100%;
   min-height: 42px;
-  border: 1px solid var(--line-soft);
+  border: 0;
   border-radius: 7px;
-  background: #111;
+  background: rgb(255 255 255 / 0.035);
   color: var(--muted);
   cursor: pointer;
   text-align: left;
   padding: 0 12px;
-  transition: background 140ms ease, color 140ms ease, border-color 140ms ease;
+  transition: background 140ms ease, color 140ms ease;
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
+.lesson-btn {
+  min-height: 58px;
+  padding-block: 8px;
+}
+
+.lesson-btn-content {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.lesson-meta {
+  min-width: 0;
+  overflow: hidden;
+  color: color-mix(in srgb, currentColor 72%, transparent);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.25;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .module-btn:hover {
-  background: #1a1a1a;
+  background: rgb(255 255 255 / 0.065);
   color: #fff;
 }
 
 .module-btn.active {
-  border-color: #ccc;
   background: #ccc;
   color: #000;
 }
@@ -266,31 +299,44 @@
 }
 
 .module-btn-percent {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 700;
   line-height: 1.2;
 }
 
-.module-btn-percent {
+.module-btn-progress {
   margin-left: auto;
   flex-shrink: 0;
+  display: grid;
+  gap: 3px;
+  min-width: 48px;
+  justify-items: end;
+  line-height: 1;
+}
+
+.module-btn-rating {
+  color: color-mix(in srgb, currentColor 68%, transparent);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0;
+  white-space: nowrap;
 }
 
 .module-reset-btn {
   width: 42px;
   min-height: 42px;
-  border: 1px solid var(--line-soft);
+  border: 0;
   border-radius: 7px;
-  background: #111;
+  background: rgb(255 255 255 / 0.035);
   color: var(--muted);
   cursor: pointer;
   font-size: 17px;
   line-height: 1;
-  transition: background 140ms ease, color 140ms ease, border-color 140ms ease, transform 140ms ease;
+  transition: background 140ms ease, color 140ms ease, transform 140ms ease;
 }
 
 .module-reset-btn:hover {
-  background: #1a1a1a;
+  background: rgb(255 255 255 / 0.065);
   color: #fff;
 }
 

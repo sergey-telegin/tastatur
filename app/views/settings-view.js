@@ -1,23 +1,46 @@
 function renderModuleButtons() {
   const modules = practiceModulesFor(currentLanguage);
-  const selectedModule = modules[currentPracticeModule] ? currentPracticeModule : "module1";
+  const moduleGroups = practiceModuleGroupsFor(currentLanguage);
+  const selectedModule = modules[currentPracticeModule] ? currentPracticeModule : firstPracticeModuleId(currentLanguage);
   const text = textFor();
 
   practiceModuleList.innerHTML = "";
-  Object.entries(modules).forEach(([id, module]) => {
-    const progress = moduleProgressFor(currentLanguage, id);
+
+  const appendLesson = lesson => {
+    const progress = lessonProgressWithLiveMetrics(lesson.id);
     const row = document.createElement("div");
-    row.className = "module-row";
+    row.className = "module-row lesson-row";
 
     const button = document.createElement("button");
     button.type = "button";
-    button.className = `module-btn${id === selectedModule ? " active" : ""}`;
-    button.innerHTML = `
-      <span class="module-btn-name">${module.name}</span>
-      <span class="module-btn-percent">${progress.percent}%</span>
-    `;
+    button.className = `module-btn lesson-btn${lesson.id === selectedModule ? " active" : ""}`;
+
+    const name = document.createElement("span");
+    name.className = "module-btn-name";
+    name.textContent = lesson.name;
+
+    const meta = document.createElement("span");
+    meta.className = "lesson-meta";
+    meta.textContent = formatLessonMeta(lesson, currentLanguage);
+
+    const percent = document.createElement("span");
+    percent.className = "module-btn-percent";
+    percent.textContent = `${progress.percent}%`;
+
+    const rating = document.createElement("span");
+    rating.className = "module-btn-rating";
+    rating.textContent = starRatingForLesson(lesson, progress);
+
+    const content = document.createElement("span");
+    content.className = "lesson-btn-content";
+    content.append(name, meta);
+    const progressSummary = document.createElement("span");
+    progressSummary.className = "module-btn-progress";
+    progressSummary.append(percent, rating);
+    button.append(content, progressSummary);
+
     button.addEventListener("click", () => {
-      applySettings({ language: currentLanguage, module: id });
+      applySettings({ language: currentLanguage, module: lesson.id });
       renderModuleButtons();
     });
 
@@ -26,17 +49,97 @@ function renderModuleButtons() {
     resetButton.className = "module-reset-btn";
     resetButton.textContent = "↺";
     resetButton.title = text.resetModuleProgress;
-    resetButton.setAttribute("aria-label", `${text.resetModuleProgress}: ${module.name}`);
+    resetButton.setAttribute("aria-label", `${text.resetModuleProgress}: ${lesson.name}`);
     resetButton.addEventListener("click", event => {
       event.stopPropagation();
-      resetModuleProgress(id, currentLanguage);
+      resetModuleProgress(lesson.id, currentLanguage);
     });
 
     row.append(button, resetButton);
     practiceModuleList.append(row);
+  };
+
+  moduleGroups.forEach(module => {
+    const moduleTitle = document.createElement("h3");
+    moduleTitle.className = "program-module-title";
+    moduleTitle.textContent = module.title;
+    practiceModuleList.append(moduleTitle);
+
+    module.lessons.forEach(appendLesson);
   });
 
+  if (!moduleGroups.length) {
+    Object.values(modules).forEach(appendLesson);
+  }
+
   renderLearningProgramSummary();
+}
+
+function formatLessonMeta(lesson, language = currentLanguage) {
+  const text = textFor(language);
+  const target = lesson.target || {};
+  const goals = [];
+
+  if (target.lines) {
+    goals.push(`${target.lines} ${text.moduleLines}`);
+  }
+  if (target.accuracy) {
+    goals.push(`≥${target.accuracy}%`);
+  }
+  if (target.speed) {
+    goals.push(`${target.speed} ${text.practiceSpeedUnit}`);
+  }
+
+  return goals.length ? `${text.lessonTarget}: ${goals.join(", ")}` : "";
+}
+
+function lessonProgressWithLiveMetrics(lessonId) {
+  const progress = moduleProgressFor(currentLanguage, lessonId);
+
+  if (lessonId !== currentPracticeModule || !practiceSessionStartedAt) {
+    return progress;
+  }
+
+  return {
+    ...progress,
+    accuracy: Math.max(progress.accuracy || 0, currentPracticeAccuracy()),
+    speed: Math.max(progress.speed || 0, currentPracticeSpeed())
+  };
+}
+
+function goalCompletionRatio(current, target) {
+  if (!target || target <= 0) return 1;
+  return Math.max(0, Math.min(1, current / target));
+}
+
+function starRatingForLesson(lesson, progress) {
+  const target = lesson.target || {};
+  const ratios = [];
+
+  if (target.lines) {
+    ratios.push(goalCompletionRatio(progress.completedLines, target.lines));
+  }
+  if (target.accuracy) {
+    ratios.push(goalCompletionRatio(progress.accuracy || 0, target.accuracy));
+  }
+  if (target.speed) {
+    ratios.push(goalCompletionRatio(progress.speed || 0, target.speed));
+  }
+
+  const score = ratios.length
+    ? ratios.reduce((sum, ratio) => sum + ratio, 0) / ratios.length
+    : goalCompletionRatio(progress.percent, 100);
+  const filledStars = Math.max(0, Math.min(5, Math.round(score * 5)));
+
+  return `${"★".repeat(filledStars)}${"☆".repeat(5 - filledStars)}`;
+}
+
+function gradeLabelForAccuracy(accuracy, language = currentLanguage) {
+  const text = textFor(language);
+  if (accuracy >= 95) return text.gradeExcellent;
+  if (accuracy >= 90) return text.gradeOk;
+  if (accuracy >= 85) return text.gradeWeak;
+  return text.gradeRepeat;
 }
 
 function renderTabs() {
@@ -145,11 +248,13 @@ function renderStatsDialog() {
 
   const text = textFor();
   const trainingTimeMs = currentPracticeActiveElapsedMs();
+  const accuracy = currentPracticeAccuracy();
   const stats = [
-    [text.practiceAccuracy, `${currentPracticeAccuracy()}%`],
+    [text.practiceAccuracy, `${accuracy}%`],
     [text.practiceSpeed, `${currentPracticeSpeed()} ${text.practiceSpeedUnit}`],
     [text.practiceErrors, String(practiceErrorCount)],
-    [text.trainingTime, formatTrainingTime(trainingTimeMs)]
+    [text.trainingTime, formatTrainingTime(trainingTimeMs)],
+    [text.lessonTarget, gradeLabelForAccuracy(accuracy)]
   ];
 
   statsOverview.innerHTML = "";
@@ -170,7 +275,7 @@ function renderStatsDialog() {
   today.className = "daily-stat-row";
   today.innerHTML = `
     <span>${text.today}</span>
-    <strong>${currentPracticeAccuracy()}% · ${currentPracticeSpeed()} ${text.practiceSpeedUnit}</strong>
+    <strong>${accuracy}% · ${currentPracticeSpeed()} ${text.practiceSpeedUnit}</strong>
   `;
   dailyStatsList.append(today);
 }

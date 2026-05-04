@@ -2,6 +2,23 @@ function practiceModulesFor(language = currentLanguage) {
   return practiceContent[language]?.modules || practiceContent.en?.modules || {};
 }
 
+function practiceModuleGroupsFor(language = currentLanguage) {
+  return practiceContent[language]?.moduleGroups || practiceContent.en?.moduleGroups || [];
+}
+
+function firstPracticeModuleId(language = currentLanguage) {
+  return Object.keys(practiceModulesFor(language))[0] || "module1";
+}
+
+function normalizeCurrentPracticeModule(language = currentLanguage) {
+  const modules = practiceModulesFor(language);
+  if (modules[currentPracticeModule]) return currentPracticeModule;
+
+  currentPracticeModule = firstPracticeModuleId(language);
+  saved.currentPracticeModule = currentPracticeModule;
+  return currentPracticeModule;
+}
+
 function practiceProgressStore() {
   if (!saved.practiceProgress || typeof saved.practiceProgress !== "object" || Array.isArray(saved.practiceProgress)) {
     saved.practiceProgress = {};
@@ -21,13 +38,15 @@ function normalizePracticeProgressEntry(entry, totalLines) {
   const safeTotal = Math.max(0, Number(totalLines) || 0);
   let currentLine = Number.isFinite(entry?.currentLine) ? Math.max(0, Math.trunc(entry.currentLine)) : 0;
   let completedLines = Number.isFinite(entry?.completedLines) ? Math.max(0, Math.trunc(entry.completedLines)) : currentLine;
+  const accuracy = Number.isFinite(entry?.accuracy) ? Math.max(0, Math.round(entry.accuracy)) : 0;
+  const speed = Number.isFinite(entry?.speed) ? Math.max(0, Math.round(entry.speed)) : 0;
 
   if (safeTotal === 0) {
-    return { currentLine: 0, completedLines: 0, isComplete: true };
+    return { currentLine: 0, completedLines: 0, isComplete: true, accuracy, speed };
   }
 
   if (currentLine >= safeTotal || completedLines >= safeTotal) {
-    return { currentLine: safeTotal, completedLines: safeTotal, isComplete: true };
+    return { currentLine: safeTotal, completedLines: safeTotal, isComplete: true, accuracy, speed };
   }
 
   completedLines = Math.max(completedLines, Math.min(currentLine, safeTotal));
@@ -35,7 +54,9 @@ function normalizePracticeProgressEntry(entry, totalLines) {
   return {
     currentLine: Math.min(currentLine, safeTotal - 1),
     completedLines: Math.min(completedLines, safeTotal),
-    isComplete: false
+    isComplete: false,
+    accuracy,
+    speed
   };
 }
 
@@ -55,7 +76,9 @@ function persistModuleProgress(language = currentLanguage, moduleId = currentPra
   const normalized = normalizePracticeProgressEntry(nextProgress, totalLines);
   languagePracticeProgressStore(language)[moduleId] = {
     currentLine: normalized.currentLine,
-    completedLines: normalized.completedLines
+    completedLines: normalized.completedLines,
+    accuracy: normalized.accuracy,
+    speed: normalized.speed
   };
   persist();
   return {
@@ -66,6 +89,7 @@ function persistModuleProgress(language = currentLanguage, moduleId = currentPra
 }
 
 function restoreCurrentPracticeProgress() {
+  normalizeCurrentPracticeModule();
   const progress = moduleProgressFor(currentLanguage, currentPracticeModule);
   practiceCompletedLines = progress.completedLines;
   practiceAwaitingEnter = false;
@@ -78,7 +102,7 @@ function restoreCurrentPracticeProgress() {
 
 function currentPracticeModuleData(language = currentLanguage, moduleId = currentPracticeModule) {
   const modules = practiceModulesFor(language);
-  return modules[moduleId] || modules.module1 || Object.values(modules)[0] || { name: "", lines: [] };
+  return modules[moduleId] || modules[firstPracticeModuleId(language)] || Object.values(modules)[0] || { name: "", lines: [] };
 }
 
 function currentPracticeLines() {
@@ -357,7 +381,9 @@ function advancePracticeLine() {
 
   persistModuleProgress(currentLanguage, currentPracticeModule, {
     currentLine: isComplete ? totalLines : practiceLineIndex,
-    completedLines: nextCompletedLines
+    completedLines: nextCompletedLines,
+    accuracy: currentPracticeAccuracy(),
+    speed: currentPracticeSpeed()
   });
 
   practiceAwaitingEnter = false;
