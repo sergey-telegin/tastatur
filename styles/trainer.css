@@ -102,10 +102,15 @@
 
 .practice-sample-done {
   color: var(--text);
+  display: flex;
+  justify-content: flex-end;
   min-width: 0;
   overflow: hidden;
-  text-align: right;
   text-overflow: clip;
+}
+
+.practice-sample-done-inner {
+  flex: 0 0 auto;
 }
 
 .practice-sample-current {

@@ -74,14 +74,20 @@ function resetModuleProgress(moduleId = currentPracticeModule, language = curren
   setStatus(textFor(language).moduleProgressReset);
 }
 
-function toggleKeySound() {
-  keySoundEnabled = !keySoundEnabled;
+function setKeySoundEnabled(isEnabled) {
+  if (keySoundEnabled === isEnabled) return;
+
+  keySoundEnabled = isEnabled;
   saved.keySoundEnabled = keySoundEnabled;
   persist();
   renderKeySoundToggle();
   if (keySoundEnabled) {
     playKeySound();
   }
+}
+
+function toggleKeySound() {
+  setKeySoundEnabled(!keySoundEnabled);
 }
 
 function toggleDisplaySetting(settingName) {

@@ -8,7 +8,10 @@ function renderPracticeSampleText(expected, index) {
 
   const done = document.createElement("span");
   done.className = "practice-sample-done";
-  done.textContent = doneText;
+  const doneInner = document.createElement("span");
+  doneInner.className = "practice-sample-done-inner";
+  doneInner.textContent = doneText;
+  done.append(doneInner);
 
   const current = document.createElement("span");
   current.className = "practice-sample-current";
@@ -50,12 +53,15 @@ function renderPracticeStats() {
 
 function renderPracticeProgress() {
   const progress = moduleProgressFor(currentLanguage, currentPracticeModule);
+  const { expected, index } = currentPracticeCursor();
+  const linePercent = expected.length > 0 ? Math.round((index / expected.length) * 100) : 0;
+
   practiceProgressText.textContent = formatModuleProgressText(
     progress.completedLines,
     progress.totalLines,
     currentLanguage
   );
-  practiceProgressBar.style.width = `${progress.percent}%`;
+  practiceProgressBar.style.width = `${linePercent}%`;
 }
 
 function setPracticeInputError(isError) {

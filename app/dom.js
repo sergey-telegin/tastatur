@@ -15,6 +15,7 @@ const languageLabel = document.querySelector("#languageLabel");
 const moduleLabel = document.querySelector("#moduleLabel");
 const soundLabel = document.querySelector("#soundLabel");
 const keySoundToggle = document.querySelector("#keySoundToggle");
+const keySoundIcon = document.querySelector("#keySoundIcon");
 const keySoundToggleText = document.querySelector("#keySoundToggleText");
 const learningProgramOpen = document.querySelector("#learningProgramOpen");
 const learningProgramOpenText = document.querySelector("#learningProgramOpenText");

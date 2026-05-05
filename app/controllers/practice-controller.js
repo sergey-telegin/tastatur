@@ -414,6 +414,7 @@ function handlePracticeInput() {
     practiceTypedValue = typed.slice(0, index);
     practiceLastMatchedIndex = index;
     renderCurrentPracticeSampleText();
+    renderPracticeProgress();
     renderPracticeStats();
     playErrorSound();
     flashPracticeError(wrongKeyId);
@@ -437,6 +438,7 @@ function handlePracticeInput() {
   wrongPracticeKeyId = null;
   setPracticeInputError(false);
   renderCurrentPracticeSampleText();
+  renderPracticeProgress();
   renderPracticeStats();
   renderKeyboard();
 

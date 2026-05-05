@@ -81,16 +81,16 @@ function formatLessonMeta(lesson, language = currentLanguage) {
   const goals = [];
 
   if (target.lines) {
-    goals.push(`${target.lines} ${text.moduleLines}`);
+    goals.push(`${text.targetLines}: ${target.lines}`);
   }
   if (target.accuracy) {
-    goals.push(`≥${target.accuracy}%`);
+    goals.push(`${text.practiceAccuracy}: ≥${target.accuracy}%`);
   }
   if (target.speed) {
-    goals.push(`${target.speed} ${text.practiceSpeedUnit}`);
+    goals.push(`${text.practiceSpeed}: ${target.speed} ${text.practiceSpeedUnit}`);
   }
 
-  return goals.length ? `${text.lessonTarget}: ${goals.join(", ")}` : "";
+  return goals.join(", ");
 }
 
 function lessonProgressWithLiveMetrics(lessonId) {
@@ -113,6 +113,10 @@ function goalCompletionRatio(current, target) {
 }
 
 function starRatingForLesson(lesson, progress) {
+  if (!progress.isComplete) {
+    return "";
+  }
+
   const target = lesson.target || {};
   const ratios = [];
 
@@ -129,7 +133,8 @@ function starRatingForLesson(lesson, progress) {
   const score = ratios.length
     ? ratios.reduce((sum, ratio) => sum + ratio, 0) / ratios.length
     : goalCompletionRatio(progress.percent, 100);
-  const filledStars = Math.max(0, Math.min(5, Math.round(score * 5)));
+  const maxStars = (progress.accuracy || 0) >= 100 ? 5 : 4;
+  const filledStars = Math.max(0, Math.min(maxStars, Math.round(score * 5)));
 
   return `${"★".repeat(filledStars)}${"☆".repeat(5 - filledStars)}`;
 }
@@ -201,6 +206,8 @@ function renderKeySoundToggle() {
   const text = textFor();
   keySoundToggle.classList.toggle("active", keySoundEnabled);
   keySoundToggle.setAttribute("aria-pressed", String(keySoundEnabled));
+  keySoundToggle.setAttribute("aria-label", `${text.sound}: ${keySoundEnabled ? text.toggleOn : text.toggleOff}`);
+  keySoundIcon.src = keySoundEnabled ? "assets/sound-on.svg" : "assets/sound-off.svg";
   keySoundToggleText.textContent = keySoundEnabled ? text.toggleOn : text.toggleOff;
 }
 
