@@ -197,6 +197,8 @@ function renderTabs() {
   soundLabel.textContent = text.sound;
   keyHighlightLabel.closest(".menu-section")?.setAttribute("aria-label", text.displaySettings);
   renderKeySoundToggle();
+  renderPracticeTextSizeToggle();
+  renderThemeToggle();
   renderDisplaySettings();
   renderLearningProgramSummary();
   renderStatsDialog();
@@ -209,6 +211,28 @@ function renderKeySoundToggle() {
   keySoundToggle.setAttribute("aria-label", `${text.sound}: ${keySoundEnabled ? text.toggleOn : text.toggleOff}`);
   keySoundIcon.src = keySoundEnabled ? "assets/sound-on.svg" : "assets/sound-off.svg";
   keySoundToggleText.textContent = keySoundEnabled ? text.toggleOn : text.toggleOff;
+}
+
+function renderPracticeTextSizeToggle() {
+  const text = textFor();
+  const sizeLabel = practiceTextSize.toUpperCase();
+
+  practiceTextSizeToggle.setAttribute("aria-label", `${text.practiceTextSize}: ${sizeLabel}`);
+  practiceTextSizeToggle.title = `${text.practiceTextSize}: ${sizeLabel}`;
+  practiceTextSizeIcon.textContent = sizeLabel;
+  practiceTextSizeToggleText.textContent = sizeLabel;
+}
+
+function renderThemeToggle() {
+  const text = textFor();
+  const isLightTheme = currentTheme === "light";
+  const themeName = isLightTheme ? text.lightTheme : text.darkTheme;
+
+  themeToggle.classList.toggle("active", isLightTheme);
+  themeToggle.setAttribute("aria-pressed", String(isLightTheme));
+  themeToggle.setAttribute("aria-label", `${text.theme}: ${themeName}`);
+  themeToggle.title = `${text.theme}: ${themeName}`;
+  themeToggleText.textContent = themeName;
 }
 
 function renderBooleanToggle(button, textNode, isEnabled, labels = {}) {

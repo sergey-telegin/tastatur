@@ -22,6 +22,8 @@ let practiceStatsTimerId = null;
 let practiceLastMatchedIndex = 0;
 let practiceAwaitingEnter = false;
 let practiceCompletedLines = 0;
+let currentTheme = "dark";
+let practiceTextSize = "m";
 let keySoundEnabled = true;
 let keyHighlightEnabled = true;
 let fingerHighlightEnabled = true;
@@ -55,6 +57,10 @@ function initializeAppState(savedState = {}) {
   practiceLastMatchedIndex = 0;
   practiceAwaitingEnter = false;
   practiceCompletedLines = 0;
+  currentTheme = savedState.theme === "light" ? "light" : "dark";
+  applyTheme();
+  practiceTextSize = ["s", "m", "l"].includes(savedState.practiceTextSize) ? savedState.practiceTextSize : "m";
+  applyPracticeTextSize();
   keySoundEnabled = savedState.keySoundEnabled !== false;
   keyHighlightEnabled = savedState.keyHighlightEnabled !== false;
   fingerHighlightEnabled = savedState.fingerHighlightEnabled !== false;
@@ -62,4 +68,12 @@ function initializeAppState(savedState = {}) {
   showFingersEnabled = savedState.showFingersEnabled !== false;
   alternateLinesEnabled = savedState.alternateLinesEnabled === true;
   practiceTypedValue = "";
+}
+
+function applyTheme() {
+  document.documentElement.dataset.theme = currentTheme;
+}
+
+function applyPracticeTextSize() {
+  document.documentElement.dataset.practiceTextSize = practiceTextSize;
 }

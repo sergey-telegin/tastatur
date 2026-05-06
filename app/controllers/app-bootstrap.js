@@ -30,6 +30,8 @@ function bindAppEvents() {
   });
 
   keySoundToggle.addEventListener("click", toggleKeySound);
+  practiceTextSizeToggle.addEventListener("click", togglePracticeTextSize);
+  themeToggle.addEventListener("click", toggleTheme);
   keyHighlightToggle.addEventListener("click", () => toggleDisplaySetting("keyHighlightEnabled"));
   fingerHighlightToggle.addEventListener("click", () => toggleDisplaySetting("fingerHighlightEnabled"));
   pressHighlightToggle.addEventListener("click", () => toggleDisplaySetting("pressHighlightEnabled"));

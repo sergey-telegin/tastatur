@@ -1,20 +1,5 @@
 :root {
-  color-scheme: dark;
-  --bg: #000;
-  --panel: #111;
-  --panel-strong: #1a1a1a;
-  --key: #111;
-  --key-hover: #1a1a1a;
-  --key-active: #2a2a2a;
-  --line: #444;
-  --line-soft: #444;
-  --text: #aaa;
-  --muted: #cfcfcf;
   --control-radius: 6px;
-  --quiet: #999;
-  --accent: #ccc;
-  --accent-2: #ccc;
-  --danger: #ccc;
   --key-height: 84px;
   --key-gap: 12px;
   --arrow-gap: 2px;
@@ -23,6 +8,210 @@
   --keyboard-width: 100%;
   --keyboard-padding: 32px 28px 30px;
   --hand-scale: 0.6;
+  --app-font-family: "SF Pro Display", "SF Pro Text", "SF Compact Display", "SF Compact Text", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --panel-shadow: none;
+  --key-shadow: none;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #000;
+  --panel: #0f0f10;
+  --panel-strong: #18181a;
+  --key: #151516;
+  --key-hover: #1b1b1d;
+  --key-active: #242426;
+  --line: #444;
+  --line-soft: #444;
+  --text: #aaa;
+  --muted: #cfcfcf;
+  --quiet: #999;
+  --accent: #ccc;
+  --accent-2: #ccc;
+  --danger: #ccc;
+  --on-panel: #fff;
+  --inverse-text: #000;
+  --icon-filter: invert(1);
+  --control-hover: #1a1a1a;
+  --icon-button-border: rgba(204, 204, 204, 0.22);
+  --icon-button-bg: rgb(255 255 255 / 0.045);
+  --icon-button-hover-bg: rgb(255 255 255 / 0.075);
+  --icon-button-hover-border: rgba(204, 204, 204, 0.34);
+  --icon-button-active-bg: rgb(255 255 255 / 0.08);
+  --icon-button-active-border: rgba(204, 204, 204, 0.42);
+  --overlay-bg: rgb(0 0 0 / 0.64);
+  --progress-track: #1a1a1a;
+  --progress-track-border: #262626;
+  --sample-text: #d0d0d0;
+  --sample-done: var(--text);
+  --sample-rest: #4f4f4f;
+  --sample-border: #2f2f2f;
+  --menu-border: rgb(255 255 255 / 0.08);
+  --mode-hover-bg: #2a2a2a;
+  --segmented-hover-bg: rgba(204, 204, 204, 0.08);
+  --segmented-active-bg: rgba(204, 204, 204, 0.16);
+  --segmented-active-border: rgba(204, 204, 204, 0.4);
+  --focus-ring: rgba(204, 204, 204, 0.5);
+  --panel-subtle: #101010;
+  --panel-raised: #171717;
+  --panel-raised-hover: #212121;
+  --panel-raised-active: #292929;
+  --card-bg: #0f0f0f;
+  --card-active-bg: #151515;
+  --chip-border: #363636;
+  --chip-action-border: #575757;
+  --chip-action-hover-border: #7a7a7a;
+  --placeholder-text: #8e8e8e;
+  --danger-text: #ffd2d2;
+  --toggle-track: #2a2a2a;
+  --toggle-thumb: #999;
+  --toggle-active-track: #ccc;
+  --toggle-active-thumb: #000;
+  --key-lit-border: #b8b8b8;
+  --key-lit-bg: linear-gradient(180deg, #1c1c1c 0%, #141414 100%);
+  --key-lit-glow: rgb(255 255 255 / 0.18);
+  --key-lit-glow-side: rgb(255 255 255 / 0.2);
+  --key-lit-text: #e8e8e8;
+  --key-lit-label: #f2f2f2;
+  --key-lit-inset-strong: rgb(255 255 255 / 0.16);
+  --key-lit-inset-soft: rgb(255 255 255 / 0.07);
+  --key-correct-border: #98e0ab;
+  --key-correct-bg: linear-gradient(180deg, #1d2a20 0%, #141c15 100%);
+  --key-correct-glow: rgb(104 255 151 / 0.234);
+  --key-correct-text: #e7ffed;
+  --key-correct-label: #f3fff6;
+  --key-correct-inset-strong: rgb(142 255 173 / 0.208);
+  --key-correct-inset-soft: rgb(104 255 151 / 0.091);
+  --key-wrong-border: #e09b9b;
+  --key-wrong-bg: linear-gradient(180deg, #2a1d1d 0%, #1c1414 100%);
+  --key-wrong-glow: rgb(255 104 104 / 0.234);
+  --key-wrong-text: #ffe7e7;
+  --key-wrong-label: #fff1f1;
+  --key-wrong-inset-strong: rgb(255 142 142 / 0.208);
+  --key-wrong-inset-soft: rgb(255 104 104 / 0.091);
+  --key-finger-bg: linear-gradient(180deg, #1b1b1b 0%, #141414 100%);
+  --key-finger-selected-bg: linear-gradient(180deg, #222 0%, #151515 100%);
+  --key-enter-selected-fill: #151515;
+  --key-enter-correct-fill: #121812;
+  --key-enter-wrong-fill: #181212;
+  --finger-neutral: #a8a8a8;
+  --finger-picker-neutral: #4e4e4e;
+  --finger-picker-hover-neutral: #7a7a7a;
+  --finger-picker-hover-bg: #171717;
+  --finger-picker-active-bg: #1f1f1f;
+  --finger-lit-shadow-strong: rgb(255 255 255 / 0.42);
+  --finger-lit-shadow-soft: rgb(255 255 255 / 0.2);
+  --practice-current-shadow-strong: rgb(255 255 255 / 0.2);
+  --practice-current-shadow-soft: rgb(255 255 255 / 0.08);
+  --practice-error-border: #777;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --app-font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", sans-serif;
+  --bg: #f5f5f7;
+  --panel: #ffffff;
+  --panel-strong: #f2f3f5;
+  --key: #ffffff;
+  --key-hover: #f8f9fb;
+  --key-active: #eef0f3;
+  --line: #d6d9df;
+  --line-soft: #e4e6eb;
+  --text: #1d1d1f;
+  --muted: #6e737a;
+  --quiet: #8b9097;
+  --accent: #3f4247;
+  --accent-2: #555b63;
+  --danger: #a14d4d;
+  --on-panel: #111;
+  --inverse-text: #fff;
+  --icon-filter: none;
+  --control-hover: #f2f3f5;
+  --icon-button-border: rgba(60, 64, 72, 0.12);
+  --icon-button-bg: rgb(255 255 255 / 0.72);
+  --icon-button-hover-bg: #fff;
+  --icon-button-hover-border: rgba(60, 64, 72, 0.2);
+  --icon-button-active-bg: #f0f2f5;
+  --icon-button-active-border: rgba(60, 64, 72, 0.24);
+  --overlay-bg: rgb(38 41 46 / 0.22);
+  --progress-track: #e8eaee;
+  --progress-track-border: #dde0e6;
+  --sample-text: #303236;
+  --sample-done: #6f747b;
+  --sample-rest: #9ca1a8;
+  --sample-border: #e2e5ea;
+  --menu-border: rgb(60 64 72 / 0.08);
+  --mode-hover-bg: #f0f2f5;
+  --segmented-hover-bg: rgb(60 64 72 / 0.055);
+  --segmented-active-bg: #f7f8fa;
+  --segmented-active-border: rgb(60 64 72 / 0.14);
+  --focus-ring: rgba(74, 112, 184, 0.24);
+  --panel-subtle: #f7f8fa;
+  --panel-raised: #fff;
+  --panel-raised-hover: #f7f8fa;
+  --panel-raised-active: #eef0f4;
+  --card-bg: #fff;
+  --card-active-bg: #f1f3f6;
+  --chip-border: #e2e5ea;
+  --chip-action-border: #d6dae1;
+  --chip-action-hover-border: #c2c7d0;
+  --placeholder-text: #a0a5ad;
+  --danger-text: #9a4242;
+  --toggle-track: #e5e7ec;
+  --toggle-thumb: #9aa0a8;
+  --toggle-active-track: #2c2d30;
+  --toggle-active-thumb: #fff;
+  --key-lit-border: #5b8def;
+  --key-lit-bg: linear-gradient(180deg, #f5f9ff 0%, #e8f0ff 100%);
+  --key-lit-glow: rgb(78 132 238 / 0.22);
+  --key-lit-glow-side: rgb(78 132 238 / 0.18);
+  --key-lit-text: #173b7a;
+  --key-lit-label: #12346f;
+  --key-lit-inset-strong: rgb(72 124 226 / 0.2);
+  --key-lit-inset-soft: rgb(72 124 226 / 0.09);
+  --key-correct-border: #78b88a;
+  --key-correct-bg: linear-gradient(180deg, #f7fff9 0%, #edf8f0 100%);
+  --key-correct-glow: rgb(84 161 102 / 0.1);
+  --key-correct-text: #235232;
+  --key-correct-label: #1f442b;
+  --key-correct-inset-strong: rgb(84 161 102 / 0.11);
+  --key-correct-inset-soft: rgb(84 161 102 / 0.045);
+  --key-wrong-border: #d49a9a;
+  --key-wrong-bg: linear-gradient(180deg, #fff8f8 0%, #f8eeee 100%);
+  --key-wrong-glow: rgb(179 80 80 / 0.1);
+  --key-wrong-text: #743030;
+  --key-wrong-label: #5d2424;
+  --key-wrong-inset-strong: rgb(179 80 80 / 0.11);
+  --key-wrong-inset-soft: rgb(179 80 80 / 0.045);
+  --key-finger-bg: linear-gradient(180deg, #ffffff 0%, #f4f6f9 100%);
+  --key-finger-selected-bg: linear-gradient(180deg, #f9fafc 0%, #edf0f5 100%);
+  --key-enter-selected-fill: #f4f6f9;
+  --key-enter-correct-fill: #f0f9f2;
+  --key-enter-wrong-fill: #f9eeee;
+  --finger-neutral: #c6cad1;
+  --finger-picker-neutral: #d6dae1;
+  --finger-picker-hover-neutral: #b9bec7;
+  --finger-picker-hover-bg: #f4f6f9;
+  --finger-picker-active-bg: #eceff4;
+  --finger-lit-shadow-strong: rgb(80 86 96 / 0.11);
+  --finger-lit-shadow-soft: rgb(80 86 96 / 0.06);
+  --practice-current-shadow-strong: rgb(50 54 61 / 0.12);
+  --practice-current-shadow-soft: rgb(50 54 61 / 0.055);
+  --practice-error-border: #d8b4b4;
+  --panel-shadow: 0 10px 28px rgb(31 35 41 / 0.06);
+  --key-shadow: 0 1px 2px rgb(31 35 41 / 0.06), 0 8px 18px rgb(31 35 41 / 0.035);
+}
+
+:root[data-practice-text-size="s"] {
+  --practice-sample-font-size: 30px;
+}
+
+:root[data-practice-text-size="m"] {
+  --practice-sample-font-size: 36px;
+}
+
+:root[data-practice-text-size="l"] {
+  --practice-sample-font-size: 44px;
 }
 
 * {
@@ -35,7 +224,8 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
-  font-family: "SF Pro Display", "SF Pro Text", "SF Compact Display", "SF Compact Text", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: var(--app-font-family);
+  transition: background 160ms ease, color 160ms ease;
 }
 
 button,

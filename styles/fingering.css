@@ -41,7 +41,7 @@
   padding: 14px 16px;
   border: 1px solid var(--line-soft);
   border-radius: 10px;
-  background: #101010;
+  background: var(--panel-subtle);
 }
 
 .keyboard-editor-panel.visible {
@@ -56,7 +56,7 @@
   justify-content: center;
   width: 26px;
   height: 26px;
-  border: 1px solid #4e4e4e;
+  border: 1px solid var(--finger-picker-neutral);
   border-radius: 999px;
   background: transparent;
   color: transparent;
@@ -64,6 +64,10 @@
   padding: 0;
   transform: translate(-50%, -50%);
   transition: border-color 140ms ease, background 140ms ease, transform 140ms ease;
+}
+
+.keyboard-finger-picker.visible .finger-picker {
+  transition: none;
 }
 
 .finger-picker::after {
@@ -76,8 +80,12 @@
   transition: background 140ms ease, transform 140ms ease;
 }
 
+.keyboard-finger-picker.visible .finger-picker::after {
+  transition: none;
+}
+
 .finger-picker.key-finger-all {
-  border-color: color-mix(in srgb, var(--finger-assignment-border) 42%, #4e4e4e 58%);
+  border-color: color-mix(in srgb, var(--finger-assignment-border) 42%, var(--finger-picker-neutral) 58%);
   background: color-mix(in srgb, var(--finger-assignment-wash) 22%, transparent);
   box-shadow:
     inset 0 0 0 1px color-mix(in srgb, var(--finger-assignment-border) 5%, transparent);
@@ -88,16 +96,23 @@
 }
 
 .finger-picker:hover {
-  border-color: color-mix(in srgb, var(--finger-assignment-border) 62%, #7a7a7a 38%);
-  background: color-mix(in srgb, var(--finger-assignment-wash) 36%, #171717 64%);
+  border-color: color-mix(in srgb, var(--finger-assignment-border) 62%, var(--finger-picker-hover-neutral) 38%);
+  background: color-mix(in srgb, var(--finger-assignment-wash) 36%, var(--finger-picker-hover-bg) 64%);
 }
 
 .finger-picker.active {
   border-color: var(--finger-assignment-border);
-  background: color-mix(in srgb, var(--finger-assignment-wash) 92%, #1f1f1f 8%);
+  background: color-mix(in srgb, var(--finger-assignment-wash) 92%, var(--finger-picker-active-bg) 8%);
   box-shadow:
-    inset 0 0 0 1px color-mix(in srgb, var(--finger-assignment-border) 28%, white 8%),
+    inset 0 0 0 1px color-mix(in srgb, var(--finger-assignment-border) 28%, var(--on-panel) 8%),
     0 0 14px color-mix(in srgb, var(--finger-assignment-border) 22%, transparent);
+}
+
+:root[data-theme="dark"] .finger-picker.active {
+  background: color-mix(in srgb, var(--finger-assignment-wash) 62%, var(--finger-picker-active-bg) 38%);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--finger-assignment-border) 18%, var(--on-panel) 6%),
+    0 0 10px color-mix(in srgb, var(--finger-assignment-border) 12%, transparent);
 }
 
 .finger-picker.active::after {
@@ -145,7 +160,7 @@
   padding: 12px;
   border: 1px solid var(--line-soft);
   border-radius: 10px;
-  background: #0f0f0f;
+  background: var(--card-bg);
   transition: border-color 140ms ease, background 140ms ease;
 }
 
@@ -155,7 +170,7 @@
 
 .finger-card.active {
   border-color: var(--accent);
-  background: #151515;
+  background: var(--card-active-bg);
 }
 
 .finger-card-head {
@@ -176,7 +191,7 @@
 }
 
 .finger-card-name {
-  color: #f2f2f2;
+  color: var(--on-panel);
   font-size: 15px;
   font-weight: 700;
 }
@@ -194,9 +209,9 @@
 
 .finger-key-chip {
   min-height: 30px;
-  border: 1px solid #363636;
+  border: 1px solid var(--chip-border);
   border-radius: 999px;
-  background: #171717;
+  background: var(--panel-raised);
   color: var(--muted);
   font-size: 13px;
   line-height: 1;
@@ -210,17 +225,17 @@
 }
 
 .finger-key-chip.add-btn {
-  border-color: #575757;
-  background: #212121;
-  color: #f2f2f2;
+  border-color: var(--chip-action-border);
+  background: var(--panel-raised-hover);
+  color: var(--on-panel);
   cursor: pointer;
   font-weight: 700;
   padding-inline: 12px;
 }
 
 .finger-key-chip.add-btn:hover {
-  border-color: #7a7a7a;
-  background: #292929;
+  border-color: var(--chip-action-hover-border);
+  background: var(--panel-raised-active);
 }
 
 .finger-key-chip.add-input {
@@ -233,5 +248,5 @@
 }
 
 .finger-key-chip.add-input::placeholder {
-  color: #8e8e8e;
+  color: var(--placeholder-text);
 }

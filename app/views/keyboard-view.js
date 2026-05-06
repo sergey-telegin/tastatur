@@ -83,10 +83,10 @@ function fingerAssignmentPalette(fingerId) {
       wash: "rgb(255 255 255 / 0.108)"
     },
     "left-pinky": {
-      border: "#7be1a1",
-      text: "#ddffea",
-      glow: "rgb(123 225 161 / 0.132)",
-      wash: "rgb(123 225 161 / 0.108)"
+      border: "#8ae1a6",
+      text: "#e8fff0",
+      glow: "rgb(114 240 156 / 0.132)",
+      wash: "rgb(114 240 156 / 0.108)"
     },
     "right-pinky": {
       border: "#e09b9b",
@@ -125,10 +125,10 @@ function fingerAssignmentPalette(fingerId) {
       wash: "rgb(255 104 104 / 0.108)"
     },
     "right-index": {
-      border: "#98e0ab",
-      text: "#f3fff6",
-      glow: "rgb(104 255 151 / 0.132)",
-      wash: "rgb(104 255 151 / 0.108)"
+      border: "#8ae1a6",
+      text: "#e8fff0",
+      glow: "rgb(114 240 156 / 0.132)",
+      wash: "rgb(114 240 156 / 0.108)"
     }
   };
 

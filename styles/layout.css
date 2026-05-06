@@ -40,6 +40,10 @@ h1 {
   display: none;
 }
 
+:root[data-theme="light"] .page-title {
+  font-weight: 650;
+}
+
 .practice-progress {
   display: flex;
   align-items: center;
@@ -71,8 +75,12 @@ h1 {
 }
 
 .settings-btn:hover {
-  background: #1a1a1a;
-  color: #fff;
+  background: var(--control-hover);
+  color: var(--on-panel);
+}
+
+:root[data-theme="light"] .settings-btn {
+  box-shadow: var(--panel-shadow);
 }
 
 .settings-btn:active {

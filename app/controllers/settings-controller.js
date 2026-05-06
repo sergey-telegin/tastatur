@@ -90,6 +90,36 @@ function toggleKeySound() {
   setKeySoundEnabled(!keySoundEnabled);
 }
 
+function setPracticeTextSize(nextSize) {
+  if (practiceTextSize === nextSize) return;
+
+  practiceTextSize = ["s", "m", "l"].includes(nextSize) ? nextSize : "m";
+  saved.practiceTextSize = practiceTextSize;
+  applyPracticeTextSize();
+  persist();
+  renderPracticeTextSizeToggle();
+}
+
+function togglePracticeTextSize() {
+  const sizeOrder = ["s", "m", "l"];
+  const currentIndex = sizeOrder.indexOf(practiceTextSize);
+  setPracticeTextSize(sizeOrder[(currentIndex + 1) % sizeOrder.length]);
+}
+
+function setTheme(nextTheme) {
+  if (currentTheme === nextTheme) return;
+
+  currentTheme = nextTheme === "light" ? "light" : "dark";
+  saved.theme = currentTheme;
+  applyTheme();
+  persist();
+  renderThemeToggle();
+}
+
+function toggleTheme() {
+  setTheme(currentTheme === "light" ? "dark" : "light");
+}
+
 function toggleDisplaySetting(settingName) {
   const stateByName = {
     keyHighlightEnabled,

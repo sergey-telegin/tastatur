@@ -1,9 +1,10 @@
 <!doctype html>
-<html lang="ru">
+<html lang="ru" data-theme="dark" data-practice-text-size="m">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Редактор раскладок клавиатуры</title>
+    <script src="app/theme-init.js"></script>
     <link rel="stylesheet" href="styles/main.css">
   </head>
   <body>
@@ -99,9 +100,17 @@
           <section class="menu-section" aria-label="Основные">
             <div class="settings-group sound-icon-group" aria-label="Звук">
               <span class="settings-label visually-hidden" id="soundLabel">Звук</span>
+              <button class="sound-icon-btn" id="themeToggle" type="button" aria-pressed="false">
+                <img class="theme-icon" id="themeIcon" src="assets/theme-toggle.svg" alt="" aria-hidden="true">
+                <span class="visually-hidden" id="themeToggleText">Тёмная</span>
+              </button>
               <button class="sound-icon-btn" id="keySoundToggle" type="button" aria-pressed="true">
                 <img class="sound-icon" id="keySoundIcon" src="assets/sound-on.svg" alt="" aria-hidden="true">
                 <span class="visually-hidden" id="keySoundToggleText">Вкл</span>
+              </button>
+              <button class="sound-icon-btn text-size-icon-btn" id="practiceTextSizeToggle" type="button" aria-label="Размер текста: M">
+                <span class="text-size-icon" id="practiceTextSizeIcon" aria-hidden="true">M</span>
+                <span class="visually-hidden" id="practiceTextSizeToggleText">M</span>
               </button>
             </div>
             <div class="settings-group" aria-label="Язык">
