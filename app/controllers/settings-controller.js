@@ -82,7 +82,7 @@ function setKeySoundEnabled(isEnabled) {
   persist();
   renderKeySoundToggle();
   if (keySoundEnabled) {
-    playKeySound();
+    unlockKeyAudioContext().then(playKeySound);
   }
 }
 

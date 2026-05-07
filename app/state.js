@@ -33,8 +33,10 @@ let alternateLinesEnabled = false;
 let practiceTypedValue = "";
 
 function initializeAppState(savedState = {}) {
-  currentLanguage = savedState.currentLanguage || "de";
+  currentLanguage = languages[savedState.currentLanguage] ? savedState.currentLanguage : "de";
   currentPracticeModule = savedState.currentPracticeModule || "module1";
+  saved.currentLanguage = currentLanguage;
+  saved.currentPracticeModule = currentPracticeModule;
   selectedKey = "a";
   editMode = false;
   practiceLineIndex = 0;

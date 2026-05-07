@@ -14,6 +14,18 @@ function migrateSavedState(savedState) {
     changed = true;
   }
 
+  if (nextState.currentLanguage && !languages[nextState.currentLanguage]) {
+    nextState.currentLanguage = "de";
+    changed = true;
+  }
+
+  Object.keys(languages).forEach(language => {
+    if (nextState[language] && (typeof nextState[language] !== "object" || Array.isArray(nextState[language]))) {
+      delete nextState[language];
+      changed = true;
+    }
+  });
+
   return { savedState: nextState, changed };
 }
 

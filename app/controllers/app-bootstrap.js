@@ -168,6 +168,9 @@ function bindAppEvents() {
     selectKeyboardFingerPicker(button);
   });
 
+  document.addEventListener("pointerdown", unlockKeyAudioContext, { capture: true });
+  document.addEventListener("touchstart", unlockKeyAudioContext, { capture: true });
+  document.addEventListener("keydown", unlockKeyAudioContext, { capture: true });
   document.addEventListener("keydown", handleFingerKeyboardPhysicalInput);
   window.addEventListener("keydown", handleGlobalKeyDown);
   trainer.addEventListener("pointerdown", focusPracticeInputFromInteraction);

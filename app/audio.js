@@ -1,13 +1,12 @@
 let keyAudioContext = null;
 let keyNoiseBuffer = null;
+let keyAudioUnlockPromise = null;
 
 function isKeySoundEnabled() {
   return keySoundEnabled !== false;
 }
 
-function ensureKeyAudioContext() {
-  if (!isKeySoundEnabled()) return null;
-
+function createKeyAudioContext() {
   const AudioContextConstructor = window.AudioContext || window.webkitAudioContext;
   if (!AudioContextConstructor) return null;
 
@@ -15,11 +14,53 @@ function ensureKeyAudioContext() {
     keyAudioContext = new AudioContextConstructor();
   }
 
-  if (keyAudioContext.state === "suspended") {
-    keyAudioContext.resume();
+  return keyAudioContext;
+}
+
+function unlockKeyAudioContext() {
+  if (!isKeySoundEnabled()) return Promise.resolve(null);
+
+  const context = createKeyAudioContext();
+  if (!context) return Promise.resolve(null);
+  if (context.state === "running") return Promise.resolve(context);
+  if (keyAudioUnlockPromise) return keyAudioUnlockPromise;
+
+  keyAudioUnlockPromise = Promise.resolve()
+    .then(() => context.resume?.())
+    .then(() => {
+      if (context.state !== "running") return context;
+
+      const buffer = context.createBuffer(1, 1, context.sampleRate);
+      const source = context.createBufferSource();
+      const gain = context.createGain();
+      gain.gain.value = 0.0001;
+      source.buffer = buffer;
+      source.connect(gain);
+      gain.connect(context.destination);
+      source.start(0);
+      source.stop(context.currentTime + 0.001);
+      return context;
+    })
+    .catch(() => context)
+    .finally(() => {
+      keyAudioUnlockPromise = null;
+    });
+
+  return keyAudioUnlockPromise;
+}
+
+function ensureKeyAudioContext() {
+  if (!isKeySoundEnabled()) return null;
+
+  const context = createKeyAudioContext();
+  if (!context) return null;
+
+  if (context.state !== "running") {
+    unlockKeyAudioContext();
+    return null;
   }
 
-  return keyAudioContext;
+  return context;
 }
 
 function randomBetween(min, max) {
