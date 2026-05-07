@@ -32,7 +32,7 @@ function currentPracticeSpeed() {
   const elapsedMs = currentPracticeActiveElapsedMs();
   if (elapsedMs <= 0) return 0;
 
-  return Math.round((practiceCorrectCharCount * 60000) / elapsedMs);
+  return Math.min(999, Math.round((practiceCorrectCharCount * 60000) / elapsedMs));
 }
 
 function currentPracticeAccuracy() {
@@ -44,10 +44,18 @@ function currentPracticeAccuracy() {
 
 function renderPracticeStats() {
   const text = textFor();
+  const speedNumber = document.createElement("span");
+  const speedUnit = document.createElement("span");
+
+  speedNumber.className = "practice-speed-number";
+  speedNumber.textContent = String(currentPracticeSpeed());
+  speedUnit.className = "practice-speed-unit";
+  speedUnit.textContent = text.practiceSpeedUnit;
+
   practiceAccuracyLabel.textContent = text.practiceAccuracy;
   practiceSpeedLabel.textContent = text.practiceSpeed;
   practiceAccuracyValue.textContent = `${currentPracticeAccuracy()}%`;
-  practiceSpeedValue.textContent = `${currentPracticeSpeed()} ${text.practiceSpeedUnit}`;
+  practiceSpeedValue.replaceChildren(speedNumber, speedUnit);
   renderStatsDialog();
 }
 
