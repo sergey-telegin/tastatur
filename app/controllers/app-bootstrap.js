@@ -175,6 +175,17 @@ function bindAppEvents() {
   document.addEventListener("pointerdown", focusPracticeInputFromInteraction);
   window.addEventListener("focus", focusPracticeInputSoon);
   window.addEventListener("resize", fitKeyboardScene);
+  window.addEventListener("load", () => {
+    refitKeyboardScene();
+    requestAnimationFrame(fitKeyboardScene);
+  });
+
+  if (window.ResizeObserver) {
+    const keyboardResizeObserver = new ResizeObserver(() => {
+      fitKeyboardScene();
+    });
+    keyboardResizeObserver.observe(keyboardScale);
+  }
 }
 
 function initializeApp() {
@@ -182,5 +193,11 @@ function initializeApp() {
   hydrateFingerSvgs().finally(() => {
     render();
     focusPracticeInputSoon();
+    requestAnimationFrame(fitKeyboardScene);
+    setTimeout(fitKeyboardScene, 120);
+
+    if (document.fonts?.ready) {
+      document.fonts.ready.then(refitKeyboardScene).catch(() => {});
+    }
   });
 }

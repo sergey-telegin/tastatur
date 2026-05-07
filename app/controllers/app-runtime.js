@@ -23,5 +23,5 @@ function render() {
   renderKeyboard();
   renderSelect();
   selectKey(selectedKey);
-  fitKeyboardScene();
+  refitKeyboardScene();
 }

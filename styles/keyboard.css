@@ -1,6 +1,7 @@
 .keyboard-scale {
   position: relative;
   width: 100%;
+  min-width: 0;
   height: var(--keyboard-stage-height);
 }
 
@@ -8,6 +9,8 @@
   position: absolute;
   top: 0;
   left: 0;
+  width: var(--keyboard-width);
+  max-width: none;
   overflow: hidden;
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -26,6 +29,7 @@
   position: relative;
   z-index: 1;
   display: grid;
+  min-width: 0;
   column-gap: 0;
   row-gap: var(--key-gap);
   grid-auto-rows: var(--key-height);

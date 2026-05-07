@@ -270,7 +270,7 @@ function fitKeyboardScene() {
 
   if (!keyboardDesignWidth) {
     keyboardDesignWidth = availableWidth;
-    keyboardWrap.style.width = `${keyboardDesignWidth}px`;
+    document.documentElement.style.setProperty("--keyboard-width", `${keyboardDesignWidth}px`);
     keyboardDesignHeight = keyboardWrap.offsetHeight;
   }
 
@@ -278,4 +278,17 @@ function fitKeyboardScene() {
   document.documentElement.style.setProperty("--keyboard-scale", String(scale));
   document.documentElement.style.setProperty("--keyboard-stage-height", `${keyboardDesignHeight * scale}px`);
   applyHandCalibration();
+}
+
+function resetKeyboardSceneMetrics() {
+  keyboardDesignWidth = 0;
+  keyboardDesignHeight = 0;
+  document.documentElement.style.setProperty("--keyboard-scale", "1");
+  document.documentElement.style.setProperty("--keyboard-stage-height", "0px");
+  document.documentElement.style.setProperty("--keyboard-width", "100%");
+}
+
+function refitKeyboardScene() {
+  resetKeyboardSceneMetrics();
+  fitKeyboardScene();
 }

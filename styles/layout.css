@@ -1,5 +1,6 @@
 .app {
   width: min(1920px, 100%);
+  min-width: 0;
   margin: 0 auto;
   padding: 28px 34px 36px;
 }
@@ -7,6 +8,7 @@
 .topbar {
   display: flex;
   align-items: center;
+  min-width: 0;
   gap: 16px;
   margin-bottom: 14px;
   flex-wrap: nowrap;
