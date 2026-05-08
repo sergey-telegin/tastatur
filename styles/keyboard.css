@@ -113,6 +113,10 @@
   text-shadow: none;
 }
 
+:root[data-theme="light"] .key.key-lit {
+  border-color: var(--key-lit-label);
+}
+
 .key[data-key="space"].key-lit.space-left {
   background:
     radial-gradient(circle at 28% 54%, var(--key-lit-glow-side), transparent 26%),

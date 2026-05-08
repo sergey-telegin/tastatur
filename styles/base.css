@@ -163,12 +163,12 @@
   --toggle-thumb: #9aa0a8;
   --toggle-active-track: #2c2d30;
   --toggle-active-thumb: #fff;
-  --key-lit-border: #5b8def;
+  --key-lit-border: #1d1d1f;
   --key-lit-bg: linear-gradient(180deg, #f5f9ff 0%, #e8f0ff 100%);
   --key-lit-glow: rgb(78 132 238 / 0.22);
   --key-lit-glow-side: rgb(78 132 238 / 0.18);
-  --key-lit-text: #173b7a;
-  --key-lit-label: #12346f;
+  --key-lit-text: #1d1d1f;
+  --key-lit-label: #1d1d1f;
   --key-lit-inset-strong: rgb(72 124 226 / 0.2);
   --key-lit-inset-soft: rgb(72 124 226 / 0.09);
   --key-correct-border: #78b88a;
