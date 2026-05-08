@@ -114,7 +114,7 @@
 }
 
 :root[data-theme="light"] .key.key-lit {
-  border-color: var(--key-lit-label);
+  border-color: color-mix(in srgb, var(--key-lit-label) 60%, transparent);
 }
 
 .key[data-key="space"].key-lit.space-left {
@@ -465,7 +465,7 @@
 }
 
 :root[data-theme="light"] .key-enter.key-lit .enter-shape {
-  stroke: var(--key-lit-border);
+  stroke: color-mix(in srgb, var(--key-lit-border) 60%, transparent);
 }
 
 .key-enter.key-correct .enter-shape {

@@ -164,7 +164,7 @@
   --toggle-active-track: #2c2d30;
   --toggle-active-thumb: #fff;
   --key-lit-border: #1d1d1f;
-  --key-lit-bg: linear-gradient(180deg, #f5f9ff 0%, #e8f0ff 100%);
+  --key-lit-bg: var(--key);
   --key-lit-glow: rgb(78 132 238 / 0.22);
   --key-lit-glow-side: rgb(78 132 238 / 0.18);
   --key-lit-text: #1d1d1f;
