@@ -83,10 +83,10 @@ function fingerAssignmentPalette(fingerId) {
       wash: "rgb(255 255 255 / 0.108)"
     },
     "left-pinky": {
-      border: "#8ae1a6",
-      text: "#e8fff0",
-      glow: "rgb(114 240 156 / 0.132)",
-      wash: "rgb(114 240 156 / 0.108)"
+      border: "#79d7f1",
+      text: "#dcf8ff",
+      glow: "rgb(121 215 241 / 0.132)",
+      wash: "rgb(121 215 241 / 0.108)"
     },
     "right-pinky": {
       border: "#e09b9b",
@@ -95,10 +95,10 @@ function fingerAssignmentPalette(fingerId) {
       wash: "rgb(255 104 104 / 0.108)"
     },
     "left-ring": {
-      border: "#79d7f1",
-      text: "#dcf8ff",
-      glow: "rgb(121 215 241 / 0.132)",
-      wash: "rgb(121 215 241 / 0.108)"
+      border: "#8ae1a6",
+      text: "#e8fff0",
+      glow: "rgb(114 240 156 / 0.132)",
+      wash: "rgb(114 240 156 / 0.108)"
     },
     "right-ring": {
       border: "#ffd86f",
@@ -145,6 +145,12 @@ function applyFingerAssignmentTheme(key, fingerId) {
   key.style.setProperty("--finger-assignment-wash", palette.wash);
 }
 
+function applyFingerZoneTheme(key, fingerId) {
+  const palette = fingerAssignmentPalette(fingerId);
+  key.classList.add("key-finger-zone");
+  key.style.setProperty("--finger-assignment-border", palette.border);
+}
+
 function applyFingerVisualTheme(finger, fingerId) {
   const palette = fingerAssignmentPalette(fingerId);
   finger.classList.add("finger-assignment-colored");
@@ -166,7 +172,8 @@ function renderFingerVisualThemes() {
 function renderKeyboard() {
   const labels = labelsFor(currentLanguage);
   const highlightedKeys = activeFingerKeys();
-  const allFingerOwners = fingerKeyboardMode ? allFingerKeyOwners() : null;
+  const shouldShowFingerZones = fingerKeyboardMode || (!fingerMapDialog.open && fingerZonesEnabled);
+  const allFingerOwners = shouldShowFingerZones ? allFingerKeyOwners() : null;
   const practiceTarget = fingerKeyboardMode ? { keyId: null, spaceSide: null } : currentPracticeTarget();
 
   handsLayer.classList.toggle("finger-editor-mode", fingerKeyboardMode);
@@ -176,9 +183,9 @@ function renderKeyboard() {
 
   geometry.forEach(([id, row, column, span, extra = "", rowSpan = 1]) => {
     const key = document.createElement("button");
-    const isPracticeKey = keyHighlightEnabled && (practiceTarget.keyId === id || practiceTarget.secondaryKeyId === id || technicalPracticeKeyId === id);
-    const isCorrectPracticeKey = pressHighlightEnabled && !fingerKeyboardMode && correctPracticeKeyId === id;
-    const isWrongPracticeKey = pressHighlightEnabled && !fingerKeyboardMode && wrongPracticeKeyId === id;
+    const isPracticeKey = keyHighlightEnabled && (practiceTarget.keyId === id || practiceTarget.secondaryKeyId === id || technicalPracticeKeyId === id || pressedPracticeKeyIds.has(id));
+    const isCorrectPracticeKey = pressHighlightEnabled && !fingerKeyboardMode && (correctPracticeKeyId === id || correctPressedPracticeKeyIds.has(id));
+    const isWrongPracticeKey = pressHighlightEnabled && !fingerKeyboardMode && (wrongPracticeKeyId === id || wrongPressedPracticeKeyIds.has(id));
 
     key.type = "button";
     key.className = keyboardKeyClassName({
@@ -192,8 +199,10 @@ function renderKeyboard() {
     });
     key.dataset.key = id;
 
-    if (allFingerOwners?.[id]) {
+    if (allFingerOwners?.[id] && fingerKeyboardMode) {
       applyFingerAssignmentTheme(key, allFingerOwners[id]);
+    } else if (allFingerOwners?.[id] && !isPracticeKey && !isCorrectPracticeKey && !isWrongPracticeKey) {
+      applyFingerZoneTheme(key, allFingerOwners[id]);
     }
 
     if (id === "space") {

@@ -244,12 +244,14 @@ function renderBooleanToggle(button, textNode, isEnabled, labels = {}) {
 function renderDisplaySettings() {
   const text = textFor();
   keyHighlightLabel.textContent = text.keyHighlight;
+  fingerZonesLabel.textContent = text.fingerZones;
   fingerHighlightLabel.textContent = text.fingerHighlight;
   pressHighlightLabel.textContent = text.pressHighlight;
   showFingersLabel.textContent = text.showFingers;
   alternateLinesLabel.textContent = text.alternateLines;
 
   renderBooleanToggle(keyHighlightToggle, keyHighlightToggleText, keyHighlightEnabled);
+  renderBooleanToggle(fingerZonesToggle, fingerZonesToggleText, fingerZonesEnabled);
   renderBooleanToggle(fingerHighlightToggle, fingerHighlightToggleText, fingerHighlightEnabled);
   renderBooleanToggle(pressHighlightToggle, pressHighlightToggleText, pressHighlightEnabled);
   renderBooleanToggle(showFingersToggle, showFingersToggleText, showFingersEnabled);

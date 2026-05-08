@@ -123,6 +123,7 @@ function toggleTheme() {
 function toggleDisplaySetting(settingName) {
   const stateByName = {
     keyHighlightEnabled,
+    fingerZonesEnabled,
     fingerHighlightEnabled,
     pressHighlightEnabled,
     showFingersEnabled,
@@ -131,6 +132,7 @@ function toggleDisplaySetting(settingName) {
   const nextValue = !stateByName[settingName];
 
   if (settingName === "keyHighlightEnabled") keyHighlightEnabled = nextValue;
+  if (settingName === "fingerZonesEnabled") fingerZonesEnabled = nextValue;
   if (settingName === "fingerHighlightEnabled") fingerHighlightEnabled = nextValue;
   if (settingName === "pressHighlightEnabled") pressHighlightEnabled = nextValue;
   if (settingName === "showFingersEnabled") showFingersEnabled = nextValue;

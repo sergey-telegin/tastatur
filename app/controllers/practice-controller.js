@@ -228,6 +228,13 @@ function isUppercaseLetter(character) {
   return character.toLowerCase() !== character.toUpperCase() && character === character.toUpperCase();
 }
 
+function characterRequiresShift(character, keyId) {
+  if (isUppercaseLetter(character)) return true;
+
+  const printableSymbols = extractPrintableKeySymbols(labelsFor(currentLanguage)[keyId] ?? "");
+  return printableSymbols.length > 1 && printableSymbols[0] === character;
+}
+
 function oppositeShiftTargetForFinger(fingerId) {
   const hand = handForFinger(fingerId);
   if (hand === "left") {
@@ -270,7 +277,7 @@ function practiceTargetForIndex(index) {
 
   if (keyId !== "space") {
     const fingerId = mappedFingerForKey(keyId);
-    const shiftTarget = isUppercaseLetter(character) ? oppositeShiftTargetForFinger(fingerId) : { keyId: null, fingerId: null };
+    const shiftTarget = characterRequiresShift(character, keyId) ? oppositeShiftTargetForFinger(fingerId) : { keyId: null, fingerId: null };
 
     return {
       keyId,
@@ -318,8 +325,61 @@ function flashPracticeTechnical(keyId) {
   }, 140);
 }
 
+function setPressedPracticeKey(keyId, isPressed, { render = true } = {}) {
+  if (!keyId) return;
+
+  const nextPressedKeyIds = new Set(pressedPracticeKeyIds);
+  const nextCorrectPressedKeyIds = new Set(correctPressedPracticeKeyIds);
+  const nextWrongPressedKeyIds = new Set(wrongPressedPracticeKeyIds);
+  if (isPressed) {
+    nextPressedKeyIds.add(keyId);
+  } else {
+    nextPressedKeyIds.delete(keyId);
+    nextCorrectPressedKeyIds.delete(keyId);
+    nextWrongPressedKeyIds.delete(keyId);
+  }
+
+  const pressedDidChange = nextPressedKeyIds.size !== pressedPracticeKeyIds.size || nextPressedKeyIds.has(keyId) !== pressedPracticeKeyIds.has(keyId);
+  const correctPressedDidChange = nextCorrectPressedKeyIds.size !== correctPressedPracticeKeyIds.size || nextCorrectPressedKeyIds.has(keyId) !== correctPressedPracticeKeyIds.has(keyId);
+  const wrongPressedDidChange = nextWrongPressedKeyIds.size !== wrongPressedPracticeKeyIds.size || nextWrongPressedKeyIds.has(keyId) !== wrongPressedPracticeKeyIds.has(keyId);
+  if (!pressedDidChange && !correctPressedDidChange && !wrongPressedDidChange) {
+    return;
+  }
+
+  pressedPracticeKeyIds = nextPressedKeyIds;
+  correctPressedPracticeKeyIds = nextCorrectPressedKeyIds;
+  wrongPressedPracticeKeyIds = nextWrongPressedKeyIds;
+  if (render) {
+    renderKeyboard();
+  }
+}
+
+function setCorrectPressedPracticeKey(keyId) {
+  if (!keyId || !pressedPracticeKeyIds.has(keyId) || correctPressedPracticeKeyIds.has(keyId)) return;
+
+  correctPressedPracticeKeyIds = new Set(correctPressedPracticeKeyIds).add(keyId);
+  renderKeyboard();
+}
+
+function setWrongPressedPracticeKey(keyId) {
+  if (!keyId || !pressedPracticeKeyIds.has(keyId) || wrongPressedPracticeKeyIds.has(keyId)) return;
+
+  wrongPressedPracticeKeyIds = new Set(wrongPressedPracticeKeyIds).add(keyId);
+  renderKeyboard();
+}
+
+function clearPressedPracticeKeys() {
+  if (!pressedPracticeKeyIds.size && !correctPressedPracticeKeyIds.size && !wrongPressedPracticeKeyIds.size) return;
+
+  pressedPracticeKeyIds = new Set();
+  correctPressedPracticeKeyIds = new Set();
+  wrongPressedPracticeKeyIds = new Set();
+  renderKeyboard();
+}
+
 function flashPracticeCorrect(keyId) {
   correctPracticeKeyId = keyId || null;
+  setCorrectPressedPracticeKey(keyId);
   renderKeyboard();
 
   clearTimeout(flashPracticeCorrect.timer);
@@ -332,6 +392,7 @@ function flashPracticeCorrect(keyId) {
 function flashPracticeError(keyId) {
   wrongPracticeKeyId = keyId || null;
   correctPracticeKeyId = null;
+  setWrongPressedPracticeKey(keyId);
   setPracticeInputError(true);
   renderKeyboard();
 
@@ -494,6 +555,13 @@ function printableCharacterFromKeyEvent(event) {
 function applyPracticeKeyInput(event) {
   const keyId = keyIdFromEventCode(event.code);
   lastPhysicalPracticeKeyId = keyId;
+  setPressedPracticeKey(keyId, true, { render: false });
+
+  if (event.key === "Shift") {
+    if (currentPracticeTarget().secondaryKeyId === keyId) {
+      setCorrectPressedPracticeKey(keyId);
+    }
+  }
 
   if (practiceAwaitingEnter) {
     if (event.key === "Enter" || keyId === "enter") {
@@ -551,6 +619,11 @@ function applyPracticeKeyInput(event) {
   }
 
   return false;
+}
+
+function handleGlobalKeyUp(event) {
+  const keyId = keyIdFromEventCode(event.code);
+  setPressedPracticeKey(keyId, false);
 }
 
 function handleGlobalKeyDown(event) {

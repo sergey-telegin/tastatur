@@ -33,6 +33,7 @@ function bindAppEvents() {
   practiceTextSizeToggle.addEventListener("click", togglePracticeTextSize);
   themeToggle.addEventListener("click", toggleTheme);
   keyHighlightToggle.addEventListener("click", () => toggleDisplaySetting("keyHighlightEnabled"));
+  fingerZonesToggle.addEventListener("click", () => toggleDisplaySetting("fingerZonesEnabled"));
   fingerHighlightToggle.addEventListener("click", () => toggleDisplaySetting("fingerHighlightEnabled"));
   pressHighlightToggle.addEventListener("click", () => toggleDisplaySetting("pressHighlightEnabled"));
   showFingersToggle.addEventListener("click", () => toggleDisplaySetting("showFingersEnabled"));
@@ -173,10 +174,12 @@ function bindAppEvents() {
   document.addEventListener("keydown", unlockKeyAudioContext, { capture: true });
   document.addEventListener("keydown", handleFingerKeyboardPhysicalInput);
   window.addEventListener("keydown", handleGlobalKeyDown);
+  window.addEventListener("keyup", handleGlobalKeyUp);
   trainer.addEventListener("pointerdown", focusPracticeInputFromInteraction);
   practiceSample.addEventListener("pointerdown", focusPracticeInputFromInteraction);
   document.addEventListener("pointerdown", focusPracticeInputFromInteraction);
   window.addEventListener("focus", focusPracticeInputSoon);
+  window.addEventListener("blur", clearPressedPracticeKeys);
   window.addEventListener("resize", fitKeyboardScene);
   window.addEventListener("load", () => {
     refitKeyboardScene();
