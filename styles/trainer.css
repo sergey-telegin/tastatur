@@ -113,10 +113,16 @@
 .practice-speed-unit {
   display: inline-block;
   flex: 0 0 auto;
+  font-size: 13px;
+  font-weight: 700;
 }
 
 :root[data-theme="light"] .practice-stat-value {
   font-weight: 650;
+}
+
+:root[data-theme="light"] .practice-speed-unit {
+  font-weight: 600;
 }
 
 .trainer.hidden {

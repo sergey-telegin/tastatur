@@ -6,6 +6,7 @@ function scheduleKeyboardRefit() {
   });
   setTimeout(fitKeyboardScene, 120);
   setTimeout(refitKeyboardScene, 320);
+  setTimeout(refitKeyboardScene, 800);
 }
 
 function bindAppEvents() {
@@ -297,17 +298,29 @@ function bindAppEvents() {
 
 function initializeApp() {
   bindAppEvents();
-  hydrateFingerSvgs().finally(() => {
-    render();
+  render();
+  updateMetronome();
+  focusPracticeInputSoon();
+  scheduleKeyboardRefit();
+
+  requestAnimationFrame(() => {
     if (!openOnboardingIfNeeded()) {
       openCurrentLessonTip();
     }
-    updateMetronome();
-    focusPracticeInputSoon();
     scheduleKeyboardRefit();
-
-    if (document.fonts?.ready) {
-      document.fonts.ready.then(scheduleKeyboardRefit).catch(() => {});
-    }
   });
+
+  hydrateFingerSvgs().finally(() => {
+    renderKeyboard();
+    scheduleKeyboardRefit();
+  });
+
+  if (document.fonts?.ready) {
+    document.fonts.ready.then(() => {
+      scheduleKeyboardRefit();
+      if (!onboardingDialog.open && !lessonTipDialog.open) {
+        openCurrentLessonTip();
+      }
+    }).catch(() => {});
+  }
 }

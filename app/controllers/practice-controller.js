@@ -466,6 +466,16 @@ function currentPracticeLines() {
 
 // Temporary QA shortcut for reviewing lesson tips and lesson flow.
 const devCompletePracticeLineHotkeyEnabled = true;
+const devCompletePracticeLineShiftCodes = new Set();
+
+function isDevCompletePracticeLineHotkey(event) {
+  return (
+    devCompletePracticeLineHotkeyEnabled &&
+    event.key === "ArrowDown" &&
+    devCompletePracticeLineShiftCodes.has("ShiftLeft") &&
+    devCompletePracticeLineShiftCodes.has("ShiftRight")
+  );
+}
 
 function orderedPracticeLessonIds(language = currentLanguage) {
   const moduleGroups = practiceModuleGroupsFor(language);
@@ -780,6 +790,7 @@ function setWrongPressedPracticeKey(keyId) {
 }
 
 function clearPressedPracticeKeys() {
+  devCompletePracticeLineShiftCodes.clear();
   if (!pressedPracticeKeyIds.size && !correctPressedPracticeKeyIds.size && !wrongPressedPracticeKeyIds.size) return;
 
   pressedPracticeKeyIds = new Set();
@@ -1074,21 +1085,31 @@ function applyPracticeKeyInput(event) {
 }
 
 function handleGlobalKeyUp(event) {
+  if (event.code === "ShiftLeft" || event.code === "ShiftRight") {
+    devCompletePracticeLineShiftCodes.delete(event.code);
+  }
+
   const keyId = keyIdFromEventCode(event.code);
   setPressedPracticeKey(keyId, false);
 }
 
 function handleGlobalKeyDown(event) {
-  if (event.defaultPrevented || event.isComposing || isPracticeInputPaused() || isSystemKeyCombination(event)) return;
+  if (event.code === "ShiftLeft" || event.code === "ShiftRight") {
+    devCompletePracticeLineShiftCodes.add(event.code);
+  }
+
+  if (event.defaultPrevented || event.isComposing || isPracticeInputPaused()) return;
 
   const target = event.target;
   if (isTrainerTextEntryTarget(target)) return;
 
-  if (event.key === "ArrowDown") {
+  if (isDevCompletePracticeLineHotkey(event)) {
     event.preventDefault();
     completeCurrentPracticeLineForDev();
     return;
   }
+
+  if (isSystemKeyCombination(event)) return;
 
   const shouldHandle =
     event.key === "Backspace" ||

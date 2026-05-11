@@ -139,7 +139,7 @@ const uiText = {
     currentFinger: "Ausgewählt: {finger}",
     practiceAccuracy: "Genauigkeit",
     practiceSpeed: "Tempo",
-    practiceSpeedUnit: "Anschläge/min",
+    practiceSpeedUnit: "Anschl./min",
     targetLines: "Zeilen",
     moduleLines: "Zeilen",
     resetModuleProgress: "Modulfortschritt zurücksetzen",
