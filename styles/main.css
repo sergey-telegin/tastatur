@@ -1,8 +1,8 @@
-@import "./base.css";
-@import "./layout.css";
-@import "./trainer.css";
-@import "./dialogs.css";
-@import "./hands.css";
-@import "./keyboard.css";
-@import "./fingering.css";
-@import "./responsive.css";
+@import "./base.css?v=20260511-1";
+@import "./layout.css?v=20260511-1";
+@import "./trainer.css?v=20260511-1";
+@import "./dialogs.css?v=20260511-1";
+@import "./hands.css?v=20260511-1";
+@import "./keyboard.css?v=20260511-1";
+@import "./fingering.css?v=20260511-1";
+@import "./responsive.css?v=20260511-1";
