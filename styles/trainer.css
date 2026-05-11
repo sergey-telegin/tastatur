@@ -47,26 +47,19 @@
 }
 
 .practice-stat {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 10px;
-  min-width: 188px;
+  flex: 0 0 214px;
+  width: 214px;
+  min-width: 214px;
+  max-width: 214px;
   min-height: 44px;
   padding: 0 14px;
   border: 1px solid var(--line-soft);
   border-radius: 8px;
   background: var(--panel);
-}
-
-.practice-stat-accuracy {
-  flex: 0 0 188px;
-}
-
-.practice-stat-speed {
-  flex: 0 0 286px;
-  width: 286px;
-  min-width: 286px;
-  max-width: 286px;
 }
 
 :root[data-theme="light"] .practice-stat {
@@ -99,13 +92,15 @@
 }
 
 .practice-stat-speed .practice-stat-value {
+  position: relative;
+  z-index: 2;
   display: inline-flex;
   justify-content: flex-end;
   gap: 0.48em;
-  width: 180px;
-  min-width: 180px;
-  max-width: 180px;
-  overflow: hidden;
+  width: max-content;
+  min-width: 96px;
+  max-width: none;
+  overflow: visible;
 }
 
 .practice-speed-number {
@@ -176,6 +171,10 @@
     0 0 8px var(--practice-current-shadow-strong),
     0 0 18px var(--practice-current-shadow-soft);
   animation: practice-current-blink 1s step-end infinite;
+}
+
+.practice-paused .practice-sample-current {
+  animation-play-state: paused;
 }
 
 .practice-sample-marker {

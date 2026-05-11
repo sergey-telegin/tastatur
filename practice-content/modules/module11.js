@@ -1,12 +1,31 @@
-window.PRACTICE_CONTENT_SOURCE.modules = window.PRACTICE_CONTENT_SOURCE.modules || [];
-window.PRACTICE_CONTENT_SOURCE.modules.push({
-      id: "module11",
-      title: { ru: "Module 11 — Ритм и плавность", de: "Modul 11 — Rhythmus und Fluss", en: "Module 11 — Rhythm and Flow" },
-      lessons: [
-        { id: "lesson11_1", title: { ru: "Длинные слова", de: "Lange Wörter", en: "Long Words" }, target: { lines: 10, accuracy: 90 }, lines: { ru: [], de: [], en: [] } },
-        { id: "lesson11_2", title: { ru: "Чередование рук", de: "Handwechsel", en: "Alternating Hands" }, target: { lines: 10, accuracy: 90 }, lines: { ru: [], de: [], en: [] } },
-        { id: "lesson11_3", title: { ru: "Повторы", de: "Wiederholungen", en: "Repetitions" }, target: { lines: 10, accuracy: 90 }, lines: { ru: [], de: [], en: [] } },
-        { id: "lesson11_4", title: { ru: "Плавность", de: "Fluss", en: "Flow" }, target: { lines: 12, accuracy: 93 }, lines: { ru: [], de: [], en: [] } },
-        { id: "lesson11_5", title: { ru: "Тест", de: "Test", en: "Test" }, target: { lines: 10, accuracy: 93, speed: 42 }, lines: { ru: [], de: [], en: [] } }
-      ]
-    });
+(() => {
+  const sample = {
+    ru: [
+      "случайный текст появится здесь после загрузки источника и будет разбит на строки для спокойной практики"
+    ],
+    de: [
+      "ein zufaelliger text erscheint hier nach dem laden der quelle und wird in ruhige uebungszeilen geteilt"
+    ],
+    en: [
+      "a random text appears here after loading the source and is split into calm practice lines"
+    ]
+  };
+
+  window.PRACTICE_CONTENT_SOURCE.modules = window.PRACTICE_CONTENT_SOURCE.modules || [];
+  window.PRACTICE_CONTENT_SOURCE.modules.push({
+    id: "module11",
+    title: { ru: "Случайные тексты + пользовательские настройки", de: "Zufallstexte + eigene Einstellungen", en: "Random Texts + Custom Settings" },
+    symbols: { ru: [], de: [], en: [] },
+    lessons: [
+      {
+        id: "lesson11_1",
+        title: { ru: "Случайные тексты", de: "Zufallstexte", en: "Random Texts" },
+        description: { ru: "Меню текста и ассистентов перед стартом", de: "Text- und Assistentenmenü vor dem Start", en: "Text and assistant menu before start" },
+        customPractice: { type: "random" },
+        symbolPolicy: { scope: "free-text", random: true },
+        target: { lines: 10, accuracy: 90 },
+        lines: sample
+      }
+    ]
+  });
+})();

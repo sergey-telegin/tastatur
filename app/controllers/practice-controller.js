@@ -12,7 +12,9 @@ function firstPracticeModuleId(language = currentLanguage) {
 
 function normalizeCurrentPracticeModule(language = currentLanguage) {
   const modules = practiceModulesFor(language);
-  if (modules[currentPracticeModule]) return currentPracticeModule;
+  const module = modules[currentPracticeModule];
+  const hasRuntimeLines = Array.isArray(customPracticeRuntimeLines[currentPracticeModule]) && customPracticeRuntimeLines[currentPracticeModule].length > 0;
+  if (module && (!module.customPractice || hasRuntimeLines)) return currentPracticeModule;
 
   currentPracticeModule = firstPracticeModuleId(language);
   saved.currentPracticeModule = currentPracticeModule;
@@ -34,19 +36,40 @@ function languagePracticeProgressStore(language = currentLanguage) {
   return store[language];
 }
 
+function practiceLinesForModule(language = currentLanguage, moduleId = currentPracticeModule) {
+  const module = practiceModulesFor(language)[moduleId] || {};
+  const runtimeLines = customPracticeRuntimeLines[moduleId];
+  if (module.customPractice && Array.isArray(runtimeLines) && runtimeLines.length) {
+    return runtimeLines;
+  }
+
+  if (module.customPractice && Array.isArray(module.lines) && module.lines.length) {
+    const targetLineCount = Math.max(1, module.target?.lines || module.lines.length);
+    return Array.from({ length: targetLineCount }, (_, index) => module.lines[index % module.lines.length]);
+  }
+
+  return module.lines || [];
+}
+
 function normalizePracticeProgressEntry(entry, totalLines) {
   const safeTotal = Math.max(0, Number(totalLines) || 0);
   let currentLine = Number.isFinite(entry?.currentLine) ? Math.max(0, Math.trunc(entry.currentLine)) : 0;
   let completedLines = Number.isFinite(entry?.completedLines) ? Math.max(0, Math.trunc(entry.completedLines)) : currentLine;
   const accuracy = Number.isFinite(entry?.accuracy) ? Math.max(0, Math.round(entry.accuracy)) : 0;
   const speed = Number.isFinite(entry?.speed) ? Math.max(0, Math.round(entry.speed)) : 0;
+  const assistantsUsed = entry && Object.prototype.hasOwnProperty.call(entry, "assistantsUsed")
+    ? entry.assistantsUsed === true
+    : true;
+  const metronomeAccuracy = Number.isFinite(entry?.metronomeAccuracy)
+    ? Math.max(0, Math.min(100, Math.round(entry.metronomeAccuracy)))
+    : null;
 
   if (safeTotal === 0) {
-    return { currentLine: 0, completedLines: 0, isComplete: true, accuracy, speed };
+    return { currentLine: 0, completedLines: 0, isComplete: true, accuracy, speed, assistantsUsed, metronomeAccuracy };
   }
 
   if (currentLine >= safeTotal || completedLines >= safeTotal) {
-    return { currentLine: safeTotal, completedLines: safeTotal, isComplete: true, accuracy, speed };
+    return { currentLine: safeTotal, completedLines: safeTotal, isComplete: true, accuracy, speed, assistantsUsed, metronomeAccuracy };
   }
 
   completedLines = Math.max(completedLines, Math.min(currentLine, safeTotal));
@@ -56,12 +79,14 @@ function normalizePracticeProgressEntry(entry, totalLines) {
     completedLines: Math.min(completedLines, safeTotal),
     isComplete: false,
     accuracy,
-    speed
+    speed,
+    assistantsUsed,
+    metronomeAccuracy
   };
 }
 
 function moduleProgressFor(language = currentLanguage, moduleId = currentPracticeModule) {
-  const totalLines = ((practiceModulesFor(language)[moduleId] || {}).lines || []).length;
+  const totalLines = practiceLinesForModule(language, moduleId).length;
   const entry = languagePracticeProgressStore(language)[moduleId];
   const normalized = normalizePracticeProgressEntry(entry, totalLines);
   return {
@@ -72,13 +97,15 @@ function moduleProgressFor(language = currentLanguage, moduleId = currentPractic
 }
 
 function persistModuleProgress(language = currentLanguage, moduleId = currentPracticeModule, nextProgress = {}) {
-  const totalLines = ((practiceModulesFor(language)[moduleId] || {}).lines || []).length;
+  const totalLines = practiceLinesForModule(language, moduleId).length;
   const normalized = normalizePracticeProgressEntry(nextProgress, totalLines);
   languagePracticeProgressStore(language)[moduleId] = {
     currentLine: normalized.currentLine,
     completedLines: normalized.completedLines,
     accuracy: normalized.accuracy,
-    speed: normalized.speed
+    speed: normalized.speed,
+    assistantsUsed: normalized.assistantsUsed,
+    metronomeAccuracy: normalized.metronomeAccuracy
   };
   persist();
   return {
@@ -105,8 +132,356 @@ function currentPracticeModuleData(language = currentLanguage, moduleId = curren
   return modules[moduleId] || modules[firstPracticeModuleId(language)] || Object.values(modules)[0] || { name: "", lines: [] };
 }
 
+const lessonTipAvatarByLessonId = {
+  lesson1_1: "key-please.png",
+  lesson1_2: "key-salute.png",
+  lesson1_3: "key-open.png",
+  lesson1_4: "key-explain.png",
+  lesson1_5: "key-wave.png",
+  lesson2_1: "key-idea.png",
+  lesson2_2: "key-point-strict.png",
+  lesson2_3: "key-thumb.png",
+  lesson2_4: "key-confident.png",
+  lesson2_5: "key-arms-crossed.png",
+  lesson3_1: "key-thinking.png",
+  lesson3_2: "key-thumb.png",
+  lesson3_3: "key-idea-front.png",
+  lesson3_4: "key-open-soft.png",
+  lesson3_5: "key-confident.png",
+  lesson4_1: "key-point-strict.png",
+  lesson4_2: "key-explain.png",
+  lesson4_3: "key-stop.png",
+  lesson4_4: "key-thinking.png",
+  lesson4_5: "key-arms-crossed.png",
+  lesson5_1: "key-stop.png",
+  lesson5_2: "key-idea-front.png",
+  lesson5_3: "key-explain.png",
+  lesson5_4: "key-confident.png",
+  lesson5_5: "key-shrug.png",
+  lesson6_1: "key-stop.png",
+  lesson6_2: "key-idea.png",
+  lesson6_3: "key-point-strict.png",
+  lesson6_4: "key-explain.png",
+  lesson6_5: "key-confident.png",
+  lesson7_1: "key-explain.png",
+  lesson7_2: "key-idea-open.png",
+  lesson7_3: "key-stop.png",
+  lesson7_4: "key-point-strict.png",
+  lesson7_5: "key-confident.png",
+  lesson8_1: "key-idea-front.png",
+  lesson8_2: "key-thinking.png",
+  lesson8_3: "key-explain.png",
+  lesson8_4: "key-confident.png",
+  lesson8_5: "key-book.png",
+  lesson9_1: "key-idea-small.png",
+  lesson9_2: "key-explain.png",
+  lesson9_3: "key-open-soft.png",
+  lesson9_4: "key-confident.png",
+  lesson9_5: "key-arms-crossed.png",
+  lesson10_1: "key-idea-open.png",
+  lesson10_2: "key-thumb.png",
+  lesson10_3: "key-explain.png",
+  lesson10_4: "key-confident.png",
+  lesson10_5: "key-book.png"
+};
+
+function lessonTipAvatarSrcFor(lesson) {
+  const fileName = lessonTipAvatarByLessonId[lesson?.id] || "key-wave.png";
+  return `assets/key/${fileName}`;
+}
+
+function currentLessonTips() {
+  const tips = currentPracticeModuleData().tips;
+  return Array.isArray(tips) ? tips.filter(Boolean) : [];
+}
+
+function renderLessonTipDialog() {
+  const text = textFor();
+  const lesson = currentPracticeModuleData();
+  const tips = currentLessonTips();
+
+  lessonTipText.innerHTML = "";
+  tips.forEach(tip => {
+    const paragraph = document.createElement("p");
+    paragraph.textContent = tip;
+    lessonTipText.append(paragraph);
+  });
+  lessonTipStart.textContent = text.startPractice;
+  lessonTipCharacter.src = lessonTipAvatarSrcFor(lesson);
+  lessonTipCharacter.alt = "";
+}
+
+function openCurrentLessonTip({ force = false } = {}) {
+  const lesson = currentPracticeModuleData();
+  if (!lessonTipDialog || lessonTipDialog.open || !currentLessonTips().length) return;
+  if (!force && lastShownLessonTipModuleId === lesson.id) return;
+
+  renderLessonTipDialog();
+  lessonTipDialog.showModal();
+  lastShownLessonTipModuleId = lesson.id;
+  updatePracticeTimerPauseState();
+}
+
+function closeLessonTipDialog() {
+  if (!lessonTipDialog?.open) return;
+  lessonTipDialog.close();
+}
+
+const nextButtonText = {
+  ru: "Далее",
+  de: "Weiter",
+  en: "Next"
+};
+
+const defaultPracticeCompletionText = {
+  ru: "Отлично. Молодец. Идём дальше.",
+  de: "Ausgezeichnet. Gut gemacht. Weiter geht's.",
+  en: "Excellent. Well done. Let's keep going."
+};
+
+function localizedUiText(value) {
+  return value[currentLanguage] || value.en || value.ru || "";
+}
+
+function currentLessonCompletion() {
+  const completion = currentPracticeModuleData().completion || {};
+  return {
+    text: completion.text || localizedUiText(defaultPracticeCompletionText)
+  };
+}
+
+function renderCompletionDialog() {
+  const lesson = currentPracticeModuleData();
+  const progress = moduleProgressFor(currentLanguage, currentPracticeModule);
+  const ratingDetails = starRatingDetailsForLesson(lesson, progress);
+  const completion = currentLessonCompletion();
+
+  completionStars.classList.toggle("module-btn-rating-flying", ratingDetails.isFlying);
+  completionStars.textContent = ratingDetails.text || "";
+  completionText.innerHTML = "";
+
+  const paragraph = document.createElement("p");
+  paragraph.textContent = completion.text;
+  completionText.append(paragraph);
+  completionNext.textContent = localizedUiText(nextButtonText);
+  completionCharacter.src = "assets/key/key-completion.png";
+  completionCharacter.alt = "";
+}
+
+function openCompletionDialog() {
+  if (!completionDialog || completionDialog.open) return;
+
+  renderCompletionDialog();
+  completionDialog.showModal();
+  updatePracticeTimerPauseState();
+}
+
+function closeCompletionDialog() {
+  if (!completionDialog?.open) return;
+  completionDialog.close();
+}
+
+function goToNextLessonAfterCompletion() {
+  const language = currentLanguage;
+  const moduleId = currentPracticeModule;
+  const nextLessonId = nextPracticeLessonId(language, moduleId);
+  const nextLesson = nextLessonId ? practiceModulesFor(language)[nextLessonId] : null;
+
+  closeCompletionDialog();
+  if (nextLesson && !nextLesson.customPractice) {
+    applySettings({ language, module: nextLessonId });
+    openCurrentLessonTip({ force: true });
+    renderModuleButtons();
+  }
+}
+
+const onboardingCopy = {
+  ru: {
+    start: "Пуск",
+    screens: [
+      {
+        paragraphs: [
+          "FlyKey — это тренажёр слепой печати.",
+          "FlyKey — преврати клавиатуру в продолжение твоих мыслей.",
+          "FlyKey — печатай легко, будто пальцы умеют летать."
+        ],
+        character: false
+      },
+      {
+        paragraphs: [
+          "Лёгкость, скорость и уверенность за клавиатурой тебя уже ждут."
+        ],
+        character: false
+      },
+      {
+        paragraphs: [
+          "Здесь ты не зубришь клавиши, а постепенно учишься печатать свободно: меньше смотреть вниз, меньше напрягаться и больше доверять пальцам."
+        ],
+        character: false
+      },
+      {
+        paragraphs: [
+          "Меня зовут Key. Я буду с тобой.",
+          "Твой маленький летающий помощник, который подсказывает, поддерживает и помогает не сбиться. Не строгий учитель, а напарник, с которым тренироваться проще и веселее."
+        ],
+        character: true
+      }
+    ]
+  },
+  de: {
+    start: "Start",
+    screens: [
+      {
+        paragraphs: [
+          "FlyKey ist ein Trainer für Blindtippen.",
+          "FlyKey - mach die Tastatur zu einer Erweiterung deiner Gedanken.",
+          "FlyKey - tippe leicht, als könnten deine Finger fliegen."
+        ],
+        character: false
+      },
+      {
+        paragraphs: [
+          "Leichtigkeit, Geschwindigkeit und Sicherheit an der Tastatur warten schon auf dich."
+        ],
+        character: false
+      },
+      {
+        paragraphs: [
+          "Hier paukst du keine Tasten. Du lernst Schritt für Schritt, frei zu tippen: weniger nach unten schauen, weniger verkrampfen und den Fingern mehr vertrauen."
+        ],
+        character: false
+      },
+      {
+        paragraphs: [
+          "Ich heiße Key. Ich begleite dich.",
+          "Dein kleiner fliegender Helfer, der dir Hinweise gibt, dich unterstützt und dir hilft, nicht aus dem Rhythmus zu kommen. Kein strenger Lehrer, sondern ein Partner, mit dem das Training leichter und fröhlicher wird."
+        ],
+        character: true
+      }
+    ]
+  },
+  en: {
+    start: "Start",
+    screens: [
+      {
+        paragraphs: [
+          "FlyKey is a touch typing trainer.",
+          "FlyKey - turn the keyboard into an extension of your thoughts.",
+          "FlyKey - type lightly, as if your fingers could fly."
+        ],
+        character: false
+      },
+      {
+        paragraphs: [
+          "Ease, speed, and confidence at the keyboard are already waiting for you."
+        ],
+        character: false
+      },
+      {
+        paragraphs: [
+          "Here you do not memorize keys by force. You gradually learn to type freely: look down less, tense up less, and trust your fingers more."
+        ],
+        character: false
+      },
+      {
+        paragraphs: [
+          "My name is Key. I will be with you.",
+          "Your small flying helper gives you hints, supports you, and helps you stay on track. Not a strict teacher, but a teammate who makes training easier and more fun."
+        ],
+        character: true
+      }
+    ]
+  }
+};
+
+function currentOnboardingCopy() {
+  return onboardingCopy[currentLanguage] || onboardingCopy.en || onboardingCopy.ru;
+}
+
+function renderOnboardingDialog() {
+  const copy = currentOnboardingCopy();
+  const screen = copy.screens[onboardingStepIndex] || copy.screens[0];
+
+  onboardingText.innerHTML = "";
+  screen.paragraphs.forEach(text => {
+    const paragraph = document.createElement("p");
+    paragraph.textContent = text;
+    onboardingText.append(paragraph);
+  });
+
+  onboardingNext.textContent = onboardingStepIndex >= copy.screens.length - 1
+    ? copy.start
+    : localizedUiText(nextButtonText);
+  onboardingCharacter.hidden = !screen.character;
+  onboardingDialog.classList.toggle("onboarding-with-character", screen.character);
+}
+
+function openOnboardingIfNeeded() {
+  if (onboardingCompleted || !onboardingDialog || onboardingDialog.open) return false;
+
+  onboardingStepIndex = 0;
+  renderOnboardingDialog();
+  onboardingDialog.showModal();
+  updatePracticeTimerPauseState();
+  return true;
+}
+
+function completeOnboarding() {
+  onboardingCompleted = true;
+  saved.onboardingCompleted = true;
+  persist();
+  onboardingDialog.close();
+  openCurrentLessonTip({ force: true });
+}
+
+function advanceOnboarding() {
+  if (!onboardingDialog?.open) return;
+
+  const copy = currentOnboardingCopy();
+  if (onboardingStepIndex < copy.screens.length - 1) {
+    onboardingStepIndex += 1;
+    renderOnboardingDialog();
+    return;
+  }
+
+  completeOnboarding();
+}
+
+function currentPracticeAssistantsEnabled() {
+  return currentPracticeModuleData().target?.assistants !== false;
+}
+
+function effectiveAssistantSetting(value) {
+  return currentPracticeAssistantsEnabled() ? value : false;
+}
+
+function visiblePracticeAssistantsEnabled() {
+  if (!currentPracticeAssistantsEnabled()) return false;
+  return keyHighlightEnabled || fingerZonesEnabled || fingerHighlightEnabled || pressHighlightEnabled || showFingersEnabled;
+}
+
 function currentPracticeLines() {
-  return currentPracticeModuleData().lines || [];
+  return practiceLinesForModule();
+}
+
+// Temporary QA shortcut for reviewing lesson tips and lesson flow.
+const devCompletePracticeLineHotkeyEnabled = true;
+
+function orderedPracticeLessonIds(language = currentLanguage) {
+  const moduleGroups = practiceModuleGroupsFor(language);
+  if (moduleGroups.length) {
+    return moduleGroups.flatMap(module => module.lessons.map(lesson => lesson.id));
+  }
+
+  return Object.keys(practiceModulesFor(language));
+}
+
+function nextPracticeLessonId(language = currentLanguage, moduleId = currentPracticeModule) {
+  const lessonIds = orderedPracticeLessonIds(language);
+  const currentIndex = lessonIds.indexOf(moduleId);
+  if (currentIndex < 0) return null;
+
+  return lessonIds[currentIndex + 1] || null;
 }
 
 function currentPracticeCursor() {
@@ -138,6 +513,10 @@ function resetPracticeMetrics() {
   practicePausedAt = 0;
   practicePausedDurationMs = 0;
   practiceLastMatchedIndex = 0;
+  practiceAssistantsUsed = false;
+  practiceMetronomeHitCount = 0;
+  practiceMetronomeAttemptCount = 0;
+  practiceMetronomeUsed = false;
   stopPracticeStatsTicker();
   renderPracticeStats();
 }
@@ -167,6 +546,10 @@ function ensurePracticeSessionStarted() {
     practiceSessionStartedAt = Date.now();
     practicePausedAt = 0;
     practicePausedDurationMs = 0;
+    practiceAssistantsUsed = visiblePracticeAssistantsEnabled();
+    practiceMetronomeUsed = metronomeBpm > 0;
+  } else if (visiblePracticeAssistantsEnabled()) {
+    practiceAssistantsUsed = true;
   }
   startPracticeStatsTicker();
 }
@@ -179,10 +562,35 @@ function currentPracticeActiveElapsedMs() {
   return Math.max(0, now - practiceSessionStartedAt - practicePausedDurationMs - currentPauseMs);
 }
 
+function currentPracticeMetronomeAccuracy() {
+  if (!practiceMetronomeUsed || practiceMetronomeAttemptCount <= 0) return null;
+  return Math.round((practiceMetronomeHitCount * 100) / practiceMetronomeAttemptCount);
+}
+
+function recordPracticeMetronomeInput(count = 1) {
+  if (metronomeBpm <= 0 || !practiceSessionStartedAt) return;
+
+  practiceMetronomeUsed = true;
+  const intervalMs = 60000 / metronomeBpm;
+  const hitWindowMs = Math.min(180, intervalMs * 0.22);
+  const elapsedMs = currentPracticeActiveElapsedMs();
+  const beatOffsetMs = elapsedMs % intervalMs;
+  const nearestBeatDistanceMs = Math.min(beatOffsetMs, intervalMs - beatOffsetMs);
+
+  practiceMetronomeAttemptCount += count;
+  if (nearestBeatDistanceMs <= hitWindowMs) {
+    practiceMetronomeHitCount += count;
+  }
+}
+
 function shouldPausePracticeTimer() {
   return (
+    onboardingDialog.open ||
     settingsDialog.open ||
+    lessonTipDialog.open ||
+    completionDialog.open ||
     learningProgramDialog.open ||
+    customPracticeDialog.open ||
     statsDialog.open ||
     helpDialog.open ||
     fingerMapDialog.open
@@ -204,7 +612,10 @@ function resumePracticeTimer() {
 }
 
 function updatePracticeTimerPauseState() {
-  if (shouldPausePracticeTimer()) {
+  const isPaused = shouldPausePracticeTimer();
+  document.documentElement.classList.toggle("practice-paused", isPaused);
+
+  if (isPaused) {
     pausePracticeTimer();
   } else {
     resumePracticeTimer();
@@ -440,15 +851,50 @@ function advancePracticeLine() {
     ? Math.max(totalLines - 1, 0)
     : Math.min(practiceLineIndex + lineStep, totalLines - 1);
 
-  persistModuleProgress(currentLanguage, currentPracticeModule, {
+  const nextProgress = persistModuleProgress(currentLanguage, currentPracticeModule, {
     currentLine: isComplete ? totalLines : practiceLineIndex,
     completedLines: nextCompletedLines,
     accuracy: currentPracticeAccuracy(),
-    speed: currentPracticeSpeed()
+    speed: currentPracticeSpeed(),
+    assistantsUsed: practiceAssistantsUsed,
+    metronomeAccuracy: currentPracticeMetronomeAccuracy()
   });
 
   practiceAwaitingEnter = false;
   renderPracticeLine();
+  if (nextProgress.isComplete) {
+    openCompletionDialog();
+  }
+  return nextProgress;
+}
+
+function completeCurrentPracticeLineForDev() {
+  if (!devCompletePracticeLineHotkeyEnabled) return false;
+
+  const language = currentLanguage;
+  const moduleId = currentPracticeModule;
+  const lines = currentPracticeLines();
+  if (!lines.length) return false;
+
+  const progress = moduleProgressFor(language, moduleId);
+  if (progress.isComplete) return false;
+
+  lastPhysicalPracticeKeyId = "arrowDown";
+
+  if (!practiceAwaitingEnter) {
+    practiceTypedValue = lines[practiceLineIndex] || "";
+    handlePracticeInput();
+    playKeySound();
+  }
+
+  if (!practiceAwaitingEnter) return false;
+
+  flashPracticeCorrect("enter");
+  playEnterSound();
+  const nextProgress = advancePracticeLine();
+  renderModuleButtons();
+
+  return true;
 }
 
 function handlePracticeInput() {
@@ -487,7 +933,9 @@ function handlePracticeInput() {
   }
 
   if (index > practiceLastMatchedIndex) {
-    practiceCorrectCharCount += index - practiceLastMatchedIndex;
+    const matchedCount = index - practiceLastMatchedIndex;
+    practiceCorrectCharCount += matchedCount;
+    recordPracticeMetronomeInput(matchedCount);
   }
   practiceLastMatchedIndex = index;
 
@@ -519,8 +967,12 @@ function isTrainerTextEntryTarget(target) {
 function isPracticeInputPaused() {
   return (
     fingerKeyboardMode ||
+    onboardingDialog.open ||
     settingsDialog.open ||
+    lessonTipDialog.open ||
+    completionDialog.open ||
     learningProgramDialog.open ||
+    customPracticeDialog.open ||
     statsDialog.open ||
     helpDialog.open ||
     fingerMapDialog.open
@@ -631,6 +1083,12 @@ function handleGlobalKeyDown(event) {
 
   const target = event.target;
   if (isTrainerTextEntryTarget(target)) return;
+
+  if (event.key === "ArrowDown") {
+    event.preventDefault();
+    completeCurrentPracticeLineForDev();
+    return;
+  }
 
   const shouldHandle =
     event.key === "Backspace" ||

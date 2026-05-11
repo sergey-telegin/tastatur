@@ -1,12 +1,31 @@
-window.PRACTICE_CONTENT_SOURCE.modules = window.PRACTICE_CONTENT_SOURCE.modules || [];
-window.PRACTICE_CONTENT_SOURCE.modules.push({
-      id: "module12",
-      title: { ru: "Module 12 — Выносливость", de: "Modul 12 — Ausdauer", en: "Module 12 — Endurance" },
-      lessons: [
-        { id: "lesson12_1", title: { ru: "Тексты", de: "Texte", en: "Texts" }, target: { lines: 12, accuracy: 90 }, lines: { ru: [], de: [], en: [] } },
-        { id: "lesson12_2", title: { ru: "Литература", de: "Literatur", en: "Literature" }, target: { lines: 12, accuracy: 90 }, lines: { ru: [], de: [], en: [] } },
-        { id: "lesson12_3", title: { ru: "Технические тексты", de: "Technische Texte", en: "Technical Texts" }, target: { lines: 12, accuracy: 90 }, lines: { ru: [], de: [], en: [] } },
-        { id: "lesson12_4", title: { ru: "2 минуты", de: "2 Minuten", en: "2 Minutes" }, target: { lines: 12, accuracy: 95 }, lines: { ru: [], de: [], en: [] } },
-        { id: "lesson12_5", title: { ru: "Финальный тест", de: "Abschlusstest", en: "Final Test" }, target: { lines: 10, accuracy: 95, speed: 40 }, lines: { ru: [], de: [], en: [] } }
-      ]
-    });
+(() => {
+  const sample = {
+    ru: [
+      "вставьте свой текст в меню перед стартом и настройте ассистенты так как удобно именно для этой тренировки"
+    ],
+    de: [
+      "fuege deinen eigenen text vor dem start ein und stelle die assistenten fuer diese uebung passend ein"
+    ],
+    en: [
+      "paste your own text before starting and set the assistants the way you want for this practice"
+    ]
+  };
+
+  window.PRACTICE_CONTENT_SOURCE.modules = window.PRACTICE_CONTENT_SOURCE.modules || [];
+  window.PRACTICE_CONTENT_SOURCE.modules.push({
+    id: "module12",
+    title: { ru: "Пользовательские тексты + пользовательские настройки", de: "Eigene Texte + eigene Einstellungen", en: "Custom Texts + Custom Settings" },
+    symbols: { ru: [], de: [], en: [] },
+    lessons: [
+      {
+        id: "lesson12_1",
+        title: { ru: "Пользовательские тексты", de: "Eigene Texte", en: "Custom Texts" },
+        description: { ru: "Вставка текста и настройки перед стартом", de: "Text einfügen und Einstellungen vor dem Start", en: "Paste text and tune settings before start" },
+        customPractice: { type: "custom" },
+        symbolPolicy: { scope: "free-text", custom: true },
+        target: { lines: 10, accuracy: 90 },
+        lines: sample
+      }
+    ]
+  });
+})();

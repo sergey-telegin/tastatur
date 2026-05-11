@@ -1,9 +1,16 @@
 let keyAudioContext = null;
 let keyNoiseBuffer = null;
 let keyAudioUnlockPromise = null;
+let keyMasterGain = null;
+let metronomeTimerId = null;
+let metronomeGeneration = 0;
 
 function isKeySoundEnabled() {
   return keySoundEnabled !== false;
+}
+
+function shouldUnlockAudioContext() {
+  return isKeySoundEnabled() || metronomeBpm > 0;
 }
 
 function createKeyAudioContext() {
@@ -17,8 +24,31 @@ function createKeyAudioContext() {
   return keyAudioContext;
 }
 
-function unlockKeyAudioContext() {
-  if (!isKeySoundEnabled()) return Promise.resolve(null);
+function keyAudioVolumeMultiplier() {
+  const userAgent = navigator.userAgent || "";
+  const isChromium = /Chrome|Chromium|CriOS|Edg\//.test(userAgent);
+  const isChrome = /Chrome|Chromium|CriOS/.test(userAgent) && !/Edg\//.test(userAgent);
+  const isSafari = /Safari/.test(userAgent) && !/Chrome|Chromium|CriOS|Edg\//.test(userAgent);
+  const isFirefox = /Firefox|FxiOS/.test(userAgent);
+
+  if (isSafari) return 1.55;
+  if (isFirefox) return 1.3;
+  if (isChromium && !isChrome) return 1.2;
+  return 1;
+}
+
+function keyAudioDestination(context) {
+  if (!keyMasterGain) {
+    keyMasterGain = context.createGain();
+    keyMasterGain.gain.value = keyAudioVolumeMultiplier();
+    keyMasterGain.connect(context.destination);
+  }
+
+  return keyMasterGain;
+}
+
+function unlockAppAudioContext({ requireEnabledAudio = true } = {}) {
+  if (requireEnabledAudio && !shouldUnlockAudioContext()) return Promise.resolve(null);
 
   const context = createKeyAudioContext();
   if (!context) return Promise.resolve(null);
@@ -36,7 +66,7 @@ function unlockKeyAudioContext() {
       gain.gain.value = 0.0001;
       source.buffer = buffer;
       source.connect(gain);
-      gain.connect(context.destination);
+      gain.connect(keyAudioDestination(context));
       source.start(0);
       source.stop(context.currentTime + 0.001);
       return context;
@@ -49,6 +79,16 @@ function unlockKeyAudioContext() {
   return keyAudioUnlockPromise;
 }
 
+function unlockKeyAudioContext() {
+  if (!isKeySoundEnabled()) return Promise.resolve(null);
+  return unlockAppAudioContext({ requireEnabledAudio: false });
+}
+
+function unlockMetronomeAudioContext() {
+  if (metronomeBpm <= 0) return Promise.resolve(null);
+  return unlockAppAudioContext({ requireEnabledAudio: false });
+}
+
 function ensureKeyAudioContext() {
   if (!isKeySoundEnabled()) return null;
 
@@ -57,6 +97,20 @@ function ensureKeyAudioContext() {
 
   if (context.state !== "running") {
     unlockKeyAudioContext();
+    return null;
+  }
+
+  return context;
+}
+
+function ensureMetronomeAudioContext() {
+  if (metronomeBpm <= 0) return null;
+
+  const context = createKeyAudioContext();
+  if (!context) return null;
+
+  if (context.state !== "running") {
+    unlockMetronomeAudioContext();
     return null;
   }
 
@@ -108,7 +162,7 @@ function playFilteredNoise({ start = 0, duration, volume, frequency, q = 0.8, ty
 
   source.connect(filter);
   filter.connect(gain);
-  gain.connect(context.destination);
+  gain.connect(keyAudioDestination(context));
 
   source.start(now, randomBetween(0, 0.02));
   source.stop(now + duration + 0.01);
@@ -133,7 +187,7 @@ function playTone({ start = 0, frequency, duration = 0.045, volume = 0.035, type
   gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
 
   oscillator.connect(gain);
-  gain.connect(context.destination);
+  gain.connect(keyAudioDestination(context));
 
   oscillator.start(now);
   oscillator.stop(now + duration + 0.012);
@@ -153,6 +207,50 @@ function playKeySound() {
     volume: randomBetween(0.012, 0.018),
     type: "sine",
     slideTo: randomBetween(90, 120)
+  });
+}
+
+function playMetronomeTick() {
+  const context = ensureMetronomeAudioContext();
+  if (!context) return;
+
+  const now = context.currentTime;
+  const oscillator = context.createOscillator();
+  const gain = context.createGain();
+
+  oscillator.type = "sine";
+  oscillator.frequency.setValueAtTime(880, now);
+  oscillator.frequency.exponentialRampToValueAtTime(620, now + 0.035);
+  gain.gain.setValueAtTime(0.0001, now);
+  gain.gain.exponentialRampToValueAtTime(0.038, now + 0.004);
+  gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.06);
+
+  oscillator.connect(gain);
+  gain.connect(keyAudioDestination(context));
+
+  oscillator.start(now);
+  oscillator.stop(now + 0.075);
+}
+
+function stopMetronome() {
+  metronomeGeneration += 1;
+  if (!metronomeTimerId) return;
+
+  clearInterval(metronomeTimerId);
+  metronomeTimerId = null;
+}
+
+function updateMetronome() {
+  stopMetronome();
+  if (metronomeBpm <= 0) return;
+
+  const generation = metronomeGeneration;
+  const intervalMs = 60000 / metronomeBpm;
+  unlockMetronomeAudioContext().then(() => {
+    if (metronomeBpm <= 0 || generation !== metronomeGeneration) return;
+
+    playMetronomeTick();
+    metronomeTimerId = setInterval(playMetronomeTick, intervalMs);
   });
 }
 

@@ -25,6 +25,15 @@ let practiceStatsTimerId = null;
 let practiceLastMatchedIndex = 0;
 let practiceAwaitingEnter = false;
 let practiceCompletedLines = 0;
+let onboardingStepIndex = 0;
+let onboardingCompleted = false;
+let lastShownLessonTipModuleId = null;
+let practiceAssistantsUsed = false;
+let practiceMetronomeHitCount = 0;
+let practiceMetronomeAttemptCount = 0;
+let practiceMetronomeUsed = false;
+let customPracticeDraftModuleId = null;
+let customPracticeRuntimeLines = {};
 let currentTheme = "dark";
 let practiceTextSize = "m";
 let keySoundEnabled = true;
@@ -34,6 +43,7 @@ let fingerHighlightEnabled = true;
 let pressHighlightEnabled = true;
 let showFingersEnabled = true;
 let alternateLinesEnabled = false;
+let metronomeBpm = 0;
 let practiceTypedValue = "";
 
 function initializeAppState(savedState = {}) {
@@ -66,6 +76,15 @@ function initializeAppState(savedState = {}) {
   practiceLastMatchedIndex = 0;
   practiceAwaitingEnter = false;
   practiceCompletedLines = 0;
+  onboardingStepIndex = 0;
+  onboardingCompleted = savedState.onboardingCompleted === true;
+  lastShownLessonTipModuleId = null;
+  practiceAssistantsUsed = false;
+  practiceMetronomeHitCount = 0;
+  practiceMetronomeAttemptCount = 0;
+  practiceMetronomeUsed = false;
+  customPracticeDraftModuleId = null;
+  customPracticeRuntimeLines = {};
   currentTheme = savedState.theme === "light" ? "light" : "dark";
   applyTheme();
   practiceTextSize = ["s", "m", "l"].includes(savedState.practiceTextSize) ? savedState.practiceTextSize : "m";
@@ -77,6 +96,7 @@ function initializeAppState(savedState = {}) {
   pressHighlightEnabled = savedState.pressHighlightEnabled !== false;
   showFingersEnabled = savedState.showFingersEnabled !== false;
   alternateLinesEnabled = savedState.alternateLinesEnabled === true;
+  metronomeBpm = normalizeMetronomeBpm(savedState.metronomeBpm);
   practiceTypedValue = "";
 }
 

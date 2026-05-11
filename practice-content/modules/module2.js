@@ -1,220 +1,325 @@
 window.PRACTICE_CONTENT_SOURCE.modules = window.PRACTICE_CONTENT_SOURCE.modules || [];
 window.PRACTICE_CONTENT_SOURCE.modules.push({
   id: "module2",
-  title: { ru: "Module 2 — Верхний ряд (часть 1)", de: "Modul 2 — Obere Reihe (Teil 1)", en: "Module 2 — Top Row (Part 1)" },
+  title: { ru: "Module 2 — Центр", de: "Modul 2 — Zentrum", en: "Module 2 — Center" },
+  symbols: {
+    ru: ["к", "е", "а", "п", "г", "н", "о", "р", "м", "и", "т", "ь"],
+    de: ["r", "t", "f", "g", "u", "z", "j", "h", "v", "b", "n", "m"],
+    en: ["r", "t", "f", "g", "u", "y", "j", "h", "v", "b", "n", "m"]
+  },
   lessons: [
     {
       id: "lesson2_1",
-      title: { ru: "Левая рука (У К)", de: "Linke Hand (E R)", en: "Left Hand (E R)" },
-      target: { lines: 10, accuracy: 90 },
-      lines: {
+      title: { ru: "Центр слева", de: "Zentrum links", en: "Left Center" },
+      tips: {
         ru: [
-          "ук ук ку ку кук кук уку уку куу куу укк укк укук кукук укук кукук укук кукук укук кукук укук кукук укук кукук укук кукук укук кукук укук кукук",
-          "рука рука урок урок кура кура урук урук кук кук рука рука урок урок кура кура урук урук кук кук рука рука урок урок кура кура урук урук кук кук",
-          "укукукук кукукуку укукукук кукукуку укукукук кукукуку укукукук кукукуку укукукук кукукуку укукукук кукукуку укукукук кукукуку укукукук кукукуку",
-          "ук кук ук кук ук кук ук кук ук кук ук кук ук кук ук кук ук кук ук кук ук кук ук кук ук кук ук кук ук кук ук кук ук кук ук кук ук кук ук кук ук",
-          "уку уку уку уку уку уку уку уку уку уку уку уку уку уку уку уку уку уку уку уку уку уку уку уку уку уку уку уку уку уку уку уку уку уку уку",
-          "уккуукку уккуукку уккуукку уккуукку уккуукку уккуукку уккуукку уккуукку уккуукку уккуукку уккуукку уккуукку уккуукку уккуукку уккуукку уккуук",
-          "кукукуку укукукук кукукуку укукукук кукукуку укукукук кукукуку укукукук кукукуку укукукук кукукуку укукукук кукукуку укукукук кукукуку укукукук",
-          "кура кура кура кура кура кура кура кура кура кура кура кура кура кура кура кура кура кура кура кура кура кура кура кура кура кура кура кура кура",
-          "урок урок урок урок урок урок урок урок урок урок урок урок урок урок урок урок урок урок урок урок урок урок урок урок урок урок урок урок урок урок",
-          "укк укк укк укк укк укк укк укк укк укк укк укк укк укк укк укк укк укк укк укк укк укк укк укк укк укк укк укк укк укк укк укк укк укк укк укк"
+          "После каждого нажатия возвращай пальцы в «домик». Так они всегда знают, откуда стартовать к следующей букве."
         ],
         de: [
-          "er er re re err err ree ree ere ere rer rer erer rerer erer rerer erer rerer erer rerer erer rerer erer rerer erer rerer erer rerer erer rerer",
-          "er er der der red red rede rede er er der der red red rede rede er er der der red red rede rede er er der der red red rede rede er er der",
-          "ererer rererere erererer rererere erererer rererere erererer rererere erererer rererere erererer rererere erererer rererere erererer rererere ererer",
-          "derr derr derr derr derr derr derr derr derr derr derr derr derr derr derr derr derr derr derr derr derr derr derr derr derr derr derr derr derr",
-          "rede rede rede rede rede rede rede rede rede rede rede rede rede rede rede rede rede rede rede rede rede rede rede rede rede rede rede rede rede rede",
-          "re re re re re re re re re re re re re re re re re re re re re re re re re re re re re re re re re re re re re re re re re re re re re re re re",
-          "rererere rererere rererere rererere rererere rererere rererere rererere rererere rererere rererere rererere rererere rererere rererere rererere",
-          "derer derer derer derer derer derer derer derer derer derer derer derer derer derer derer derer derer derer derer derer derer derer derer derer",
-          "erd erd erd erd erd erd erd erd erd erd erd erd erd erd erd erd erd erd erd erd erd erd erd erd erd erd erd erd erd erd erd erd erd erd erd",
-          "err err ree ree err err ree ree err err ree ree err err ree ree err err ree ree err err ree ree err err ree ree err err ree ree err err ree ree"
+          "Bring deine Finger nach jedem Anschlag zurück ins Zuhause. So wissen sie immer, von wo aus sie zur nächsten Taste starten."
         ],
         en: [
-          "er er re re err err ree ree ere ere rer rer erer rerer erer rerer erer rerer erer rerer erer rerer erer rerer erer rerer erer rerer erer rerer erer rerer",
-          "red red reed reed deer deer free free reef reef red red reed reed deer deer free free reef reef red red reed reed deer deer free free reef reef",
-          "rererere erererer rererere erererer rererere erererer rererere erererer rererere erererer rererere erererer rererere erererer rererere erererer",
-          "rer erer rerer erer rerer erer rerer erer rerer erer rerer erer rerer erer rerer erer rerer erer rerer erer rerer erer rerer erer rerer erer rerer erer",
-          "free free reef reef free free reef reef free free reef reef free free reef reef free free reef reef free free reef reef free free reef reef free",
-          "ererer rererere erererer rererere erererer rererere erererer rererere erererer rererere erererer rererere erererer rererere erererer rererere ererer",
-          "eerreee eerreee eerreee eerreee eerreee eerreee eerreee eerreee eerreee eerreee eerreee eerreee eerreee eerreee eerreee eerreee eerreee eerreee eerree",
-          "erer erer erer erer erer erer erer erer erer erer erer erer erer erer erer erer erer erer erer erer erer erer erer erer erer erer erer erer erer erer",
-          "reed deer free reef reed deer free reef reed deer free reef reed deer free reef reed deer free reef reed deer free reef reed deer free reef reed",
-          "err err ree ree err err ree ree err err ree ree err err ree ree err err ree ree err err ree ree err err ree ree err err ree ree err err ree ree"
+          "Return your fingers to the home position after every keypress. That way they always know where to start for the next letter."
+        ]
+      },
+      symbolPolicy: {
+        scope: "lesson",
+        ru: ["к", "е", "а", "п"],
+        de: ["r", "t", "f", "g"],
+        en: ["r", "t", "f", "g"]
+      },
+      target: { lines: 10, accuracy: 90, speedMax: 120 },
+      lines: {
+        ru: [
+          "кеап кеап кеап кеап апек апек паке паке кеап апек паке кеап апек паке кеап кеап апек паке кеап апек паке кеап кеап кеап кеап кеап",
+          "кк ее аа пп кк пп ее аа кк аа пп ее кк ее аа пп кк пп ее аа кк аа пп ее кк ее аа пп кк пп ее аа кк аа пп кк ее аа пп кк пп ее аа",
+          "кака епеп папа кеке кака епеп папа кеке кака епеп папа кеке кака епеп папа кеке кака епеп папа кеке кака кака епеп папа кеке кака",
+          "аке епа пак кеп аке епа пак кеп аке епа пак кеп аке епа пак кеп аке епа пак кеп аке епа пак кеп аке епа аке епа пак кеп аке епа",
+          "апа еке ака пеп апа еке ака пеп апа еке ака пеп апа еке ака пеп апа еке ака пеп апа еке ака пеп апа апа еке ака пеп апа еке ака",
+          "ааа ккк еее ппп ааа ккк еее ппп ааа ккк еее ппп ааа ккк еее ппп ааа ккк еее ппп ааа ккк еее ппп ааа ккк еее ппп ааа ккк еее ппп",
+          "паак кееп аппа паак кееп аппа паак кееп аппа паак кееп аппа паак кееп аппа паак кееп аппа паак паак кееп аппа паак кееп аппа паак",
+          "кек пеп ака апа кек пеп ака апа кек пеп ака апа кек пеп ака апа кек пеп ака апа кек пеп ака кек пеп ака апа кек пеп ака апа кек",
+          "кпк еае пап кек кпк еае пап кек кпк еае пап кек кпк еае пап кек кпк еае пап кек кпк еае пап кпк еае пап кек кпк еае пап кек кпк",
+          "кеапкеап апекапек пакепаке кеапкеап апекапек пакепаке кеапкеап апекапек пакепаке кеапкеап кеапкеап апекапек пакепаке кеапкеап"
+        ],
+        de: [
+          "rtfg rtfg rtfg rtfg gftr gftr fgrt fgrt rtfg gftr fgrt rtfg gftr fgrt rtfg rtfg gftr fgrt rtfg gftr fgrt rtfg rtfg rtfg rtfg rtfg",
+          "rr tt ff gg rr gg tt ff rr ff gg tt rr tt ff gg rr gg tt ff rr ff gg tt rr tt ff gg rr gg tt ff rr ff gg rr tt ff gg rr gg tt ff",
+          "rfrf tgtg gfgf rtrt rfrf tgtg gfgf rtrt rfrf tgtg gfgf rtrt rfrf tgtg gfgf rtrt rfrf tgtg gfgf rtrt rfrf rfrf tgtg gfgf rtrt rfrf",
+          "frt tgf gfr rtg frt tgf gfr rtg frt tgf gfr rtg frt tgf gfr rtg frt tgf gfr rtg frt tgf gfr rtg frt tgf frt tgf gfr rtg frt tgf",
+          "fgf trt frf gtg fgf trt frf gtg fgf trt frf gtg fgf trt frf gtg fgf trt frf gtg fgf trt frf gtg fgf fgf trt frf gtg fgf trt frf",
+          "fff rrr ttt ggg fff rrr ttt ggg fff rrr ttt ggg fff rrr ttt ggg fff rrr ttt ggg fff rrr ttt ggg fff rrr ttt ggg fff rrr ttt ggg",
+          "gffr rttg fggf gffr rttg fggf gffr rttg fggf gffr rttg fggf gffr rttg fggf gffr rttg fggf gffr gffr rttg fggf gffr rttg fggf gffr",
+          "rtr gtg frf fgf rtr gtg frf fgf rtr gtg frf fgf rtr gtg frf fgf rtr gtg frf fgf rtr gtg frf rtr gtg frf fgf rtr gtg frf fgf rtr",
+          "rgr tft gfg rtr rgr tft gfg rtr rgr tft gfg rtr rgr tft gfg rtr rgr tft gfg rtr rgr tft gfg rgr tft gfg rtr rgr tft gfg rtr rgr",
+          "rtfgrtfg gftrgftr fgrtfgrt rtfgrtfg gftrgftr fgrtfgrt rtfgrtfg gftrgftr fgrtfgrt rtfgrtfg rtfgrtfg gftrgftr fgrtfgrt rtfgrtfg"
+        ],
+        en: [
+          "rtfg rtfg rtfg rtfg gftr gftr fgrt fgrt rtfg gftr fgrt rtfg gftr fgrt rtfg rtfg gftr fgrt rtfg gftr fgrt rtfg rtfg rtfg rtfg rtfg",
+          "rr tt ff gg rr gg tt ff rr ff gg tt rr tt ff gg rr gg tt ff rr ff gg tt rr tt ff gg rr gg tt ff rr ff gg rr tt ff gg rr gg tt ff",
+          "rfrf tgtg gfgf rtrt rfrf tgtg gfgf rtrt rfrf tgtg gfgf rtrt rfrf tgtg gfgf rtrt rfrf tgtg gfgf rtrt rfrf rfrf tgtg gfgf rtrt rfrf",
+          "frt tgf gfr rtg frt tgf gfr rtg frt tgf gfr rtg frt tgf gfr rtg frt tgf gfr rtg frt tgf gfr rtg frt tgf frt tgf gfr rtg frt tgf",
+          "fgf trt frf gtg fgf trt frf gtg fgf trt frf gtg fgf trt frf gtg fgf trt frf gtg fgf trt frf gtg fgf fgf trt frf gtg fgf trt frf",
+          "fff rrr ttt ggg fff rrr ttt ggg fff rrr ttt ggg fff rrr ttt ggg fff rrr ttt ggg fff rrr ttt ggg fff rrr ttt ggg fff rrr ttt ggg",
+          "gffr rttg fggf gffr rttg fggf gffr rttg fggf gffr rttg fggf gffr rttg fggf gffr rttg fggf gffr gffr rttg fggf gffr rttg fggf gffr",
+          "rtr gtg frf fgf rtr gtg frf fgf rtr gtg frf fgf rtr gtg frf fgf rtr gtg frf fgf rtr gtg frf rtr gtg frf fgf rtr gtg frf fgf rtr",
+          "rgr tft gfg rtr rgr tft gfg rtr rgr tft gfg rtr rgr tft gfg rtr rgr tft gfg rtr rgr tft gfg rgr tft gfg rtr rgr tft gfg rtr rgr",
+          "rtfgrtfg gftrgftr fgrtfgrt rtfgrtfg gftrgftr fgrtfgrt rtfgrtfg gftrgftr fgrtfgrt rtfgrtfg rtfgrtfg gftrgftr fgrtfgrt rtfgrtfg"
         ]
       }
     },
     {
       id: "lesson2_2",
-      title: { ru: "Правая рука (Ш Щ)", de: "Rechte Hand (I O)", en: "Right Hand (I O)" },
-      target: { lines: 10, accuracy: 90 },
-      lines: {
+      title: { ru: "Центр справа", de: "Zentrum rechts", en: "Right Center" },
+      tips: {
         ru: [
-          "шщ шщ щш щш шщш шщш щшщ щшщ шщщ шщщ щшш щшш шщшщ щшщшщ шщшщ щшщшщ шщшщ щшщшщ шщшщ щшщшщ шщшщ щшщшщ шщшщ щшщшщ шщшщ",
-          "шиш шиш щит щит шиш шиш щит щит шиш шиш щит щит шиш шиш щит щит шиш шиш щит щит шиш шиш щит щит шиш шиш щит щит шиш шиш щит щит шиш",
-          "шщшщшщшщ щшщшщшщш шщшщшщшщ щшщшщшщш шщшщшщшщ щшщшщшщш шщшщшщшщ щшщшщшщш шщшщшщшщ щшщшщшщш шщшщшщшщ щшщшщшщш шщшщшщшщ щшщшщшщш",
-          "шщ шщ шщ шщ шщ шщ шщ шщ шщ шщ шщ шщ шщ шщ шщ шщ шщ шщ шщ шщ шщ шщ шщ шщ шщ шщ шщ шщ шщ шщ шщ шщ шщ шщ шщ шщ шщ шщ шщ шщ шщ",
-          "шщш шщш шщш шщш шщш шщш шщш шщш шщш шщш шщш шщш шщш шщш шщш шщш шщш шщш шщш шщш шщш шщш шщш шщш шщш шщш шщш шщш шщш шщш шщш шщш",
-          "щит щит щит щит щит щит щит щит щит щит щит щит щит щит щит щит щит щит щит щит щит щит щит щит щит щит щит щит щит щит щит щит",
-          "шиш шиш шиш шиш шиш шиш шиш шиш шиш шиш шиш шиш шиш шиш шиш шиш шиш шиш шиш шиш шиш шиш шиш шиш шиш шиш шиш шиш шиш шиш шиш шиш",
-          "щш щш щш щш щш щш щш щш щш щш щш щш щш щш щш щш щш щш щш щш щш щш щш щш щш щш щш щш щш щш щш щш щш щш щш щш щш щш щш щш щш",
-          "шшш шшш шшш шшш шшш шшш шшш шшш шшш шшш шшш шшш шшш шшш шшш шшш шшш шшш шшш шшш шшш шшш шшш шшш шшш шшш шшш шшш шшш шшш шшш шшш",
-          "щщщ щщщ щщщ щщщ щщщ щщщ щщщ щщщ щщщ щщщ щщщ щщщ щщщ щщщ щщщ щщщ щщщ щщщ щщщ щщщ щщщ щщщ щщщ щщщ щщщ щщщ щщщ щщщ щщщ щщщ щщщ щщщ"
+          "Не смотри на клавиатуру! Настоящая скорость появляется тогда, когда пальцы сами находят дорогу."
         ],
         de: [
-          "io io oi oi ioi ioi oio oio ioo ioo oii oii ioio oioio ioio oioio ioio oioio ioio oioio ioio oioio ioio oioio ioio oioio ioio oioio",
-          "im im in in im im in in im im in in im im in in im im in in im im in in im im in in im im in in im im in in im im in in im im in in",
-          "ioioioio oioioioi ioioioio oioioioi ioioioio oioioioi ioioioio oioioioi ioioioio oioioioi ioioioio oioioioi ioioioio oioioioi ioioioio",
-          "io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io",
-          "oi oi oi oi oi oi oi oi oi oi oi oi oi oi oi oi oi oi oi oi oi oi oi oi oi oi oi oi oi oi oi oi oi oi oi oi oi oi oi oi oi oi oi oi oi",
-          "ioioi ioioi ioioi ioioi ioioi ioioi ioioi ioioi ioioi ioioi ioioi ioioi ioioi ioioi ioioi ioioi ioioi ioioi ioioi ioioi ioioi ioioi",
-          "im im im im im im im im im im im im im im im im im im im im im im im im im im im im im im im im im im im im im im im im im im im im im",
-          "in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in",
-          "inm inm inm inm inm inm inm inm inm inm inm inm inm inm inm inm inm inm inm inm inm inm inm inm inm inm inm inm inm inm inm inm inm inm",
-          "imm imm imm imm imm imm imm imm imm imm imm imm imm imm imm imm imm imm imm imm imm imm imm imm imm imm imm imm imm imm imm imm imm imm"
+          "Schau nicht auf die Tastatur! Echte Geschwindigkeit entsteht, wenn die Finger den Weg selbst finden."
         ],
         en: [
-          "io io oi oi ioi ioi oio oio ioo ioo oii oii ioio oioio ioio oioio ioio oioio ioio oioio ioio oioio ioio oioio ioio oioio ioio oioio ioio oioio",
-          "oil oil look look look look oil oil oil look look look look oil oil oil look look look look oil oil oil look look look look oil oil oil",
-          "ioioioio oioioioi ioioioio oioioioi ioioioio oioioioi ioioioio oioioioi ioioioio oioioioi ioioioio oioioioi ioioioio oioioioi ioioioio",
-          "io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io",
-          "ooi ooi ooi ooi ooi ooi ooi ooi ooi ooi ooi ooi ooi ooi ooi ooi ooi ooi ooi ooi ooi ooi ooi ooi ooi ooi ooi ooi ooi ooi ooi ooi ooi ooi",
-          "ioioi ioioi ioioi ioioi ioioi ioioi ioioi ioioi ioioi ioioi ioioi ioioi ioioi ioioi ioioi ioioi ioioi ioioi ioioi ioioi ioioi ioioi ioioi",
-          "oil oil oil oil oil oil oil oil oil oil oil oil oil oil oil oil oil oil oil oil oil oil oil oil oil oil oil oil oil oil oil oil oil",
-          "look look look look look look look look look look look look look look look look look look look look look look look look look look look look",
-          "io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io",
-          "oio oio oio oio oio oio oio oio oio oio oio oio oio oio oio oio oio oio oio oio oio oio oio oio oio oio oio oio oio oio oio oio oio oio"
+          "Do not look at the keyboard! Real speed appears when your fingers find the way on their own."
+        ]
+      },
+      symbolPolicy: {
+        scope: "lesson",
+        ru: ["г", "н", "о", "р"],
+        de: ["u", "z", "j", "h"],
+        en: ["u", "y", "j", "h"]
+      },
+      target: { lines: 10, accuracy: 90, speedMax: 120 },
+      lines: {
+        ru: [
+          "гнор гнор гнор гнор ронг ронг огнр огнр гнор ронг огнр гнор ронг огнр гнор гнор ронг огнр гнор ронг огнр гнор гнор гнор гнор гнор",
+          "гг нн оо рр гг рр нн оо гг оо рр нн гг нн оо рр гг рр нн оо гг оо рр нн гг нн оо рр гг рр нн оо гг оо рр гг нн оо рр гг рр нн оо",
+          "гого нрнр роро гнгн гого нрнр роро гнгн гого нрнр роро гнгн гого нрнр роро гнгн гого нрнр роро гнгн гого гого нрнр роро гнгн гого",
+          "огн нро рог грон огн нро рог грон огн нро рог грон огн нро рог грон огн нро рог грон огн нро рог огн нро рог грон огн нро рог",
+          "гро нор орг рон гро нор орг рон гро нор орг рон гро нор орг рон гро нор орг рон гро нор орг рон гро нор орг рон гро нор орг рон",
+          "ггг ннн ооо ррр ггг ннн ооо ррр ггг ннн ооо ррр ггг ннн ооо ррр ггг ннн ооо ррр ггг ннн ооо ррр ггг ннн ооо ррр ггг ннн ооо ррр",
+          "ргго ноор оррг ргго ноор оррг ргго ноор оррг ргго ноор оррг ргго ноор оррг ргго ноор оррг ргго ргго ноор оррг ргго ноор оррг ргго",
+          "гог нон рор оно гог нон рор оно гог нон рор оно гог нон рор оно гог нон рор оно гог нон рор гог нон рор оно гог нон рор оно гог",
+          "грг нон орр гог грг нон орр гог грг нон орр гог грг нон орр гог грг нон орр гог грг нон орр грг нон орр гог грг нон орр гог грг",
+          "гноргнор ронгронг огнрогнр гноргнор ронгронг огнрогнр гноргнор ронгронг огнрогнр гноргнор гноргнор ронгронг огнрогнр гноргнор"
+        ],
+        de: [
+          "uzjh uzjh uzjh uzjh hjzu hjzu juzh juzh uzjh hjzu juzh uzjh hjzu juzh uzjh uzjh hjzu juzh uzjh hjzu juzh uzjh uzjh uzjh uzjh uzjh",
+          "uu zz jj hh uu hh zz jj uu jj hh zz uu zz jj hh uu hh zz jj uu jj hh zz uu zz jj hh uu hh zz jj uu jj hh uu zz jj hh uu hh zz jj",
+          "ujuj zhzh hjhj uzuz ujuj zhzh hjhj uzuz ujuj zhzh hjhj uzuz ujuj zhzh hjhj uzuz ujuj zhzh hjhj uzuz ujuj ujuj zhzh hjhj uzuz ujuj",
+          "juz zhj hju uzhj juz zhj hju uzhj juz zhj hju uzhj juz zhj hju uzhj juz zhj hju uzhj juz zhj hju juz zhj hju uzhj juz zhj hju",
+          "uhj zjh juh hzu uhj zjh juh hzu uhj zjh juh hzu uhj zjh juh hzu uhj zjh juh hzu uhj zjh juh hzu uhj zjh juh hzu uhj zjh juh hzu",
+          "uuu zzz jjj hhh uuu zzz jjj hhh uuu zzz jjj hhh uuu zzz jjj hhh uuu zzz jjj hhh uuu zzz jjj hhh uuu zzz jjj hhh uuu zzz jjj hhh",
+          "huuj zjjh jhhu huuj zjjh jhhu huuj zjjh jhhu huuj zjjh jhhu huuj zjjh jhhu huuj zjjh jhhu huuj huuj zjjh jhhu huuj zjjh jhhu huuj",
+          "uju zjz hjh joj uju zjz hjh joj uju zjz hjh joj uju zjz hjh joj uju zjz hjh joj uju zjz hjh uju zjz hjh joj uju zjz hjh joj uju",
+          "uhu zjz jhh uju uhu zjz jhh uju uhu zjz jhh uju uhu zjz jhh uju uhu zjz jhh uju uhu zjz jhh uhu zjz jhh uju uhu zjz jhh uju uhu",
+          "uzjhuzjh hjzuhjzu juzhjuzh uzjhuzjh hjzuhjzu juzhjuzh uzjhuzjh hjzuhjzu juzhjuzh uzjhuzjh uzjhuzjh hjzuhjzu juzhjuzh uzjhuzjh"
+        ],
+        en: [
+          "uyjh uyjh uyjh uyjh hjyu hjyu juyh juyh uyjh hjyu juyh uyjh hjyu juyh uyjh uyjh hjyu juyh uyjh hjyu juyh uyjh uyjh uyjh uyjh uyjh",
+          "uu yy jj hh uu hh yy jj uu jj hh yy uu yy jj hh uu hh yy jj uu jj hh yy uu yy jj hh uu hh yy jj uu jj hh uu yy jj hh uu hh yy jj",
+          "ujuj yhyh hjhj uyuy ujuj yhyh hjhj uyuy ujuj yhyh hjhj uyuy ujuj yhyh hjhj uyuy ujuj yhyh hjhj uyuy ujuj ujuj yhyh hjhj uyuy ujuj",
+          "juy yhj hju uyhj juy yhj hju uyhj juy yhj hju uyhj juy yhj hju uyhj juy yhj hju uyhj juy yhj hju juy yhj hju uyhj juy yhj hju",
+          "uhj yjh juh hyu uhj yjh juh hyu uhj yjh juh hyu uhj yjh juh hyu uhj yjh juh hyu uhj yjh juh hyu uhj yjh juh hyu uhj yjh juh hyu",
+          "uuu yyy jjj hhh uuu yyy jjj hhh uuu yyy jjj hhh uuu yyy jjj hhh uuu yyy jjj hhh uuu yyy jjj hhh uuu yyy jjj hhh uuu yyy jjj hhh",
+          "huuj yjjh jhhu huuj yjjh jhhu huuj yjjh jhhu huuj yjjh jhhu huuj yjjh jhhu huuj yjjh jhhu huuj huuj yjjh jhhu huuj yjjh jhhu huuj",
+          "uju yjy hjh joj uju yjy hjh joj uju yjy hjh joj uju yjy hjh joj uju yjy hjh joj uju yjy hjh uju yjy hjh joj uju yjy hjh joj uju",
+          "uhu yjy jhh uju uhu yjy jhh uju uhu yjy jhh uju uhu yjy jhh uju uhu yjy jhh uju uhu yjy jhh uhu yjy jhh uju uhu yjy jhh uju uhu",
+          "uyjhuyjh hjyuhjyu juyhjuyh uyjhuyjh hjyuhjyu juyhjuyh uyjhuyjh hjyuhjyu juyhjuyh uyjhuyjh uyjhuyjh hjyuhjyu juyhjuyh uyjhuyjh"
         ]
       }
     },
     {
       id: "lesson2_3",
-      title: { ru: "Обе руки (У К Ш Щ)", de: "Beide Hände (E R I O)", en: "Both Hands (E R I O)" },
-      target: { lines: 10, accuracy: 90 },
-      lines: {
+      title: { ru: "Нижний ряд", de: "Untere Reihe", en: "Bottom Row" },
+      tips: {
         ru: [
-          "ук шщ ку щш ук шщ ку щш ук шщ ку щш ук шщ ку щш ук шщ ку щш ук шщ ку щш ук шщ ку щш ук шщ ку щш ук шщ ку щш ук шщ ку щш",
-          "укуш укуш кшщу кшщу укуш укуш кшщу кшщу укуш укуш кшщу кшщу укуш укуш кшщу кшщу укуш укуш кшщу кшщу укуш укуш кшщу кшщу",
-          "у к ш щ у к ш щ у к ш щ у к ш щ у к ш щ у к ш щ у к ш щ у к ш щ у к ш щ у к ш щ у к ш щ у к ш щ у к ш щ у к ш щ у к ш щ",
-          "ук ук ук ук ук ук ук ук ук ук ук ук ук ук ук ук ук ук ук ук ук ук ук ук ук ук ук ук ук ук ук ук ук ук ук ук ук ук ук ук ук ук ук ук ук",
-          "шщ шщ шщ шщ шщ шщ шщ шщ шщ шщ шщ шщ шщ шщ шщ шщ шщ шщ шщ шщ шщ шщ шщ шщ шщ шщ шщ шщ шщ шщ шщ шщ шщ шщ шщ шщ шщ шщ шщ шщ шщ",
-          "ку ку ку ку ку ку ку ку ку ку ку ку ку ку ку ку ку ку ку ку ку ку ку ку ку ку ку ку ку ку ку ку ку ку ку ку ку ку ку ку ку ку ку ку ку",
-          "щш щш щш щш щш щш щш щш щш щш щш щш щш щш щш щш щш щш щш щш щш щш щш щш щш щш щш щш щш щш щш щш щш щш щш щш щш щш щш щш щш",
-          "уку уку уку уку уку уку уку уку уку уку уку уку уку уку уку уку уку уку уку уку уку уку уку уку уку уку уку уку уку уку",
-          "куш куш куш куш куш куш куш куш куш куш куш куш куш куш куш куш куш куш куш куш куш куш куш куш куш куш куш куш куш куш",
-          "укуш кшщу укуш кшщу укуш кшщу укуш кшщу укуш кшщу укуш кшщу укуш кшщу укуш кшщу укуш кшщу укуш кшщу укуш кшщу укуш кшщу"
+          "Нажал — сразу отпустил. Короткий отскок помогает держать ритм и не уставать."
         ],
         de: [
-          "er io re oi er io re oi er io re oi er io re oi er io re oi er io re oi er io re oi er io re oi er io re oi er io re oi",
-          "erie erie roio roio erie erie roio roio erie erie roio roio erie erie roio roio erie erie roio roio erie erie roio roio erie erie",
-          "e r i o e r i o e r i o e r i o e r i o e r i o e r i o e r i o e r i o e r i o e r i o e r i o e r i o e r i o e r i o",
-          "er er er er er er er er er er er er er er er er er er er er er er er er er er er er er er er er er er er er er er er er er er er er er",
-          "io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io",
-          "ie ie ie ie ie ie ie ie ie ie ie ie ie ie ie ie ie ie ie ie ie ie ie ie ie ie ie ie ie ie ie ie ie ie ie ie ie ie ie ie ie ie ie ie ie ie",
-          "ro ro ro ro ro ro ro ro ro ro ro ro ro ro ro ro ro ro ro ro ro ro ro ro ro ro ro ro ro ro ro ro ro ro ro ro ro ro ro ro ro ro ro ro ro",
-          "erie roio erie roio erie roio erie roio erie roio erie roio erie roio erie roio erie roio erie roio erie roio erie roio erie roio",
-          "reoi reoi reoi reoi reoi reoi reoi reoi reoi reoi reoi reoi reoi reoi reoi reoi reoi reoi reoi reoi reoi reoi reoi reoi reoi reoi reoi",
-          "e r i o i o e r e r i o i o e r e r i o i o e r e r i o i o e r e r i o i o e r e r i o i o e r e r i o i o e r e r i o"
+          "Drücken - sofort loslassen. Ein kurzer Rücksprung hilft dir, den Rhythmus zu halten und nicht so schnell müde zu werden."
         ],
         en: [
-          "er io re oi er io re oi er io re oi er io re oi er io re oi er io re oi er io re oi er io re oi er io re oi er io re oi er io re oi",
-          "erie erie roio roio erie erie roio roio erie erie roio roio erie erie roio roio erie erie roio roio erie erie roio roio erie erie",
-          "e r i o e r i o e r i o e r i o e r i o e r i o e r i o e r i o e r i o e r i o e r i o e r i o e r i o e r i o e r i o",
-          "er er er er er er er er er er er er er er er er er er er er er er er er er er er er er er er er er er er er er er er er er er er er er",
-          "io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io io",
-          "ie ie ie ie ie ie ie ie ie ie ie ie ie ie ie ie ie ie ie ie ie ie ie ie ie ie ie ie ie ie ie ie ie ie ie ie ie ie ie ie ie ie ie ie ie ie",
-          "ro ro ro ro ro ro ro ro ro ro ro ro ro ro ro ro ro ro ro ro ro ro ro ro ro ro ro ro ro ro ro ro ro ro ro ro ro ro ro ro ro ro ro ro ro",
-          "erie roio erie roio erie roio erie roio erie roio erie roio erie roio erie roio erie roio erie roio erie roio erie roio erie roio",
-          "reoi reoi reoi reoi reoi reoi reoi reoi reoi reoi reoi reoi reoi reoi reoi reoi reoi reoi reoi reoi reoi reoi reoi reoi reoi reoi reoi",
-          "e r i o i o e r e r i o i o e r e r i o i o e r e r i o i o e r e r i o i o e r e r i o i o e r e r i o i o e r e r i o"
+          "Press, then release right away. A quick rebound helps keep the rhythm steady and prevents fatigue."
+        ]
+      },
+      symbolPolicy: {
+        scope: "lesson",
+        ru: ["м", "и", "т", "ь"],
+        de: ["v", "b", "n", "m"],
+        en: ["v", "b", "n", "m"]
+      },
+      target: { lines: 10, accuracy: 90, speedMax: 120 },
+      lines: {
+        ru: [
+          "мить мить мить мить ьтим ьтим имть имть мить ьтим имть мить ьтим имть мить мить ьтим имть мить ьтим имть мить мить мить мить мить",
+          "мм ии тт ьь мм ьь ии тт мм тт ьь ии мм ии тт ьь мм ьь ии тт мм тт ьь ии мм ии тт ьь мм ьь ии тт мм тт ьь мм ии тт ьь мм ьь ии тт",
+          "мими итиь тьть мимь мими итиь тьть мимь мими итиь тьть мимь мими итиь тьть мимь мими итиь тьть мимь мими итиь тьть мимь мими итиь",
+          "имт тиь ьим мить имт тиь ьим мить имт тиь ьим мить имт тиь ьим мить имт тиь ьим мить имт тиь ьим имт тиь ьим мить имт тиь ьим",
+          "мти ить тим ьим мти ить тим ьим мти ить тим ьим мти ить тим ьим мти ить тим ьим мти ить тим ьим мти ить тим ьим мти ить тим ьим",
+          "ммм иии ттт ььь ммм иии ттт ььь ммм иии ттт ььь ммм иии ттт ььь ммм иии ттт ььь ммм иии ттт ььь ммм иии ттт ььь ммм иии ттт ььь",
+          "ьмми итть тььм ьмми итть тььм ьмми итть тььм ьмми итть тььм ьмми итть тььм ьмми итть тььм ьмми ьмми итть тььм ьмми итть тььм ьмми",
+          "мим тит ьть ими мим тит ьть ими мим тит ьть ими мим тит ьть ими мим тит ьть ими мим тит ьть мим тит ьть ими мим тит ьть ими мим",
+          "мьм ити тьь мим мьм ити тьь мим мьм ити тьь мим мьм ити тьь мим мьм ити тьь мим мьм ити тьь мьм ити тьь мим мьм ити тьь мим мьм",
+          "митьмить ьтимьтим имтьимть митьмить ьтимьтим имтьимть митьмить ьтимьтим имтьимть митьмить митьмить ьтимьтим имтьимть митьмить"
+        ],
+        de: [
+          "vbnm vbnm vbnm vbnm mnbv mnbv bvmn bvmn vbnm mnbv bvmn vbnm mnbv bvmn vbnm vbnm mnbv bvmn vbnm mnbv bvmn vbnm vbnm vbnm vbnm vbnm",
+          "vv bb nn mm vv mm bb nn vv nn mm bb vv bb nn mm vv mm bb nn vv nn mm bb vv bb nn mm vv mm bb nn vv nn mm vv bb nn mm vv mm bb nn",
+          "vbvb bnbm nmnm vbvm vbvb bnbm nmnm vbvm vbvb bnbm nmnm vbvm vbvb bnbm nmnm vbvm vbvb bnbm nmnm vbvm vbvb bnbm nmnm vbvm vbvb bnbm",
+          "bvn nbm mbv vbnm bvn nbm mbv vbnm bvn nbm mbv vbnm bvn nbm mbv vbnm bvn nbm mbv vbnm bvn nbm mbv bvn nbm mbv vbnm bvn nbm mbv",
+          "vnb bnm nbv mbv vnb bnm nbv mbv vnb bnm nbv mbv vnb bnm nbv mbv vnb bnm nbv mbv vnb bnm nbv mbv vnb bnm nbv mbv vnb bnm nbv mbv",
+          "vvv bbb nnn mmm vvv bbb nnn mmm vvv bbb nnn mmm vvv bbb nnn mmm vvv bbb nnn mmm vvv bbb nnn mmm vvv bbb nnn mmm vvv bbb nnn mmm",
+          "mvbb bnnm nmmv mvbb bnnm nmmv mvbb bnnm nmmv mvbb bnnm nmmv mvbb bnnm nmmv mvbb bnnm nmmv mvbb mvbb bnnm nmmv mvbb bnnm nmmv mvbb",
+          "vbv nbn mnm bvb vbv nbn mnm bvb vbv nbn mnm bvb vbv nbn mnm bvb vbv nbn mnm bvb vbv nbn mnm vbv nbn mnm bvb vbv nbn mnm bvb vbv",
+          "vmv bnb nmm vbv vmv bnb nmm vbv vmv bnb nmm vbv vmv bnb nmm vbv vmv bnb nmm vbv vmv bnb nmm vmv bnb nmm vbv vmv bnb nmm vbv vmv",
+          "vbnmvbnm mnbvmnbv bvmnbvmn vbnmvbnm mnbvmnbv bvmnbvmn vbnmvbnm mnbvmnbv bvmnbvmn vbnmvbnm vbnmvbnm mnbvmnbv bvmnbvmn vbnmvbnm"
+        ],
+        en: [
+          "vbnm vbnm vbnm vbnm mnbv mnbv bvmn bvmn vbnm mnbv bvmn vbnm mnbv bvmn vbnm vbnm mnbv bvmn vbnm mnbv bvmn vbnm vbnm vbnm vbnm vbnm",
+          "vv bb nn mm vv mm bb nn vv nn mm bb vv bb nn mm vv mm bb nn vv nn mm bb vv bb nn mm vv mm bb nn vv nn mm vv bb nn mm vv mm bb nn",
+          "vbvb bnbm nmnm vbvm vbvb bnbm nmnm vbvm vbvb bnbm nmnm vbvm vbvb bnbm nmnm vbvm vbvb bnbm nmnm vbvm vbvb bnbm nmnm vbvm vbvb bnbm",
+          "bvn nbm mbv vbnm bvn nbm mbv vbnm bvn nbm mbv vbnm bvn nbm mbv vbnm bvn nbm mbv vbnm bvn nbm mbv bvn nbm mbv vbnm bvn nbm mbv",
+          "vnb bnm nbv mbv vnb bnm nbv mbv vnb bnm nbv mbv vnb bnm nbv mbv vnb bnm nbv mbv vnb bnm nbv mbv vnb bnm nbv mbv vnb bnm nbv mbv",
+          "vvv bbb nnn mmm vvv bbb nnn mmm vvv bbb nnn mmm vvv bbb nnn mmm vvv bbb nnn mmm vvv bbb nnn mmm vvv bbb nnn mmm vvv bbb nnn mmm",
+          "mvbb bnnm nmmv mvbb bnnm nmmv mvbb bnnm nmmv mvbb bnnm nmmv mvbb bnnm nmmv mvbb bnnm nmmv mvbb mvbb bnnm nmmv mvbb bnnm nmmv mvbb",
+          "vbv nbn mnm bvb vbv nbn mnm bvb vbv nbn mnm bvb vbv nbn mnm bvb vbv nbn mnm bvb vbv nbn mnm vbv nbn mnm bvb vbv nbn mnm bvb vbv",
+          "vmv bnb nmm vbv vmv bnb nmm vbv vmv bnb nmm vbv vmv bnb nmm vbv vmv bnb nmm vbv vmv bnb nmm vmv bnb nmm vbv vmv bnb nmm vbv vmv",
+          "vbnmvbnm mnbvmnbv bvmnbvmn vbnmvbnm mnbvmnbv bvmnbvmn vbnmvbnm mnbvmnbv bvmnbvmn vbnmvbnm vbnmvbnm mnbvmnbv bvmnbvmn vbnmvbnm"
         ]
       }
     },
     {
       id: "lesson2_4",
       title: { ru: "Короткие слова", de: "Kurze Wörter", en: "Short Words" },
-      target: { lines: 10, accuracy: 90 },
-      lines: {
+      tips: {
         ru: [
-          "каша шкаф ложка ваша удав улов кошка укол каша шкаф ложка ваша удав улов кошка укол каша шкаф ложка ваша удав улов кошка укол",
-          "урок рука каша вода ложа фаза овал жажда урок рука каша вода ложа фаза овал жажда урок рука каша вода ложа фаза овал жажда",
-          "шкаф кошка укол душа лава ваша удав роща шкаф кошка укол душа лава ваша удав роща шкаф кошка укол душа лава ваша удав роща",
-          "каша вода ложа фаза овал жажда каша вода ложа фаза овал жажда каша вода ложа фаза овал жажда каша вода ложа фаза овал",
-          "удав улов кошка укол удав улов кошка укол удав улов кошка укол удав улов кошка укол удав улов кошка укол удав улов кошка",
-          "ложка ваша удав ложка ваша удав ложка ваша удав ложка ваша удав ложка ваша удав ложка ваша удав ложка ваша удав ложка",
-          "душа лава ваша роща душа лава ваша роща душа лава ваша роща душа лава ваша роща душа лава ваша роща душа лава ваша роща",
-          "каша кошка укол каша кошка укол каша кошка укол каша кошка укол каша кошка укол каша кошка укол каша кошка укол каша",
-          "ложа фаза овал жажда ложа фаза овал жажда ложа фаза овал жажда ложа фаза овал жажда ложа фаза овал жажда ложа фаза",
-          "удав улов ложка удав улов ложка удав улов ложка удав улов ложка удав улов ложка удав улов ложка удав улов ложка"
+          "Сначала добейся точности, а уже потом ускоряйся. Быстрая печать с ошибками только закрепляет плохую привычку."
         ],
         de: [
-          "oder reise erde drei dir tier oper rede oder reise erde drei dir tier oper rede oder reise erde drei dir tier oper rede oder",
-          "hier rore rose reis rein rede rare oder hier rore rose reis rein rede rare oder hier rore rose reis rein rede rare oder",
-          "erde drei oper reise oder tier rede hier erde drei oper reise oder tier rede hier erde drei oper reise oder tier rede",
-          "reise erde drei dir reise erde drei dir reise erde drei dir reise erde drei dir reise erde drei dir reise erde drei dir",
-          "rede oder tier rede oder tier rede oder tier rede oder tier rede oder tier rede oder tier rede oder tier rede oder tier",
-          "oper reise hier oper reise hier oper reise hier oper reise hier oper reise hier oper reise hier oper reise hier oper",
-          "rose reis rein rose reis rein rose reis rein rose reis rein rose reis rein rose reis rein rose reis rein rose reis rein",
-          "drei dir tier drei dir tier drei dir tier drei dir tier drei dir tier drei dir tier drei dir tier drei dir tier",
-          "reise oder rede reise oder rede reise oder rede reise oder rede reise oder rede reise oder rede reise oder rede reise",
-          "oper tier hier oper tier hier oper tier hier oper tier hier oper tier hier oper tier hier oper tier hier oper tier"
+          "Arbeite zuerst an der Genauigkeit und werde erst danach schneller. Schnelles Tippen mit Fehlern festigt nur schlechte Gewohnheiten."
         ],
         en: [
-          "fire door road side ride lake idea order fire door road side ride lake idea order fire door road side ride lake idea order",
-          "red rock role rise real read rain road red rock role rise real read rain road red rock role rise real read rain road red",
-          "said fire lake side road door idea order said fire lake side road door idea order said fire lake side road door idea order",
-          "fire lake side road door idea order fire lake side road door idea order fire lake side road door idea order fire lake side road",
-          "role rise real read rain role rise real read rain role rise real read rain role rise real read rain role rise real read rain",
-          "idea order fire idea order fire idea order fire idea order fire idea order fire idea order fire idea order fire idea order fire",
-          "door road door road door road door road door road door road door road door road door road door road door road door road door",
-          "said fire read rain said fire read rain said fire read rain said fire read rain said fire read rain said fire read rain",
-          "lake side idea lake side idea lake side idea lake side idea lake side idea lake side idea lake side idea lake side idea",
-          "rain order rain order rain order rain order rain order rain order rain order rain order rain order rain order rain order rain"
+          "Build accuracy first, then speed up. Fast typing with mistakes only reinforces a bad habit."
+        ]
+      },
+      symbolPolicy: {
+        scope: "module",
+        ru: ["к", "е", "а", "п", "г", "н", "о", "р", "м", "и", "т", "ь"],
+        de: ["r", "t", "f", "g", "u", "z", "j", "h", "v", "b", "n", "m"],
+        en: ["r", "t", "f", "g", "u", "y", "j", "h", "v", "b", "n", "m"]
+      },
+      target: { lines: 10, accuracy: 90, speed: 40 },
+      lines: {
+        ru: [
+          "мама папа тема кит мир тир рот тон гора нора нить книга мама папа тема кит мир тир рот тон гора нора нить книга",
+          "книга нора гора тема папа мама мир тир рот тон нить кит книга нора гора тема папа мама мир тир рот тон нить книга нора гора тема",
+          "мир тир кит рот тон тема нора гора папа мама книга нить мир тир кит рот тон тема нора гора папа мама книга мир тир кит рот тон",
+          "папа мама тема книга нора гора рот тон мир тир кит нить папа мама тема книга нора гора рот тон мир тир папа мама тема книга нора",
+          "гора нора книга тема мама папа нить кит мир тир рот тон гора нора книга тема мама папа нить кит мир тир гора нора книга тема мама",
+          "тема тема мама мама папа папа книга книга нора нора гора гора мир мир тир тир рот рот тон тон тема тема мама мама папа папа книга",
+          "нить книга нора гора тема папа мама кит мир тир рот тон нить книга нора гора тема папа мама кит мир нить книга нора гора тема",
+          "кит мир тир рот тон нить книга нора гора тема папа мама кит мир тир рот тон нить книга нора гора тема кит мир тир рот тон нить",
+          "тон рот тир мир кит нить книга гора нора тема папа мама тон рот тир мир кит нить книга гора нора тема тон рот тир мир кит нить",
+          "мама папа тема кит мир тир рот тон гора нора нить книга мама папа тема кит мир тир рот тон гора нора мама папа тема кит мир тир"
+        ],
+        de: [
+          "rat gut rot ton mut rum nur hut fern form gern gurt rat gut rot ton mut rum nur hut fern form gern gurt rat gut rot ton mut rum",
+          "form fern gern gurt rat gut rot ton mut rum nur hut form fern gern gurt rat gut rot ton mut rum form fern gern gurt rat gut rot",
+          "mut rum nur hut rot ton rat gut fern form gern gurt mut rum nur hut rot ton rat gut fern form mut rum nur hut rot ton rat gut",
+          "rat gut fern form gern gurt mut rum nur hut rot ton rat gut fern form gern gurt mut rum nur hut rat gut fern form gern gurt mut",
+          "gurt gern form fern hut nur rum mut ton rot gut rat gurt gern form fern hut nur rum mut ton rot gurt gern form fern hut nur rum",
+          "rat rat gut gut rot rot ton ton mut mut rum rum nur nur hut hut fern fern form form rat rat gut gut rot rot ton ton mut mut rum",
+          "fern form gern gurt rat gut rot ton mut rum nur hut fern form gern gurt rat gut rot ton mut fern form gern gurt rat gut rot ton",
+          "rot ton mut rum nur hut fern form gern gurt rat gut rot ton mut rum nur hut fern form gern rot ton mut rum nur hut fern form gern",
+          "ton rot gut rat gurt gern form fern hut nur rum mut ton rot gut rat gurt gern form fern hut ton rot gut rat gurt gern form fern",
+          "rat gut rot ton mut rum nur hut fern form gern gurt rat gut rot ton mut rum nur hut fern form rat gut rot ton mut rum nur hut"
+        ],
+        en: [
+          "run rug hut hum turn burn hurt hunt front form grunt run rug hut hum turn burn hurt hunt front form grunt run rug hut hum turn",
+          "form front grunt turn run rug hut hum burn hurt hunt form front grunt turn run rug hut hum burn hurt form front grunt turn run",
+          "hum run hurt hunt turn burn rug hut front form grunt hum run hurt hunt turn burn rug hut front form hum run hurt hunt turn burn",
+          "run rug front form grunt turn burn hum hut hurt hunt run rug front form grunt turn burn hum hut hurt run rug front form grunt",
+          "grunt front form hut hunt hurt burn turn rug run hum grunt front form hut hunt hurt burn turn rug run grunt front form hut hunt",
+          "run run rug rug hut hut hum hum turn turn burn burn hurt hurt hunt hunt front front form form run run rug rug hut hut hum hum",
+          "front form grunt run rug hut hum turn burn hurt hunt front form grunt run rug hut hum turn burn front form grunt run rug hut hum",
+          "hurt hunt turn burn hum hut front form grunt run rug hurt hunt turn burn hum hut front form grunt hurt hunt turn burn hum hut",
+          "hunt hurt burn turn hum hut rug run front form grunt hunt hurt burn turn hum hut rug run front hunt hurt burn turn hum hut rug",
+          "run rug hut hum turn burn hurt hunt front form grunt run rug hut hum turn burn hurt hunt front run rug hut hum turn burn hurt"
         ]
       }
     },
     {
       id: "lesson2_5",
       title: { ru: "Тест", de: "Test", en: "Test" },
-      target: { lines: 10, accuracy: 90, speed: 25 },
-      lines: {
+      tips: {
         ru: [
-          "каша шкаф ложка ваша удав улов кошка укол фыва олдж каша шкаф ложка ваша удав улов кошка укол фыва олдж каша шкаф ложка",
-          "ф ы в а у к ш щ о л д ж ф ы в а у к ш щ о л д ж ф ы в а у к ш щ о л д ж ф ы в а у к ш щ о л д ж ф ы в а у к ш щ",
-          "урок рука каша вода ложа фаза овал жажда урок рука каша вода ложа фаза овал жажда урок рука каша вода ложа фаза овал",
-          "фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж",
-          "каша вода ложа фаза каша вода ложа фаза каша вода ложа фаза каша вода ложа фаза каша вода ложа фаза каша вода ложа фаза",
-          "у к ш щ о л д ж у к ш щ о л д ж у к ш щ о л д ж у к ш щ о л д ж у к ш щ о л д ж у к ш щ о л д ж у к ш щ о л д ж",
-          "жажда урок рука жажда урок рука жажда урок рука жажда урок рука жажда урок рука жажда урок рука жажда урок рука",
-          "ф ы в а о л д ж ф ы в а о л д ж ф ы в а о л д ж ф ы в а о л д ж ф ы в а о л д ж ф ы в а о л д ж ф ы в а о л д ж",
-          "шкаф улов кошка шкаф улов кошка шкаф улов кошка шкаф улов кошка шкаф улов кошка шкаф улов кошка шкаф улов кошка",
-          "у к ш щ о л д ж у к ш щ о л д ж у к ш щ о л д ж у к ш щ о л д ж у к ш щ о л д ж у к ш щ о л д ж у к ш щ о л д ж"
+          "Теперь без подсказок: пришло время проверить, насколько уверенно твои руки ориентируются на клавиатуре сами."
         ],
         de: [
-          "oder reise erde drei dir tier oper rede asdf jkl; oder reise erde drei dir tier oper rede asdf jkl; oder reise erde",
-          "a s d f e r i o j k l ; a s d f e r i o j k l ; a s d f e r i o j k l ; a s d f e r i o j k l ; a s d f e r i o j k l ;",
-          "hier rore rose reis rein rede rare hier rore rose reis rein rede rare hier rore rose reis rein rede rare hier rore rose",
-          "asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl;",
-          "erde drei oper reise erde drei oper reise erde drei oper reise erde drei oper reise erde drei oper reise erde drei",
-          "er i o e r i o e r i o e r i o e r i o e r i o e r i o e r i o e r i o e r i o e r i o e r i o e r i o e r i o e r",
-          "tier rede hier tier rede hier tier rede hier tier rede hier tier rede hier tier rede hier tier rede hier tier rede",
-          "asdf e r i o jkl; asdf e r i o jkl; asdf e r i o jkl; asdf e r i o jkl; asdf e r i o jkl; asdf e r i o jkl; asdf e r i",
-          "a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ;",
-          "oper rede oper rede oper rede oper rede oper rede oper rede oper rede oper rede oper rede oper rede oper rede oper"
+          "Jetzt ohne Hinweise: Es ist Zeit zu prüfen, wie sicher sich deine Hände schon selbst auf der Tastatur orientieren."
         ],
         en: [
-          "fire door road side ride lake idea order asdf jkl; fire door road side ride lake idea order asdf jkl; fire door road side",
-          "a s d f e r i o j k l ; a s d f e r i o j k l ; a s d f e r i o j k l ; a s d f e r i o j k l ; a s d f e r i o j k l ;",
-          "real road idea side lake door fire order real road idea side lake door fire order real road idea side lake door fire",
-          "asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl;",
-          "fire order lake side fire order lake side fire order lake side fire order lake side fire order lake side fire order",
-          "er i o e r i o e r i o e r i o e r i o e r i o e r i o e r i o e r i o e r i o e r i o e r i o e r i o e r i o e r",
-          "road door fire idea road door fire idea road door fire idea road door fire idea road door fire idea road door fire idea",
-          "asdf e r i o jkl; asdf e r i o jkl; asdf e r i o jkl; asdf e r i o jkl; asdf e r i o jkl; asdf e r i o jkl; asdf e r i",
-          "a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ;",
-          "door fire lake door fire lake door fire lake door fire lake door fire lake door fire lake door fire lake door fire"
+          "Now without hints: it is time to check how confidently your hands can navigate the keyboard on their own."
+        ]
+      },
+      symbolPolicy: {
+        scope: "program",
+        ru: ["ф", "ы", "в", "а", "о", "л", "д", "ж", "э", "к", "е", "п", "г", "н", "р", "м", "и", "т", "ь"],
+        de: ["a", "s", "d", "f", "j", "k", "l", "ö", "ä", "r", "t", "g", "u", "z", "h", "v", "b", "n", "m"],
+        en: ["a", "s", "d", "f", "j", "k", "l", "r", "t", "g", "u", "y", "h", "v", "b", "n", "m"]
+      },
+      target: { lines: 15, accuracy: 90, speed: 40, assistants: false },
+      lines: {
+        ru: [
+          "мама папа тема вода лава жало овал книга нора гора мир тир рот тон вдова элла эд мама папа тема вода мама папа тема вода лава",
+          "фыва олджэ кеап гнор мить мама папа вода лава тема книга нора гора мир тир рот тон фыва олджэ фыва олджэ кеап гнор мить мама папа",
+          "лава вода мама папа книга нора гора тема мир тир рот тон жало овал лад вдова элла эд лава вода лава вода мама папа книга нора",
+          "к е а п г н о р м и т ь ф ы в а о л д ж э мама папа тема вода лава жало овал к е а п г н о р м и т ь ф ы в а о л д ж э мама папа",
+          "мама папа тема книга нора гора рот тон мир тир кит нить вода лава жало овал лад вдова элла эд мама папа тема книга нора гора рот",
+          "вал вода лава жало овал лад вдова элла эд мама папа тема книга нора гора мир тир рот тон вал вода лава жало овал лад вдова элла",
+          "кеап гнор мить фыва олджэ кеап гнор мить фыва олджэ мама папа вода лава тема книга нора гора кеап гнор мить фыва олджэ кеап гнор",
+          "мама мама папа папа вода вода лава лава тема тема книга книга нора нора гора гора мир мир тир тир мама мама папа папа вода вода",
+          "нить книга нора гора тема папа мама кит мир тир рот тон вал вода лава жало овал лад вдова нить книга нора гора тема папа мама кит",
+          "фываолджэ кеапгнор митьмить авыфэдлож мама папа тема вода лава жало овал нора гора мир тир фываолджэ кеапгнор митьмить авыфэдлож",
+          "жало лава вода овал вал лад эд элла вдова мама папа тема книга нора гора мир тир рот тон жало лава вода овал вал лад эд элла",
+          "вдова вода вал овал лава лад жало элла эд нить книга нора гора тема папа мама кит мир вдова вода вал овал лава лад жало элла эд",
+          "элла эд вал лад вода лава жало овал вдова кеап гнор мить мама папа тема книга нора гора элла эд вал лад вода лава жало овал вдова",
+          "олджэ фыва кеап гнор мить вал вода лава жало овал лад вдова элла эд мама папа тема олджэ фыва кеап гнор мить вал вода лава жало",
+          "мама папа тема вода лава жало овал книга нора гора мир тир рот тон фыва олджэ кеап гнор мама папа тема вода лава жало овал книга"
+        ],
+        de: [
+          "rat gut rot ton mut rum nur hut als das falls lass fass saal fern form gern gurt rat gut rot ton rat gut rot ton mut rum nur hut",
+          "asdf jklöä rtfg uzjh vbnm rat gut rot ton mut rum nur hut fern form gern gurt asdf jklöä asdf jklöä rtfg uzjh vbnm rat gut rot",
+          "fass lass saal fall als das da rat gut rot ton mut rum nur hut fern form gern gurt fass lass fass lass saal fall als das da rat",
+          "a s d f j k l ö ä r t g u z h v b n m rat gut rot ton mut rum nur hut a s d f j k l ö ä r t g u z h v b n m rat gut rot ton mut",
+          "rat gut fern form gern gurt mut rum nur hut rot ton als das falls lass fass saal da fall rat gut fern form gern gurt mut rum nur",
+          "als das falls lass fass saal da fall rat gut rot ton mut rum nur hut fern form gern gurt als das falls lass fass saal da fall rat",
+          "rtfg uzjh vbnm asdf jklöä rtfg uzjh vbnm asdf jklöä rat gut rot ton mut rum nur hut rtfg uzjh vbnm asdf jklöä rtfg uzjh vbnm asdf",
+          "rat rat gut gut rot rot ton ton mut mut rum rum nur nur hut hut fern fern form form rat rat gut gut rot rot ton ton mut mut rum",
+          "fern form gern gurt rat gut rot ton mut rum nur hut als das falls lass fass saal da fern form gern gurt rat gut rot ton mut rum",
+          "asdfjklöä rtfguzjh vbnmvbnm adsfälökj rat gut rot ton mut rum nur hut fern form gern asdfjklöä rtfguzjh vbnmvbnm adsfälökj rat",
+          "fass lass saal fall da als asdf jklöä rat gut rot ton mut rum nur hut fern form gern fass lass saal fall da als asdf jklöä rat",
+          "fall falls als das lass fass saal da fern form gern gurt rat gut rot ton mut rum fall falls als das lass fass saal da fern form",
+          "saal da als das falls lass fass fall rtfg uzjh vbnm rat gut rot ton mut rum saal da als das falls lass fass fall rtfg uzjh vbnm",
+          "jklöä asdf rtfg uzjh vbnm als das falls lass fass saal da fall rat gut rot jklöä asdf rtfg uzjh vbnm als das falls lass fass saal",
+          "rat gut rot ton mut rum nur hut als das falls lass fass saal asdf jklöä rtfg uzjh rat gut rot ton mut rum nur hut als das falls"
+        ],
+        en: [
+          "run rug hut hum turn burn hurt hunt all sad dad ask fall lass front form grunt run rug hut hum run rug hut hum turn burn hurt",
+          "asdf jkl rtfg uyjh vbnm run rug hut hum turn burn hurt hunt front form grunt asdf jkl asdf jkl rtfg uyjh vbnm run rug hut",
+          "fall lass flask glass all sad dad run rug hut hum turn burn hurt hunt front form grunt fall lass fall lass flask glass all sad",
+          "a s d f j k l r t g u y h v b n m run rug hut hum turn burn a s d f j k l r t g u y h v b n m run rug hut hum turn burn",
+          "run rug front form grunt turn burn hum hut hurt hunt all sad dad ask fall lass flask lads glass run rug front form grunt turn",
+          "all sad dad ask fall lass flask lads glass add run rug hut hum turn burn hurt hunt front form all sad dad ask fall lass flask",
+          "rtfg uyjh vbnm asdf jkl rtfg uyjh vbnm asdf jkl run rug hut hum turn burn hurt rtfg uyjh vbnm asdf jkl rtfg uyjh vbnm asdf",
+          "run run rug rug hut hut hum hum turn turn burn burn hurt hurt hunt hunt front front form form run run rug rug hut hut hum hum",
+          "front form grunt run rug hut hum turn burn hurt hunt all sad dad ask fall lass flask lads front form grunt run rug hut hum turn",
+          "asdfjkl rtfguyjh vbnmvbnm adsf lkj run rug hut hum turn burn hurt hunt front form grunt asdfjkl rtfguyjh vbnmvbnm adsf lkj",
+          "fall lass flask glass add all asdf jkl run rug hut hum turn burn hurt hunt front form fall lass flask glass add all asdf jkl",
+          "lads fall lass flask glass add front form grunt run rug hut hum turn burn hurt hunt lads fall lass flask glass add front form",
+          "glass add all sad dad ask fall lass rtfg uyjh vbnm run rug hut hum turn burn glass add all sad dad ask fall lass rtfg uyjh vbnm",
+          "jkl asdf rtfg uyjh vbnm all sad dad ask fall lass flask lads run rug hut jkl asdf rtfg uyjh vbnm all sad dad ask fall lass",
+          "run rug hut hum turn burn hurt hunt all sad dad ask fall lass asdf jkl rtfg uyjh run rug hut hum turn burn hurt hunt all sad"
         ]
       }
     }

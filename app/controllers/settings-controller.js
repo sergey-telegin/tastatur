@@ -141,7 +141,38 @@ function toggleDisplaySetting(settingName) {
   saved[settingName] = nextValue;
   persist();
   renderDisplaySettings();
+  if (customPracticeDialog.open) {
+    renderCustomPracticeDialog();
+  }
   renderKeyboard();
+}
+
+function normalizeMetronomeBpm(value) {
+  const parsed = Number.parseInt(value, 10);
+  if (!Number.isFinite(parsed) || parsed <= 0) return 0;
+  return Math.min(parsed, 400);
+}
+
+function setMetronomeBpm(nextBpm) {
+  const normalizedBpm = normalizeMetronomeBpm(nextBpm);
+
+  metronomeBpm = normalizedBpm;
+  saved.metronomeBpm = metronomeBpm;
+  persist();
+  renderDisplaySettings();
+  updateMetronome();
+}
+
+function handleMetronomeInput() {
+  setMetronomeBpm(metronomeInput.value);
+}
+
+function toggleAssistantsPanel() {
+  const isExpanded = assistantsToggle.getAttribute("aria-expanded") === "true";
+  const nextExpanded = !isExpanded;
+
+  assistantsToggle.setAttribute("aria-expanded", String(nextExpanded));
+  assistantsPanel.hidden = !nextExpanded;
 }
 
 function handleSettingsDialogClose() {

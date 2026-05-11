@@ -82,7 +82,7 @@ function resetPracticeInputValue() {
 }
 
 function renderPracticeGuides(fingerIds) {
-  const shouldHighlightFingers = fingerKeyboardMode || fingerHighlightEnabled;
+  const shouldHighlightFingers = fingerKeyboardMode || effectiveAssistantSetting(fingerHighlightEnabled);
   const activeFingerIds = new Set(
     shouldHighlightFingers
       ? (Array.isArray(fingerIds) ? fingerIds : [fingerIds]).filter(Boolean)

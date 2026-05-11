@@ -2,225 +2,324 @@ window.PRACTICE_CONTENT_SOURCE.modules = window.PRACTICE_CONTENT_SOURCE.modules 
 window.PRACTICE_CONTENT_SOURCE.modules.push({
   id: "module1",
   title: { ru: "Module 1 — Домашний ряд", de: "Modul 1 — Grundreihe", en: "Module 1 — Home Row" },
+  symbols: {
+    ru: ["ф", "ы", "в", "а", "о", "л", "д", "ж", "э"],
+    de: ["a", "s", "d", "f", "j", "k", "l", "ö", "ä"],
+    en: ["a", "s", "d", "f", "j", "k", "l"]
+  },
   lessons: [
     {
       id: "lesson1_1",
-      title: { ru: "Левая рука (Ф Ы В А)", de: "Linke Hand (A S D F)", en: "Left Hand (A S D F)" },
-      target: { lines: 10, accuracy: 90 },
-      lines: {
+      title: { ru: "Левая рука", de: "Linke Hand", en: "Left Hand" },
+      tips: {
         ru: [
-          "фыва фыва фыва фыва вафы вафы авыф авыф фыва вафы авыф фыва вафы авыф авыф фыва фыва вафы авыф авыф фыва фыва вафы авыф авыф фыва фыва вафы авыф авыф фыва фыва вафы авыф авыф фыва фыва вафы авыф авыф фыва фыва вафы авыф авыф фыва фыва вафы авыф авыф фыва фыва вафы авыф авыф",
-          "фф ыы вв аа фф вв ыы аа фф аа вв ыы фф ыы вв аа фф вв ыы аа фф аа вв ыы фф ыы вв аа фф вв ыы аа фф аа вв ыы фф ыы вв аа фф вв ыы аа фф аа вв ыы фф ыы вв аа фф вв ыы аа фф аа вв ыы фф ыы вв аа фф вв ыы аа фф аа вв ыы фф ыы вв аа фф вв ыы аа фф аа вв ыы фф ыы вв аа фф вв ыы аа фф аа вв ыы",
-          "авав ывыв фафа вава авав ывыв фафа вава авав ывыв фафа вава авав ывыв фафа вава авав ывыв фафа вава авав ывыв фафа вава авав ывыв фафа вава авав ывыв фафа вава авав ывыв фафа вава авав ывыв фафа вава авав ывыв фафа вава авав ывыв фафа вава авав ывыв фафа вава",
-          "афф фыв ваф афф фыв ваф афф фыв ваф афф фыв ваф афф фыв ваф афф фыв ваф афф фыв ваф афф фыв ваф афф фыв ваф афф фыв ваф афф фыв ваф афф фыв ваф афф фыв ваф афф фыв ваф афф фыв ваф афф фыв ваф афф фыв ваф афф фыв ваф афф фыв ваф афф фыв ваф афф фыв ваф афф фыв ваф",
-          "ава афа авы ава афа авы ава афа авы ава афа авы ава афа авы ава афа авы ава афа авы ава афа авы ава афа авы ава афа авы ава афа авы ава афа авы ава афа авы ава афа авы ава афа авы ава афа авы ава афа авы ава афа авы ава афа авы ава афа авы ава афа авы ава афа авы ава афа авы",
-          "ааа ффф ыыы ввв ааа ффф ыыы ввв ааа ффф ыыы ввв ааа ффф ыыы ввв ааа ффф ыыы ввв ааа ффф ыыы ввв ааа ффф ыыы ввв ааа ффф ыыы ввв ааа ффф ыыы ввв ааа ффф ыыы ввв ааа ффф ыыы ввв ааа ффф ыыы ввв ааа ффф ыыы ввв ааа ффф ыыы ввв ааа ффф ыыы ввв ааа ффф ыыы ввв ааа ффф ыыы ввв ааа ффф ыыы ввв",
-          "вафф ывва аафф вафф ывва аафф вафф ывва аафф вафф ывва аафф вафф ывва аафф вафф ывва аафф вафф ывва аафф вафф ывва аафф вафф ывва аафф вафф ывва аафф вафф ывва аафф вафф ывва аафф вафф ывва аафф вафф ывва аафф вафф ывва аафф вафф ывва аафф вафф ывва аафф",
-          "фффф аааа ыыыы вввв фффф аааа ыыыы вввв фффф аааа ыыыы вввв фффф аааа ыыыы вввв фффф аааа ыыыы вввв фффф аааа ыыыы вввв фффф аааа ыыыы вввв фффф аааа ыыыы вввв фффф аааа ыыыы вввв фффф аааа ыыыы вввв фффф аааа ыыыы вввв фффф аааа ыыыы вввв фффф аааа ыыыы вввв фффф аааа ыыыы вввв",
-          "выв фаф авав выв фаф авав выв фаф авав выв фаф авав выв фаф авав выв фаф авав выв фаф авав выв фаф авав выв фаф авав выв фаф авав выв фаф авав выв фаф авав выв фаф авав выв фаф авав выв фаф авав выв фаф авав выв фаф авав выв фаф авав выв фаф авав выв фаф авав",
-          "фывафывафыва вафывафывафы авыфавыфавыф фывафывафыва вафывафывафы авыфавыфавыф фывафывафыва вафывафывафы авыфавыфавыф фывафывафыва вафывафывафы авыфавыфавыф фывафывафыва вафывафывафы авыфавыфавыф фывафывафыва вафывафывафы авыфавыфавыф фывафывафыва вафывафывафы авыфавыфавыф"
+          "Сначала указательные пальцы положи на клавиши с «пупырышками» — А и О, потом разложи остальные пальцы, потом начинай печатать."
         ],
         de: [
-          "asdf asdf asdf asdf sadf sadf dsa fdsa asdf fdsa dsa fads asdf sad f ads fad sasd fds fads asdf fdsa sadf adsf fads asdf sadf dsa fdsa asdf fdsa dsa fads asdf sad f ads fad sasd fds fads asdf fdsa asdf sadf dsa fdsa asdf fdsa dsa fads asdf sad f ads fad sasd fds fads asdf fdsa sadf adsf fads",
-          "ff ss aa dd ff dd ss aa ff ss dd aa dd ss ff aa dd ss aa ff dd ss aa dd ff ss aa dd ff ss aa dd ff ss aa dd ff ss aa dd ff ss aa dd ff ss aa dd ff ss aa dd ff ss aa dd ff ss aa dd ff ss aa dd ff ss aa dd ff ss aa dd ff ss aa dd ff ss aa dd ff ss aa dd ff ss aa dd ff ss aa dd ff ss aa dd ff ss aa dd",
-          "ads fads adf sad fads asdf asd fads asf ads fads asdf fad sadf asd fads asf ads fads asdf fad sadf asd fads asf ads fads asdf fad sadf asd fads asf ads fads adf sad fads asdf asd fads asf ads fads asdf fad sadf asd fads asf ads fads asdf fad sadf asd fads asf ads fads asdf fad sadf asd fads asf",
-          "da sa fa da sa fa da sa fa da sa fa da sa fa da sa fa da sa fa da sa fa da sa fa da sa fa da sa fa da sa fa da sa fa da sa fa da sa fa da sa fa da sa fa da sa fa da sa fa da sa fa da sa fa da sa fa da sa fa da sa fa da sa fa da sa fa da sa fa da sa fa da sa fa da sa fa da sa fa da sa fa da sa fa",
-          "fass dass lass fass dass lass fass dass lass fass dass lass fass dass lass fass dass lass fass dass lass fass dass lass fass dass lass fass dass lass fass dass lass fass dass lass fass dass lass fass dass lass fass dass lass fass dass lass fass dass lass fass dass lass fass dass lass fass dass lass",
-          "asdf asdf asdf asdf sadf sadf dsa fdsa asdf fdsa dsa fads asdf sad f ads fad sasd fds fads asdf fdsa sadf adsf fads asdf sadf dsa fdsa asdf fdsa dsa fads asdf sad f ads fad sasd fds fads asdf fdsa asdf sadf dsa fdsa asdf fdsa dsa fads asdf sad f ads fad sasd fds fads asdf fdsa sadf adsf fads",
-          "ds fa sd af ds fa sd af ds fa sd af ds fa sd af ds fa sd af ds fa sd af ds fa sd af ds fa sd af ds fa sd af ds fa sd af ds fa sd af ds fa sd af ds fa sd af ds fa sd af ds fa sd af ds fa sd af ds fa sd af ds fa sd af ds fa sd af ds fa sd af ds fa sd af ds fa sd af ds fa sd af ds fa sd af",
-          "sada fafa fass sasa fafa fass sada fafa fass sasa fafa fass sada fafa fass sasa fafa fass sada fafa fass sasa fafa fass sada fafa fass sasa fafa sada fafa fass sasa fafa fass sada fafa fass sasa fafa fass sada fafa fass sasa fafa fass sada fafa fass sasa fafa fass sada fafa fass sasa fafa",
-          "asss ffff aaaa dddd ssss ffff aaaa dddd ssss ffff aaaa dddd ssss ffff aaaa dddd ssss ffff aaaa dddd ssss ffff aaaa dddd ssss ffff aaaa dddd ssss ffff aaaa dddd ssss ffff aaaa dddd ssss ffff aaaa dddd ssss ffff aaaa dddd ssss ffff aaaa dddd ssss ffff aaaa dddd ssss ffff aaaa dddd",
-          "asdfasdfasdfasdf sadfsadfsadfsadf fadsfadsfadsfads asdfasdfasdfasdf sadfsadfsadfsadf fadsfadsfadsfads asdfasdfasdfasdf sadfsadfsadfsadf fadsfadsfadsfads asdfasdfasdfasdf sadfsadfsadfsadf fadsfadsfadsfads asdfasdfasdfasdf sadfsadfsadfsadf fadsfadsfadsfads asdfasdfasdfasdf sadfsadfsadfsadf fadsfadsfadsfads"
+          "Lege zuerst deine Zeigefinger auf die Tasten mit den kleinen Markierungen - F und J. Dann ordne die restlichen Finger ein und beginne erst danach zu tippen."
         ],
         en: [
-          "asdf asdf asdf asdf sadf sadf dsa fdsa asdf fdsa dsa fads asdf sad f ads fad sasd fds fads asdf fdsa sadf adsf fads asdf sadf dsa fdsa asdf fdsa dsa fads asdf sad f ads fad sasd fds fads asdf fdsa asdf sadf dsa fdsa asdf fdsa dsa fads asdf sad f ads fad sasd fds fads asdf fdsa sadf adsf fads",
-          "ff ss aa dd ff dd ss aa ff ss dd aa dd ss ff aa dd ss aa ff dd ss aa dd ff ss aa dd ff ss aa dd ff ss aa dd ff ss aa dd ff ss aa dd ff ss aa dd ff ss aa dd ff ss aa dd ff ss aa dd ff ss aa dd ff ss aa dd ff ss aa dd ff ss aa dd ff ss aa dd ff ss aa dd ff ss aa dd ff ss aa dd ff ss aa dd ff ss aa dd",
-          "ads fads adf sad fads asdf asd fads asf ads fads asdf fad sadf asd fads asf ads fads asdf fad sadf asd fads asf ads fads asdf fad sadf asd fads asf ads fads adf sad fads asdf asd fads asf ads fads asdf fad sadf asd fads asf ads fads asdf fad sadf asd fads asf ads fads asdf fad sadf asd fads asf",
-          "da sa fa da sa fa da sa fa da sa fa da sa fa da sa fa da sa fa da sa fa da sa fa da sa fa da sa fa da sa fa da sa fa da sa fa da sa fa da sa fa da sa fa da sa fa da sa fa da sa fa da sa fa da sa fa da sa fa da sa fa da sa fa da sa fa da sa fa da sa fa da sa fa da sa fa da sa fa da sa fa da sa fa",
-          "add ass sad fad dad add ass sad fad dad add ass sad fad dad add ass sad fad dad add ass sad fad dad add ass sad fad dad add ass sad fad dad add ass sad fad dad add ass sad fad dad add ass sad fad dad add ass sad fad dad add ass sad fad dad add ass sad fad dad add ass sad fad dad add ass sad fad dad",
-          "fads asdf sadf dads fads asdf sadf dads fads asdf sadf dads fads asdf sadf dads fads asdf sadf dads fads asdf sadf dads fads asdf sadf dads fads asdf sadf dads fads asdf sadf dads fads asdf sadf dads fads asdf sadf dads fads asdf sadf dads fads asdf sadf dads fads asdf sadf dads fads asdf sadf dads",
-          "ds fa sd af ds fa sd af ds fa sd af ds fa sd af ds fa sd af ds fa sd af ds fa sd af ds fa sd af ds fa sd af ds fa sd af ds fa sd af ds fa sd af ds fa sd af ds fa sd af ds fa sd af ds fa sd af ds fa sd af ds fa sd af ds fa sd af ds fa sd af ds fa sd af ds fa sd af ds fa sd af ds fa sd af",
-          "sada fafa dads sasa fafa dads sada fafa dads sasa fafa dads sada fafa dads sasa fafa dads sada fafa dads sasa fafa dads sada fafa dads sasa fafa sada fafa dads sasa fafa dads sada fafa dads sasa fafa dads sada fafa dads sasa fafa dads sada fafa dads sasa fafa dads sada fafa dads sasa fafa",
-          "asss ffff aaaa dddd ssss ffff aaaa dddd ssss ffff aaaa dddd ssss ffff aaaa dddd ssss ffff aaaa dddd ssss ffff aaaa dddd ssss ffff aaaa dddd ssss ffff aaaa dddd ssss ffff aaaa dddd ssss ffff aaaa dddd ssss ffff aaaa dddd ssss ffff aaaa dddd ssss ffff aaaa dddd ssss ffff aaaa dddd",
-          "asdfasdfasdfasdf sadfsadfsadfsadf fadsfadsfadsfads asdfasdfasdfasdf sadfsadfsadfsadf fadsfadsfadsfads asdfasdfasdfasdf sadfsadfsadfsadf fadsfadsfadsfads asdfasdfasdfasdf sadfsadfsadfsadf fadsfadsfadsfads asdfasdfasdfasdf sadfsadfsadfsadf fadsfadsfadsfads asdfasdfasdfasdf sadfsadfsadfsadf fadsfadsfadsfads"
+          "First place your index fingers on the keys with the little bumps - F and J. Then set the rest of your fingers in place and start typing."
+        ]
+      },
+      symbolPolicy: {
+        scope: "lesson",
+        ru: ["ф", "ы", "в", "а"],
+        de: ["a", "s", "d", "f"],
+        en: ["a", "s", "d", "f"]
+      },
+      target: { lines: 10, accuracy: 90, speedMax: 120 },
+      lines: {
+        ru: [
+          "фыва фыва фыва фыва вафы вафы авыф авыф фыва вафы авыф фыва вафы авыф авыф фыва фыва вафы авыф авыф фыва фыва фыва фыва вафы вафы",
+          "фф ыы вв аа фф вв ыы аа фф аа вв ыы фф ыы вв аа фф вв ыы аа фф аа вв ыы фф ыы вв аа фф вв ыы аа фф ыы вв аа фф вв ыы аа фф аа вв",
+          "авав ывыв фафа вава авав ывыв фафа вава авав ывыв фафа вава авав ывыв фафа вава авав ывыв фафа вава авав ывыв фафа вава авав ывыв",
+          "афф фыв ваф афф фыв ваф афф фыв ваф афф фыв ваф афф фыв ваф афф фыв ваф афф фыв ваф афф фыв ваф афф фыв ваф афф фыв ваф афф фыв",
+          "ава афа авы ава афа авы ава афа авы ава афа авы ава афа авы ава афа авы ава афа авы ава афа авы ава афа авы ава афа авы ава афа",
+          "ааа ффф ыыы ввв ааа ффф ыыы ввв ааа ффф ыыы ввв ааа ффф ыыы ввв ааа ффф ыыы ввв ааа ффф ыыы ввв ааа ффф ыыы ввв ааа ффф ыыы ввв",
+          "вафф ывва аафф вафф ывва аафф вафф ывва аафф вафф ывва аафф вафф ывва аафф вафф ывва аафф вафф ывва аафф вафф ывва аафф вафф ывва",
+          "фффф аааа ыыыы вввв фффф аааа ыыыы вввв фффф аааа ыыыы вввв фффф аааа ыыыы вввв фффф аааа фффф аааа ыыыы вввв фффф аааа ыыыы вввв",
+          "выв фаф авав выв фаф авав выв фаф авав выв фаф авав выв фаф авав выв фаф авав выв фаф авав выв фаф авав выв фаф авав выв фаф авав",
+          "фывафыва вафывафы авыфавыф фывафыва вафывафы авыфавыф фывафыва вафывафы авыфавыф фывафыва вафывафы авыфавыф фывафыва вафывафы"
+        ],
+        de: [
+          "asdf asdf asdf asdf fdsa fdsa adsf adsf asdf fdsa adsf asdf fdsa adsf adsf asdf asdf fdsa adsf adsf asdf asdf asdf asdf fdsa fdsa",
+          "aa ss dd ff aa dd ss ff aa ff dd ss aa ss dd ff aa dd ss ff aa ff dd ss aa ss dd ff aa dd ss ff aa ss dd ff aa dd ss ff aa ff dd",
+          "asas sdsd afaf dada asas sdsd afaf dada asas sdsd afaf dada asas sdsd afaf dada asas sdsd afaf dada asas sdsd afaf dada asas sdsd",
+          "aff asd daf aff asd daf aff asd daf aff asd daf aff asd daf aff asd daf aff asd daf aff asd daf aff asd daf aff asd daf aff asd",
+          "ada afa ads ada afa ads ada afa ads ada afa ads ada afa ads ada afa ads ada afa ads ada afa ads ada afa ads ada afa ads ada afa",
+          "aaa fff sss ddd aaa fff sss ddd aaa fff sss ddd aaa fff sss ddd aaa fff sss ddd aaa fff sss ddd aaa fff sss ddd aaa fff sss ddd",
+          "daff sdda aaff daff sdda aaff daff sdda aaff daff sdda aaff daff sdda aaff daff sdda aaff daff sdda aaff daff sdda aaff daff sdda",
+          "ffff aaaa ssss dddd ffff aaaa ssss dddd ffff aaaa ssss dddd ffff aaaa ssss dddd ffff aaaa ffff aaaa ssss dddd ffff aaaa ssss dddd",
+          "sds faf asas sds faf asas sds faf asas sds faf asas sds faf asas sds faf asas sds faf asas sds faf asas sds faf asas sds faf asas",
+          "asdfasdf fdsaasdf adsfadsf asdfasdf fdsaasdf adsfadsf asdfasdf fdsaasdf adsfadsf asdfasdf fdsaasdf adsfadsf asdfasdf fdsaasdf"
+        ],
+        en: [
+          "asdf asdf asdf asdf fdsa fdsa adsf adsf asdf fdsa adsf asdf fdsa adsf adsf asdf asdf fdsa adsf adsf asdf asdf asdf asdf fdsa fdsa",
+          "aa ss dd ff aa dd ss ff aa ff dd ss aa ss dd ff aa dd ss ff aa ff dd ss aa ss dd ff aa dd ss ff aa ss dd ff aa dd ss ff aa ff dd",
+          "asas sdsd afaf dada asas sdsd afaf dada asas sdsd afaf dada asas sdsd afaf dada asas sdsd afaf dada asas sdsd afaf dada asas sdsd",
+          "aff asd daf aff asd daf aff asd daf aff asd daf aff asd daf aff asd daf aff asd daf aff asd daf aff asd daf aff asd daf aff asd",
+          "ada afa ads ada afa ads ada afa ads ada afa ads ada afa ads ada afa ads ada afa ads ada afa ads ada afa ads ada afa ads ada afa",
+          "aaa fff sss ddd aaa fff sss ddd aaa fff sss ddd aaa fff sss ddd aaa fff sss ddd aaa fff sss ddd aaa fff sss ddd aaa fff sss ddd",
+          "daff sdda aaff daff sdda aaff daff sdda aaff daff sdda aaff daff sdda aaff daff sdda aaff daff sdda aaff daff sdda aaff daff sdda",
+          "ffff aaaa ssss dddd ffff aaaa ssss dddd ffff aaaa ssss dddd ffff aaaa ssss dddd ffff aaaa ffff aaaa ssss dddd ffff aaaa ssss dddd",
+          "sds faf asas sds faf asas sds faf asas sds faf asas sds faf asas sds faf asas sds faf asas sds faf asas sds faf asas sds faf asas",
+          "asdfasdf fdsaasdf adsfadsf asdfasdf fdsaasdf adsfadsf asdfasdf fdsaasdf adsfadsf asdfasdf fdsaasdf adsfadsf asdfasdf fdsaasdf"
         ]
       }
     },
     {
       id: "lesson1_2",
-      title: { ru: "Правая рука (О Л Д Ж)", de: "Rechte Hand (J K L Ö)", en: "Right Hand (J K L ;)" },
-      target: { lines: 10, accuracy: 90 },
-      lines: {
+      title: { ru: "Правая рука", de: "Rechte Hand", en: "Right Hand" },
+      tips: {
         ru: [
-          "олдж олдж олдж олдж лдож лдож дло жлод олдж жлод дло олдж лдож дло олдж лдож дло жлод олдж олдж лдож дло олдж олдж лдож дло олдж олдж лдож дло олдж олдж лдож дло олдж олдж лдож дло олдж олдж лдож дло олдж олдж лдож дло олдж олдж лдож дло олдж олдж лдож дло олдж олдж лдож дло олдж олдж лдож дло",
-          "оо лл дд жж оо жж дд лл оо лл дд жж оо жж дд лл оо лл дд жж оо жж дд лл оо лл дд жж оо жж дд лл оо лл дд жж оо жж дд лл оо лл дд жж оо жж дд лл оо лл дд жж оо жж дд лл оо лл дд жж оо жж дд лл оо лл дд жж оо жж дд лл оо лл дд жж оо жж дд лл оо лл дд жж оо жж дд лл",
-          "ложа ложа дол ложа ложа дол ложа ложа дол ложа ложа дол ложа ложа дол ложа ложа дол ложа ложа дол ложа ложа дол ложа ложа дол ложа ложа дол ложа ложа дол ложа ложа дол ложа ложа дол ложа ложа дол ложа ложа дол ложа ложа дол ложа ложа дол ложа ложа дол ложа ложа дол ложа ложа дол",
-          "олдж ждло олдж ждло олдж ждло олдж ждло олдж ждло олдж ждло олдж ждло олдж ждло олдж ждло олдж ждло олдж ждло олдж ждло олдж ждло олдж ждло олдж ждло олдж ждло олдж ждло олдж ждло олдж ждло олдж ждло олдж ждло олдж ждло олдж ждло олдж ждло олдж ждло олдж ждло олдж ждло олдж ждло олдж ждло олдж ждло",
-          "олл жоо доо лоо олл жоо доо лоо олл жоо доо лоо олл жоо доо лоо олл жоо доо лоо олл жоо доо лоо олл жоо доо лоо олл жоо доо лоо олл жоо доо лоо олл жоо доо лоо олл жоо доо лоо олл жоо доо лоо олл жоо доо лоо олл жоо доо лоо олл жоо доо лоо олл жоо доо лоо олл жоо доо лоо олл жоо доо лоо олл жоо доо лоо",
-          "ооо ллл ддд жжж ооо ллл ддд жжж ооо ллл ддд жжж ооо ллл ддд жжж ооо ллл ддд жжж ооо ллл ддд жжж ооо ллл ддд жжж ооо ллл ддд жжж ооо ллл ддд жжж ооо ллл ддд жжж ооо ллл ддд жжж ооо ллл ддд жжж ооо ллл ддд жжж ооо ллл ддд жжж ооо ллл ддд жжж ооо ллл ддд жжж ооо ллл ддд жжж ооо ллл ддд жжж ооо ллл ддд жжж",
-          "лдож дло олдж лдож дло олдж лдож дло олдж лдож дло олдж лдож дло олдж лдож дло олдж лдож дло олдж лдож дло олдж лдож дло олдж лдож дло олдж лдож дло олдж лдож дло олдж лдож дло олдж лдож дло олдж лдож дло олдж лдож дло олдж лдож дло олдж лдож дло олдж лдож дло олдж лдож дло олдж лдож дло олдж",
-          "жооо дллл ооож жооо дллл ооож жооо дллл ооож жооо дллл ооож жооо дллл ооож жооо дллл ооож жооо дллл ооож жооо дллл ооож жооо дллл ооож жооо дллл ооож жооо дллл ооож жооо дллл ооож жооо дллл ооож жооо дллл ооож жооо дллл ооож жооо дллл ооож жооо дллл ооож жооо дллл ооож жооо дллл ооож жооо дллл ооож жооо дллл ооож",
-          "оллд жжол оллд жжол оллд жжол оллд жжол оллд жжол оллд жжол оллд жжол оллд жжол оллд жжол оллд жжол оллд жжол оллд жжол оллд жжол оллд жжол оллд жжол оллд жжол оллд жжол оллд жжол оллд жжол оллд жжол оллд жжол оллд жжол оллд жжол оллд жжол оллд жжол оллд жжол оллд жжол оллд жжол оллд жжол оллд жжол оллд жжол оллд жжол",
-          "олдж олдж олдж олдж олдж олдж олдж олдж олдж олдж олдж олдж олдж олдж олдж олдж олдж олдж олдж олдж олдж олдж олдж олдж олдж олдж олдж олдж олдж олдж олдж олдж олдж олдж олдж олдж олдж олдж олдж олдж олдж олдж олдж олдж олдж олдж олдж олдж олдж олдж олдж олдж олдж олдж олдж олдж олдж олдж олдж олдж олдж олдж олдж олдж"
+          "Сиди прямо и не горбись. Твои глаза должны быть на уровне верхней части монитора, а локти — согнуты под углом 90°. Но главное, чтобы удобно было, конечно!"
         ],
         de: [
-          "jkl; lk;j ;lkj jkl; lk;j ;lkj jkl; lk;j ;lkj jkl; lk;j ;lkj jkl; lk;j ;lkj jkl; lk;j ;lkj jkl; lk;j ;lkj jkl; lk;j ;lkj jkl; lk;j ;lkj jkl; lk;j ;lkj jkl; lk;j ;lkj jkl; lk;j ;lkj jkl; lk;j ;lkj jkl; lk;j ;lkj jkl; lk;j ;lkj jkl; lk;j ;lkj jkl; lk;j ;lkj jkl; lk;j ;lkj jkl; lk;j ;lkj",
-          "jj kk ll ;; jj ;; kk ll jj kk ;; ll jj ;; kk ll jj kk ll ;; jj ;; kk ll jj kk ll ;; jj ;; kk ll jj kk ll ;; jj ;; kk ll jj kk ll ;; jj ;; kk ll jj kk ll ;; jj ;; kk ll jj kk ll ;; jj ;; kk ll jj kk ll ;; jj ;; kk ll jj kk ll ;; jj ;; kk ll jj kk ;; ll jj ;; kk ll",
-          "all jak lay all jak lay all jak lay all jak lay all jak lay all jak lay all jak lay all jak lay all jak lay all jak lay all jak lay all jak lay all jak lay all jak lay all jak lay all jak lay all jak lay all jak lay all jak lay all jak lay all jak lay all jak lay all jak lay all jak lay all jak lay",
-          "jkl jlk ljk jkl jlk ljk jkl jlk ljk jkl jlk ljk jkl jlk ljk jkl jlk ljk jkl jlk ljk jkl jlk ljk jkl jlk ljk jkl jlk ljk jkl jlk ljk jkl jlk ljk jkl jlk ljk jkl jlk ljk jkl jlk ljk jkl jlk ljk jkl jlk ljk jkl jlk ljk jkl jlk ljk jkl jlk ljk jkl jlk ljk jkl jlk ljk jkl jlk ljk jkl jlk ljk",
-          "ajl lja kaj laj ajl lja kaj laj ajl lja kaj laj ajl lja kaj laj ajl lja kaj laj ajl lja kaj laj ajl lja kaj laj ajl lja kaj laj ajl lja kaj laj ajl lja kaj laj ajl lja kaj laj ajl lja kaj laj ajl lja kaj laj ajl lja kaj laj ajl lja kaj laj ajl lja kaj laj ajl lja kaj laj ajl lja kaj laj ajl lja kaj laj",
-          "jjj kkk lll ;;; jjj kkk lll ;;; jjj kkk lll ;;; jjj kkk lll ;;; jjj kkk lll ;;; jjj kkk lll ;;; jjj kkk lll ;;; jjj kkk lll ;;; jjj kkk lll ;;; jjj kkk lll ;;; jjj kkk lll ;;; jjj kkk lll ;;; jjj kkk lll ;;; jjj kkk lll ;;; jjj kkk lll ;;; jjj kkk lll ;;; jjj kkk lll ;;; jjj kkk lll ;;; jjj kkk lll ;;;",
-          "lkj ;lk jkl kjl lkj ;lk jkl kjl lkj ;lk jkl kjl lkj ;lk jkl kjl lkj ;lk jkl kjl lkj ;lk jkl kjl lkj ;lk jkl kjl lkj ;lk jkl kjl lkj ;lk jkl kjl lkj ;lk jkl kjl lkj ;lk jkl kjl lkj ;lk jkl kjl lkj ;lk jkl kjl lkj ;lk jkl kjl lkj ;lk jkl kjl lkj ;lk jkl kjl lkj ;lk jkl kjl lkj ;lk jkl kjl lkj ;lk jkl kjl",
-          ";j ;k ;l l; k; j; ;j ;k ;l l; k; j; ;j ;k ;l l; k; j; ;j ;k ;l l; k; j; ;j ;k ;l l; k; j; ;j ;k ;l l; k; j; ;j ;k ;l l; k; j; ;j ;k ;l l; k; j; ;j ;k ;l l; k; j; ;j ;k ;l l; k; j; ;j ;k ;l l; k; j; ;j ;k ;l l; k; j; ;j ;k ;l l; k; j; ;j ;k ;l l; k; j; ;j ;k ;l l; k; j; ;j ;k ;l l; k; j; ;j ;k ;l l; k; j;",
-          "jkl;jkl;jkl; jkl;jkl;jkl; jkl;jkl;jkl; jkl;jkl;jkl; jkl;jkl;jkl; jkl;jkl;jkl; jkl;jkl;jkl; jkl;jkl;jkl; jkl;jkl;jkl; jkl;jkl;jkl; jkl;jkl;jkl; jkl;jkl;jkl; jkl;jkl;jkl; jkl;jkl;jkl; jkl;jkl;jkl; jkl;jkl;jkl; jkl;jkl;jkl; jkl;jkl;jkl; jkl;jkl;jkl; jkl;jkl;jkl; jkl;jkl;jkl; jkl;jkl;jkl; jkl;jkl;jkl; jkl;jkl;jkl;",
-          "jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;;"
+          "Sitz aufrecht und mach dich nicht krumm. Deine Augen sollten etwa auf Höhe des oberen Monitorbereichs sein, die Ellbogen ungefähr im 90-Grad-Winkel. Am wichtigsten ist natürlich, dass es bequem bleibt!"
         ],
         en: [
-          "jkl; lk;j ;lkj jkl; lk;j ;lkj jkl; lk;j ;lkj jkl; lk;j ;lkj jkl; lk;j ;lkj jkl; lk;j ;lkj jkl; lk;j ;lkj jkl; lk;j ;lkj jkl; lk;j ;lkj jkl; lk;j ;lkj jkl; lk;j ;lkj jkl; lk;j ;lkj jkl; lk;j ;lkj jkl; lk;j ;lkj jkl; lk;j ;lkj jkl; lk;j ;lkj jkl; lk;j ;lkj jkl; lk;j ;lkj jkl; lk;j ;lkj jkl; lk;j ;lkj",
-          "jj kk ll ;; jj ;; kk ll jj kk ;; ll jj ;; kk ll jj kk ll ;; jj ;; kk ll jj kk ll ;; jj ;; kk ll jj kk ll ;; jj ;; kk ll jj kk ll ;; jj ;; kk ll jj kk ll ;; jj ;; kk ll jj kk ll ;; jj ;; kk ll jj kk ll ;; jj ;; kk ll jj kk ll ;; jj ;; kk ll jj kk ;; ll jj ;; kk ll",
-          "all jak lay all jak lay all jak lay all jak lay all jak lay all jak lay all jak lay all jak lay all jak lay all jak lay all jak lay all jak lay all jak lay all jak lay all jak lay all jak lay all jak lay all jak lay all jak lay all jak lay all jak lay all jak lay all jak lay all jak lay all jak lay",
-          "jkl jlk ljk jkl jlk ljk jkl jlk ljk jkl jlk ljk jkl jlk ljk jkl jlk ljk jkl jlk ljk jkl jlk ljk jkl jlk ljk jkl jlk ljk jkl jlk ljk jkl jlk ljk jkl jlk ljk jkl jlk ljk jkl jlk ljk jkl jlk ljk jkl jlk ljk jkl jlk ljk jkl jlk ljk jkl jlk ljk jkl jlk ljk jkl jlk ljk jkl jlk ljk jkl jlk ljk",
-          "ajl lja kaj laj ajl lja kaj laj ajl lja kaj laj ajl lja kaj laj ajl lja kaj laj ajl lja kaj laj ajl lja kaj laj ajl lja kaj laj ajl lja kaj laj ajl lja kaj laj ajl lja kaj laj ajl lja kaj laj ajl lja kaj laj ajl lja kaj laj ajl lja kaj laj ajl lja kaj laj ajl lja kaj laj ajl lja kaj laj ajl lja kaj laj",
-          "jjj kkk lll ;;; jjj kkk lll ;;; jjj kkk lll ;;; jjj kkk lll ;;; jjj kkk lll ;;; jjj kkk lll ;;; jjj kkk lll ;;; jjj kkk lll ;;; jjj kkk lll ;;; jjj kkk lll ;;; jjj kkk lll ;;; jjj kkk lll ;;; jjj kkk lll ;;; jjj kkk lll ;;; jjj kkk lll ;;; jjj kkk lll ;;; jjj kkk lll ;;; jjj kkk lll ;;; jjj kkk lll ;;;",
-          "lkj ;lk jkl kjl lkj ;lk jkl kjl lkj ;lk jkl kjl lkj ;lk jkl kjl lkj ;lk jkl kjl lkj ;lk jkl kjl lkj ;lk jkl kjl lkj ;lk jkl kjl lkj ;lk jkl kjl lkj ;lk jkl kjl lkj ;lk jkl kjl lkj ;lk jkl kjl lkj ;lk jkl kjl lkj ;lk jkl kjl lkj ;lk jkl kjl lkj ;lk jkl kjl lkj ;lk jkl kjl lkj ;lk jkl kjl lkj ;lk jkl kjl",
-          ";j ;k ;l l; k; j; ;j ;k ;l l; k; j; ;j ;k ;l l; k; j; ;j ;k ;l l; k; j; ;j ;k ;l l; k; j; ;j ;k ;l l; k; j; ;j ;k ;l l; k; j; ;j ;k ;l l; k; j; ;j ;k ;l l; k; j; ;j ;k ;l l; k; j; ;j ;k ;l l; k; j; ;j ;k ;l l; k; j; ;j ;k ;l l; k; j; ;j ;k ;l l; k; j; ;j ;k ;l l; k; j; ;j ;k ;l l; k; j; ;j ;k ;l l; k; j;",
-          "jkl;jkl;jkl; jkl;jkl;jkl; jkl;jkl;jkl; jkl;jkl;jkl; jkl;jkl;jkl; jkl;jkl;jkl; jkl;jkl;jkl; jkl;jkl;jkl; jkl;jkl;jkl; jkl;jkl;jkl; jkl;jkl;jkl; jkl;jkl;jkl; jkl;jkl;jkl; jkl;jkl;jkl; jkl;jkl;jkl; jkl;jkl;jkl; jkl;jkl;jkl; jkl;jkl;jkl; jkl;jkl;jkl; jkl;jkl;jkl; jkl;jkl;jkl; jkl;jkl;jkl; jkl;jkl;jkl; jkl;jkl;jkl;",
-          "jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;; jkl;;;;"
+          "Sit upright and do not hunch over. Your eyes should be level with the upper part of the monitor, and your elbows bent at about 90 degrees. Most importantly, stay comfortable!"
+        ]
+      },
+      symbolPolicy: {
+        scope: "lesson",
+        ru: ["о", "л", "д", "ж", "э"],
+        de: ["j", "k", "l", "ö", "ä"],
+        en: ["j", "k", "l"]
+      },
+      target: { lines: 10, accuracy: 90, speedMax: 120 },
+      lines: {
+        ru: [
+          "олджэ олджэ олджэ эдлож эдлож жэдло олджэ жэдло дэлжо олджэ лдэож олджэ жэдло дэлжо олджэ олджэ олджэ олджэ эдлож эдлож жэдло",
+          "оо лл дд жж ээ оо ээ жж дд лл оо лл дд жж ээ оо ээ жж дд лл оо лл дд жж ээ оо ээ жж дд лл оо лл дд жж ээ оо ээ жж дд лл оо лл дд",
+          "олол длдл жэжэ эжэж олол длдл жэжэ эжэж олол длдл жэжэ эжэж олол длдл жэжэ эжэж олол длдл жэжэ эжэж олол длдл жэжэ эжэж олол длдл",
+          "ожо лэл дод жож эло ожо лэл дод жож эло ожо лэл дод жож эло ожо лэл дод жож эло ожо лэл дод жож эло ожо лэл дод жож эло ожо лэл",
+          "олд жэл лод эжо олд жэл лод эжо олд жэл лод эжо олд жэл лод эжо олд жэл лод эжо олд жэл лод эжо олд жэл лод эжо олд жэл лод эжо",
+          "ооо ллл ддд жжж эээ ооо ллл ддд жжж эээ ооо ллл ддд жжж эээ ооо ллл ддд жжж эээ ооо ллл ддд жжж эээ ооо ллл ддд жжж эээ ооо ллл",
+          "лдож эждо одлэ лдож эждо одлэ лдож эждо одлэ лдож эждо одлэ лдож эждо одлэ лдож эждо одлэ лдож эждо одлэ лдож эждо одлэ лдож эждо",
+          "жооо дллл ээож жооо дллл ээож жооо дллл ээож жооо дллл ээож жооо дллл ээож жооо дллл ээож жооо дллл ээож жооо дллл ээож жооо дллл",
+          "оллд жжол ээдж оллд жжол ээдж оллд жжол ээдж оллд жжол ээдж оллд жжол ээдж оллд жжол ээдж оллд жжол ээдж оллд жжол ээдж оллд жжол",
+          "олджэолджэ эдложэдлож жэлоджэло олджэолджэ эдложэдлож жэлоджэло олджэолджэ олджэолджэ эдложэдлож жэлоджэло олджэолджэ эдложэдлож"
+        ],
+        de: [
+          "jklöä jklöä jklöä älökj älökj öäklj jklöä öäklj käölj jklöä löäjk jklöä öäklj käölj jklöä jklöä jklöä jklöä älökj älökj öäklj",
+          "jj kk ll öö ää jj ää öö ll kk jj kk ll öö ää jj ää öö ll kk jj kk ll öö ää jj ää öö ll kk jj kk ll öö ää jj ää öö ll kk jj kk ll",
+          "jkjk lklk öäöä äöäö jkjk lklk öäöä äöäö jkjk lklk öäöä äöäö jkjk lklk öäöä äöäö jkjk lklk öäöä äöäö jkjk lklk öäöä äöäö jkjk lklk",
+          "jöj käk löl äjö jöj käk löl äjö jöj käk löl äjö jöj käk löl äjö jöj käk löl äjö jöj käk löl äjö jöj käk löl äjö jöj käk löl äjö",
+          "jkl öäl lkj äjö jkl öäl lkj äjö jkl öäl lkj äjö jkl öäl lkj äjö jkl öäl lkj äjö jkl öäl lkj äjö jkl öäl lkj äjö jkl öäl lkj äjö",
+          "jjj kkk lll ööö äää jjj kkk lll ööö äää jjj kkk lll ööö äää jjj kkk lll ööö äää jjj kkk lll ööö äää jjj kkk lll ööö äää jjj kkk",
+          "lköj äökj jklä lköj äökj jklä lköj äökj jklä lköj äökj jklä lköj äökj jklä lköj äökj jklä lköj äökj jklä lköj äökj jklä lköj äökj",
+          "öjjj klll ääjö öjjj klll ääjö öjjj klll ääjö öjjj klll ääjö öjjj klll ääjö öjjj klll ääjö öjjj klll ääjö öjjj klll ääjö öjjj klll",
+          "jllk ööjl äälö jllk ööjl äälö jllk ööjl äälö jllk ööjl äälö jllk ööjl äälö jllk ööjl äälö jllk ööjl äälö jllk ööjl äälö jllk ööjl",
+          "jklöäjklöä älökjälökj öälkjäölj jklöäjklöä älökjälökj öälkjäölj jklöäjklöä jklöäjklöä älökjälökj öälkjäölj jklöäjklöä älökjälökj"
+        ],
+        en: [
+          "jkl jkl jkl lkj lkj klj jkl klj k lj jkl l jk jkl klj k lj jkl jkl jkl jkl lkj lkj klj jkl jkl jkl lkj lkj klj jkl klj k lj jkl l",
+          "jj kk ll jj ll kk jj kk ll jj ll kk jj kk ll jj ll kk jj kk ll jj ll kk jj kk ll jj kk ll jj ll kk jj kk ll jj ll kk jj kk ll jj",
+          "jkjk lklk jkjk lklk jkjk lklk jkjk lklk jkjk lklk jkjk lklk jkjk lklk jkjk lklk jkjk lklk jkjk lklk jkjk lklk jkjk lklk jkjk lklk",
+          "j j k k l l j j j k k l l j j j k k l l j j j k k l l j j j k k l l j j j k k l l j j j k k l l j j j k k l l j",
+          "jkl l lkj j jkl l lkj j jkl l lkj j jkl l lkj j jkl l lkj j jkl l lkj j jkl l lkj j jkl l lkj j jkl l lkj j jkl l lkj j jkl l lkj",
+          "jjj kkk lll jjj kkk lll jjj kkk lll jjj kkk lll jjj kkk lll jjj kkk lll jjj kkk jjj kkk lll jjj kkk lll jjj kkk lll jjj kkk lll",
+          "lk j kj jkl lk j kj jkl lk j kj jkl lk j kj jkl lk j kj jkl lk j kj jkl lk j kj jkl lk j kj jkl lk j kj lk j kj jkl lk j kj jkl",
+          "jjj klll j jjj klll j jjj klll j jjj klll j jjj klll j jjj klll j jjj klll j jjj klll j jjj klll jjj klll j jjj klll j jjj klll j",
+          "jllk jl l jllk jl l jllk jl l jllk jl l jllk jl l jllk jl l jllk jl l jllk jl l jllk jl jllk jl l jllk jl l jllk jl l jllk jl l",
+          "jkl jkl lkj lkj lkj lj jkl jkl lkj lkj lkj lj jkl jkl jkl jkl lkj lkj lkj lj jkl jkl lkj lkj jkl jkl lkj lkj lkj lj jkl jkl lkj"
         ]
       }
     },
     {
       id: "lesson1_3",
       title: { ru: "Обе руки", de: "Beide Hände", en: "Both Hands" },
-      target: { lines: 12, accuracy: 90 },
-      lines: {
+      tips: {
         ru: [
-          "фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж",
-          "ф о ы л в д а ж ф о ы л в д а ж ф о ы л в д а ж ф о ы л в д а ж ф о ы л в д а ж ф о ы л в д а ж ф о ы л в д а ж ф о ы л в д а ж ф о ы л в д а ж ф о ы л в д а ж ф о ы л в д а ж ф о ы л в д а ж ф о ы л в д а ж ф о ы л в д а ж ф о ы л в д а ж ф о ы л в д а ж ф о ы л в д а ж ф о ы л в д а ж ф о ы л в д а ж ф о ы л в д а ж ф о ы л в д а ж ф о ы л в д а ж ф о ы л в д а ж",
-          "ф ы в а о л д ж ф ы в а о л д ж ф ы в а о л д ж ф ы в а о л д ж ф ы в а о л д ж ф ы в а о л д ж ф ы в а о л д ж ф ы в а о л д ж ф ы в а о л д ж ф ы в а о л д ж ф ы в а о л д ж ф ы в а о л д ж ф ы в а о л д ж ф ы в а о л д ж ф ы в а о л д ж ф ы в а о л д ж ф ы в а о л д ж ф ы в а о л д ж ф ы в а о л д ж ф ы в а о л д ж ф ы в а о л д ж ф ы в а о л д ж ф ы в а о л д ж ф ы в а о л д ж",
-          "олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж",
-          "вафы жлод вафы жлод вафы жлод вафы жлод вафы жлод вафы жлод вафы жлод вафы жлод вафы жлод вафы жлод вафы жлод вафы жлод вафы жлод вафы жлод вафы жлод вафы жлод вафы жлод вафы жлод вафы жлод вафы жлод вафы жлод вафы жлод вафы жлод вафы жлод вафы жлод вафы жлод вафы жлод вафы жлод вафы жлод вафы жлод",
-          "фвао лджф фвао лджф фвао лджф фвао лджф фвао лджф фвао лджф фвао лджф фвао лджф фвао лджф фвао лджф фвао лджф фвао лджф фвао лджф фвао лджф фвао лджф фвао лджф фвао лджф фвао лджф фвао лджф фвао лджф фвао лджф фвао лджф фвао лджф фвао лджф фвао лджф фвао лджф фвао лджф фвао лджф фвао лджф фвао лджф фвао лджф фвао лджф",
-          "выфл джоа выфл джоа выфл джоа выфл джоа выфл джоа выфл джоа выфл джоа выфл джоа выфл джоа выфл джоа выфл джоа выфл джоа выфл джоа выфл джоа выфл джоа выфл джоа выфл джоа выфл джоа выфл джоа выфл джоа выфл джоа выфл джоа выфл джоа выфл джоа выфл джоа выфл джоа выфл джоа выфл джоа выфл джоа выфл джоа выфл джоа выфл джоа",
-          "авдо лодж авдо лодж авдо лодж авдо лодж авдо лодж авдо лодж авдо лодж авдо лодж авдо лодж авдо лодж авдо лодж авдо лодж авдо лодж авдо лодж авдо лодж авдо лодж авдо лодж авдо лодж авдо лодж авдо лодж авдо лодж авдо лодж авдо лодж авдо лодж авдо лодж авдо лодж авдо лодж авдо лодж авдо лодж авдо лодж авдо лодж авдо лодж",
-          "ф а в о л д ж а ф а в о л д ж а ф а в о л д ж а ф а в о л д ж а ф а в о л д ж а ф а в о л д ж а ф а в о л д ж а ф а в о л д ж а ф а в о л д ж а ф а в о л д ж а ф а в о л д ж а ф а в о л д ж а ф а в о л д ж а ф а в о л д ж а ф а в о л д ж а ф а в о л д ж а ф а в о л д ж а ф а в о л д ж а ф а в о л д ж а ф а в о л д ж а ф а в о л д ж а ф а в о л д ж а ф а в о л д ж а",
-          "фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж",
-          "фываолдж фываолдж фываолдж фываолдж фываолдж фываолдж фываолдж фываолдж фываолдж фываолдж фываолдж фываолдж фываолдж фываолдж фываолдж фываолдж фываолдж фываолдж фываолдж фываолдж фываолдж фываолдж фываолдж фываолдж фываолдж фываолдж фываолдж фываолдж фываолдж фываолдж фываолдж фываолдж фываолдж фываолдж фываолдж фываолдж",
-          "а ф ы в о л д ж а ф ы в о л д ж а ф ы в о л д ж а ф ы в о л д ж а ф ы в о л д ж а ф ы в о л д ж а ф ы в о л д ж а ф ы в о л д ж а ф ы в о л д ж а ф ы в о л д ж а ф ы в о л д ж а ф ы в о л д ж а ф ы в о л д ж а ф ы в о л д ж а ф ы в о л д ж а ф ы в о л д ж а ф ы в о л д ж а ф ы в о л д ж а ф ы в о л д ж а ф ы в о л д ж а ф ы в о л д ж а ф ы в о л д ж а ф ы в о л д ж а ф ы в о л д ж а"
+          "Используй все десять пальцев! Не печатай только двумя пальцами. Каждому пальцу — своя зона! Даже моим маленьким крылышкам было бы трудно, если бы я работала в одиночку."
         ],
         de: [
-          "asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl;",
-          "f j d k s l a ; f j d k s l a ; f j d k s l a ; f j d k s l a ; f j d k s l a ; f j d k s l a ; f j d k s l a ; f j d k s l a ; f j d k s l a ; f j d k s l a ; f j d k s l a ; f j d k s l a ; f j d k s l a ; f j d k s l a ; f j d k s l a ; f j d k s l a ; f j d k s l a ; f j d k s l a ; f j d k s l a ; f j d k s l a ; f j d k s l a ; f j d k",
-          "a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f",
-          "jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf",
-          "fass jkl; dass jkl; lass jkl; fass jkl; dass jkl; lass jkl; fass jkl; dass jkl; lass jkl; fass jkl; dass jkl; lass jkl; fass jkl; dass jkl; lass jkl; fass jkl; dass jkl; lass jkl; fass jkl; dass jkl; lass jkl; fass jkl; dass jkl; lass jkl; fass jkl; dass jkl; lass jkl; fass jkl; dass jkl; lass jkl; fass jkl; dass jkl; lass jkl;",
-          "aslkd jflk aslkd jflk aslkd jflk aslkd jflk aslkd jflk aslkd jflk aslkd jflk aslkd jflk aslkd jflk aslkd jflk aslkd jflk aslkd jflk aslkd jflk aslkd jflk aslkd jflk aslkd jflk aslkd jflk aslkd jflk aslkd jflk aslkd jflk aslkd jflk aslkd jflk aslkd jflk aslkd jflk aslkd jflk aslkd jflk aslkd jflk aslkd jflk aslkd jflk",
-          "dfjk lass dfjk lass dfjk lass dfjk lass dfjk lass dfjk lass dfjk lass dfjk lass dfjk lass dfjk lass dfjk lass dfjk lass dfjk lass dfjk lass dfjk lass dfjk lass dfjk lass dfjk lass dfjk lass dfjk lass dfjk lass dfjk lass dfjk lass dfjk lass dfjk lass dfjk lass dfjk lass dfjk lass dfjk lass dfjk lass dfjk lass",
-          "sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl",
-          "a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f",
-          "asdf ;lkj asdf ;lkj asdf ;lkj asdf ;lkj asdf ;lkj asdf ;lkj asdf ;lkj asdf ;lkj asdf ;lkj asdf ;lkj asdf ;lkj asdf ;lkj asdf ;lkj asdf asdf ;lkj asdf ;lkj asdf ;lkj asdf ;lkj asdf ;lkj asdf ;lkj asdf ;lkj asdf ;lkj asdf ;lkj asdf ;lkj asdf ;lkj asdf ;lkj asdf ;lkj asdf",
-          "asdfjkl;asdfjkl; asdfjkl;asdfjkl; asdfjkl;asdfjkl; asdfjkl;asdfjkl; asdfjkl;asdfjkl; asdfjkl;asdfjkl; asdfjkl;asdfjkl; asdfjkl;asdf asdfjkl;asdfjkl; asdfjkl;asdfjkl; asdfjkl;asdfjkl; asdfjkl;asdfjkl; asdfjkl;asdfjkl; asdfjkl;asdfjkl; asdfjkl;asdfjkl; asdfjkl;asdf",
-          "jals kdfj jals kdfj jals kdfj jals kdfj jals kdfj jals kdfj jals kdfj jals kdfj jals kdfj jals kdfj jals kdfj jals kdfj jals kdfj jals kdfj jals kdfj jals kdfj jals kdfj jals kdfj jals kdfj jals kdfj jals kdfj jals kdfj jals kdfj jals kdfj jals kdfj jals kdfj jals kdfj jals kdfj jals kdfj jals kdfj jals kdfj jals kdfj"
+          "Benutze alle zehn Finger! Tippe nicht nur mit zwei Fingern. Jeder Finger hat seine eigene Zone. Selbst meine kleinen Flügel hätten es schwer, wenn sie alles allein machen müssten."
         ],
         en: [
-          "asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl;",
-          "f j d k s l a ; f j d k s l a ; f j d k s l a ; f j d k s l a ; f j d k s l a ; f j d k s l a ; f j d k s l a ; f j d k s l a ; f j d k s l a ; f j d k s l a ; f j d k s l a ; f j d k s l a ; f j d k s l a ; f j d k s l a ; f j d k s l a ; f j d k s l a ; f j d k s l a ; f j d k s l a ; f j d k s l a ; f j d k s l a ; f j d k s l a ; f j d k",
-          "a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f",
-          "jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf",
-          "fads jkl; fads jkl; fads jkl; fads jkl; fads jkl; fads jkl; fads jkl; fads jkl; fads jkl; fads jkl; fads jkl; fads jkl; fads jkl; fads jkl; fads jkl; fads jkl; fads jkl; fads jkl; fads jkl; fads jkl; fads jkl; fads jkl; fads jkl; fads jkl; fads jkl; fads jkl; fads jkl; fads jkl; fads jkl; fads jkl; fads jkl; fads jkl;",
-          "aslkd jflk aslkd jflk aslkd jflk aslkd jflk aslkd jflk aslkd jflk aslkd jflk aslkd jflk aslkd jflk aslkd jflk aslkd jflk aslkd jflk aslkd jflk aslkd jflk aslkd jflk aslkd jflk aslkd jflk aslkd jflk aslkd jflk aslkd jflk aslkd jflk aslkd jflk aslkd jflk aslkd jflk aslkd jflk aslkd jflk aslkd jflk aslkd jflk aslkd jflk",
-          "dfjk sals dfjk sals dfjk sals dfjk sals dfjk sals dfjk sals dfjk sals dfjk sals dfjk sals dfjk sals dfjk sals dfjk sals dfjk sals dfjk sals dfjk sals dfjk sals dfjk sals dfjk sals dfjk sals dfjk sals dfjk sals dfjk sals dfjk sals dfjk sals dfjk sals dfjk sals dfjk sals dfjk sals dfjk sals dfjk sals dfjk sals dfjk sals",
-          "sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl sdk fjl",
-          "a s d f g h j k l ; a s d f g h j k l ; a s d f g h j k l ; a s d f g h j k l ; a s d f g h j k l ; a s d f g h j k l ; a s d f g h j k l ; a s d f a s d f g h j k l ; a s d f g h j k l ; a s d f g h j k l ; a s d f g h j k l ; a s d f g h j k l ; a s d f g h j k l ; a s d f g h j k l ; a s d f",
-          "asdf ;lkj asdf ;lkj asdf ;lkj asdf ;lkj asdf ;lkj asdf ;lkj asdf ;lkj asdf ;lkj asdf ;lkj asdf ;lkj asdf ;lkj asdf ;lkj asdf ;lkj asdf asdf ;lkj asdf ;lkj asdf ;lkj asdf ;lkj asdf ;lkj asdf ;lkj asdf ;lkj asdf ;lkj asdf ;lkj asdf ;lkj asdf ;lkj asdf ;lkj asdf ;lkj asdf",
-          "asdfjkl;asdfjkl; asdfjkl;asdfjkl; asdfjkl;asdfjkl; asdfjkl;asdfjkl; asdfjkl;asdfjkl; asdfjkl;asdfjkl; asdfjkl;asdfjkl; asdfjkl;asdf asdfjkl;asdfjkl; asdfjkl;asdfjkl; asdfjkl;asdfjkl; asdfjkl;asdfjkl; asdfjkl;asdfjkl; asdfjkl;asdfjkl; asdfjkl;asdfjkl; asdfjkl;asdf",
-          "jals kdfj jals kdfj jals kdfj jals kdfj jals kdfj jals kdfj jals kdfj jals kdfj jals kdfj jals kdfj jals kdfj jals kdfj jals kdfj jals kdfj jals kdfj jals kdfj jals kdfj jals kdfj jals kdfj jals kdfj jals kdfj jals kdfj jals kdfj jals kdfj jals kdfj jals kdfj jals kdfj jals kdfj jals kdfj jals kdfj jals kdfj jals kdfj"
+          "Use all ten fingers! Do not type with only two fingers. Every finger has its own zone. Even my little wings would struggle if they had to work alone."
+        ]
+      },
+      symbolPolicy: {
+        scope: "module",
+        ru: ["ф", "ы", "в", "а", "о", "л", "д", "ж", "э"],
+        de: ["a", "s", "d", "f", "j", "k", "l", "ö", "ä"],
+        en: ["a", "s", "d", "f", "j", "k", "l"]
+      },
+      target: { lines: 10, accuracy: 90, speedMax: 120 },
+      lines: {
+        ru: [
+          "фыва олджэ фыва олджэ фыва олджэ фыва олджэ вафы эдлож вафы эдлож авыф жэдло авыф жэдло фыва олджэ фыва олджэ фыва олджэ фыва",
+          "фа жо вы лд ыв эж аф ол фа жо вы лд ыв эж аф ол фа жо вы лд ыв эж аф ол фа жо вы лд фа жо вы лд ыв эж аф ол фа жо вы лд ыв эж аф",
+          "ав ол ыд фж вэ ав ол ыд фж вэ ав ол ыд фж вэ ав ол ыд фж вэ ав ол ыд фж вэ ав ол ав ол ыд фж вэ ав ол ыд фж вэ ав ол ыд фж вэ ав",
+          "фо ал ыж вэ ад лф ож эы фо ал ыж вэ ад лф ож эы фо ал ыж вэ ад лф ож эы фо ал ыж вэ ад лф ож эы фо ал ыж вэ ад лф ож эы фо ал ыж",
+          "ва ол фэ дж ыд аж во лэ ва ол фэ дж ыд аж во лэ ва ол фэ дж ыд аж во лэ ва ол фэ дж ыд аж во лэ ва ол фэ дж ыд аж во лэ ва ол фэ",
+          "фываолджэ олджэфыва фываолджэ олджэфыва фываолджэ олджэфыва фываолджэ олджэфыва фываолджэ олджэфыва фываолджэ олджэфыва фываолджэ",
+          "афы олд жэо ваф дло жыэ афы олд жэо ваф дло жыэ афы олд жэо ваф дло жыэ афы олд жэо ваф дло жыэ афы олд жэо ваф дло жыэ афы олд",
+          "ао вл ыд фж эа оа лв ды жф ао вл ыд фж эа оа лв ды жф ао вл ыд фж ао вл ыд фж эа оа лв ды жф ао вл ыд фж эа оа лв ды жф ао вл ыд",
+          "фы ол ва дж эа фы ол ва дж эа фы ол ва дж эа фы ол ва дж эа фы ол ва дж эа фы ол ва дж эа фы ол ва дж эа фы ол ва дж эа фы ол ва",
+          "авыф эдлож фыва олджэ авыф эдлож фыва олджэ авыф эдлож фыва олджэ авыф эдлож авыф эдлож фыва олджэ авыф эдлож фыва олджэ авыф"
+        ],
+        de: [
+          "asdf jklöä asdf jklöä asdf jklöä asdf jklöä fdsa älökj fdsa älökj adsf öäklj adsf öäklj asdf jklöä asdf jklöä asdf jklöä asdf",
+          "af jö sd lk ds äö fa jk af jö sd lk ds äö fa jk af jö sd lk ds äö fa jk af jö sd lk af jö sd lk ds äö fa jk af jö sd lk ds äö fa",
+          "ad jk sl fö dä ad jk sl fö dä ad jk sl fö dä ad jk sl fö dä ad jk sl fö dä ad jk ad jk sl fö dä ad jk sl fö dä ad jk sl fö dä ad",
+          "fj ak sö dä al kf jö äd fj ak sö dä al kf jö äd fj ak sö dä al kf jö äd fj ak sö dä al kf jö äd fj ak sö dä al kf jö äd fj ak sö",
+          "da jk fä lö sd aö dj kä da jk fä lö sd aö dj kä da jk fä lö sd aö dj kä da jk fä lö sd aö dj kä da jk fä lö sd aö dj kä da jk fä",
+          "asdfjklöä jklöäasdf asdfjklöä jklöäasdf asdfjklöä jklöäasdf asdfjklöä jklöäasdf asdfjklöä jklöäasdf asdfjklöä jklöäasdf asdfjklöä",
+          "asd jkl öäj daf klj säö asd jkl öäj daf klj säö asd jkl öäj daf klj säö asd jkl öäj daf klj säö asd jkl öäj daf klj säö asd jkl",
+          "aj dk sl fö äa ja kd ls öf aj dk sl fö äa ja kd ls öf aj dk sl fö aj dk sl fö äa ja kd ls öf aj dk sl fö äa ja kd ls öf aj dk sl",
+          "as jk da lö äf as jk da lö äf as jk da lö äf as jk da lö äf as jk da lö äf as jk da lö äf as jk da lö äf as jk da lö äf as jk da",
+          "adsf älökj asdf jklöä adsf älökj asdf jklöä adsf älökj asdf jklöä adsf älökj adsf älökj asdf jklöä adsf älökj asdf jklöä adsf"
+        ],
+        en: [
+          "asdf jkl asdf jkl asdf jkl asdf jkl fdsa lkj fdsa lkj adsf klj adsf klj asdf jkl asdf jkl asdf jkl asdf asdf jkl asdf jkl asdf",
+          "af j sd lk ds fa jk af j sd lk ds fa jk af j sd lk ds fa jk af j sd lk af j sd lk ds fa jk af j sd lk ds fa af j sd lk ds fa jk",
+          "ad jk sl f d ad jk sl f d ad jk sl f d ad jk sl f d ad jk sl f d ad jk ad jk sl f d ad jk sl f d ad jk sl f d ad",
+          "fj ak s d al kf j d fj ak s d al kf j d fj ak s d al kf j d fj ak s d al kf j d fj ak s d al kf j d fj ak s fj ak s d al kf j d",
+          "da jk f l sd a dj k da jk f l sd a dj k da jk f l sd a dj k da jk f l sd a dj k da jk f l sd a dj k da jk f da jk f l sd a dj k",
+          "asdfjkl jkl asdf asdfjkl jkl asdf asdfjkl jkl asdf asdfjkl jkl asdf asdfjkl jkl asdf asdfjkl jkl asdf asdfjkl asdfjkl jkl asdf",
+          "asd jkl j daf klj s asd jkl j daf klj s asd jkl j daf klj s asd jkl j daf klj s asd jkl j daf klj s asd jkl asd jkl j daf klj s",
+          "aj dk sl f a ja kd ls f aj dk sl f a ja kd ls f aj dk sl f aj dk sl f a ja kd ls f aj dk sl f a ja kd ls f aj dk sl",
+          "as jk da l f as jk da l f as jk da l f as jk da l f as jk da l f as jk da l f as jk da l f as jk da l f as jk da",
+          "adsf lkj asdf jkl adsf lkj asdf jkl adsf lkj asdf jkl adsf lkj adsf lkj asdf jkl adsf lkj asdf jkl adsf adsf lkj asdf jkl adsf"
         ]
       }
     },
     {
       id: "lesson1_4",
       title: { ru: "Короткие слова", de: "Kurze Wörter", en: "Short Words" },
-      target: { lines: 10, accuracy: 92 },
-      lines: {
+      tips: {
         ru: [
-          "вал зал лада вода фаза ложа жажда овал лава адов жала вал зал лада вода фаза ложа жажда овал лава адов жала вал зал лада вода фаза ложа жажда овал лава адов жала вал зал лада вода фаза ложа жажда овал лава адов жала вал зал лада вода фаза ложа жажда овал лава адов жала вал зал лада вода фаза",
-          "фаза вода жажда вал зал лада ложа овал лава жала адов фаза вода жажда вал зал лада ложа овал лава жала адов фаза вода жажда вал зал лада ложа овал лава жала адов фаза вода жажда вал зал лада ложа овал лава жала адов фаза вода жажда вал зал лада ложа овал лава жала адов фаза вода жажда вал зал лада",
-          "жажда лада овал зал вал вода ложа фаза лава адов жала жажда лада овал зал вал вода ложа фаза лава адов жала жажда лада овал зал вал вода ложа фаза лава адов жала жажда лада овал зал вал вода ложа фаза лава адов жала жажда лада овал зал вал вода ложа фаза лава адов жала жажда лада овал зал вал",
-          "вода фаза ложа зал вал жажда овал лава адов жала лада вода фаза ложа зал вал жажда овал лава адов жала лада вода фаза ложа зал вал жажда овал лава адов жала лада вода фаза ложа зал вал жажда овал лава адов жала лада вода фаза ложа зал вал жажда овал лава адов жала лада вода фаза ложа зал вал жажда",
-          "овал лава адов жала вал зал лада вода фаза ложа жажда овал лава адов жала вал зал лада вода фаза ложа жажда овал лава адов жала вал зал лада вода фаза ложа жажда овал лава адов жала вал зал лада вода фаза ложа жажда овал лава адов жала вал зал лада вода фаза ложа жажда овал лава адов жала вал зал",
-          "лава жала вал зал лада вода фаза ложа жажда овал адов лава жала вал зал лада вода фаза ложа жажда овал адов лава жала вал зал лада вода фаза ложа жажда овал адов лава жала вал зал лада вода фаза ложа жажда овал адов лава жала вал зал лада вода фаза ложа жажда овал адов лава жала вал зал лада вода",
-          "адов жажда ложа фаза вода лада зал вал овал лава жала адов жажда ложа фаза вода лада зал вал овал лава жала адов жажда ложа фаза вода лада зал вал овал лава жала адов жажда ложа фаза вода лада зал вал овал лава жала адов жажда ложа фаза вода лада зал вал овал лава жала адов жажда ложа фаза вода лада зал",
-          "жала лава овал вал зал лада вода фаза ложа жажда адов жала лава овал вал зал лада вода фаза ложа жажда адов жала лава овал вал зал лада вода фаза ложа жажда адов жала лава овал вал зал лада вода фаза ложа жажда адов жала лава овал вал зал лада вода фаза ложа жажда адов жала лава овал вал зал лада вода",
-          "ласса вода лада зал вал фаза ложа овал жажда лава жала ласса вода лада зал вал фаза ложа овал жажда лава жала ласса вода лада зал вал фаза ложа овал жажда лава жала ласса вода лада зал вал фаза ложа овал жажда лава жала ласса вода лада зал вал фаза ложа овал жажда лава жала ласса вода лада зал вал фаза ложа",
-          "вал вал зал зал лада лада вода вода фаза фаза ложа ложа вал вал зал зал лада лада вода вода фаза фаза ложа ложа вал вал зал зал лада лада вода вода фаза фаза ложа ложа вал вал зал зал лада лада вода вода фаза фаза ложа ложа вал вал зал зал лада лада вода вода фаза фаза ложа ложа вал вал зал зал лада лада"
+          "Перед практикой проверь настройки аппликатуры: удобно ли пальцам, все ли зоны понятны, не приходится ли тянуться лишний раз."
         ],
         de: [
-          "als das falls lass fass sala dada alfa falk als das falls lass fass sala dada alfa falk als das falls lass fass sala dada alfa falk als das falls lass fass sala dada alfa falk als das falls lass fass sala dada alfa falk als das falls lass fass sala dada alfa falk als das falls lass fass sala dada alfa falk als das falls lass fass",
-          "fass dass lass als falls sala dada alfa falk fass dass lass als falls sala dada alfa falk fass dass lass als falls sala dada alfa falk fass dass lass als falls sala dada alfa falk fass dass lass als falls sala dada alfa falk fass dass lass als falls sala dada alfa falk fass dass lass als falls sala dada alfa falk",
-          "dada falk als das falls lass fass sala dada falk als das falls lass fass sala dada falk als das falls lass fass sala dada falk als das falls lass fass sala dada falk als das falls lass fass sala dada falk als das falls lass fass sala dada falk als das falls lass fass sala dada falk als das falls lass fass sala",
-          "falls lass fass sala als das dada falk falls lass fass sala als das dada falk falls lass fass sala als das dada falk falls lass fass sala als das dada falk falls lass fass sala als das dada falk falls lass fass sala als das dada falk falls lass fass sala als das dada falk falls lass fass sala als das dada falk falls",
-          "lass sala dada falk als das falls fass lass sala dada falk als das falls fass lass sala dada falk als das falls fass lass sala dada falk als das falls fass lass sala dada falk als das falls fass lass sala dada falk als das falls fass lass sala dada falk als das falls fass lass sala dada falk als das falls fass lass",
-          "sala dada falk falls lass fass als das sala dada falk falls lass fass als das sala dada falk falls lass fass als das sala dada falk falls lass fass als das sala dada falk falls lass fass als das sala dada falk falls lass fass als das sala dada falk falls lass fass als das sala dada falk falls lass fass als das sala dada",
-          "falk als das falls lass fass sala dada falk als das falls lass fass sala dada falk als das falls lass fass sala dada falk als das falls lass fass sala dada falk als das falls lass fass sala dada falk als das falls lass fass sala dada falk als das falls lass fass sala dada falk als das falls lass fass sala dada falk",
-          "als falls lass fass sala dada falk das als falls lass fass sala dada falk das als falls lass fass sala dada falk das als falls lass fass sala dada falk das als falls lass fass sala dada falk das als falls lass fass sala dada falk das als falls lass fass sala dada falk das als falls lass fass sala dada falk das",
-          "das falls lass fass sala dada falk als das falls lass fass sala dada falk als das falls lass fass sala dada falk als das falls lass fass sala dada falk als das falls lass fass sala dada falk als das falls lass fass sala dada falk als das falls lass fass sala dada falk als das falls lass fass sala dada falk als das",
-          "falls lass fass als das sala dada falk falls lass fass als das sala dada falk falls lass fass als das sala dada falk falls lass fass als das sala dada falk falls lass fass als das sala dada falk falls lass fass als das sala dada falk falls lass fass als das sala dada falk falls lass fass als das sala dada falk falls"
+          "Prüfe vor der Übung kurz die Fingerzuordnung: Fühlen sich die Finger wohl, sind alle Zonen klar, musst du dich irgendwo unnötig strecken?"
         ],
         en: [
-          "all sad dad ask fall lass flask lads flask all sad dad ask fall lass flask lads flask all sad dad ask fall lass flask lads flask all sad dad ask fall all sad dad ask fall lass flask lads flask all sad dad ask fall lass flask lads flask all sad dad ask fall lass flask lads flask all sad dad ask fall",
-          "fads ask falls glass ask fall lass flask all sad dad ask fall lass flask lads flask all sad dad ask fall lass flask lads flask all sad dad fads ask falls glass ask fall lass flask all sad dad ask fall lass flask lads flask all sad dad ask fall lass flask lads flask all sad dad ask fall lass flask all sad dad",
-          "sad all flask lads glass add lad sad all flask lads glass add lad sad all flask lads glass add lad sad all flask lads glass add lad sad all flask lads glass add lad sad all flask lads glass add lad sad all flask lads glass add lad sad all flask lads glass add lad sad all flask lads glass add lad",
-          "ask fall lass flask lads glass add lad all sad dad ask fall lass flask lads glass add lad all sad dad ask fall lass flask lads glass add ask fall lass flask lads glass add lad all sad dad ask fall lass flask lads glass add lad all sad dad ask fall lass flask lads glass add lad all sad dad ask fall",
-          "glass flask lads glass add fall lass flask all sad dad ask fall lass flask lads glass add fall lass flask all sad dad ask fall lass flask lads glass flask lads glass add fall lass flask all sad dad ask fall lass flask lads glass add fall lass flask all sad dad ask fall lass flask lads glass add fall",
-          "all fad ask all sad dad ask fall lass flask lads glass add lad all sad dad ask fall lass flask lads glass add lad all sad dad ask fall all fad ask all sad dad ask fall lass flask lads glass add lad all sad dad ask fall lass flask lads glass add lad all sad dad ask fall lass flask lads glass add lad",
-          "add all glass ask sad lads fall lass flask all sad dad ask fall lass flask lads glass add fall lass flask all sad dad ask fall lass flask add all glass ask sad lads fall lass flask all sad dad ask fall lass flask lads glass add fall lass flask all sad dad ask fall lass flask lads glass add fall",
-          "lads fall lass flask lads glass add fall lass flask all sad dad ask fall lass flask lads glass add fall lass flask all sad dad ask fall lads fall lass flask lads glass add fall lass flask all sad dad ask fall lass flask lads glass add fall lass flask all sad dad ask fall lass flask lads glass add",
-          "flask all sad dad ask fall lass flask lads glass add fall lass flask all sad dad ask fall lass flask lads glass add fall lass flask all flask all sad dad ask fall lass flask lads glass add fall lass flask all sad dad ask fall lass flask lads glass add fall lass flask all sad dad ask fall lass",
-          "fall glass ask fall lass flask all sad dad ask fall lass flask lads glass add fall lass flask all sad dad ask fall lass flask lads glass add fall glass ask fall lass flask all sad dad ask fall lass flask lads glass add fall lass flask all sad dad ask fall lass flask lads glass add fall lass flask"
+          "Before practicing, check your fingering settings: do your fingers feel comfortable, are the zones clear, and are you avoiding unnecessary reaching?"
+        ]
+      },
+      symbolPolicy: {
+        scope: "module",
+        ru: ["ф", "ы", "в", "а", "о", "л", "д", "ж", "э"],
+        de: ["a", "s", "d", "f", "j", "k", "l", "ö", "ä"],
+        en: ["a", "s", "d", "f", "j", "k", "l"]
+      },
+      target: { lines: 10, accuracy: 90, speed: 40 },
+      lines: {
+        ru: [
+          "вал вода лава жало овал лад вдова элла эд вал вода лава жало овал лад вдова элла эд вал вода лава жало вал вода лава жало овал",
+          "вода лава овал вал лад жало элла эд вдова вода лава овал вал лад жало элла эд вдова вода лава овал вода лава овал вал лад жало",
+          "лад вал вода лава овал жало вдова элла эд лад вал вода лава овал жало вдова элла эд лад вал вода лад вал вода лава овал жало",
+          "жало овал лава вода вал лад эд элла вдова жало овал лава вода вал лад эд элла вдова жало овал жало овал лава вода вал лад эд элла",
+          "элла эд вал лад вода лава жало овал вдова элла эд вал лад вода лава жало овал вдова элла эд элла эд вал лад вода лава жало овал",
+          "вал вал вода вода лава лава жало жало овал овал лад лад вдова вдова элла элла эд эд вал вал вал вал вода вода лава лава жало жало",
+          "вдова вода вал овал лава лад жало элла эд вдова вода вал овал лава лад жало элла эд вдова вода вдова вода вал овал лава лад жало",
+          "лава овал жало вода вал лад вдова элла эд лава овал жало вода вал лад вдова элла эд лава овал лава овал жало вода вал лад вдова",
+          "эд элла вдова жало лава вода овал вал лад эд элла вдова жало лава вода овал вал лад эд элла эд элла вдова жало лава вода овал вал",
+          "вал вода лава жало овал лад вдова элла эд вал вода лава жало овал лад вдова элла эд вал вода вал вода лава жало овал лад вдова"
+        ],
+        de: [
+          "als das falls lass fass saal da fall als das falls lass fass saal da fall als das falls lass fass als das falls lass fass saal da",
+          "fass dass lass als falls saal da fall fass dass lass als falls saal da fall fass dass lass als fass dass lass als falls saal da",
+          "saal lass fass das falls als da fall saal lass fass das falls als da fall saal lass fass das saal lass fass das falls als da fall",
+          "falls lass fass saal als das da fall falls lass fass saal als das da fall falls lass fass saal falls lass fass saal als das da",
+          "das als falls lass fass saal da fall das als falls lass fass saal da fall das als falls lass das als falls lass fass saal da fall",
+          "als als das das lass lass fass fass falls falls saal saal da da fall fall als als das das als als das das lass lass fass fass",
+          "fall falls als das lass fass saal da fall falls als das lass fass saal da fall falls als das fall falls als das lass fass saal da",
+          "lass saal falls fass das als da fall lass saal falls fass das als da fall lass saal falls fass lass saal falls fass das als da",
+          "da fall saal fass lass falls das als da fall saal fass lass falls das als da fall saal fass da fall saal fass lass falls das als",
+          "als das falls lass fass saal da fall als das falls lass fass saal da fall als das falls lass als das falls lass fass saal da fall"
+        ],
+        en: [
+          "all sad dad ask fall lass flask lads glass add all sad dad ask fall lass flask lads glass add all sad dad all sad dad ask fall",
+          "glass flask lads add fall lass all sad dad ask glass flask lads add fall lass all sad dad ask glass flask glass flask lads add",
+          "sad all flask lads glass add lad fall ask sad all flask lads glass add lad fall ask sad all flask sad all flask lads glass add",
+          "ask fall lass flask lads glass add lad all sad dad ask fall lass flask lads glass add lad all sad ask fall lass flask lads glass",
+          "fall glass ask fall lass flask all sad dad lads glass add fall glass ask fall lass flask all sad dad fall glass ask fall lass",
+          "all all sad sad dad dad ask ask fall fall lass lass flask flask lads lads glass glass add add all all sad sad dad dad ask ask",
+          "lads fall lass flask glass add all sad dad ask lads fall lass flask glass add all sad dad ask lads lads fall lass flask glass add",
+          "flask all sad dad ask fall lass lads glass add flask all sad dad ask fall lass lads glass add flask flask all sad dad ask fall",
+          "add glass lads flask lass fall ask dad sad all add glass lads flask lass fall ask dad sad all add add glass lads flask lass fall",
+          "all sad dad ask fall lass flask lads glass add all sad dad ask fall lass flask lads glass add all all sad dad ask fall lass flask"
         ]
       }
     },
     {
       id: "lesson1_5",
       title: { ru: "Тест", de: "Test", en: "Test" },
-      target: { lines: 10, accuracy: 90, speed: 20 },
-      lines: {
+      tips: {
         ru: [
-          "вал зал лада вода фаза ложа жажда овал лава адов жала вал зал лада вода фаза ложа жажда овал лава адов жала вал зал лада вода фаза ложа жажда овал лава адов жала вал зал лада вода фаза ложа жажда овал лава адов жала вал зал лада вода фаза ложа жажда овал лава адов жала вал зал лада вода фаза",
-          "фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж фыва олдж",
-          "лава жала адов жажда ложа фаза вода лада зал вал овал лава жала адов жажда ложа фаза вода лада зал вал овал лава жала адов жажда ложа фаза вода лада зал вал овал лава жала адов жажда ложа фаза вода лада зал вал овал лава жала адов жажда ложа фаза вода лада зал вал овал лава жала адов жажда ложа фаза",
-          "ф ы в а о л д ж ф ы в а о л д ж ф ы в а о л д ж ф ы в а о л д ж ф ы в а о л д ж ф ы в а о л д ж ф ы в а о л д ж ф ы в а о л д ж ф ы в а о л д ж ф ы в а о л д ж ф ы в а о л д ж ф ы в а о л д ж ф ы в а о л д ж ф ы в а о л д ж ф ы в а о л д ж ф ы в а о л д ж ф ы в а о л д ж ф ы в а о л д ж ф ы в а о л д ж ф ы в а о л д ж",
-          "авдо лодж авдо лодж авдо лодж авдо лодж авдо лодж авдо лодж авдо лодж авдо лодж авдо лодж авдо лодж авдо лодж авдо лодж авдо лодж авдо лодж авдо лодж авдо лодж авдо лодж авдо лодж авдо лодж авдо лодж авдо лодж авдо лодж авдо лодж авдо лодж авдо лодж авдо лодж авдо лодж авдо лодж авдо лодж авдо лодж",
-          "вал зал вода лада фаза ложа вал зал вода лада фаза ложа вал зал вода лада фаза ложа вал зал вода лада фаза ложа вал зал вода лада фаза ложа вал зал вода лада фаза ложа вал зал вода лада фаза ложа вал зал вода лада фаза ложа вал зал вода лада фаза ложа вал зал вода лада фаза ложа вал зал вода лада фаза ложа",
-          "ывфы авфы ывфы авфы ывфы авфы ывфы авфы ывфы авфы ывфы авфы ывфы авфы ывфы авфы ывфы авфы ывфы авфы ывфы авфы ывфы авфы ывфы авфы ывфы авфы ывфы авфы ывфы авфы ывфы авфы ывфы авфы ывфы авфы ывфы авфы ывфы авфы ывфы авфы ывфы авфы ывфы авфы ывфы авфы ывфы авфы ывфы авфы ывфы авфы",
-          "оо лл дд жж оо лл дд жж оо лл дд жж оо лл дд жж оо лл дд жж оо лл дд жж оо лл дд жж оо лл дд жж оо лл дд жж оо лл дд жж оо лл дд жж оо лл дд жж оо лл дд жж оо лл дд жж оо лл дд жж оо лл дд жж оо лл дд жж оо лл дд жж оо лл дд жж оо лл дд жж оо лл дд жж оо лл дд жж оо лл дд жж оо лл дд жж",
-          "а д о в а д о в а д о в а д о в а д о в а д о в а д о в а д о в а д о в а д о в а д о в а д о в а д о в а д о в а д о в а д о в а д о в а д о в а д о в а д о в а д о в а д о в а д о в а д о в а д о в а д о в а д о в а д о в а д о в а д о в а д о в а д о в а д о в а д о в",
-          "фываолдж фываолдж фываолдж фываолдж фываолдж фываолдж фываолдж фываолдж фываолдж фываолдж фываолдж фываолдж фываолдж фываолдж фываолдж фываолдж фываолдж фываолдж фываолдж фываолдж фываолдж фываолдж фываолдж фываолдж фываолдж фываолдж фываолдж фываолдж фываолдж фываолдж фываолдж фываолдж фываолдж фываолдж"
+          "На тесте ассистенты отключаются, чтобы твои пальцы начали работать самостоятельно — не переживай, это не экзамен, а просто проверка того, что навык уже начинает закрепляться."
         ],
         de: [
-          "als das falls lass fass sala dada alfa falk als das falls lass fass sala dada alfa falk als das falls lass fass sala dada alfa falk als das falls lass fass sala dada alfa falk als das falls lass fass sala dada alfa falk als das falls lass fass sala dada alfa falk als das falls lass fass sala dada alfa falk",
-          "asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl;",
-          "fass dass lass als falls sala dada alfa falk fass dass lass als falls sala dada alfa falk fass dass lass als falls sala dada alfa falk fass dass lass als falls sala dada alfa falk fass dass lass als falls sala dada alfa falk fass dass lass als falls sala dada alfa falk fass dass lass als falls sala dada alfa falk",
-          "a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f",
-          "dada falk als das falls lass fass sala dada falk als das falls lass fass sala dada falk als das falls lass fass sala dada falk als das falls lass fass sala dada falk als das falls lass fass sala dada falk als das falls lass fass sala dada falk als das falls lass fass sala dada falk als das falls lass fass sala",
-          "asdf sadf dsa fdsa asdf fdsa dsa fads asdf sad f ads fad sasd fds fads asdf fdsa sadf adsf fads asdf sadf dsa fdsa asdf fdsa dsa fads asdf asdf sadf dsa fdsa asdf fdsa dsa fads asdf sad f ads fad sasd fds fads asdf fdsa sadf adsf fads asdf sadf dsa fdsa asdf fdsa dsa fads asdf asdf sadf dsa fdsa",
-          "jj kk ll ;; jj ;; kk ll jj kk ll ;; jj ;; kk ll jj kk ll ;; jj ;; kk ll jj kk ll ;; jj ;; kk ll jj kk ll ;; jj ;; kk ll jj kk ll ;; jj ;; jj kk ll ;; jj ;; kk ll jj kk ll ;; jj ;; kk ll jj kk ll ;; jj ;; kk ll jj kk ll ;; jj ;; kk ll jj kk ll ;; jj ;; kk ll jj kk ll ;; jj ;; jj kk ll ;; jj ;; kk ll",
-          "jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf",
-          "als falls lass fass sala dada falk das als falls lass fass sala dada falk das als falls lass fass sala dada falk das als falls lass fass sala dada falk das als falls lass fass sala dada falk das als falls lass fass sala dada falk das als falls lass fass sala dada falk das als falls lass fass sala dada falk das",
-          "asdfjkl;asdfjkl; asdfjkl;asdfjkl; asdfjkl;asdfjkl; asdfjkl;asdfjkl; asdfjkl;asdfjkl; asdfjkl;asdfjkl; asdfjkl;asdfjkl; asdf asdfjkl;asdfjkl; asdfjkl;asdfjkl; asdfjkl;asdfjkl; asdfjkl;asdfjkl; asdfjkl;asdfjkl; asdfjkl;asdfjkl; asdfjkl;asdfjkl; asdf asdfjkl;asdfjkl; asdfjkl;asdfjkl; asdfjkl;asdfjkl;"
+          "Im Test werden die Assistenten ausgeschaltet, damit deine Finger selbstständig arbeiten können. Keine Sorge: Das ist keine Prüfung, sondern nur ein Check, ob sich die Fähigkeit schon festigt."
         ],
         en: [
-          "all sad dad ask fall lass flask lads glass add fall lass flask all sad dad ask fall lass flask lads glass add fall lass flask all sad dad ask fall all sad dad ask fall lass flask lads glass add fall lass flask all sad dad ask fall lass flask lads glass add fall lass flask all sad dad ask fall all sad dad ask fall",
-          "glass flask lads glass add fall lass flask all sad dad ask fall lass flask lads glass add fall lass flask all sad dad ask fall lass flask glass flask lads glass add fall lass flask all sad dad ask fall lass flask lads glass add fall lass flask all sad dad ask fall lass flask glass flask lads glass add fall lass",
-          "ask fall lass flask lads glass add fall lass flask all sad dad ask fall lass flask lads glass add fall lass flask all sad dad ask fall ask fall lass flask lads glass add fall lass flask all sad dad ask fall lass flask lads glass add fall lass flask all sad dad ask fall ask fall lass flask lads glass add fall",
-          "sad all flask lads glass add lad all sad dad ask fall lass flask lads glass add fall lass flask all sad dad ask fall lass flask lads glass add sad all flask lads glass add lad all sad dad ask fall lass flask lads glass add fall lass flask all sad dad ask fall lass flask lads glass add sad all flask lads glass add",
-          "fads ask falls glass ask fall lass flask all sad dad ask fall lass flask lads glass add fall lass flask all sad dad ask fall lass flask lads fads ask falls glass ask fall lass flask all sad dad ask fall lass flask lads glass add fall lass flask all sad dad ask fall lass flask lads fads ask falls glass ask fall",
-          "asdf sadf dsa fdsa asdf fdsa dsa fads asdf sad f ads fad sasd fds fads asdf fdsa sadf adsf fads asdf sadf dsa fdsa asdf fdsa dsa fads asdf asdf sadf dsa fdsa asdf fdsa dsa fads asdf sad f ads fad sasd fds fads asdf fdsa sadf adsf fads asdf sadf dsa fdsa asdf fdsa dsa fads asdf asdf sadf dsa fdsa",
-          "jj kk ll ;; jj ;; kk ll jj kk ll ;; jj ;; kk ll jj kk ll ;; jj ;; kk ll jj kk ll ;; jj ;; kk ll jj kk ll ;; jj ;; kk ll jj kk ll ;; jj ;; jj kk ll ;; jj ;; kk ll jj kk ll ;; jj ;; kk ll jj kk ll ;; jj ;; kk ll jj kk ll ;; jj ;; kk ll jj kk ll ;; jj ;; kk ll jj kk ll ;; jj ;; jj kk ll ;; jj ;; kk ll",
-          "jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf jkl; asdf",
-          "a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f j k l ; a s d f",
-          "asdfjkl;asdfjkl; asdfjkl;asdfjkl; asdfjkl;asdfjkl; asdfjkl;asdfjkl; asdfjkl;asdfjkl; asdfjkl;asdfjkl; asdfjkl;asdfjkl; asdf asdfjkl;asdfjkl; asdfjkl;asdfjkl; asdfjkl;asdfjkl; asdfjkl;asdfjkl; asdfjkl;asdfjkl; asdfjkl;asdfjkl; asdfjkl;asdfjkl; asdf asdfjkl;asdfjkl; asdfjkl;asdfjkl; asdfjkl;asdfjkl;"
+          "In the test, assistants are turned off so your fingers can start working on their own. Do not worry: it is not an exam, just a check that the skill is beginning to settle."
+        ]
+      },
+      symbolPolicy: {
+        scope: "program",
+        ru: ["ф", "ы", "в", "а", "о", "л", "д", "ж", "э"],
+        de: ["a", "s", "d", "f", "j", "k", "l", "ö", "ä"],
+        en: ["a", "s", "d", "f", "j", "k", "l"]
+      },
+      target: { lines: 15, accuracy: 90, speed: 40, assistants: false },
+      lines: {
+        ru: [
+          "вал вода лава жало овал лад вдова элла эд фыва олджэ вал вода лава жало овал лад вдова элла вал вода лава жало овал лад вдова",
+          "фыва олджэ авыф эдлож вал вода лава жало овал лад вдова элла эд фыва олджэ авыф эдлож фыва олджэ авыф эдлож вал вода лава жало",
+          "лава жало вода овал вал лад вдова элла эд авыф эдлож фыва олджэ лава жало вода овал вал лава жало вода овал вал лад вдова элла эд",
+          "ф ы в а о л д ж э ф ы в а о л д ж э вал вода лава жало овал лад вдова элла эд ф ы в а о л д ж э ф ы в а о л д ж э вал вода лава",
+          "авдо лоджэ авдо лоджэ вал вода лава жало овал лад вдова элла эд авдо лоджэ авдо лоджэ авдо лоджэ авдо лоджэ вал вода лава жало",
+          "вал вал вода вода лава лава жало жало овал овал лад лад вдова вдова элла элла эд эд вал вал вода вода лава лава жало жало овал",
+          "ывфы авфы эждо лоджэ ывфы авфы эждо лоджэ вал вода лава жало овал лад вдова элла эд ывфы авфы эждо лоджэ ывфы авфы эждо лоджэ вал",
+          "оо лл дд жж ээ фф ыы вв аа оо лл дд жж ээ фф ыы вв аа вал вода лава жало оо лл дд жж ээ фф ыы вв аа оо лл дд жж ээ фф ыы вв аа",
+          "а д о в а д о в э л л а ф ы в а о л д ж э вал вода лава жало овал лад а д о в а д о в э л л а ф ы в а о л д ж э вал вода лава",
+          "фываолджэ фываолджэ авыфэдлож авыфэдлож вал вода лава жало овал лад вдова элла эд фываолджэ фываолджэ авыфэдлож авыфэдлож вал",
+          "жало лава вода овал вал лад эд элла вдова фыва олджэ авыф эдлож жало лава вода овал жало лава вода овал вал лад эд элла вдова",
+          "вдова вода вал овал лава лад жало элла эд фыва олджэ вдова вода вал овал лава лад вдова вода вал овал лава лад жало элла эд фыва",
+          "элла эд вал лад вода лава жало овал вдова авыф эдлож фыва олджэ элла эд вал лад элла эд вал лад вода лава жало овал вдова авыф",
+          "олджэ фыва эдлож авыф вал вода лава жало овал лад вдова элла эд олджэ фыва эдлож олджэ фыва эдлож авыф вал вода лава жало овал",
+          "вал вода лава жало овал лад вдова элла эд фыва олджэ авыф эдлож вал вода лава жало вал вода лава жало овал лад вдова элла эд фыва"
+        ],
+        de: [
+          "als das falls lass fass saal da fall asdf jklöä als das falls lass fass saal da fall asdf als das falls lass fass saal da fall",
+          "asdf jklöä adsf älökj als das falls lass fass saal da fall asdf jklöä adsf älökj asdf jklöä adsf älökj als das falls lass fass",
+          "fass lass saal fall als das da asdf jklöä adsf älökj fass lass saal fall als das da fass lass saal fall als das da asdf jklöä",
+          "a s d f j k l ö ä a s d f j k l ö ä als das falls lass fass saal da fall a s d f j k l ö ä a s d f j k l ö ä als das falls lass",
+          "adfj klöä adfj klöä als das falls lass fass saal da fall adfj klöä adfj klöä adfj klöä adfj klöä als das falls lass fass saal da",
+          "als als das das lass lass fass fass falls falls saal saal da da fall fall asdf jklöä als als das das lass lass fass fass falls",
+          "sdas afas äökj lkjöä sdas afas äökj lkjöä als das falls lass fass saal da fall sdas afas äökj lkjöä sdas afas äökj lkjöä als das",
+          "jj kk ll öö ää aa ss dd ff jj kk ll öö ää aa ss dd ff als das falls lass jj kk ll öö ää aa ss dd ff jj kk ll öö ää aa ss dd ff",
+          "a d j k ä l l a f s d a j k l ö ä als das falls lass fass saal a d j k ä l l a f s d a j k l ö ä als das falls lass fass saal",
+          "asdfjklöä asdfjklöä adsfälökj adsfälökj als das falls lass fass saal da fall asdfjklöä asdfjklöä adsfälökj adsfälökj als das",
+          "fass lass saal fall da als asdf jklöä adsf älökj fass lass saal fall da als fass lass saal fall da als asdf jklöä adsf älökj fass",
+          "fall falls als das lass fass saal da asdf jklöä fall falls als das lass fass fall falls als das lass fass saal da asdf jklöä fall",
+          "saal da als das falls lass fass fall adsf älökj asdf jklöä saal da als das saal da als das falls lass fass fall adsf älökj asdf",
+          "jklöä asdf älökj adsf als das falls lass fass saal da fall jklöä asdf älökj jklöä asdf älökj adsf als das falls lass fass saal da",
+          "als das falls lass fass saal da fall asdf jklöä adsf älökj als das falls lass als das falls lass fass saal da fall asdf jklöä"
+        ],
+        en: [
+          "all sad dad ask fall lass flask lads glass add asdf jkl all sad dad ask fall lass flask lads all sad dad ask fall lass flask",
+          "asdf jkl adsf lkj all sad dad ask fall lass flask lads glass add asdf jkl adsf lkj asdf jkl adsf lkj all sad dad ask",
+          "fall lass flask glass all sad dad asdf jkl adsf lkj fall lass flask glass all sad dad fall lass flask glass all sad dad asdf",
+          "a s d f j k l a s d f j k l all sad dad ask fall lass flask a s d f j k l a s d f j k l all sad dad ask fall lass",
+          "adfj jkl adfj jkl all sad dad ask fall lass flask lads glass add adfj jkl adfj jkl adfj jkl adfj jkl all sad dad ask",
+          "all all sad sad dad dad ask ask fall fall lass lass flask flask lads lads glass glass add add all all sad sad dad dad ask ask",
+          "sdas afas kj lkj sdas afas kj lkj all sad dad ask fall lass flask lads sdas afas kj lkj sdas afas kj lkj all sad",
+          "jj kk ll aa ss dd ff jj kk ll aa ss dd ff all sad dad ask jj kk ll aa ss dd ff jj kk ll aa ss dd ff all jj kk ll aa ss dd ff jj",
+          "a d j k l l a f s d a j k l all sad dad ask fall lass a d j k l l a f s d a j k l all sad dad ask fall lass a d j k l l a f s d a",
+          "asdfjkl asdfjkl adsf lkj adsf lkj all sad dad ask fall lass flask lads glass asdfjkl asdfjkl adsf lkj adsf lkj all",
+          "fall lass flask glass add all asdf jkl adsf lkj fall lass flask glass add all fall lass flask glass add all asdf jkl adsf",
+          "lads fall lass flask glass add all sad dad ask asdf jkl lads fall lass flask glass add lads fall lass flask glass add all sad",
+          "glass add all sad dad ask fall lass adsf lkj asdf jkl glass add all sad dad glass add all sad dad ask fall lass adsf lkj",
+          "jkl asdf lkj adsf all sad dad ask fall lass flask lads jkl asdf lkj jkl asdf lkj adsf all sad dad ask fall lass flask",
+          "all sad dad ask fall lass flask lads glass add asdf jkl adsf lkj all sad dad all sad dad ask fall lass flask lads glass add"
         ]
       }
     }

@@ -88,8 +88,154 @@
   width: min(560px, calc(100vw - 40px));
 }
 
+.settings-dialog.custom-practice-dialog {
+  width: min(640px, calc(100vw - 40px));
+}
+
 .settings-dialog::backdrop {
   background: var(--overlay-bg);
+}
+
+.lesson-tip-dialog {
+  width: 100vw;
+  max-width: none;
+  height: 100vh;
+  max-height: none;
+  margin: 0;
+  border: 0;
+  background: transparent;
+  color: #fff;
+  padding: 0;
+  overflow: hidden;
+}
+
+.lesson-tip-dialog::backdrop {
+  background: var(--overlay-bg);
+}
+
+.lesson-tip-stage {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+
+.lesson-tip-message {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  justify-items: center;
+  gap: 18px;
+  width: min(760px, calc(100vw - 48px));
+  text-align: center;
+  text-wrap: balance;
+  pointer-events: auto;
+  transform: translateY(-78px);
+}
+
+.lesson-tip-kicker {
+  margin: 0;
+  color: rgb(255 255 255 / 0.72);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.lesson-tip-text {
+  display: grid;
+  gap: 12px;
+  max-height: min(42vh, 360px);
+  overflow: auto;
+  padding: 0 4px;
+  color: #fff;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.22;
+  text-shadow: 0 2px 24px rgb(0 0 0 / 0.62);
+}
+
+.lesson-tip-text p {
+  margin: 0;
+}
+
+.lesson-tip-start {
+  min-width: 132px;
+}
+
+.onboarding-dialog:not(.onboarding-with-character) .onboarding-message {
+  transform: translateY(-54px);
+}
+
+.onboarding-dialog.onboarding-with-character .onboarding-message {
+  transform: translateY(-154px);
+}
+
+.lesson-tip-character.onboarding-character {
+  bottom: -86px;
+  width: min(430px, 42vw);
+  max-height: 58vh;
+}
+
+.completion-message {
+  transform: translateY(-92px);
+}
+
+.completion-stars {
+  min-height: 36px;
+  color: #f7c84b;
+  font-size: clamp(30px, 5vw, 56px);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 0;
+  text-shadow: 0 0 18px rgb(247 200 75 / 0.42);
+  white-space: nowrap;
+}
+
+.lesson-tip-character.completion-character {
+  bottom: -90px;
+  width: min(430px, 42vw);
+  max-height: 58vh;
+}
+
+.lesson-tip-character {
+  position: fixed;
+  z-index: 1;
+  left: 25%;
+  bottom: -54px;
+  width: min(360px, 34vw);
+  max-height: 48vh;
+  object-fit: contain;
+  filter: drop-shadow(0 24px 42px rgb(0 0 0 / 0.42));
+  pointer-events: none;
+  transform: translateX(-50%);
+}
+
+@media (max-width: 720px) {
+  .onboarding-dialog.onboarding-with-character .onboarding-message {
+    transform: translateY(-136px);
+  }
+
+  .lesson-tip-character {
+    left: 50%;
+  }
+
+  .lesson-tip-character.onboarding-character {
+    bottom: -70px;
+    width: min(360px, 78vw);
+    max-height: 50vh;
+  }
+
+  .completion-message {
+    transform: translateY(-120px);
+  }
+
+  .lesson-tip-character.completion-character {
+    bottom: -76px;
+    width: min(360px, 78vw);
+    max-height: 50vh;
+  }
 }
 
 .visually-hidden {
@@ -318,9 +464,107 @@
   padding-left: 12px;
 }
 
+.assistants-section {
+  gap: 0;
+}
+
+.disclosure-btn {
+  min-height: 42px;
+}
+
+.disclosure-arrow {
+  width: 9px;
+  height: 9px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg) translateY(-2px);
+  transform-origin: center;
+  opacity: 0.78;
+  transition: transform 140ms ease, opacity 140ms ease;
+}
+
+.disclosure-btn:hover .disclosure-arrow,
+.disclosure-btn[aria-expanded="true"] .disclosure-arrow {
+  opacity: 1;
+}
+
+.disclosure-btn[aria-expanded="true"] .disclosure-arrow {
+  transform: rotate(225deg) translateY(-2px);
+}
+
+.assistants-panel {
+  display: grid;
+  gap: 11px;
+  padding: 14px 0 3px;
+}
+
+.assistants-panel[hidden] {
+  display: none;
+}
+
 .settings-label {
   color: var(--muted);
   font-size: 13px;
+}
+
+.custom-practice-layout {
+  display: grid;
+  gap: 14px;
+}
+
+.custom-practice-field {
+  display: grid;
+  gap: 7px;
+}
+
+.custom-practice-field textarea {
+  width: 100%;
+  min-height: 170px;
+  resize: vertical;
+  border: 1px solid var(--line-soft);
+  border-radius: 8px;
+  background: var(--icon-button-bg);
+  color: var(--text);
+  padding: 12px;
+  font: inherit;
+  line-height: 1.45;
+}
+
+.custom-practice-field textarea:focus {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.custom-practice-controls {
+  display: flex;
+  align-items: end;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.custom-practice-number {
+  display: grid;
+  gap: 7px;
+}
+
+.custom-practice-assistants {
+  display: grid;
+  gap: 10px;
+  padding-top: 4px;
+}
+
+.custom-practice-status {
+  min-height: 18px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.custom-practice-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
 }
 
 .module-list {
@@ -421,11 +665,28 @@
 }
 
 .module-btn-rating {
+  display: inline-block;
   color: color-mix(in srgb, currentColor 68%, transparent);
   font-size: 11px;
   font-weight: 800;
   letter-spacing: 0;
   white-space: nowrap;
+}
+
+.module-btn-rating-flying {
+  color: #f7c84b;
+  text-shadow: 0 0 9px color-mix(in srgb, #f7c84b 68%, transparent);
+  animation: flying-stars 900ms ease-in-out infinite alternate;
+}
+
+@keyframes flying-stars {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(-2px);
+  }
 }
 
 .module-reset-btn {
@@ -542,6 +803,38 @@
 .compact-toggle {
   min-width: 76px;
   justify-content: flex-start;
+}
+
+.metronome-input {
+  width: 76px;
+  height: 32px;
+  appearance: textfield;
+  border: 1px solid var(--line-soft);
+  border-radius: 7px;
+  background: var(--panel);
+  color: var(--on-panel);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+  padding: 0 9px;
+  text-align: right;
+  outline: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.metronome-input:focus {
+  border-color: var(--line);
+}
+
+.metronome-input::placeholder {
+  color: var(--muted);
+  opacity: 0.72;
+}
+
+.metronome-input::-webkit-outer-spin-button,
+.metronome-input::-webkit-inner-spin-button {
+  margin: 0;
+  appearance: none;
 }
 
 .menu-summary {

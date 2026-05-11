@@ -28,8 +28,10 @@ function renderModuleButtons() {
     percent.textContent = `${progress.percent}%`;
 
     const rating = document.createElement("span");
+    const ratingDetails = starRatingDetailsForLesson(lesson, progress);
     rating.className = "module-btn-rating";
-    rating.textContent = starRatingForLesson(lesson, progress);
+    rating.classList.toggle("module-btn-rating-flying", ratingDetails.isFlying);
+    rating.textContent = ratingDetails.text;
 
     const content = document.createElement("span");
     content.className = "lesson-btn-content";
@@ -40,7 +42,14 @@ function renderModuleButtons() {
     button.append(content, progressSummary);
 
     button.addEventListener("click", () => {
+      if (lesson.customPractice) {
+        openCustomPracticeDialog(lesson.id);
+        return;
+      }
+
       applySettings({ language: currentLanguage, module: lesson.id });
+      closeLearningProgramDialog();
+      openCurrentLessonTip({ force: true });
       renderModuleButtons();
     });
 
@@ -86,8 +95,20 @@ function formatLessonMeta(lesson, language = currentLanguage) {
   if (target.accuracy) {
     goals.push(`${text.practiceAccuracy}: ≥${target.accuracy}%`);
   }
+  if (target.speedMax) {
+    goals.push(`${text.practiceSpeed}: ≤${target.speedMax} ${text.practiceSpeedUnit}`);
+  }
   if (target.speed) {
-    goals.push(`${text.practiceSpeed}: ${target.speed} ${text.practiceSpeedUnit}`);
+    goals.push(`${text.practiceSpeed}: ≥${target.speed} ${text.practiceSpeedUnit}`);
+  }
+  if (target.rhythmTolerance) {
+    goals.push(`${text.metronome}: ±${target.rhythmTolerance}%`);
+  }
+  if (target.alternateLines) {
+    goals.push(text.alternateLines);
+  }
+  if (target.assistants === false) {
+    goals.push(`${text.assistants}: ${text.toggleOff}`);
   }
 
   return goals.join(", ");
@@ -103,40 +124,41 @@ function lessonProgressWithLiveMetrics(lessonId) {
   return {
     ...progress,
     accuracy: Math.max(progress.accuracy || 0, currentPracticeAccuracy()),
-    speed: Math.max(progress.speed || 0, currentPracticeSpeed())
+    speed: Math.max(progress.speed || 0, currentPracticeSpeed()),
+    assistantsUsed: progress.assistantsUsed || practiceAssistantsUsed,
+    metronomeAccuracy: currentPracticeMetronomeAccuracy()
   };
 }
 
-function goalCompletionRatio(current, target) {
-  if (!target || target <= 0) return 1;
-  return Math.max(0, Math.min(1, current / target));
+function isPerfectLessonRun(progress) {
+  if ((progress.accuracy || 0) < 100) return false;
+  if (progress.metronomeAccuracy === null || progress.metronomeAccuracy === undefined) return true;
+  return progress.metronomeAccuracy > 95;
 }
 
-function starRatingForLesson(lesson, progress) {
+function starRatingDetailsForLesson(lesson, progress) {
   if (!progress.isComplete) {
-    return "";
+    return { text: "", isFlying: false };
   }
 
   const target = lesson.target || {};
-  const ratios = [];
+  const accuracy = progress.accuracy || 0;
+  let filledStars = 2;
 
-  if (target.lines) {
-    ratios.push(goalCompletionRatio(progress.completedLines, target.lines));
+  if (!target.accuracy || accuracy >= target.accuracy) {
+    filledStars += 1;
   }
-  if (target.accuracy) {
-    ratios.push(goalCompletionRatio(progress.accuracy || 0, target.accuracy));
+  if (accuracy >= 95) {
+    filledStars += 1;
   }
-  if (target.speed) {
-    ratios.push(goalCompletionRatio(progress.speed || 0, target.speed));
+  if (isPerfectLessonRun(progress)) {
+    filledStars = 5;
   }
 
-  const score = ratios.length
-    ? ratios.reduce((sum, ratio) => sum + ratio, 0) / ratios.length
-    : goalCompletionRatio(progress.percent, 100);
-  const maxStars = (progress.accuracy || 0) >= 100 ? 5 : 4;
-  const filledStars = Math.max(0, Math.min(maxStars, Math.round(score * 5)));
-
-  return `${"★".repeat(filledStars)}${"☆".repeat(5 - filledStars)}`;
+  return {
+    text: `${"★".repeat(filledStars)}${"☆".repeat(5 - filledStars)}`,
+    isFlying: filledStars === 5 && progress.assistantsUsed !== true
+  };
 }
 
 function gradeLabelForAccuracy(accuracy, language = currentLanguage) {
@@ -195,7 +217,9 @@ function renderTabs() {
   programCurrentProgressLabel.textContent = text.currentModuleProgress;
   currentModuleProgressReset.textContent = text.resetCurrentModuleProgress;
   soundLabel.textContent = text.sound;
-  keyHighlightLabel.closest(".menu-section")?.setAttribute("aria-label", text.displaySettings);
+  assistantsToggleText.textContent = text.assistants;
+  assistantsToggle.setAttribute("aria-label", text.assistants);
+  keyHighlightLabel.closest(".menu-section")?.setAttribute("aria-label", text.assistants);
   renderKeySoundToggle();
   renderPracticeTextSizeToggle();
   renderThemeToggle();
@@ -249,6 +273,9 @@ function renderDisplaySettings() {
   pressHighlightLabel.textContent = text.pressHighlight;
   showFingersLabel.textContent = text.showFingers;
   alternateLinesLabel.textContent = text.alternateLines;
+  metronomeLabel.textContent = text.metronome;
+  metronomeInput.setAttribute("aria-label", text.metronome);
+  metronomeInput.value = metronomeBpm > 0 ? String(metronomeBpm) : "";
 
   renderBooleanToggle(keyHighlightToggle, keyHighlightToggleText, keyHighlightEnabled);
   renderBooleanToggle(fingerZonesToggle, fingerZonesToggleText, fingerZonesEnabled);

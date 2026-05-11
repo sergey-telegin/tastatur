@@ -172,20 +172,20 @@ function renderFingerVisualThemes() {
 function renderKeyboard() {
   const labels = labelsFor(currentLanguage);
   const highlightedKeys = activeFingerKeys();
-  const shouldShowFingerZones = fingerKeyboardMode || (!fingerMapDialog.open && fingerZonesEnabled);
+  const shouldShowFingerZones = fingerKeyboardMode || (!fingerMapDialog.open && effectiveAssistantSetting(fingerZonesEnabled));
   const allFingerOwners = shouldShowFingerZones ? allFingerKeyOwners() : null;
   const practiceTarget = fingerKeyboardMode ? { keyId: null, spaceSide: null } : currentPracticeTarget();
 
   handsLayer.classList.toggle("finger-editor-mode", fingerKeyboardMode);
-  handsLayer.classList.toggle("hidden", !fingerKeyboardMode && !showFingersEnabled);
+  handsLayer.classList.toggle("hidden", !fingerKeyboardMode && !effectiveAssistantSetting(showFingersEnabled));
   renderFingerVisualThemes();
   keyboard.innerHTML = "";
 
   geometry.forEach(([id, row, column, span, extra = "", rowSpan = 1]) => {
     const key = document.createElement("button");
-    const isPracticeKey = keyHighlightEnabled && (practiceTarget.keyId === id || practiceTarget.secondaryKeyId === id || technicalPracticeKeyId === id || pressedPracticeKeyIds.has(id));
-    const isCorrectPracticeKey = pressHighlightEnabled && !fingerKeyboardMode && (correctPracticeKeyId === id || correctPressedPracticeKeyIds.has(id));
-    const isWrongPracticeKey = pressHighlightEnabled && !fingerKeyboardMode && (wrongPracticeKeyId === id || wrongPressedPracticeKeyIds.has(id));
+    const isPracticeKey = effectiveAssistantSetting(keyHighlightEnabled) && (practiceTarget.keyId === id || practiceTarget.secondaryKeyId === id || technicalPracticeKeyId === id || pressedPracticeKeyIds.has(id));
+    const isCorrectPracticeKey = effectiveAssistantSetting(pressHighlightEnabled) && !fingerKeyboardMode && (correctPracticeKeyId === id || correctPressedPracticeKeyIds.has(id));
+    const isWrongPracticeKey = effectiveAssistantSetting(pressHighlightEnabled) && !fingerKeyboardMode && (wrongPracticeKeyId === id || wrongPressedPracticeKeyIds.has(id));
 
     key.type = "button";
     key.className = keyboardKeyClassName({

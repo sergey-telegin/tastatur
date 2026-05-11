@@ -40,7 +40,7 @@
   --icon-button-hover-border: rgba(204, 204, 204, 0.34);
   --icon-button-active-bg: rgb(255 255 255 / 0.08);
   --icon-button-active-border: rgba(204, 204, 204, 0.42);
-  --overlay-bg: rgb(0 0 0 / 0.64);
+  --overlay-bg: rgb(0 0 0 / 0.7);
   --progress-track: #1a1a1a;
   --progress-track-border: #262626;
   --sample-text: #d0d0d0;
@@ -135,7 +135,7 @@
   --icon-button-hover-border: rgba(60, 64, 72, 0.2);
   --icon-button-active-bg: #f0f2f5;
   --icon-button-active-border: rgba(60, 64, 72, 0.24);
-  --overlay-bg: rgb(38 41 46 / 0.22);
+  --overlay-bg: rgb(38 41 46 / 0.8);
   --progress-track: #e8eaee;
   --progress-track-border: #dde0e6;
   --sample-text: #303236;
