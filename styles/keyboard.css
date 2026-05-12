@@ -8,15 +8,15 @@
 .keyboard-wrap {
   position: absolute;
   top: 0;
-  left: 50%;
+  left: 0;
   width: var(--keyboard-width);
   max-width: none;
   overflow: hidden;
   border: 1px solid var(--line);
   border-radius: 8px;
   background: var(--keyboard-case, var(--panel));
-  transform: translateX(-50%) scale(var(--keyboard-scale));
-  transform-origin: top center;
+  transform: scale(var(--keyboard-scale));
+  transform-origin: top left;
 }
 
 :root[data-theme="light"] .keyboard-wrap {

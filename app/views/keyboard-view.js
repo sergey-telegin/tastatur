@@ -1,5 +1,3 @@
-const keyboardDesignWidthPx = 1852;
-
 function labelsFor(language) {
   return { ...languages[language].keys, ...(saved[language] || {}) };
 }
@@ -280,17 +278,12 @@ function fitKeyboardScene() {
   if (!availableWidth) return;
 
   if (!keyboardDesignWidth) {
-    keyboardDesignWidth = keyboardDesignWidthPx;
+    keyboardDesignWidth = availableWidth;
     document.documentElement.style.setProperty("--keyboard-width", `${keyboardDesignWidth}px`);
     keyboardDesignHeight = keyboardWrap.offsetHeight;
   }
 
-  const keyboardScaleBox = keyboardScale.getBoundingClientRect();
-  const availableHeight = Math.max(260, window.innerHeight - keyboardScaleBox.top - 18);
-  const widthScale = availableWidth / keyboardDesignWidth;
-  const heightScale = keyboardDesignHeight > 0 ? availableHeight / keyboardDesignHeight : widthScale;
-  const scale = Math.min(widthScale, heightScale);
-
+  const scale = availableWidth / keyboardDesignWidth;
   document.documentElement.style.setProperty("--keyboard-scale", String(scale));
   document.documentElement.style.setProperty("--keyboard-stage-height", `${keyboardDesignHeight * scale}px`);
   applyHandCalibration();

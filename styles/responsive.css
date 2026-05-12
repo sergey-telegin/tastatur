@@ -145,7 +145,13 @@
   }
 
   .lesson-tip-character {
+    bottom: clamp(-84px, calc((760px - 100vh) * 0.38 - 84px), -30px);
     width: min(220px, 23vw);
     max-height: 38vh;
+  }
+
+  .lesson-tip-character.onboarding-character,
+  .lesson-tip-character.completion-character {
+    bottom: clamp(-84px, calc((760px - 100vh) * 0.38 - 84px), -30px);
   }
 }
