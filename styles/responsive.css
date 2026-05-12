@@ -15,3 +15,137 @@
     justify-content: flex-start;
   }
 }
+
+@media (max-width: 1100px), (max-height: 760px) {
+  body {
+    min-width: 900px;
+  }
+
+  .app {
+    padding: 14px 20px 20px;
+  }
+
+  .topbar {
+    gap: 10px;
+    margin-bottom: 6px;
+  }
+
+  .practice-progress-text {
+    font-size: 12px;
+  }
+
+  .practice-progress {
+    gap: 10px;
+  }
+
+  .practice-stat {
+    flex-basis: 168px;
+    width: 168px;
+    min-width: 168px;
+    max-width: 168px;
+    min-height: 36px;
+    padding: 0 10px;
+  }
+
+  .practice-stat-label,
+  .practice-speed-unit {
+    font-size: 11px;
+  }
+
+  .practice-stat-value {
+    font-size: 16px;
+  }
+
+  .practice-stat-speed .practice-stat-value {
+    gap: 0.36em;
+    min-width: 78px;
+  }
+
+  .settings-btn {
+    width: 38px;
+    height: 38px;
+  }
+
+  .trainer {
+    min-height: 84px;
+    margin-bottom: 12px;
+  }
+
+  .practice-sample {
+    min-height: 42px;
+  }
+
+  .lesson-tip-message {
+    gap: 12px;
+    width: min(680px, calc(100vw - 64px));
+    transform: translateY(-42px);
+  }
+
+  .lesson-tip-text {
+    max-height: none;
+    overflow: visible;
+    padding: 0;
+    font-size: clamp(20px, 2.7vw, 26px);
+    line-height: 1.16;
+    outline: none;
+  }
+
+  .lesson-tip-text:focus,
+  .lesson-tip-text:focus-visible {
+    outline: none;
+  }
+
+  .lesson-tip-start {
+    min-width: 116px;
+    min-height: 38px;
+    padding: 0 18px;
+  }
+
+  .lesson-tip-character {
+    bottom: -74px;
+    width: min(270px, 26vw);
+    max-height: 42vh;
+  }
+
+  .onboarding-dialog:not(.onboarding-with-character) .onboarding-message,
+  .onboarding-dialog.onboarding-with-character .onboarding-message,
+  .completion-message {
+    transform: translateY(-72px);
+  }
+
+  .lesson-tip-character.onboarding-character,
+  .lesson-tip-character.completion-character {
+    bottom: -84px;
+    width: min(310px, 30vw);
+    max-height: 44vh;
+  }
+}
+
+@media (max-height: 660px) {
+  :root {
+    --practice-sample-font-size: 30px;
+  }
+
+  .app {
+    padding-top: 10px;
+  }
+
+  .trainer {
+    min-height: 70px;
+    margin-bottom: 8px;
+  }
+
+  .lesson-tip-message {
+    width: min(620px, calc(100vw - 72px));
+    transform: translateY(-46px);
+  }
+
+  .lesson-tip-text {
+    font-size: clamp(18px, 2.4vw, 23px);
+  }
+
+  .lesson-tip-character {
+    width: min(220px, 23vw);
+    max-height: 38vh;
+  }
+}
