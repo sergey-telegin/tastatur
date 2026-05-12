@@ -167,3 +167,90 @@
   width: 53.01%;
   height: 91.28%;
 }
+
+.hand-calibration-mode .hands {
+  pointer-events: auto;
+}
+
+.hand-calibration-mode .finger {
+  cursor: grab;
+  pointer-events: auto;
+}
+
+.hand-calibration-mode .finger:active {
+  cursor: grabbing;
+}
+
+.hand-calibration-mode .finger.calibration-selected {
+  opacity: 0.9;
+  filter:
+    brightness(2.2)
+    drop-shadow(0 0 5px var(--finger-lit-shadow-strong))
+    drop-shadow(0 0 14px var(--finger-lit-shadow-soft));
+}
+
+.hand-calibration-panel {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 20;
+  display: grid;
+  gap: 10px;
+  width: min(360px, calc(100vw - 32px));
+  padding: 12px;
+  border: 1px solid var(--line-soft);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--panel) 94%, transparent);
+  color: var(--text);
+  box-shadow: 0 18px 40px rgb(0 0 0 / 0.35);
+}
+
+.hand-calibration-panel strong {
+  color: var(--on-panel);
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+.hand-calibration-selected {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.2;
+}
+
+.hand-calibration-actions {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.hand-calibration-panel button {
+  min-height: 32px;
+  border: 1px solid var(--line-soft);
+  border-radius: 7px;
+  background: var(--panel-raised);
+  color: var(--text);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.hand-calibration-panel button:hover {
+  background: var(--panel-raised-hover);
+  color: var(--on-panel);
+}
+
+.hand-calibration-export {
+  width: 100%;
+}
+
+.hand-calibration-output {
+  width: 100%;
+  min-height: 140px;
+  resize: vertical;
+  border: 1px solid var(--line-soft);
+  border-radius: 7px;
+  background: var(--panel-subtle);
+  color: var(--text);
+  font: 12px/1.35 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  padding: 8px;
+}

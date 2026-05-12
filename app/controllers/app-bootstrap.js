@@ -304,7 +304,9 @@ function initializeApp() {
   scheduleKeyboardRefit();
 
   requestAnimationFrame(() => {
-    if (!openOnboardingIfNeeded()) {
+    if (isHandCalibrationModeEnabled()) {
+      closeLessonTipDialog();
+    } else if (!openOnboardingIfNeeded()) {
       openCurrentLessonTip();
     }
     scheduleKeyboardRefit();
@@ -313,12 +315,13 @@ function initializeApp() {
   hydrateFingerSvgs().finally(() => {
     renderKeyboard();
     scheduleKeyboardRefit();
+    initializeHandCalibrationMode();
   });
 
   if (document.fonts?.ready) {
     document.fonts.ready.then(() => {
       scheduleKeyboardRefit();
-      if (!onboardingDialog.open && !lessonTipDialog.open) {
+      if (!isHandCalibrationModeEnabled() && !onboardingDialog.open && !lessonTipDialog.open) {
         openCurrentLessonTip();
       }
     }).catch(() => {});

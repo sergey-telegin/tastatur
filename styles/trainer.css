@@ -95,6 +95,7 @@
   position: relative;
   z-index: 2;
   display: inline-flex;
+  align-items: center;
   justify-content: flex-end;
   gap: 0.48em;
   width: max-content;
@@ -107,6 +108,7 @@
   display: inline-block;
   width: 3ch;
   min-width: 3ch;
+  line-height: 1;
   text-align: right;
 }
 
@@ -115,6 +117,7 @@
   flex: 0 0 auto;
   font-size: 13px;
   font-weight: 700;
+  line-height: 1;
 }
 
 :root[data-theme="light"] .practice-stat-value {

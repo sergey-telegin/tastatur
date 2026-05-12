@@ -4,6 +4,7 @@
   --key-gap: 12px;
   --arrow-gap: 2px;
   --keyboard-scale: 1;
+  --keyboard-offset-x: 0px;
   --keyboard-stage-height: 0px;
   --keyboard-width: 100%;
   --keyboard-padding: 32px 28px 30px;
@@ -227,7 +228,7 @@ html {
 }
 
 body {
-  min-width: 1180px;
+  min-width: 0;
   min-height: 100vh;
   margin: 0;
   background: var(--bg);

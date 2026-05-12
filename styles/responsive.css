@@ -1,6 +1,6 @@
 @media (max-width: 1300px) {
   body {
-    min-width: 980px;
+    min-width: 0;
   }
 
   .app {
@@ -18,7 +18,7 @@
 
 @media (max-width: 1100px), (max-height: 760px) {
   body {
-    min-width: 900px;
+    min-width: 0;
   }
 
   .app {
@@ -103,8 +103,8 @@
 
   .lesson-tip-character {
     bottom: -74px;
-    width: min(270px, 26vw);
-    max-height: 42vh;
+    width: min(320px, 32vw);
+    max-height: 46vh;
   }
 
   .onboarding-dialog:not(.onboarding-with-character) .onboarding-message,
@@ -116,8 +116,8 @@
   .lesson-tip-character.onboarding-character,
   .lesson-tip-character.completion-character {
     bottom: -84px;
-    width: min(310px, 30vw);
-    max-height: 44vh;
+    width: min(400px, 38vw);
+    max-height: 52vh;
   }
 }
 
@@ -146,8 +146,8 @@
 
   .lesson-tip-character {
     bottom: clamp(-84px, calc((760px - 100vh) * 0.38 - 84px), -30px);
-    width: min(220px, 23vw);
-    max-height: 38vh;
+    width: min(330px, 34vw);
+    max-height: 48vh;
   }
 
   .lesson-tip-character.onboarding-character,

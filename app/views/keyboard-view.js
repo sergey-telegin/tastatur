@@ -24,10 +24,6 @@ function applyHandCalibration() {
   rightHand.style.setProperty("--hand-offset-x", "0px");
   rightHand.style.setProperty("--hand-offset-y", "0px");
 
-  const width = keyboardWrap.offsetWidth || keyboardScale.clientWidth || 0;
-  const height = keyboardWrap.offsetHeight || 0;
-  if (!width || !height) return;
-
   rightFingerNodes.forEach(node => {
     const fingerId = node.dataset.finger;
     const fixedEntry = fixedHandCalibrationPx[fingerId] || { x: 0, y: 0 };
@@ -278,13 +274,20 @@ function fitKeyboardScene() {
   if (!availableWidth) return;
 
   if (!keyboardDesignWidth) {
-    keyboardDesignWidth = availableWidth;
+    keyboardDesignWidth = 1642;
     document.documentElement.style.setProperty("--keyboard-width", `${keyboardDesignWidth}px`);
     keyboardDesignHeight = keyboardWrap.offsetHeight;
   }
 
-  const scale = availableWidth / keyboardDesignWidth;
+  const widthScale = availableWidth / keyboardDesignWidth;
+  const verticalSpace = Math.max(window.innerHeight - keyboardScale.getBoundingClientRect().top - 20, 0);
+  const heightScale = verticalSpace
+    ? Math.min(verticalSpace, window.innerHeight * 0.48) / keyboardDesignHeight
+    : widthScale;
+  const scale = Math.min(widthScale, heightScale);
+  const offsetX = Math.max((availableWidth - keyboardDesignWidth * scale) / 2, 0);
   document.documentElement.style.setProperty("--keyboard-scale", String(scale));
+  document.documentElement.style.setProperty("--keyboard-offset-x", `${offsetX}px`);
   document.documentElement.style.setProperty("--keyboard-stage-height", `${keyboardDesignHeight * scale}px`);
   applyHandCalibration();
 }
@@ -293,6 +296,7 @@ function resetKeyboardSceneMetrics() {
   keyboardDesignWidth = 0;
   keyboardDesignHeight = 0;
   document.documentElement.style.setProperty("--keyboard-scale", "1");
+  document.documentElement.style.setProperty("--keyboard-offset-x", "0px");
   document.documentElement.style.setProperty("--keyboard-stage-height", "0px");
   document.documentElement.style.setProperty("--keyboard-width", "100%");
 }

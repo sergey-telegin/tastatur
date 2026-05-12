@@ -1,6 +1,7 @@
 .keyboard-scale {
   position: relative;
-  width: 100%;
+  width: min(100%, 1240px);
+  margin-inline: auto;
   min-width: 0;
   height: var(--keyboard-stage-height);
 }
@@ -8,7 +9,7 @@
 .keyboard-wrap {
   position: absolute;
   top: 0;
-  left: 0;
+  left: var(--keyboard-offset-x);
   width: var(--keyboard-width);
   max-width: none;
   overflow: hidden;
