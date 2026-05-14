@@ -420,6 +420,48 @@ function positionFingeringTourCard() {
   fingeringTourCard.style.top = `${top}px`;
 }
 
+function isFingeringTourCardEventTarget(target) {
+  return Boolean(fingeringTourCard && target instanceof Node && fingeringTourCard.contains(target));
+}
+
+function isFingeringTourStepEventTarget(target) {
+  return Boolean(fingeringTourTarget && target instanceof Node && fingeringTourTarget.contains(target));
+}
+
+function blockFingeringTourEvent(event) {
+  event.preventDefault();
+  event.stopPropagation();
+  event.stopImmediatePropagation();
+}
+
+function handleFingeringTourPointerGuard(event) {
+  if (!fingeringTourActive) return;
+  if (isFingeringTourCardEventTarget(event.target)) return;
+
+  if (isFingeringTourStepEventTarget(event.target)) {
+    blockFingeringTourEvent(event);
+    if (event.type === "click") {
+      advanceFingeringTour();
+    }
+    return;
+  }
+
+  blockFingeringTourEvent(event);
+}
+
+function handleFingeringTourKeyGuard(event) {
+  if (!fingeringTourActive) return;
+  if (isFingeringTourCardEventTarget(event.target)) return;
+
+  if (isFingeringTourStepEventTarget(event.target) && (event.key === "Enter" || event.key === " ")) {
+    blockFingeringTourEvent(event);
+    advanceFingeringTour();
+    return;
+  }
+
+  blockFingeringTourEvent(event);
+}
+
 function renderFingeringTourStep() {
   const step = currentFingeringTourStep();
   if (!step) {

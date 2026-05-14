@@ -10,6 +10,10 @@ function scheduleKeyboardRefit() {
 }
 
 function bindAppEvents() {
+  document.addEventListener("pointerdown", handleFingeringTourPointerGuard, true);
+  document.addEventListener("click", handleFingeringTourPointerGuard, true);
+  document.addEventListener("keydown", handleFingeringTourKeyGuard, true);
+
   keySelect.addEventListener("change", event => selectKey(event.target.value));
   applyLabel.addEventListener("click", applyCurrentLabel);
   labelInput.addEventListener("keydown", event => {
