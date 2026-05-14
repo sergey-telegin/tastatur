@@ -106,7 +106,10 @@
       <div class="lesson-tip-stage">
         <section class="lesson-tip-message" aria-describedby="lessonTipText">
           <div class="lesson-tip-text" id="lessonTipText"></div>
-          <button class="apply-btn lesson-tip-start" id="lessonTipStart" type="button">Пуск</button>
+          <div class="lesson-tip-actions">
+            <button class="ghost-btn lesson-tip-extra" id="lessonTipExtra" type="button" hidden></button>
+            <button class="apply-btn lesson-tip-start" id="lessonTipStart" type="button">Пуск</button>
+          </div>
         </section>
         <img class="lesson-tip-character" id="lessonTipCharacter" src="assets/key/key-wave.png" alt="" aria-hidden="true">
       </div>
@@ -117,7 +120,10 @@
         <section class="lesson-tip-message completion-message" aria-describedby="completionText">
           <div class="completion-stars" id="completionStars" aria-hidden="true"></div>
           <div class="lesson-tip-text completion-text" id="completionText"></div>
-          <button class="apply-btn lesson-tip-start completion-next" id="completionNext" type="button">Далее</button>
+          <div class="lesson-tip-actions">
+            <button class="ghost-btn completion-extra" id="completionExtra" type="button" hidden></button>
+            <button class="apply-btn lesson-tip-start completion-next" id="completionNext" type="button">Далее</button>
+          </div>
         </section>
         <img class="lesson-tip-character completion-character" id="completionCharacter" src="assets/key/key-completion.png" alt="" aria-hidden="true">
       </div>

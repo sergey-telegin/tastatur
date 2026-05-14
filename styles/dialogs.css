@@ -164,6 +164,72 @@
   min-width: 132px;
 }
 
+.lesson-tip-actions,
+.guided-tour-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.lesson-tip-extra,
+.completion-extra {
+  min-width: 132px;
+  color: #fff;
+  border-color: rgb(255 255 255 / 0.32);
+  background: rgb(255 255 255 / 0.08);
+  backdrop-filter: blur(12px);
+}
+
+.lesson-tip-extra:hover,
+.completion-extra:hover {
+  border-color: rgb(255 255 255 / 0.48);
+  background: rgb(255 255 255 / 0.16);
+}
+
+.guided-tour-card {
+  position: fixed;
+  z-index: 2147483647;
+  display: grid;
+  gap: 14px;
+  width: min(300px, calc(100vw - 32px));
+  padding: 16px;
+  border: 1px solid rgb(255 255 255 / 0.18);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--panel) 92%, transparent);
+  color: var(--text);
+  box-shadow: 0 22px 50px rgb(0 0 0 / 0.34);
+  backdrop-filter: blur(16px);
+}
+
+.guided-tour-card p {
+  margin: 0;
+  color: var(--on-panel);
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.38;
+}
+
+.guided-tour-card .apply-btn,
+.guided-tour-card .ghost-btn {
+  min-height: 38px;
+}
+
+.guided-tour-target {
+  position: relative;
+  z-index: 2147483646;
+  border-color: color-mix(in srgb, var(--accent) 78%, var(--line) 22%) !important;
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent),
+    0 0 28px color-mix(in srgb, var(--accent) 28%, transparent) !important;
+}
+
+.guided-tour-active .keyboard .key,
+.guided-tour-active .keyboard-finger-picker .finger-picker {
+  cursor: default;
+}
+
 .onboarding-dialog:not(.onboarding-with-character) .onboarding-message {
   transform: translateY(-54px);
 }

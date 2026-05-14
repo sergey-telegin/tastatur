@@ -64,6 +64,10 @@ function bindAppEvents() {
     closeLessonTipDialog();
   });
 
+  lessonTipExtra.addEventListener("click", () => {
+    startFingeringTourFromLessonTip();
+  });
+
   lessonTipDialog.addEventListener("click", event => {
     if (event.target === lessonTipDialog) {
       closeLessonTipDialog();
@@ -84,6 +88,10 @@ function bindAppEvents() {
 
   completionNext.addEventListener("click", () => {
     goToNextLessonAfterCompletion();
+  });
+
+  completionExtra.addEventListener("click", () => {
+    openFingerMapFromCompletionReminder();
   });
 
   completionDialog.addEventListener("keydown", event => {
@@ -111,10 +119,12 @@ function bindAppEvents() {
   alternateLinesToggle.addEventListener("click", () => toggleDisplaySetting("alternateLinesEnabled"));
 
   settingsClose.addEventListener("click", () => {
+    if (fingeringTourActive) return;
     closeSettingsDialog();
   });
 
   settingsDialog.addEventListener("click", event => {
+    if (fingeringTourActive) return;
     if (event.target === settingsDialog) {
       closeSettingsDialog();
     }
@@ -219,10 +229,12 @@ function bindAppEvents() {
   });
 
   fingerMapClose.addEventListener("click", () => {
+    if (fingeringTourActive) return;
     fingerMapDialog.close();
   });
 
   fingerMapDialog.addEventListener("click", event => {
+    if (fingeringTourActive) return;
     if (event.target === fingerMapDialog) {
       fingerMapDialog.close();
     }
@@ -241,6 +253,7 @@ function bindAppEvents() {
   });
 
   fingerMapCancel.addEventListener("click", () => {
+    if (fingeringTourActive) return;
     fingerMapDialog.close();
   });
 
@@ -281,6 +294,7 @@ function bindAppEvents() {
   window.addEventListener("focus", focusPracticeInputSoon);
   window.addEventListener("blur", clearPressedPracticeKeys);
   window.addEventListener("resize", fitKeyboardScene);
+  window.addEventListener("resize", positionFingeringTourCard);
   window.addEventListener("load", () => {
     scheduleKeyboardRefit();
   });

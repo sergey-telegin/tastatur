@@ -55,6 +55,16 @@ function enterFingerKeyboardMode() {
   renderKeyboard();
 }
 
+function openFingerMapDialog() {
+  openFingerMapDraft();
+  if (!fingerMapDialog.open) {
+    fingerMapDialog.showModal();
+  }
+  updatePracticeTimerPauseState();
+  renderFingerMapPanel();
+  renderKeyboard();
+}
+
 function resetFingerMapDraft() {
   addFingerInputId = null;
   draftFingerMap = cloneFingerMapState(defaultFingerMap);
@@ -99,6 +109,10 @@ function selectKeyboardFingerPicker(button) {
 }
 
 function handleKeyboardKeyClick(id) {
+  if (fingeringTourActive && fingerKeyboardMode) {
+    return;
+  }
+
   if (fingerKeyboardMode) {
     assignOrRestoreKeyForFinger(id, currentFingerSelection(), currentFingerMapState());
     renderFingerMapPanel();

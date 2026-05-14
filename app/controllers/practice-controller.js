@@ -269,6 +269,8 @@ function renderLessonTipDialog() {
     lessonTipText.append(paragraph);
   });
   lessonTipStart.textContent = text.startPractice;
+  lessonTipExtra.hidden = lesson.id !== "lesson1_4";
+  lessonTipExtra.textContent = text.showFingeringTour;
   lessonTipCharacter.src = lessonTipAvatarSrcFor(lesson);
   lessonTipCharacter.alt = "";
 }
@@ -288,6 +290,178 @@ function openCurrentLessonTip({ force = false } = {}) {
 function closeLessonTipDialog() {
   if (!lessonTipDialog?.open) return;
   lessonTipDialog.close();
+}
+
+const fingeringTourSteps = [
+  {
+    target: () => fingerMapOpen,
+    host: () => settingsDialog,
+    text: () => textFor().tourSettingsStep,
+    before() {
+      if (lessonTipDialog?.open) closeLessonTipDialog();
+      if (!settingsDialog.open) openSettingsDialog();
+    }
+  },
+  {
+    target: () => fingerMapList.querySelector(".finger-card.active") || fingerMapList,
+    host: () => fingerMapDialog,
+    text: () => textFor().tourFingerMapStep,
+    before() {
+      if (settingsDialog.open) closeSettingsDialog();
+      if (!fingerMapDialog.open) openFingerMapDialog();
+      setActiveFinger(currentFingerSelection());
+    }
+  },
+  {
+    target: () => fingerMapKeyboardMode,
+    host: () => fingerMapDialog,
+    text: () => textFor().tourKeyboardModeStep,
+    before() {
+      if (!fingerMapDialog.open) openFingerMapDialog();
+    }
+  },
+  {
+    target: () => keyboardEditorPanel,
+    host: () => document.body,
+    text: () => textFor().tourKeyboardStep,
+    before() {
+      if (!fingerKeyboardMode) {
+        enterFingerKeyboardMode();
+      }
+      scheduleKeyboardRefit();
+    }
+  }
+];
+
+function currentFingeringTourStep() {
+  return fingeringTourSteps[fingeringTourStepIndex] || null;
+}
+
+function removeFingeringTourCard() {
+  if (fingeringTourCard) {
+    fingeringTourCard.remove();
+    fingeringTourCard = null;
+  }
+
+  if (fingeringTourTarget) {
+    fingeringTourTarget.classList.remove("guided-tour-target");
+    fingeringTourTarget = null;
+  }
+}
+
+function positionFingeringTourCard() {
+  if (!fingeringTourActive || !fingeringTourCard || !fingeringTourTarget) return;
+
+  const targetRect = fingeringTourTarget.getBoundingClientRect();
+  const cardRect = fingeringTourCard.getBoundingClientRect();
+  const gap = 14;
+  const sideSpaceRight = window.innerWidth - targetRect.right;
+  const sideSpaceLeft = targetRect.left;
+  const placeRight = sideSpaceRight >= Math.min(300, cardRect.width + gap) || sideSpaceRight >= sideSpaceLeft;
+  const preferredLeft = placeRight
+    ? targetRect.right + gap
+    : targetRect.left - cardRect.width - gap;
+  const left = Math.min(Math.max(16, preferredLeft), window.innerWidth - cardRect.width - 16);
+  const top = Math.min(
+    Math.max(16, targetRect.top + targetRect.height / 2 - cardRect.height / 2),
+    window.innerHeight - cardRect.height - 16
+  );
+
+  fingeringTourCard.style.left = `${left}px`;
+  fingeringTourCard.style.top = `${top}px`;
+}
+
+function renderFingeringTourStep() {
+  const step = currentFingeringTourStep();
+  if (!step) {
+    finishFingeringTour();
+    return;
+  }
+
+  removeFingeringTourCard();
+  step.before?.();
+
+  requestAnimationFrame(() => {
+    if (!fingeringTourActive || currentFingeringTourStep() !== step) return;
+
+    const target = step.target();
+    const host = step.host?.() || document.body;
+    if (!target || !host) {
+      finishFingeringTour();
+      return;
+    }
+
+    const text = textFor();
+    fingeringTourTarget = target;
+    fingeringTourTarget.classList.add("guided-tour-target");
+    fingeringTourCard = document.createElement("aside");
+    fingeringTourCard.className = "guided-tour-card";
+    fingeringTourCard.setAttribute("role", "dialog");
+    fingeringTourCard.setAttribute("aria-live", "polite");
+
+    const message = document.createElement("p");
+    message.textContent = step.text();
+
+    const actions = document.createElement("div");
+    actions.className = "guided-tour-actions";
+
+    const skipButton = document.createElement("button");
+    skipButton.type = "button";
+    skipButton.className = "ghost-btn";
+    skipButton.textContent = text.tourSkip;
+    skipButton.addEventListener("click", finishFingeringTour);
+
+    const nextButton = document.createElement("button");
+    nextButton.type = "button";
+    nextButton.className = "apply-btn";
+    nextButton.textContent = fingeringTourStepIndex >= fingeringTourSteps.length - 1
+      ? text.tourDone
+      : text.tourNext;
+    nextButton.addEventListener("click", advanceFingeringTour);
+
+    actions.append(skipButton, nextButton);
+    fingeringTourCard.append(message, actions);
+    host.append(fingeringTourCard);
+    positionFingeringTourCard();
+    nextButton.focus({ preventScroll: true });
+  });
+}
+
+function startFingeringTourFromLessonTip() {
+  if (currentPracticeModuleData().id !== "lesson1_4") return;
+
+  fingeringTourActive = true;
+  fingeringTourStepIndex = 0;
+  document.documentElement.classList.add("guided-tour-active");
+  renderFingeringTourStep();
+  updatePracticeTimerPauseState();
+}
+
+function advanceFingeringTour() {
+  if (!fingeringTourActive) return;
+
+  fingeringTourStepIndex += 1;
+  renderFingeringTourStep();
+}
+
+function finishFingeringTour() {
+  if (!fingeringTourActive) return;
+
+  removeFingeringTourCard();
+  fingeringTourActive = false;
+  fingeringTourStepIndex = 0;
+  document.documentElement.classList.remove("guided-tour-active");
+  if (fingerKeyboardMode) {
+    cancelFingerKeyboardMode();
+  }
+  if (fingerMapDialog.open) {
+    fingerMapDialog.close();
+  }
+  if (settingsDialog.open) {
+    closeSettingsDialog();
+  }
+  updatePracticeTimerPauseState();
+  focusPracticeInputSoon();
 }
 
 const nextButtonText = {
@@ -330,7 +504,14 @@ function renderCompletionDialog() {
   const paragraph = document.createElement("p");
   paragraph.textContent = completion.text;
   completionText.append(paragraph);
+  if (isLesson4FingeringReminderLesson(lesson)) {
+    const reminder = document.createElement("p");
+    reminder.textContent = textFor().lesson4FingeringReminder;
+    completionText.append(reminder);
+  }
   completionNext.textContent = localizedUiText(nextButtonText);
+  completionExtra.hidden = !isLesson4FingeringReminderLesson(lesson);
+  completionExtra.textContent = textFor().openFingerMapAction;
   completionCharacter.src = lessonCompletionAvatarSrcFor(lesson);
   completionCharacter.alt = "";
 }
@@ -346,6 +527,16 @@ function openCompletionDialog() {
 function closeCompletionDialog() {
   if (!completionDialog?.open) return;
   completionDialog.close();
+}
+
+function isLesson4FingeringReminderLesson(lesson = currentPracticeModuleData()) {
+  return lesson?.id === "lesson4_4";
+}
+
+function openFingerMapFromCompletionReminder() {
+  if (!isLesson4FingeringReminderLesson()) return;
+
+  openFingerMapDialog();
 }
 
 function goToNextLessonAfterCompletion() {
@@ -729,6 +920,7 @@ function shouldPausePracticeTimer() {
     settingsDialog.open ||
     lessonTipDialog.open ||
     completionDialog.open ||
+    fingeringTourActive ||
     learningProgramDialog.open ||
     customPracticeDialog.open ||
     statsDialog.open ||
@@ -1108,6 +1300,7 @@ function isTrainerTextEntryTarget(target) {
 function isPracticeInputPaused() {
   return (
     fingerKeyboardMode ||
+    fingeringTourActive ||
     onboardingDialog.open ||
     settingsDialog.open ||
     lessonTipDialog.open ||
