@@ -3,27 +3,27 @@ function isLessonStoryboardModeEnabled() {
 }
 
 const storyboardKeyImages = [
-  "1.png",
-  "fly_welcome_no_bg.png",
-  "key-arms-crossed.png",
-  "key-book.png",
-  "key-completion.png",
-  "key-confident.png",
-  "key-explain.png",
-  "key-idea-front.png",
-  "key-idea-open.png",
-  "key-idea-small.png",
-  "key-idea.png",
-  "key-onboarding.png",
-  "key-open-soft.png",
-  "key-please.png",
-  "key-point-strict.png",
-  "key-salute.png",
-  "key-shrug.png",
-  "key-stop.png",
-  "key-thinking.png",
-  "key-thumb.png",
-  "key-wave.png"
+  "1.webp",
+  "fly_welcome_no_bg.webp",
+  "key-arms-crossed.webp",
+  "key-book.webp",
+  "key-completion.webp",
+  "key-confident.webp",
+  "key-explain.webp",
+  "key-idea-front.webp",
+  "key-idea-open.webp",
+  "key-idea-small.webp",
+  "key-idea.webp",
+  "key-onboarding.webp",
+  "key-open-soft.webp",
+  "key-please.webp",
+  "key-point-strict.webp",
+  "key-salute.webp",
+  "key-shrug.webp",
+  "key-stop.webp",
+  "key-thinking.webp",
+  "key-thumb.webp",
+  "key-wave.webp"
 ];
 
 const storyboardDefaultCompletionText = {
@@ -231,9 +231,9 @@ function createStoryboardInitialState() {
       const number = `${moduleIndex + 1}.${lessonIndex + 1}`;
       const moduleTitle = storyboardLocalizedMap(module.title, sourceLanguages);
       const lessonTitle = storyboardLocalizedMap(lesson.title, sourceLanguages);
-      const introImage = (typeof lessonTipAvatarSrcFor === "function" ? lessonTipAvatarSrcFor(lesson) : "assets/key/key-wave.png").replace("assets/key/", "");
+      const introImage = (typeof lessonTipAvatarSrcFor === "function" ? lessonTipAvatarSrcFor(lesson) : "assets/key/key-wave.webp").replace("assets/key/", "");
       const introTip = storyboardLocalizedMap(lesson.tips, sourceLanguages);
-      const completionImage = (typeof lessonCompletionAvatarSrcFor === "function" ? lessonCompletionAvatarSrcFor(lesson) : "assets/key/key-completion.png").replace("assets/key/", "");
+      const completionImage = (typeof lessonCompletionAvatarSrcFor === "function" ? lessonCompletionAvatarSrcFor(lesson) : "assets/key/key-completion.webp").replace("assets/key/", "");
       const completionText = storyboardLocalizedMap(lesson.completion, sourceLanguages, storyboardDefaultCompletionText);
 
       lessons.push({
