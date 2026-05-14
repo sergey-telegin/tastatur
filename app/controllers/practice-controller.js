@@ -242,23 +242,33 @@ const lessonCompletionAvatarByLessonId = {
   lesson12_1: "key-confident.png"
 };
 
-let lessonTipOpenRequestId = 0;
-let completionOpenRequestId = 0;
+let dialogImageRequestId = 0;
+const warmedDialogImages = new Set();
 
-function preloadDialogImage(src) {
-  if (!src) return Promise.resolve();
-
-  const image = new Image();
-  image.src = src;
-
-  if (image.complete) {
-    return image.decode ? image.decode().catch(() => {}) : Promise.resolve();
+function setDialogCharacterImage(character, src) {
+  if (!character || !src) return;
+  if (warmedDialogImages.has(src)) {
+    character.classList.remove("is-loading");
+    character.src = src;
+    return;
   }
 
-  return new Promise(resolve => {
-    image.addEventListener("load", resolve, { once: true });
-    image.addEventListener("error", resolve, { once: true });
-  }).then(() => image.decode ? image.decode().catch(() => {}) : undefined);
+  const requestId = String(++dialogImageRequestId);
+  const finish = () => {
+    if (character.dataset.imageRequestId !== requestId) return;
+    character.classList.remove("is-loading");
+    warmedDialogImages.add(src);
+  };
+
+  character.dataset.imageRequestId = requestId;
+  character.classList.add("is-loading");
+  character.addEventListener("load", finish, { once: true });
+  character.addEventListener("error", finish, { once: true });
+  character.src = src;
+
+  if (character.complete) {
+    requestAnimationFrame(finish);
+  }
 }
 
 function lessonTipAvatarSrcFor(lesson) {
@@ -295,27 +305,17 @@ function renderLessonTipDialog(imageSrc = lessonTipAvatarSrcFor(currentPracticeM
   lessonTipStart.textContent = isTourIntro ? text.tourNext : text.startPractice;
   lessonTipExtra.hidden = true;
   lessonTipExtra.textContent = text.showFingeringTour;
-  lessonTipCharacter.src = imageSrc;
+  setDialogCharacterImage(lessonTipCharacter, imageSrc);
   lessonTipCharacter.alt = "";
 }
 
-async function openCurrentLessonTip({ force = false } = {}) {
+function openCurrentLessonTip({ force = false } = {}) {
   const lesson = currentPracticeModuleData();
   if (!lessonTipDialog || lessonTipDialog.open || !currentLessonTips().length) return;
   if (!onboardingCompleted || onboardingDialog?.open) return;
   if (!force && lastShownLessonTipModuleId === lesson.id) return;
 
-  const requestId = ++lessonTipOpenRequestId;
-  const language = currentLanguage;
-  const moduleId = currentPracticeModule;
   const imageSrc = lessonTipAvatarSrcFor(lesson);
-
-  await preloadDialogImage(imageSrc);
-  if (requestId !== lessonTipOpenRequestId) return;
-  if (language !== currentLanguage || moduleId !== currentPracticeModule) return;
-  if (!lessonTipDialog || lessonTipDialog.open || !currentLessonTips().length) return;
-  if (!onboardingCompleted || onboardingDialog?.open) return;
-  if (!force && lastShownLessonTipModuleId === lesson.id) return;
 
   renderLessonTipDialog(imageSrc);
   lessonTipDialog.showModal();
@@ -611,22 +611,14 @@ function renderCompletionDialog(imageSrc = lessonCompletionAvatarSrcFor(currentP
   completionNext.textContent = localizedUiText(nextButtonText);
   completionExtra.hidden = !isLesson4FingeringReminderLesson(lesson);
   completionExtra.textContent = textFor().openFingerMapAction;
-  completionCharacter.src = imageSrc;
+  setDialogCharacterImage(completionCharacter, imageSrc);
   completionCharacter.alt = "";
 }
 
-async function openCompletionDialog() {
+function openCompletionDialog() {
   if (!completionDialog || completionDialog.open) return;
 
-  const requestId = ++completionOpenRequestId;
-  const language = currentLanguage;
-  const moduleId = currentPracticeModule;
   const imageSrc = lessonCompletionAvatarSrcFor(currentPracticeModuleData());
-
-  await preloadDialogImage(imageSrc);
-  if (requestId !== completionOpenRequestId) return;
-  if (language !== currentLanguage || moduleId !== currentPracticeModule) return;
-  if (!completionDialog || completionDialog.open) return;
 
   renderCompletionDialog(imageSrc);
   completionDialog.showModal();
