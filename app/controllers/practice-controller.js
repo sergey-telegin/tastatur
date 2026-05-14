@@ -355,6 +355,7 @@ const fingeringTourSteps = [
   {
     target: () => keyboardFingerPicker.querySelector(".finger-picker.active") || keyboardFingerPicker,
     host: () => document.body,
+    placement: "below-keyboard",
     text: () => textFor().tourFingerMapStep,
     before() {
       if (settingsDialog.open) closeSettingsDialog();
@@ -400,9 +401,24 @@ function removeFingeringTourCard() {
 function positionFingeringTourCard() {
   if (!fingeringTourActive || !fingeringTourCard || !fingeringTourTarget) return;
 
-  const targetRect = fingeringTourTarget.getBoundingClientRect();
+  const step = currentFingeringTourStep();
   const cardRect = fingeringTourCard.getBoundingClientRect();
   const gap = 14;
+  if (step?.placement === "below-keyboard") {
+    const keyboardRect = keyboardWrap.getBoundingClientRect();
+    const availableTop = keyboardRect.bottom + gap;
+    const left = Math.min(
+      Math.max(16, keyboardRect.left + keyboardRect.width / 2 - cardRect.width / 2),
+      window.innerWidth - cardRect.width - 16
+    );
+    const top = availableTop;
+
+    fingeringTourCard.style.left = `${left}px`;
+    fingeringTourCard.style.top = `${top}px`;
+    return;
+  }
+
+  const targetRect = fingeringTourTarget.getBoundingClientRect();
   const sideSpaceRight = window.innerWidth - targetRect.right;
   const sideSpaceLeft = targetRect.left;
   const placeRight = sideSpaceRight >= Math.min(300, cardRect.width + gap) || sideSpaceRight >= sideSpaceLeft;
