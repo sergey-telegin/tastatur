@@ -344,6 +344,7 @@ function canDismissLessonTipDialog() {
 const fingeringTourSteps = [
   {
     target: () => fingerMapOpen,
+    extraTargets: () => [settingsToggle],
     host: () => settingsDialog,
     text: () => textFor().tourSettingsStep,
     before() {
@@ -391,6 +392,9 @@ function removeFingeringTourCard() {
     fingeringTourTarget.classList.remove("guided-tour-target");
     fingeringTourTarget = null;
   }
+
+  fingeringTourExtraTargets.forEach(target => target.classList.remove("guided-tour-target"));
+  fingeringTourExtraTargets = [];
 }
 
 function positionFingeringTourCard() {
@@ -480,6 +484,8 @@ function renderFingeringTourStep() {
     const text = textFor();
     fingeringTourTarget = target;
     fingeringTourTarget.classList.add("guided-tour-target");
+    fingeringTourExtraTargets = (step.extraTargets?.() || []).filter(Boolean);
+    fingeringTourExtraTargets.forEach(extraTarget => extraTarget.classList.add("guided-tour-target"));
     fingeringTourCard = document.createElement("aside");
     fingeringTourCard.className = "guided-tour-card";
     fingeringTourCard.setAttribute("role", "dialog");
