@@ -217,6 +217,10 @@
   --practice-sample-font-size: 44px;
 }
 
+:root:not([data-app-ready="true"]) .app {
+  opacity: 0;
+}
+
 * {
   box-sizing: border-box;
 }

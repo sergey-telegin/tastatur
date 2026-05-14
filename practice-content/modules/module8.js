@@ -258,16 +258,13 @@
         title: { ru: "Тест", de: "Test", en: "Test" },
         tips: {
           ru: [
-            "Отключённые ассистенты помогают понять, какие движения уже стали автоматическими, а какие ещё требуют тренировки.",
-            "Похоже, пришло время прощаться! Я рассказал тебе всё, что знаю о слепой печати. Дальше всё зависит от тебя — от практики, тренировок и того, как часто ты будешь использовать навык в реальной работе. Не забывай: настоящая скорость приходит не от спешки, а от спокойных и точных движений. Продолжай печатать вслепую в обычной жизни, поменьше смотри на клавиатуру и доверяй своим пальцам. Держи хвост пистолетом, не бойся ошибок и не сдавайся после сложных упражнений. Уверен, у тебя всё получится, красавчик. Мне пора лететь дальше, а у тебя есть ещё несколько модулей для закрепления пройденного. Твой Fly!"
+            "Отключённые ассистенты помогают понять, какие движения уже стали автоматическими, а какие ещё требуют тренировки."
           ],
           de: [
-            "Ausgeschaltete Assistenten helfen dir zu erkennen, welche Bewegungen schon automatisch laufen und welche noch Training brauchen.",
-            "Es sieht so aus, als wäre es Zeit, Abschied zu nehmen! Ich habe dir alles erzählt, was ich über Blindtippen weiß. Ab jetzt hängt alles von dir ab - von Übung, Training und davon, wie oft du die Fähigkeit im echten Alltag benutzt. Vergiss nicht: Echte Geschwindigkeit kommt nicht durch Eile, sondern durch ruhige und genaue Bewegungen. Tippe auch im Alltag weiter blind, schau weniger auf die Tastatur und vertraue deinen Fingern. Hab keine Angst vor Fehlern und gib nach schwierigen Übungen nicht auf. Ich bin sicher, du schaffst das. Ich fliege jetzt weiter, und für dich gibt es noch ein paar Module zum Festigen. Dein Fly!"
+            "Ausgeschaltete Assistenten helfen dir zu erkennen, welche Bewegungen schon automatisch laufen und welche noch Training brauchen."
           ],
           en: [
-            "Turned-off assistants help you see which movements have become automatic and which still need practice.",
-            "It looks like it is time to say goodbye! I have told you everything I know about touch typing. From here, it depends on you - on practice, training, and how often you use the skill in real work. Remember: real speed does not come from rushing, but from calm and precise movement. Keep touch typing in everyday life, look at the keyboard less, and trust your fingers. Do not fear mistakes, and do not give up after difficult exercises. I know you can do it. It is time for me to fly on, and you still have a few modules to reinforce what you have learned. Your Fly!"
+            "Turned-off assistants help you see which movements have become automatic and which still need practice."
           ]
         },
         description: { ru: "Все пройденные сочетания", de: "Alle geübten Kombinationen", en: "All practiced patterns" },

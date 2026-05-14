@@ -15,7 +15,7 @@ function migrateSavedState(savedState) {
   }
 
   if (nextState.currentLanguage && !languages[nextState.currentLanguage]) {
-    nextState.currentLanguage = "de";
+    delete nextState.currentLanguage;
     changed = true;
   }
 

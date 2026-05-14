@@ -135,7 +135,7 @@ function currentPracticeModuleData(language = currentLanguage, moduleId = curren
 const lessonTipAvatarByLessonId = {
   lesson1_1: "key-please.png",
   lesson1_2: "key-salute.png",
-  lesson1_3: "key-open.png",
+  lesson1_3: "key-open-soft.png",
   lesson1_4: "key-explain.png",
   lesson1_5: "key-wave.png",
   lesson2_1: "key-idea.png",
@@ -172,21 +172,83 @@ const lessonTipAvatarByLessonId = {
   lesson8_2: "key-thinking.png",
   lesson8_3: "key-explain.png",
   lesson8_4: "key-confident.png",
-  lesson8_5: "key-book.png",
+  lesson8_5: "key-arms-crossed.png",
   lesson9_1: "key-idea-small.png",
   lesson9_2: "key-explain.png",
   lesson9_3: "key-open-soft.png",
   lesson9_4: "key-confident.png",
   lesson9_5: "key-arms-crossed.png",
   lesson10_1: "key-idea-open.png",
-  lesson10_2: "key-thumb.png",
+  lesson10_2: "key-explain.png",
   lesson10_3: "key-explain.png",
   lesson10_4: "key-confident.png",
-  lesson10_5: "key-book.png"
+  lesson10_5: "key-book.png",
+  lesson11_1: "key-wave.png",
+  lesson12_1: "key-open-soft.png"
+};
+
+const lessonCompletionAvatarByLessonId = {
+  lesson1_1: "key-thumb.png",
+  lesson1_2: "key-confident.png",
+  lesson1_3: "key-wave.png",
+  lesson1_4: "key-idea-open.png",
+  lesson1_5: "key-arms-crossed.png",
+  lesson2_1: "key-thumb.png",
+  lesson2_2: "key-confident.png",
+  lesson2_3: "key-wave.png",
+  lesson2_4: "key-thumb.png",
+  lesson2_5: "key-confident.png",
+  lesson3_1: "key-thumb.png",
+  lesson3_2: "key-wave.png",
+  lesson3_3: "key-confident.png",
+  lesson3_4: "key-idea-open.png",
+  lesson3_5: "key-arms-crossed.png",
+  lesson4_1: "key-thumb.png",
+  lesson4_2: "key-idea-open.png",
+  lesson4_3: "key-confident.png",
+  lesson4_4: "key-thinking.png",
+  lesson4_5: "key-arms-crossed.png",
+  lesson5_1: "key-thumb.png",
+  lesson5_2: "key-confident.png",
+  lesson5_3: "key-idea-front.png",
+  lesson5_4: "key-wave.png",
+  lesson5_5: "key-book.png",
+  lesson6_1: "key-thumb.png",
+  lesson6_2: "key-confident.png",
+  lesson6_3: "key-idea.png",
+  lesson6_4: "key-wave.png",
+  lesson6_5: "key-book.png",
+  lesson7_1: "key-thumb.png",
+  lesson7_2: "key-idea-open.png",
+  lesson7_3: "key-confident.png",
+  lesson7_4: "key-wave.png",
+  lesson7_5: "key-book.png",
+  lesson8_1: "key-thumb.png",
+  lesson8_2: "key-confident.png",
+  lesson8_3: "key-idea-front.png",
+  lesson8_4: "key-wave.png",
+  lesson8_5: "key-book.png",
+  lesson9_1: "key-thumb.png",
+  lesson9_2: "key-confident.png",
+  lesson9_3: "key-idea-open.png",
+  lesson9_4: "key-wave.png",
+  lesson9_5: "key-book.png",
+  lesson10_1: "key-thumb.png",
+  lesson10_2: "key-confident.png",
+  lesson10_3: "key-idea-front.png",
+  lesson10_4: "key-wave.png",
+  lesson10_5: "key-completion.png",
+  lesson11_1: "key-wave.png",
+  lesson12_1: "key-confident.png"
 };
 
 function lessonTipAvatarSrcFor(lesson) {
   const fileName = lessonTipAvatarByLessonId[lesson?.id] || "key-wave.png";
+  return `assets/key/${fileName}`;
+}
+
+function lessonCompletionAvatarSrcFor(lesson) {
+  const fileName = lessonCompletionAvatarByLessonId[lesson?.id] || "key-completion.png";
   return `assets/key/${fileName}`;
 }
 
@@ -214,6 +276,7 @@ function renderLessonTipDialog() {
 function openCurrentLessonTip({ force = false } = {}) {
   const lesson = currentPracticeModuleData();
   if (!lessonTipDialog || lessonTipDialog.open || !currentLessonTips().length) return;
+  if (!onboardingCompleted || onboardingDialog?.open) return;
   if (!force && lastShownLessonTipModuleId === lesson.id) return;
 
   renderLessonTipDialog();
@@ -229,12 +292,16 @@ function closeLessonTipDialog() {
 
 const nextButtonText = {
   ru: "Далее",
+  uk: "Далі",
+  kk: "Әрі қарай",
   de: "Weiter",
   en: "Next"
 };
 
 const defaultPracticeCompletionText = {
   ru: "Отлично. Молодец. Идём дальше.",
+  uk: "Чудово. Гарна робота. Рухаємося далі.",
+  kk: "Керемет. Жақсы жұмыс. Әрі қарай өтейік.",
   de: "Ausgezeichnet. Gut gemacht. Weiter geht's.",
   en: "Excellent. Well done. Let's keep going."
 };
@@ -264,7 +331,7 @@ function renderCompletionDialog() {
   paragraph.textContent = completion.text;
   completionText.append(paragraph);
   completionNext.textContent = localizedUiText(nextButtonText);
-  completionCharacter.src = "assets/key/key-completion.png";
+  completionCharacter.src = lessonCompletionAvatarSrcFor(lesson);
   completionCharacter.alt = "";
 }
 
@@ -323,6 +390,70 @@ const onboardingCopy = {
         paragraphs: [
           "Меня зовут Key. Я буду с тобой.",
           "Твой маленький летающий помощник, который подсказывает, поддерживает и помогает не сбиться. Не строгий учитель, а напарник, с которым тренироваться проще и веселее."
+        ],
+        character: true
+      }
+    ]
+  },
+  uk: {
+    start: "Старт",
+    screens: [
+      {
+        paragraphs: [
+          "FlyKey — це тренажер сліпого друку.",
+          "FlyKey допомагає перетворити клавіатуру на продовження думок.",
+          "Друкуйте легко, ніби пальці вже знають дорогу."
+        ],
+        character: false
+      },
+      {
+        paragraphs: [
+          "Легкість, швидкість і впевненість за клавіатурою вже чекають на вас."
+        ],
+        character: false
+      },
+      {
+        paragraphs: [
+          "Тут ви не зубрите клавіші. Ви поступово вчитеся друкувати вільно: менше дивитися вниз, менше напружуватися і більше довіряти пальцям."
+        ],
+        character: false
+      },
+      {
+        paragraphs: [
+          "Мене звати Key. Я буду поруч.",
+          "Ваш маленький летючий помічник підказує, підтримує й допомагає не збиватися з ритму. Не суворий учитель, а напарник, з яким тренуватися легше."
+        ],
+        character: true
+      }
+    ]
+  },
+  kk: {
+    start: "Старт",
+    screens: [
+      {
+        paragraphs: [
+          "FlyKey — соқыр теруге арналған жаттықтырғыш.",
+          "FlyKey пернетақтаны ойыңыздың жалғасына айналдыруға көмектеседі.",
+          "Саусақтар жолды өзі білетіндей жеңіл теріңіз."
+        ],
+        character: false
+      },
+      {
+        paragraphs: [
+          "Пернетақтадағы жеңілдік, жылдамдық және сенімділік сізді күтіп тұр."
+        ],
+        character: false
+      },
+      {
+        paragraphs: [
+          "Мұнда пернелерді жаттап алмайсыз. Біртіндеп еркін теруді үйренесіз: төменге азырақ қарау, аз ширығу және саусақтарға көбірек сену."
+        ],
+        character: false
+      },
+      {
+        paragraphs: [
+          "Менің атым Key. Мен қасыңызда боламын.",
+          "Кішкентай ұшқыш көмекшіңіз кеңес береді, қолдайды және ырғақтан жаңылмауға көмектеседі. Қатал мұғалім емес, жаттығуды жеңілдететін серіктес."
         ],
         character: true
       }
@@ -472,7 +603,6 @@ function isDevCompletePracticeLineHotkey(event) {
   return (
     devCompletePracticeLineHotkeyEnabled &&
     event.key === "ArrowDown" &&
-    devCompletePracticeLineShiftCodes.has("ShiftLeft") &&
     devCompletePracticeLineShiftCodes.has("ShiftRight")
   );
 }
@@ -1085,7 +1215,7 @@ function applyPracticeKeyInput(event) {
 }
 
 function handleGlobalKeyUp(event) {
-  if (event.code === "ShiftLeft" || event.code === "ShiftRight") {
+  if (event.code === "ShiftRight") {
     devCompletePracticeLineShiftCodes.delete(event.code);
   }
 
@@ -1094,7 +1224,7 @@ function handleGlobalKeyUp(event) {
 }
 
 function handleGlobalKeyDown(event) {
-  if (event.code === "ShiftLeft" || event.code === "ShiftRight") {
+  if (event.code === "ShiftRight") {
     devCompletePracticeLineShiftCodes.add(event.code);
   }
 

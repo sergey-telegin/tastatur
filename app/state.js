@@ -1,4 +1,4 @@
-let currentLanguage = "de";
+let currentLanguage = "en";
 let currentPracticeModule = "module1";
 let selectedKey = "a";
 let editMode = false;
@@ -46,8 +46,21 @@ let alternateLinesEnabled = false;
 let metronomeBpm = 0;
 let practiceTypedValue = "";
 
+function browserPreferredLanguage() {
+  const browserLanguages = Array.isArray(navigator.languages) && navigator.languages.length
+    ? navigator.languages
+    : [navigator.language || navigator.userLanguage].filter(Boolean);
+
+  for (const browserLanguage of browserLanguages) {
+    const languageId = String(browserLanguage).toLowerCase().split("-")[0];
+    if (languages[languageId]) return languageId;
+  }
+
+  return "en";
+}
+
 function initializeAppState(savedState = {}) {
-  currentLanguage = languages[savedState.currentLanguage] ? savedState.currentLanguage : "de";
+  currentLanguage = languages[savedState.currentLanguage] ? savedState.currentLanguage : browserPreferredLanguage();
   currentPracticeModule = savedState.currentPracticeModule || "module1";
   saved.currentLanguage = currentLanguage;
   saved.currentPracticeModule = currentPracticeModule;

@@ -303,6 +303,10 @@ function initializeApp() {
   focusPracticeInputSoon();
   scheduleKeyboardRefit();
 
+  if (initializeLessonStoryboardMode()) {
+    return;
+  }
+
   requestAnimationFrame(() => {
     if (isHandCalibrationModeEnabled()) {
       closeLessonTipDialog();
@@ -310,6 +314,7 @@ function initializeApp() {
       openCurrentLessonTip();
     }
     scheduleKeyboardRefit();
+    document.documentElement.dataset.appReady = "true";
   });
 
   hydrateFingerSvgs().finally(() => {
