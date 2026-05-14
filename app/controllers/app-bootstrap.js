@@ -288,6 +288,12 @@ function bindAppEvents() {
     resetFingerMapDraft();
   });
 
+  fingerMapList.addEventListener("click", event => {
+    const button = event.target.closest(".finger-card-btn[data-finger]");
+    if (!button) return;
+    setActiveFinger(button.dataset.finger);
+  });
+
   keyboardFingerPicker.addEventListener("click", event => {
     const button = event.target.closest(".finger-picker[data-finger]");
     selectKeyboardFingerPicker(button);

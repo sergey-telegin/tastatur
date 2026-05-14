@@ -230,6 +230,11 @@
   cursor: default;
 }
 
+.guided-tour-active .finger-map-dialog .finger-map-actions,
+.guided-tour-active .finger-map-dialog #fingerMapClose {
+  display: none;
+}
+
 .onboarding-dialog:not(.onboarding-with-character) .onboarding-message {
   transform: translateY(-54px);
 }

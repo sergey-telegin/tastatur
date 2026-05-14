@@ -45,6 +45,61 @@ function renderKeyboardEditorPanel() {
 
 }
 
+function renderFingerKeyChip(keyId) {
+  const chip = document.createElement("span");
+  chip.className = "finger-key-chip";
+  chip.textContent = visibleKeyLabel(keyId) || keyTitle(keyId);
+  chip.title = keyTitle(keyId);
+  return chip;
+}
+
+function renderFingerMapCards() {
+  if (!fingerMapList) return;
+
+  const map = currentFingerMapState();
+  const selectedFinger = currentFingerSelection();
+  fingerIds.forEach(fingerId => {
+    const card = document.createElement("article");
+    card.className = `finger-card${fingerId === selectedFinger ? " active" : ""}`;
+    card.dataset.finger = fingerId;
+    applyFingerAssignmentTheme(card, fingerId);
+
+    const head = document.createElement("div");
+    head.className = "finger-card-head";
+
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "finger-card-btn";
+    button.dataset.finger = fingerId;
+
+    const name = document.createElement("span");
+    name.className = "finger-card-name";
+    name.textContent = fingerName(fingerId);
+
+    const assignedKeys = map[fingerId] || [];
+    const meta = document.createElement("span");
+    meta.className = "finger-card-meta";
+    meta.textContent = assignedKeys.length ? `${assignedKeys.length}` : "0";
+
+    button.append(name);
+    head.append(button, meta);
+
+    const keyGrid = document.createElement("div");
+    keyGrid.className = "finger-key-grid";
+    if (assignedKeys.length) {
+      assignedKeys.forEach(keyId => keyGrid.append(renderFingerKeyChip(keyId)));
+    } else {
+      const empty = document.createElement("span");
+      empty.className = "finger-key-chip empty";
+      empty.textContent = "—";
+      keyGrid.append(empty);
+    }
+
+    card.append(head, keyGrid);
+    fingerMapList.append(card);
+  });
+}
+
 function renderFingerMapPanel() {
   const text = textFor();
   fingerMapTitle.textContent = text.fingerMap;
@@ -61,6 +116,7 @@ function renderFingerMapPanel() {
   updateFingerHelpText();
   if (fingerMapList) {
     fingerMapList.innerHTML = "";
+    renderFingerMapCards();
   }
   renderKeyboardEditorPanel();
 }

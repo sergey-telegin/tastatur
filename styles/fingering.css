@@ -152,6 +152,9 @@
 .finger-map-list {
   display: grid;
   gap: 10px;
+  max-height: min(42vh, 380px);
+  overflow: auto;
+  padding-right: 4px;
 }
 
 .finger-card {
