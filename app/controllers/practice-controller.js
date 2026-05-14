@@ -242,6 +242,25 @@ const lessonCompletionAvatarByLessonId = {
   lesson12_1: "key-confident.png"
 };
 
+let lessonTipOpenRequestId = 0;
+let completionOpenRequestId = 0;
+
+function preloadDialogImage(src) {
+  if (!src) return Promise.resolve();
+
+  const image = new Image();
+  image.src = src;
+
+  if (image.complete) {
+    return image.decode ? image.decode().catch(() => {}) : Promise.resolve();
+  }
+
+  return new Promise(resolve => {
+    image.addEventListener("load", resolve, { once: true });
+    image.addEventListener("error", resolve, { once: true });
+  }).then(() => image.decode ? image.decode().catch(() => {}) : undefined);
+}
+
 function lessonTipAvatarSrcFor(lesson) {
   const fileName = lessonTipAvatarByLessonId[lesson?.id] || "key-wave.png";
   return `assets/key/${fileName}`;
@@ -257,7 +276,7 @@ function currentLessonTips() {
   return Array.isArray(tips) ? tips.filter(Boolean) : [];
 }
 
-function renderLessonTipDialog() {
+function renderLessonTipDialog(imageSrc = lessonTipAvatarSrcFor(currentPracticeModuleData())) {
   const text = textFor();
   const lesson = currentPracticeModuleData();
   const tips = currentLessonTips();
@@ -271,17 +290,29 @@ function renderLessonTipDialog() {
   lessonTipStart.textContent = text.startPractice;
   lessonTipExtra.hidden = lesson.id !== "lesson1_4";
   lessonTipExtra.textContent = text.showFingeringTour;
-  lessonTipCharacter.src = lessonTipAvatarSrcFor(lesson);
+  lessonTipCharacter.src = imageSrc;
   lessonTipCharacter.alt = "";
 }
 
-function openCurrentLessonTip({ force = false } = {}) {
+async function openCurrentLessonTip({ force = false } = {}) {
   const lesson = currentPracticeModuleData();
   if (!lessonTipDialog || lessonTipDialog.open || !currentLessonTips().length) return;
   if (!onboardingCompleted || onboardingDialog?.open) return;
   if (!force && lastShownLessonTipModuleId === lesson.id) return;
 
-  renderLessonTipDialog();
+  const requestId = ++lessonTipOpenRequestId;
+  const language = currentLanguage;
+  const moduleId = currentPracticeModule;
+  const imageSrc = lessonTipAvatarSrcFor(lesson);
+
+  await preloadDialogImage(imageSrc);
+  if (requestId !== lessonTipOpenRequestId) return;
+  if (language !== currentLanguage || moduleId !== currentPracticeModule) return;
+  if (!lessonTipDialog || lessonTipDialog.open || !currentLessonTips().length) return;
+  if (!onboardingCompleted || onboardingDialog?.open) return;
+  if (!force && lastShownLessonTipModuleId === lesson.id) return;
+
+  renderLessonTipDialog(imageSrc);
   lessonTipDialog.showModal();
   lastShownLessonTipModuleId = lesson.id;
   updatePracticeTimerPauseState();
@@ -491,7 +522,7 @@ function currentLessonCompletion() {
   };
 }
 
-function renderCompletionDialog() {
+function renderCompletionDialog(imageSrc = lessonCompletionAvatarSrcFor(currentPracticeModuleData())) {
   const lesson = currentPracticeModuleData();
   const progress = moduleProgressFor(currentLanguage, currentPracticeModule);
   const ratingDetails = starRatingDetailsForLesson(lesson, progress);
@@ -512,14 +543,24 @@ function renderCompletionDialog() {
   completionNext.textContent = localizedUiText(nextButtonText);
   completionExtra.hidden = !isLesson4FingeringReminderLesson(lesson);
   completionExtra.textContent = textFor().openFingerMapAction;
-  completionCharacter.src = lessonCompletionAvatarSrcFor(lesson);
+  completionCharacter.src = imageSrc;
   completionCharacter.alt = "";
 }
 
-function openCompletionDialog() {
+async function openCompletionDialog() {
   if (!completionDialog || completionDialog.open) return;
 
-  renderCompletionDialog();
+  const requestId = ++completionOpenRequestId;
+  const language = currentLanguage;
+  const moduleId = currentPracticeModule;
+  const imageSrc = lessonCompletionAvatarSrcFor(currentPracticeModuleData());
+
+  await preloadDialogImage(imageSrc);
+  if (requestId !== completionOpenRequestId) return;
+  if (language !== currentLanguage || moduleId !== currentPracticeModule) return;
+  if (!completionDialog || completionDialog.open) return;
+
+  renderCompletionDialog(imageSrc);
   completionDialog.showModal();
   updatePracticeTimerPauseState();
 }
