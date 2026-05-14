@@ -199,7 +199,10 @@
   border-radius: 8px;
   background: color-mix(in srgb, var(--panel) 92%, transparent);
   color: var(--text);
-  box-shadow: 0 22px 50px rgb(0 0 0 / 0.34);
+  box-shadow:
+    0 0 0 1px rgb(255 255 255 / 0.06),
+    0 0 28px color-mix(in srgb, var(--accent) 18%, transparent),
+    0 22px 50px rgb(0 0 0 / 0.34);
   backdrop-filter: blur(16px);
 }
 
