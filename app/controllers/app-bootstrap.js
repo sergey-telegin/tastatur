@@ -61,7 +61,7 @@ function bindAppEvents() {
   });
 
   lessonTipStart.addEventListener("click", () => {
-    closeLessonTipDialog();
+    handleLessonTipPrimaryAction();
   });
 
   lessonTipExtra.addEventListener("click", () => {
@@ -70,6 +70,7 @@ function bindAppEvents() {
 
   lessonTipDialog.addEventListener("click", event => {
     if (event.target === lessonTipDialog) {
+      if (!canDismissLessonTipDialog()) return;
       closeLessonTipDialog();
     }
   });
@@ -77,7 +78,13 @@ function bindAppEvents() {
   lessonTipDialog.addEventListener("keydown", event => {
     if (event.key === "Enter") {
       event.preventDefault();
-      closeLessonTipDialog();
+      handleLessonTipPrimaryAction();
+    }
+  });
+
+  lessonTipDialog.addEventListener("cancel", event => {
+    if (!canDismissLessonTipDialog()) {
+      event.preventDefault();
     }
   });
 

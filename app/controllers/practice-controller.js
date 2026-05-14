@@ -276,10 +276,15 @@ function currentLessonTips() {
   return Array.isArray(tips) ? tips.filter(Boolean) : [];
 }
 
+function isFingeringTourIntroLesson(lesson = currentPracticeModuleData()) {
+  return lesson?.id === "lesson1_4";
+}
+
 function renderLessonTipDialog(imageSrc = lessonTipAvatarSrcFor(currentPracticeModuleData())) {
   const text = textFor();
   const lesson = currentPracticeModuleData();
   const tips = currentLessonTips();
+  const isTourIntro = isFingeringTourIntroLesson(lesson);
 
   lessonTipText.innerHTML = "";
   tips.forEach(tip => {
@@ -287,8 +292,8 @@ function renderLessonTipDialog(imageSrc = lessonTipAvatarSrcFor(currentPracticeM
     paragraph.textContent = tip;
     lessonTipText.append(paragraph);
   });
-  lessonTipStart.textContent = text.startPractice;
-  lessonTipExtra.hidden = lesson.id !== "lesson1_4";
+  lessonTipStart.textContent = isTourIntro ? text.tourNext : text.startPractice;
+  lessonTipExtra.hidden = true;
   lessonTipExtra.textContent = text.showFingeringTour;
   lessonTipCharacter.src = imageSrc;
   lessonTipCharacter.alt = "";
@@ -321,6 +326,19 @@ async function openCurrentLessonTip({ force = false } = {}) {
 function closeLessonTipDialog() {
   if (!lessonTipDialog?.open) return;
   lessonTipDialog.close();
+}
+
+function handleLessonTipPrimaryAction() {
+  if (isFingeringTourIntroLesson()) {
+    startFingeringTourFromLessonTip();
+    return;
+  }
+
+  closeLessonTipDialog();
+}
+
+function canDismissLessonTipDialog() {
+  return !isFingeringTourIntroLesson();
 }
 
 const fingeringTourSteps = [
@@ -436,12 +454,6 @@ function renderFingeringTourStep() {
     const actions = document.createElement("div");
     actions.className = "guided-tour-actions";
 
-    const skipButton = document.createElement("button");
-    skipButton.type = "button";
-    skipButton.className = "ghost-btn";
-    skipButton.textContent = text.tourSkip;
-    skipButton.addEventListener("click", finishFingeringTour);
-
     const nextButton = document.createElement("button");
     nextButton.type = "button";
     nextButton.className = "apply-btn";
@@ -450,7 +462,7 @@ function renderFingeringTourStep() {
       : text.tourNext;
     nextButton.addEventListener("click", advanceFingeringTour);
 
-    actions.append(skipButton, nextButton);
+    actions.append(nextButton);
     fingeringTourCard.append(message, actions);
     host.append(fingeringTourCard);
     positionFingeringTourCard();
