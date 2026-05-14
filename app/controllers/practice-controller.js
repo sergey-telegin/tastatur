@@ -352,21 +352,16 @@ const fingeringTourSteps = [
     }
   },
   {
-    target: () => fingerMapList.querySelector(".finger-card.active") || fingerMapList,
-    host: () => fingerMapDialog,
+    target: () => keyboardFingerPicker.querySelector(".finger-picker.active") || keyboardFingerPicker,
+    host: () => document.body,
     text: () => textFor().tourFingerMapStep,
     before() {
       if (settingsDialog.open) closeSettingsDialog();
-      if (!fingerMapDialog.open) openFingerMapDialog();
+      if (!fingerKeyboardMode) {
+        openFingerMapDraft();
+        enterFingerKeyboardMode();
+      }
       setActiveFinger(currentFingerSelection());
-    }
-  },
-  {
-    target: () => fingerMapKeyboardMode,
-    host: () => fingerMapDialog,
-    text: () => textFor().tourKeyboardModeStep,
-    before() {
-      if (!fingerMapDialog.open) openFingerMapDialog();
     }
   },
   {
@@ -539,9 +534,6 @@ function finishFingeringTour() {
   if (fingerKeyboardMode) {
     cancelFingerKeyboardMode();
   }
-  if (fingerMapDialog.open) {
-    fingerMapDialog.close();
-  }
   if (settingsDialog.open) {
     closeSettingsDialog();
   }
@@ -631,7 +623,9 @@ function isLesson4FingeringReminderLesson(lesson = currentPracticeModuleData()) 
 function openFingerMapFromCompletionReminder() {
   if (!isLesson4FingeringReminderLesson()) return;
 
-  openFingerMapDialog();
+  openFingerMapDraft();
+  enterFingerKeyboardMode();
+  updatePracticeTimerPauseState();
 }
 
 function goToNextLessonAfterCompletion() {
@@ -1020,7 +1014,7 @@ function shouldPausePracticeTimer() {
     customPracticeDialog.open ||
     statsDialog.open ||
     helpDialog.open ||
-    fingerMapDialog.open
+    fingerKeyboardMode
   );
 }
 
@@ -1404,7 +1398,7 @@ function isPracticeInputPaused() {
     customPracticeDialog.open ||
     statsDialog.open ||
     helpDialog.open ||
-    fingerMapDialog.open
+    fingerKeyboardMode
   );
 }
 

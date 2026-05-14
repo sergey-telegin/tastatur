@@ -1,13 +1,5 @@
 function activeFingerKeys() {
-  if (fingerKeyboardMode) {
-    return new Set();
-  }
-
-  if (!fingerMapDialog.open) {
-    return new Set();
-  }
-
-  return new Set(currentFingerMapState()[currentFingerSelection()] || []);
+  return new Set();
 }
 
 function allFingerKeyOwners(map = currentFingerMapState(), preferredFingerId = currentFingerSelection()) {
@@ -27,7 +19,7 @@ function allFingerKeyOwners(map = currentFingerMapState(), preferredFingerId = c
 }
 
 function setActiveFinger(fingerId) {
-  if (fingerMapDialog.open) {
+  if (fingerKeyboardMode) {
     draftActiveFingerId = fingerId;
   } else {
     activeFingerId = fingerId;
@@ -38,35 +30,13 @@ function setActiveFinger(fingerId) {
   renderKeyboard();
 }
 
-function closeFingerMapDraftIfNeeded() {
-  addFingerInputId = null;
-  if (!fingerKeyboardMode) {
-    draftFingerMap = null;
-    draftFingerPreviousOwners = {};
-    draftActiveFingerId = activeFingerId;
-  }
-}
-
 function enterFingerKeyboardMode() {
   fingerKeyboardMode = true;
-  addFingerInputId = null;
-  fingerMapDialog.close();
-  renderFingerMapPanel();
-  renderKeyboard();
-}
-
-function openFingerMapDialog() {
-  openFingerMapDraft();
-  if (!fingerMapDialog.open) {
-    fingerMapDialog.showModal();
-  }
-  updatePracticeTimerPauseState();
   renderFingerMapPanel();
   renderKeyboard();
 }
 
 function resetFingerMapDraft() {
-  addFingerInputId = null;
   draftFingerMap = cloneFingerMapState(defaultFingerMap);
   draftFingerPreviousOwners = {};
   draftActiveFingerId = "left-index";
@@ -75,20 +45,16 @@ function resetFingerMapDraft() {
   setStatus(textFor().settingsReset);
 }
 
-function saveFingerMapDraft({ closeDialog = false, keepDraft = false } = {}) {
+function saveFingerMapDraft() {
   activeFingerId = draftActiveFingerId;
   saved.activeFingerId = activeFingerId;
   saved.fingerMap = cloneFingerMapState(currentFingerMapState());
   persist();
-  addFingerInputId = null;
   fingerKeyboardMode = false;
   draftFingerPreviousOwners = {};
-  draftFingerMap = keepDraft ? cloneFingerMapState(saved.fingerMap) : null;
+  draftFingerMap = null;
   renderFingerMapPanel();
   renderKeyboard();
-  if (closeDialog) {
-    fingerMapDialog.close();
-  }
   setStatus(textFor().fingerMapSaved);
 }
 

@@ -6,7 +6,6 @@ function openFingerMapDraft() {
   draftFingerMap = cloneFingerMapState(fingerMap());
   draftFingerPreviousOwners = {};
   draftActiveFingerId = activeFingerId;
-  addFingerInputId = null;
   fingerKeyboardMode = false;
 }
 
@@ -16,7 +15,7 @@ function currentFingerMapState() {
 
 function currentFingerSelection() {
   return window.FingerMapUtils.currentSelection({
-    isFingerMapDialogOpen: fingerMapDialog.open,
+    isFingerMapDialogOpen: false,
     isFingerKeyboardMode: fingerKeyboardMode,
     draftActiveFingerId,
     activeFingerId
@@ -66,30 +65,4 @@ function assignOrRestoreKeyForFinger(keyId, fingerId, map = currentFingerMapStat
   }
 
   assignKeyToFinger(keyId, fingerId, map);
-}
-
-function resolveFingerKeyIdFromInput(value) {
-  return findKeyIdByInput(value, {
-    keyIds: keyIds(),
-    visibleKeyLabel,
-    keyTitle,
-    rawLabels: labelsFor(currentLanguage)
-  });
-}
-
-function submitFingerKeyInput(fingerId, value) {
-  const keyId = resolveFingerKeyIdFromInput(value);
-  addFingerInputId = null;
-
-  if (!keyId) {
-    renderFingerMapPanel();
-    setStatus(textFor().keyNotFound);
-    return;
-  }
-
-  assignOrRestoreKeyForFinger(keyId, fingerId, currentFingerMapState());
-  draftActiveFingerId = fingerId;
-  renderFingerMapPanel();
-  renderKeyboard();
-  setStatus(textFor().draftKeyAssigned.replace("{key}", visibleKeyLabel(keyId)).replace("{finger}", fingerName(fingerId)));
 }

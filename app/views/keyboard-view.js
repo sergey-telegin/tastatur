@@ -168,7 +168,7 @@ function renderFingerVisualThemes() {
 function renderKeyboard() {
   const labels = labelsFor(currentLanguage);
   const highlightedKeys = activeFingerKeys();
-  const shouldShowFingerZones = fingerKeyboardMode || (!fingerMapDialog.open && effectiveAssistantSetting(fingerZonesEnabled));
+  const shouldShowFingerZones = fingerKeyboardMode || effectiveAssistantSetting(fingerZonesEnabled);
   const allFingerOwners = shouldShowFingerZones ? allFingerKeyOwners() : null;
   const practiceTarget = fingerKeyboardMode ? { keyId: null, spaceSide: null } : currentPracticeTarget();
 

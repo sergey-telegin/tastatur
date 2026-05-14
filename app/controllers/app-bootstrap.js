@@ -239,43 +239,6 @@ function bindAppEvents() {
     updatePracticeTimerPauseState();
   });
 
-  fingerMapClose.addEventListener("click", () => {
-    if (fingeringTourActive) return;
-    fingerMapDialog.close();
-  });
-
-  fingerMapDialog.addEventListener("click", event => {
-    if (fingeringTourActive) return;
-    if (event.target === fingerMapDialog) {
-      fingerMapDialog.close();
-    }
-  });
-
-  fingerMapDialog.addEventListener("close", () => {
-    closeFingerMapDraftIfNeeded();
-    renderFingerMapPanel();
-    renderKeyboard();
-    setTimeout(updatePracticeTimerPauseState, 0);
-    focusPracticeInputSoon();
-  });
-
-  fingerMapKeyboardMode.addEventListener("click", () => {
-    enterFingerKeyboardMode();
-  });
-
-  fingerMapCancel.addEventListener("click", () => {
-    if (fingeringTourActive) return;
-    fingerMapDialog.close();
-  });
-
-  fingerMapReset.addEventListener("click", () => {
-    resetFingerMapDraft();
-  });
-
-  fingerMapSave.addEventListener("click", () => {
-    saveFingerMapDraft({ closeDialog: true, keepDraft: true });
-  });
-
   keyboardEditorSave.addEventListener("click", () => {
     saveFingerMapDraft();
   });
@@ -286,12 +249,6 @@ function bindAppEvents() {
 
   keyboardEditorReset.addEventListener("click", () => {
     resetFingerMapDraft();
-  });
-
-  fingerMapList.addEventListener("click", event => {
-    const button = event.target.closest(".finger-card-btn[data-finger]");
-    if (!button) return;
-    setActiveFinger(button.dataset.finger);
   });
 
   keyboardFingerPicker.addEventListener("click", event => {
