@@ -344,20 +344,44 @@
   align-self: stretch;
   height: 100%;
   min-height: 0;
-  border: 0;
-  background: transparent;
-  box-shadow: none;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
   align-items: flex-end;
   justify-content: flex-end;
   padding: 0;
 }
 
-.key-enter:hover {
-  background: transparent;
+.key-enter:hover,
+.key-enter.selected,
+.key-enter.key-finger-zone,
+.key-enter.key-finger-map,
+.key-enter.key-finger-all,
+.key-enter.key-finger-all.key-finger-selected,
+.key-enter.key-lit,
+.key-enter.key-correct,
+.key-enter.key-wrong {
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
 }
 
-.key-enter.selected {
-  box-shadow: none;
+:root[data-theme="light"] .key-enter,
+:root[data-theme="light"] .key-enter:hover,
+:root[data-theme="light"] .key-enter.selected,
+:root[data-theme="light"] .key-enter.key-finger-zone,
+:root[data-theme="light"] .key-enter.key-finger-map,
+:root[data-theme="light"] .key-enter.key-finger-all,
+:root[data-theme="light"] .key-enter.key-finger-all.key-finger-selected,
+:root[data-theme="light"] .key-enter.key-lit,
+:root[data-theme="light"] .key-enter.key-correct,
+:root[data-theme="light"] .key-enter.key-wrong {
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
 }
 
 .key-enter svg {
@@ -389,34 +413,6 @@
   stroke: var(--line);
 }
 
-.key-enter.key-finger-map,
-.key-enter.key-finger-all,
-.key-enter.key-lit,
-.key-enter.key-correct,
-.key-enter.key-wrong {
-  border: 0;
-  background: transparent;
-  box-shadow: none;
-}
-
-:root[data-theme="light"] .key-enter,
-:root[data-theme="light"] .key-enter.selected,
-:root[data-theme="light"] .key-enter.key-finger-map,
-:root[data-theme="light"] .key-enter.key-finger-all,
-:root[data-theme="light"] .key-enter.key-finger-all.key-finger-selected,
-:root[data-theme="light"] .key-enter.key-lit,
-:root[data-theme="light"] .key-enter.key-correct,
-:root[data-theme="light"] .key-enter.key-wrong {
-  border: 0;
-  border-radius: 0;
-  background: transparent;
-  box-shadow: none;
-}
-
-:root[data-theme="dark"] .key-enter.key-finger-all:hover {
-  background: transparent;
-}
-
 .key-enter.key-finger-zone .enter-shape {
   stroke: color-mix(in srgb, var(--finger-assignment-border) 70%, var(--line) 30%);
 }
@@ -441,9 +437,9 @@
 }
 
 .key-enter.key-finger-all.key-finger-selected {
-  border: 0;
-  background: transparent;
-  box-shadow: none;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
 }
 
 .key-enter.key-finger-all.key-finger-selected .enter-shape {
