@@ -219,6 +219,30 @@
   min-height: 38px;
 }
 
+.guided-tour-menu-marker {
+  position: fixed;
+  z-index: 2147483647;
+  display: grid;
+  align-content: center;
+  justify-content: center;
+  gap: 5px;
+  border: 1px solid color-mix(in srgb, var(--accent) 78%, var(--line) 22%);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--panel) 86%, transparent);
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--accent) 24%, transparent),
+    0 0 34px color-mix(in srgb, var(--accent) 34%, transparent);
+  pointer-events: none;
+}
+
+.guided-tour-menu-marker span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--on-panel);
+}
+
 .guided-tour-target {
   position: relative;
   z-index: 2147483646;

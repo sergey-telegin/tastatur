@@ -241,10 +241,12 @@ function bindAppEvents() {
 
   keyboardEditorSave.addEventListener("click", () => {
     saveFingerMapDraft();
+    if (fingeringTourActive) finishFingeringTour();
   });
 
   keyboardEditorCancel.addEventListener("click", () => {
     cancelFingerKeyboardMode();
+    if (fingeringTourActive) finishFingeringTour();
   });
 
   keyboardEditorReset.addEventListener("click", () => {

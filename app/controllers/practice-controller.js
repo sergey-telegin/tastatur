@@ -346,6 +346,7 @@ const fingeringTourSteps = [
     target: () => fingerMapOpen,
     extraTargets: () => [settingsToggle],
     host: () => settingsDialog,
+    menuMarker: true,
     text: () => textFor().tourSettingsStep,
     before() {
       if (lessonTipDialog?.open) closeLessonTipDialog();
@@ -356,6 +357,8 @@ const fingeringTourSteps = [
     target: () => keyboardFingerPicker.querySelector(".finger-picker.active") || keyboardFingerPicker,
     host: () => document.body,
     placement: "below-keyboard",
+    autoAdvance: true,
+    targetAdvance: false,
     text: () => textFor().tourFingerMapStep,
     before() {
       if (settingsDialog.open) closeSettingsDialog();
@@ -364,11 +367,17 @@ const fingeringTourSteps = [
         enterFingerKeyboardMode();
       }
       setActiveFinger(currentFingerSelection());
+    },
+    after() {
+      startFingeringTourFingerDemo();
     }
   },
   {
     target: () => keyboardEditorPanel,
     host: () => document.body,
+    targetAdvance: false,
+    allowTargetInteraction: true,
+    finishKeepsEditorOpen: true,
     text: () => textFor().tourKeyboardStep,
     before() {
       if (!fingerKeyboardMode) {
@@ -379,23 +388,83 @@ const fingeringTourSteps = [
   }
 ];
 
+const fingeringTourFingerDemoOrder = fingerIds.concat(fingerIds.slice(1, -1).reverse());
+let fingeringTourFingerDemoTimer = null;
+
+function stopFingeringTourFingerDemo() {
+  if (!fingeringTourFingerDemoTimer) return;
+
+  clearInterval(fingeringTourFingerDemoTimer);
+  fingeringTourFingerDemoTimer = null;
+}
+
+function startFingeringTourFingerDemo() {
+  stopFingeringTourFingerDemo();
+  if (!fingeringTourFingerDemoOrder.length) return;
+
+  let index = 0;
+  setActiveFinger(fingeringTourFingerDemoOrder[index]);
+  fingeringTourFingerDemoTimer = setInterval(() => {
+    index += 1;
+    if (index >= fingeringTourFingerDemoOrder.length) {
+      stopFingeringTourFingerDemo();
+      advanceFingeringTour();
+      return;
+    }
+
+    setActiveFinger(fingeringTourFingerDemoOrder[index]);
+  }, 150);
+}
+
 function currentFingeringTourStep() {
   return fingeringTourSteps[fingeringTourStepIndex] || null;
 }
 
+function clearFingeringTourTargets() {
+  fingeringTourMenuMarker?.remove();
+  fingeringTourMenuMarker = null;
+  [
+    fingeringTourTarget,
+    settingsToggle,
+    fingerMapOpen,
+    keyboardFingerPicker,
+    keyboardEditorPanel
+  ].forEach(target => target?.classList?.remove("guided-tour-target"));
+  fingeringTourExtraTargets.forEach(target => target.classList.remove("guided-tour-target"));
+  fingeringTourTarget = null;
+  fingeringTourExtraTargets = [];
+}
+
+function renderFingeringTourMenuMarker() {
+  if (!settingsDialog.open) return;
+
+  const marker = document.createElement("div");
+  marker.className = "guided-tour-menu-marker";
+  marker.setAttribute("aria-hidden", "true");
+  marker.innerHTML = '<span></span><span></span><span></span>';
+  settingsDialog.append(marker);
+  fingeringTourMenuMarker = marker;
+  positionFingeringTourMenuMarker();
+}
+
+function positionFingeringTourMenuMarker() {
+  if (!fingeringTourMenuMarker) return;
+
+  const rect = settingsToggle.getBoundingClientRect();
+  fingeringTourMenuMarker.style.left = `${rect.left}px`;
+  fingeringTourMenuMarker.style.top = `${rect.top}px`;
+  fingeringTourMenuMarker.style.width = `${rect.width}px`;
+  fingeringTourMenuMarker.style.height = `${rect.height}px`;
+}
+
 function removeFingeringTourCard() {
+  stopFingeringTourFingerDemo();
   if (fingeringTourCard) {
     fingeringTourCard.remove();
     fingeringTourCard = null;
   }
 
-  if (fingeringTourTarget) {
-    fingeringTourTarget.classList.remove("guided-tour-target");
-    fingeringTourTarget = null;
-  }
-
-  fingeringTourExtraTargets.forEach(target => target.classList.remove("guided-tour-target"));
-  fingeringTourExtraTargets = [];
+  clearFingeringTourTargets();
 }
 
 function positionFingeringTourCard() {
@@ -415,6 +484,7 @@ function positionFingeringTourCard() {
 
     fingeringTourCard.style.left = `${left}px`;
     fingeringTourCard.style.top = `${top}px`;
+    positionFingeringTourMenuMarker();
     return;
   }
 
@@ -433,6 +503,7 @@ function positionFingeringTourCard() {
 
   fingeringTourCard.style.left = `${left}px`;
   fingeringTourCard.style.top = `${top}px`;
+  positionFingeringTourMenuMarker();
 }
 
 function isFingeringTourCardEventTarget(target) {
@@ -454,8 +525,10 @@ function handleFingeringTourPointerGuard(event) {
   if (isFingeringTourCardEventTarget(event.target)) return;
 
   if (isFingeringTourStepEventTarget(event.target)) {
+    if (currentFingeringTourStep()?.allowTargetInteraction) return;
+
     blockFingeringTourEvent(event);
-    if (event.type === "click") {
+    if (event.type === "click" && currentFingeringTourStep()?.targetAdvance !== false) {
       advanceFingeringTour();
     }
     return;
@@ -468,7 +541,12 @@ function handleFingeringTourKeyGuard(event) {
   if (!fingeringTourActive) return;
   if (isFingeringTourCardEventTarget(event.target)) return;
 
-  if (isFingeringTourStepEventTarget(event.target) && (event.key === "Enter" || event.key === " ")) {
+  if (
+    !currentFingeringTourStep()?.allowTargetInteraction &&
+    currentFingeringTourStep()?.targetAdvance !== false &&
+    isFingeringTourStepEventTarget(event.target) &&
+    (event.key === "Enter" || event.key === " ")
+  ) {
     blockFingeringTourEvent(event);
     advanceFingeringTour();
     return;
@@ -502,6 +580,9 @@ function renderFingeringTourStep() {
     fingeringTourTarget.classList.add("guided-tour-target");
     fingeringTourExtraTargets = (step.extraTargets?.() || []).filter(Boolean);
     fingeringTourExtraTargets.forEach(extraTarget => extraTarget.classList.add("guided-tour-target"));
+    if (step.menuMarker) {
+      renderFingeringTourMenuMarker();
+    }
     fingeringTourCard = document.createElement("aside");
     fingeringTourCard.className = "guided-tour-card";
     fingeringTourCard.setAttribute("role", "dialog");
@@ -519,13 +600,27 @@ function renderFingeringTourStep() {
     nextButton.textContent = fingeringTourStepIndex >= fingeringTourSteps.length - 1
       ? text.tourDone
       : text.tourNext;
-    nextButton.addEventListener("click", advanceFingeringTour);
+    nextButton.addEventListener("click", () => {
+      stopFingeringTourFingerDemo();
+      if (step.finishKeepsEditorOpen) {
+        finishFingeringTour({ keepFingerKeyboardMode: true, focusPractice: false });
+        return;
+      }
+      advanceFingeringTour();
+    });
 
-    actions.append(nextButton);
-    fingeringTourCard.append(message, actions);
+    if (!step.autoAdvance) {
+      actions.append(nextButton);
+      fingeringTourCard.append(message, actions);
+    } else {
+      fingeringTourCard.append(message);
+    }
     host.append(fingeringTourCard);
     positionFingeringTourCard();
-    nextButton.focus({ preventScroll: true });
+    if (!step.autoAdvance) {
+      nextButton.focus({ preventScroll: true });
+    }
+    step.after?.();
   });
 }
 
@@ -546,21 +641,23 @@ function advanceFingeringTour() {
   renderFingeringTourStep();
 }
 
-function finishFingeringTour() {
+function finishFingeringTour({ keepFingerKeyboardMode = false, focusPractice = true } = {}) {
   if (!fingeringTourActive) return;
 
   removeFingeringTourCard();
   fingeringTourActive = false;
   fingeringTourStepIndex = 0;
   document.documentElement.classList.remove("guided-tour-active");
-  if (fingerKeyboardMode) {
+  if (fingerKeyboardMode && !keepFingerKeyboardMode) {
     cancelFingerKeyboardMode();
   }
   if (settingsDialog.open) {
     closeSettingsDialog();
   }
   updatePracticeTimerPauseState();
-  focusPracticeInputSoon();
+  if (focusPractice) {
+    focusPracticeInputSoon();
+  }
 }
 
 const nextButtonText = {
@@ -696,26 +793,26 @@ const onboardingCopy = {
         paragraphs: [
           "FlyKey — це тренажер сліпого друку.",
           "FlyKey допомагає перетворити клавіатуру на продовження думок.",
-          "Друкуйте легко, ніби пальці вже знають дорогу."
+          "Друкуй легко, ніби пальці вже знають дорогу."
         ],
         character: false
       },
       {
         paragraphs: [
-          "Легкість, швидкість і впевненість за клавіатурою вже чекають на вас."
+          "Легкість, швидкість і впевненість за клавіатурою вже чекають на тебе."
         ],
         character: false
       },
       {
         paragraphs: [
-          "Тут ви не зубрите клавіші. Ви поступово вчитеся друкувати вільно: менше дивитися вниз, менше напружуватися і більше довіряти пальцям."
+          "Тут ти не зубриш клавіші. Ти поступово вчишся друкувати вільно: менше дивитися вниз, менше напружуватися і більше довіряти пальцям."
         ],
         character: false
       },
       {
         paragraphs: [
           "Мене звати Key. Я буду поруч.",
-          "Ваш маленький летючий помічник підказує, підтримує й допомагає не збиватися з ритму. Не суворий учитель, а напарник, з яким тренуватися легше."
+          "Твій маленький летючий помічник підказує, підтримує й допомагає не збиватися з ритму. Не суворий учитель, а напарник, з яким тренуватися легше."
         ],
         character: true
       }
@@ -872,8 +969,14 @@ function advanceOnboarding() {
   completeOnboarding();
 }
 
+function isAssistantDisabledTestLesson(lesson = currentPracticeModuleData()) {
+  const lessonName = String(lesson?.name || "").toLowerCase();
+
+  return /_5$/.test(String(lesson?.id || "")) && /test|тест/.test(lessonName);
+}
+
 function currentPracticeAssistantsEnabled() {
-  return currentPracticeModuleData().target?.assistants !== false;
+  return !isAssistantDisabledTestLesson();
 }
 
 function effectiveAssistantSetting(value) {

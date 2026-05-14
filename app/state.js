@@ -31,6 +31,7 @@ let fingeringTourStepIndex = 0;
 let fingeringTourTarget = null;
 let fingeringTourExtraTargets = [];
 let fingeringTourCard = null;
+let fingeringTourMenuMarker = null;
 let lastShownLessonTipModuleId = null;
 let practiceAssistantsUsed = false;
 let practiceMetronomeHitCount = 0;
