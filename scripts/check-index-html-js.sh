@@ -18,8 +18,17 @@ cleanup() {
 
 trap cleanup EXIT INT TERM
 
-perl -0ne 'if (m{<script>([\s\S]*)</script>}s) { print $1 } else { exit 1 }' "$HTML_FILE" > "$TMP_SCRIPT" || {
-  echo "Could not extract inline <script> from $HTML_FILE" >&2
+perl -0ne '
+  while (m{<script\b([^>]*)>([\s\S]*?)</script>}gi) {
+    my ($attrs, $body) = ($1, $2);
+    next if $attrs =~ /\bsrc\s*=/i;
+    next if $attrs =~ /\btype\s*=\s*["'"'"']application\/ld\+json["'"'"']/i;
+    print "\n;\n", $body, "\n;\n";
+    $found = 1;
+  }
+  END { exit($found ? 0 : 1) }
+' "$HTML_FILE" > "$TMP_SCRIPT" || {
+  echo "Could not extract inline JavaScript from $HTML_FILE" >&2
   exit 1
 }
 
