@@ -309,9 +309,26 @@ function renderLessonTipDialog(imageSrc = lessonTipAvatarSrcFor(currentPracticeM
   lessonTipCharacter.alt = "";
 }
 
+function isPrivacyConsentPending() {
+  return window.flyKeyPrivacyConsentPending === true;
+}
+
+function queueGuidanceAfterPrivacyConsent(callback) {
+  if (window.flyKeyGuidanceAfterPrivacyQueued) return;
+  window.flyKeyGuidanceAfterPrivacyQueued = true;
+  window.addEventListener("flykeyprivacyconsentresolved", () => {
+    window.flyKeyGuidanceAfterPrivacyQueued = false;
+    callback();
+  }, { once: true });
+}
+
 function openCurrentLessonTip({ force = false } = {}) {
   const lesson = currentPracticeModuleData();
   if (!lessonTipDialog || lessonTipDialog.open || !currentLessonTips().length) return;
+  if (isPrivacyConsentPending()) {
+    queueGuidanceAfterPrivacyConsent(() => openCurrentLessonTip({ force }));
+    return;
+  }
   if (!onboardingCompleted || onboardingDialog?.open) return;
   if (!force && lastShownLessonTipModuleId === lesson.id) return;
 
@@ -962,6 +979,12 @@ function renderOnboardingDialog() {
 
 function openOnboardingIfNeeded() {
   if (onboardingCompleted || !onboardingDialog || onboardingDialog.open) return false;
+  if (isPrivacyConsentPending()) {
+    queueGuidanceAfterPrivacyConsent(() => {
+      if (!openOnboardingIfNeeded()) openCurrentLessonTip();
+    });
+    return true;
+  }
 
   onboardingStepIndex = 0;
   renderOnboardingDialog();

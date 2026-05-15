@@ -72,9 +72,12 @@ function initializePrivacyConsent() {
 
   const savedConsent = readPrivacyConsent();
   if (savedConsent && typeof savedConsent.analytics === "boolean") {
+    window.flyKeyPrivacyConsentPending = false;
     updateAnalyticsConsent(savedConsent.analytics);
     return;
   }
+
+  window.flyKeyPrivacyConsentPending = true;
 
   const copy = privacyConsentCopy[privacyConsentLanguage()];
   title.textContent = copy.title;
@@ -110,11 +113,13 @@ function initializePrivacyConsent() {
     dialogObserver?.disconnect();
     savePrivacyConsent(analytics);
     updateAnalyticsConsent(analytics);
+    window.flyKeyPrivacyConsentPending = false;
     if (typeof banner.close === "function" && banner.open) {
       banner.close();
     } else {
       banner.removeAttribute("open");
     }
+    window.dispatchEvent(new CustomEvent("flykeyprivacyconsentresolved"));
   };
 
   accept.addEventListener("click", () => closeWithChoice(true));
