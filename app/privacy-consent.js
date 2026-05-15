@@ -85,12 +85,32 @@ function initializePrivacyConsent() {
   const closeWithChoice = analytics => {
     savePrivacyConsent(analytics);
     updateAnalyticsConsent(analytics);
-    banner.hidden = true;
+    if (typeof banner.close === "function" && banner.open) {
+      banner.close();
+    }
   };
 
   accept.addEventListener("click", () => closeWithChoice(true));
   reject.addEventListener("click", () => closeWithChoice(false));
-  banner.hidden = false;
+  banner.addEventListener("cancel", event => {
+    event.preventDefault();
+    closeWithChoice(false);
+  });
+
+  const showConsentDialog = () => {
+    if (banner.open) return;
+    if (typeof banner.showModal === "function") {
+      banner.showModal();
+    } else {
+      banner.setAttribute("open", "");
+    }
+  };
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      setTimeout(showConsentDialog, 80);
+    });
+  });
 }
 
 initializePrivacyConsent();

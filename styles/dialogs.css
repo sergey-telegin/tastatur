@@ -221,17 +221,28 @@
 
 .privacy-consent {
   position: fixed;
-  z-index: 1000;
+  z-index: 2147483647;
   right: 20px;
   bottom: 20px;
   left: 20px;
+  top: auto;
+  width: auto;
+  max-width: none;
+  height: auto;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--text);
   display: flex;
   justify-content: center;
-  pointer-events: none;
+  overflow: visible;
 }
 
-.privacy-consent[hidden] {
-  display: none;
+.privacy-consent::backdrop {
+  background: transparent;
+  pointer-events: none;
 }
 
 .privacy-consent-panel {
