@@ -375,6 +375,7 @@ const fingeringTourSteps = [
   {
     target: () => keyboardEditorPanel,
     host: () => document.body,
+    placement: "below-target",
     targetAdvance: false,
     allowTargetInteraction: true,
     finishKeepsEditorOpen: true,
@@ -489,6 +490,22 @@ function positionFingeringTourCard() {
   }
 
   const targetRect = fingeringTourTarget.getBoundingClientRect();
+  if (step?.placement === "below-target") {
+    const left = Math.min(
+      Math.max(16, targetRect.right - cardRect.width),
+      window.innerWidth - cardRect.width - 16
+    );
+    const top = Math.min(
+      targetRect.bottom + gap,
+      window.innerHeight - cardRect.height - 16
+    );
+
+    fingeringTourCard.style.left = `${left}px`;
+    fingeringTourCard.style.top = `${Math.max(16, top)}px`;
+    positionFingeringTourMenuMarker();
+    return;
+  }
+
   const sideSpaceRight = window.innerWidth - targetRect.right;
   const sideSpaceLeft = targetRect.left;
   const placeRight = sideSpaceRight >= Math.min(300, cardRect.width + gap) || sideSpaceRight >= sideSpaceLeft;
