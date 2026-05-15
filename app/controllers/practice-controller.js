@@ -527,6 +527,11 @@ function isFingeringTourCardEventTarget(target) {
   return Boolean(fingeringTourCard && target instanceof Node && fingeringTourCard.contains(target));
 }
 
+function isPrivacyConsentEventTarget(target) {
+  const privacyConsent = document.querySelector("#privacyConsent");
+  return Boolean(privacyConsent?.open && target instanceof Node && privacyConsent.contains(target));
+}
+
 function isFingeringTourStepEventTarget(target) {
   return Boolean(fingeringTourTarget && target instanceof Node && fingeringTourTarget.contains(target));
 }
@@ -539,7 +544,7 @@ function blockFingeringTourEvent(event) {
 
 function handleFingeringTourPointerGuard(event) {
   if (!fingeringTourActive) return;
-  if (isFingeringTourCardEventTarget(event.target)) return;
+  if (isFingeringTourCardEventTarget(event.target) || isPrivacyConsentEventTarget(event.target)) return;
 
   if (isFingeringTourStepEventTarget(event.target)) {
     if (currentFingeringTourStep()?.allowTargetInteraction) return;
@@ -556,7 +561,7 @@ function handleFingeringTourPointerGuard(event) {
 
 function handleFingeringTourKeyGuard(event) {
   if (!fingeringTourActive) return;
-  if (isFingeringTourCardEventTarget(event.target)) return;
+  if (isFingeringTourCardEventTarget(event.target) || isPrivacyConsentEventTarget(event.target)) return;
 
   if (
     !currentFingeringTourStep()?.allowTargetInteraction &&
