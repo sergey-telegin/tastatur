@@ -219,6 +219,65 @@
   min-height: 38px;
 }
 
+.privacy-consent {
+  position: fixed;
+  z-index: 1000;
+  right: 20px;
+  bottom: 20px;
+  left: 20px;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.privacy-consent[hidden] {
+  display: none;
+}
+
+.privacy-consent-panel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  width: min(760px, 100%);
+  padding: 16px;
+  border: 1px solid var(--line-soft);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--panel) 94%, transparent);
+  color: var(--text);
+  box-shadow: 0 18px 48px rgb(0 0 0 / 0.34);
+  backdrop-filter: blur(18px);
+  pointer-events: auto;
+}
+
+.privacy-consent-copy {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+
+.privacy-consent-copy h2 {
+  margin: 0;
+  color: var(--on-panel);
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.privacy-consent-copy p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.36;
+}
+
+.privacy-consent-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
 .guided-tour-menu-marker {
   position: fixed;
   z-index: 2147483647;

@@ -58,12 +58,43 @@
         }
       }
     </script>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-2NK7YHB4RQ"></script>
     <script>
+      const flyKeyConsentState = (() => {
+        try {
+          const value = JSON.parse(localStorage.getItem("flykey-privacy-consent-v1")) || {};
+          return value.analytics === true ? "granted" : "denied";
+        } catch {
+          return "denied";
+        }
+      })();
+
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
-      gtag("js", new Date());
-      gtag("config", "G-2NK7YHB4RQ");
+      window.flyKeyAnalyticsId = "G-2NK7YHB4RQ";
+      window.flyKeyAnalyticsLoaded = false;
+      gtag("consent", "default", {
+        ad_storage: "denied",
+        ad_user_data: "denied",
+        ad_personalization: "denied",
+        analytics_storage: "denied",
+        functionality_storage: "granted",
+        security_storage: "granted"
+      });
+      window.loadFlyKeyAnalytics = () => {
+        if (window.flyKeyAnalyticsLoaded) return;
+        window.flyKeyAnalyticsLoaded = true;
+        gtag("consent", "update", { analytics_storage: "granted" });
+        gtag("js", new Date());
+        gtag("config", window.flyKeyAnalyticsId);
+
+        const script = document.createElement("script");
+        script.async = true;
+        script.src = `https://www.googletagmanager.com/gtag/js?id=${window.flyKeyAnalyticsId}`;
+        document.head.append(script);
+      };
+      if (flyKeyConsentState === "granted") {
+        window.loadFlyKeyAnalytics();
+      }
     </script>
     <script src="app/theme-init.js?v=20260514-16"></script>
     <link rel="stylesheet" href="styles/main.css?v=20260514-16">
@@ -429,6 +460,19 @@
       </div>
     </dialog>
 
+    <section class="privacy-consent" id="privacyConsent" aria-labelledby="privacyConsentTitle" hidden>
+      <div class="privacy-consent-panel">
+        <div class="privacy-consent-copy">
+          <h2 id="privacyConsentTitle">Конфиденциальность</h2>
+          <p id="privacyConsentText">FlyKey использует Google Analytics, чтобы понимать, как развивается сайт. Аналитика включается только с вашего согласия.</p>
+        </div>
+        <div class="privacy-consent-actions">
+          <button class="ghost-btn" id="privacyConsentReject" type="button">Отклонить</button>
+          <button class="apply-btn" id="privacyConsentAccept" type="button">Принять</button>
+        </div>
+      </div>
+    </section>
+
     <script src="practice-content.js?v=20260514-16"></script>
     <script src="practice-content/modules/module1.js?v=20260514-16"></script>
     <script src="practice-content/modules/module2.js?v=20260514-16"></script>
@@ -474,5 +518,6 @@
 
       initializeApp();
     </script>
+    <script src="app/privacy-consent.js?v=20260515-1"></script>
   </body>
 </html>
