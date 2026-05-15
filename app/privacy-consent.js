@@ -82,11 +82,38 @@ function initializePrivacyConsent() {
   accept.textContent = copy.accept;
   reject.textContent = copy.reject;
 
+  let consentResolved = false;
+  let dialogObserver = null;
+
+  const showConsentDialog = () => {
+    if (consentResolved) return;
+
+    if (typeof banner.showModal === "function") {
+      try {
+        if (banner.open) banner.close();
+        banner.showModal();
+        return;
+      } catch {
+        // Fall through to the non-modal fallback if the browser refuses showModal.
+      }
+    }
+
+    banner.setAttribute("open", "");
+  };
+
+  const queueConsentDialog = () => {
+    requestAnimationFrame(() => setTimeout(showConsentDialog, 0));
+  };
+
   const closeWithChoice = analytics => {
+    consentResolved = true;
+    dialogObserver?.disconnect();
     savePrivacyConsent(analytics);
     updateAnalyticsConsent(analytics);
     if (typeof banner.close === "function" && banner.open) {
       banner.close();
+    } else {
+      banner.removeAttribute("open");
     }
   };
 
@@ -97,18 +124,28 @@ function initializePrivacyConsent() {
     closeWithChoice(false);
   });
 
-  const showConsentDialog = () => {
-    if (banner.open) return;
-    if (typeof banner.showModal === "function") {
-      banner.showModal();
-    } else {
-      banner.setAttribute("open", "");
-    }
-  };
+  dialogObserver = new MutationObserver(mutations => {
+    if (consentResolved) return;
+    const openedAnotherDialog = mutations.some(mutation => (
+      mutation.type === "attributes" &&
+      mutation.attributeName === "open" &&
+      mutation.target !== banner &&
+      mutation.target?.tagName === "DIALOG" &&
+      mutation.target.open
+    ));
+
+    if (openedAnotherDialog) queueConsentDialog();
+  });
+
+  dialogObserver.observe(document.body, {
+    subtree: true,
+    attributes: true,
+    attributeFilter: ["open"]
+  });
 
   requestAnimationFrame(() => {
     requestAnimationFrame(() => {
-      setTimeout(showConsentDialog, 80);
+      [80, 320, 900].forEach(delay => setTimeout(showConsentDialog, delay));
     });
   });
 }

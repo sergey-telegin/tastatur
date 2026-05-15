@@ -190,7 +190,7 @@
 
 .guided-tour-card {
   position: fixed;
-  z-index: 2147483647;
+  z-index: 2147483600;
   display: grid;
   gap: 14px;
   width: min(300px, calc(100vw - 32px));
@@ -291,7 +291,7 @@
 
 .guided-tour-menu-marker {
   position: fixed;
-  z-index: 2147483647;
+  z-index: 2147483600;
   display: grid;
   align-content: center;
   justify-content: center;
@@ -315,7 +315,7 @@
 
 .guided-tour-target {
   position: relative;
-  z-index: 2147483646;
+  z-index: 2147483599;
   border-color: color-mix(in srgb, var(--accent) 78%, var(--line) 22%) !important;
   box-shadow:
     0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent),
