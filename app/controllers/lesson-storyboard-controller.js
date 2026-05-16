@@ -50,10 +50,17 @@ function storyboardLocalizedMap(value, languages, fallback = {}) {
   ]));
 }
 
+function storyboardLessonIntroPurpose(lesson) {
+  if (lesson?.intro) return lesson.intro;
+  if (typeof lessonIntroPurpose !== "undefined") return lessonIntroPurpose[lesson.id] || {};
+  return {};
+}
+
 function storyboardCardLabel(type) {
   return {
     introImage: "Intro image",
     introTip: "Intro tip",
+    nextModuleText: "Next module text",
     completionImage: "Completion image",
     completionText: "Completion text",
     imageBank: "Image"
@@ -91,13 +98,29 @@ function createStoryboardCard(state, card) {
     name.textContent = card.value;
     node.append(image, name);
   } else {
-    const preview = document.createElement("div");
-    preview.className = "storyboard-text-preview";
-    preview.textContent = storyboardLocalizedText(card.value, state.previewLanguage);
-    node.append(preview);
+    const editor = document.createElement("textarea");
+    editor.className = "storyboard-text-editor";
+    editor.value = storyboardLocalizedText(card.value, state.previewLanguage);
+    editor.setAttribute("aria-label", storyboardCardLabel(card.type));
+    editor.addEventListener("input", () => {
+      if (!card.value || typeof card.value !== "object" || Array.isArray(card.value)) {
+        card.value = { [state.previewLanguage]: editor.value };
+        return;
+      }
+
+      card.value[state.previewLanguage] = editor.value;
+    });
+    editor.addEventListener("pointerdown", event => event.stopPropagation());
+    editor.addEventListener("dragstart", event => event.preventDefault());
+    node.append(editor);
   }
 
   node.addEventListener("dragstart", event => {
+    if (event.target.closest("textarea")) {
+      event.preventDefault();
+      return;
+    }
+
     state.drag = {
       cardId: card.id,
       from: node.closest("[data-storyboard-source]")?.dataset.storyboardSource || "",
@@ -233,6 +256,7 @@ function createStoryboardInitialState() {
       const lessonTitle = storyboardLocalizedMap(lesson.title, sourceLanguages);
       const introImage = (typeof lessonTipAvatarSrcFor === "function" ? lessonTipAvatarSrcFor(lesson) : "assets/key/key-wave.webp").replace("assets/key/", "");
       const introTip = storyboardLocalizedMap(lesson.tips, sourceLanguages);
+      const nextModuleText = storyboardLocalizedMap(storyboardLessonIntroPurpose(lesson), sourceLanguages);
       const completionImage = (typeof lessonCompletionAvatarSrcFor === "function" ? lessonCompletionAvatarSrcFor(lesson) : "assets/key/key-completion.webp").replace("assets/key/", "");
       const completionText = storyboardLocalizedMap(lesson.completion, sourceLanguages, storyboardDefaultCompletionText);
 
@@ -247,6 +271,7 @@ function createStoryboardInitialState() {
       assignments[lesson.id] = {
         introImage: addCard("introImage", introImage, number),
         introTip: addCard("introTip", introTip, number),
+        nextModuleText: addCard("nextModuleText", nextModuleText, number),
         completionImage: addCard("completionImage", completionImage, number),
         completionText: addCard("completionText", completionText, number)
       };
@@ -301,7 +326,7 @@ function renderLessonStoryboard(state) {
   table.innerHTML = "";
   const header = document.createElement("div");
   header.className = "storyboard-row storyboard-header";
-  ["№", "Lesson", "Intro image", "Intro tip", "Completion image", "Completion text"].forEach(label => {
+  ["№", "Lesson", "Intro image", "Intro tip", "Next module text", "Completion image", "Completion text"].forEach(label => {
     const cell = document.createElement("div");
     cell.textContent = label;
     header.append(cell);
@@ -332,6 +357,7 @@ function renderLessonStoryboard(state) {
     row.append(number, lessonCell);
     renderStoryboardSlot(state, row, lesson.id, "introImage");
     renderStoryboardSlot(state, row, lesson.id, "introTip");
+    renderStoryboardSlot(state, row, lesson.id, "nextModuleText");
     renderStoryboardSlot(state, row, lesson.id, "completionImage");
     renderStoryboardSlot(state, row, lesson.id, "completionText");
     table.append(row);
@@ -375,6 +401,7 @@ function exportLessonStoryboard(state) {
       number: lesson.number,
       introImage: storyboardCard(state, assignment.introImage)?.value || null,
       introTip: storyboardCard(state, assignment.introTip)?.value || null,
+      nextModuleText: storyboardCard(state, assignment.nextModuleText)?.value || null,
       completionImage: storyboardCard(state, assignment.completionImage)?.value || null,
       completionText: storyboardCard(state, assignment.completionText)?.value || null
     };

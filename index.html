@@ -102,7 +102,7 @@
       }
     </script>
     <script src="app/theme-init.js?v=20260514-16"></script>
-    <link rel="stylesheet" href="styles/main.css?v=20260516-1">
+    <link rel="stylesheet" href="styles/main.css?v=20260516-7">
   </head>
   <body>
     <main class="app">
@@ -223,6 +223,18 @@
           </div>
         </section>
         <img class="lesson-tip-character completion-character" id="completionCharacter" src="assets/key/key-completion.webp" alt="" aria-hidden="true">
+      </div>
+    </dialog>
+
+    <dialog class="lesson-tip-dialog next-module-dialog" id="nextModuleDialog">
+      <div class="lesson-tip-stage next-module-stage">
+        <section class="lesson-tip-message next-module-message" aria-describedby="nextModulePurpose">
+          <p class="lesson-tip-kicker next-module-kicker" id="nextModuleKicker">Следующий модуль</p>
+          <h2 class="next-module-title" id="nextModuleTitle"></h2>
+          <p class="next-module-purpose" id="nextModulePurpose"></p>
+          <button class="apply-btn lesson-tip-start next-module-next" id="nextModuleNext" type="button">Далее</button>
+        </section>
+        <img class="lesson-tip-character next-module-character" id="nextModuleCharacter" src="assets/key/key-wave.webp" alt="" aria-hidden="true">
       </div>
     </dialog>
 
@@ -491,9 +503,9 @@
     <script src="practice-content/modules/module10.js?v=20260514-16"></script>
     <script src="practice-content/modules/module11.js?v=20260514-16"></script>
     <script src="practice-content/modules/module12.js?v=20260514-16"></script>
-    <script src="app/practice-content-builder.js?v=20260514-16"></script>
+    <script src="app/practice-content-builder.js?v=20260516-1"></script>
     <script src="app/data.js?v=20260514-16"></script>
-    <script src="app/dom.js?v=20260514-16"></script>
+    <script src="app/dom.js?v=20260516-1"></script>
     <script src="app/state.js?v=20260514-16"></script>
     <script src="app/storage.js?v=20260514-16"></script>
     <script src="app/helpers.js?v=20260514-16"></script>
@@ -504,15 +516,15 @@
     <script src="app/views/practice-view.js?v=20260514-16"></script>
     <script src="app/views/fingering-view.js?v=20260514-16"></script>
     <script src="app/views/settings-view.js?v=20260514-16"></script>
-    <script src="app/controllers/practice-controller.js?v=20260516-1"></script>
+    <script src="app/controllers/practice-controller.js?v=20260516-5"></script>
     <script src="app/controllers/custom-practice-controller.js?v=20260514-16"></script>
     <script src="app/controllers/fingering-draft.js?v=20260514-16"></script>
     <script src="app/controllers/fingering-controller.js?v=20260514-16"></script>
     <script src="app/controllers/settings-controller.js?v=20260514-16"></script>
     <script src="app/controllers/app-runtime.js?v=20260514-16"></script>
     <script src="app/controllers/hand-calibration-controller.js?v=20260514-16"></script>
-    <script src="app/controllers/lesson-storyboard-controller.js?v=20260514-16"></script>
-    <script src="app/controllers/app-bootstrap.js?v=20260514-16"></script>
+    <script src="app/controllers/lesson-storyboard-controller.js?v=20260516-2"></script>
+    <script src="app/controllers/app-bootstrap.js?v=20260516-1"></script>
     <script>
       let keyboardDesignWidth = 0;
       let keyboardDesignHeight = 0;
@@ -521,7 +533,7 @@
 
       const practiceContent = window.PRACTICE_CONTENT || {};
     </script>
-    <script src="app/privacy-consent.js?v=20260516-1"></script>
+    <script src="app/privacy-consent.js?v=20260516-4"></script>
     <script>
       initializeApp();
     </script>

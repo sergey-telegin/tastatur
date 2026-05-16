@@ -117,6 +117,26 @@ function bindAppEvents() {
     focusPracticeInputSoon();
   });
 
+  nextModuleNext.addEventListener("click", () => {
+    startLessonAfterNextModuleDialog();
+  });
+
+  nextModuleDialog.addEventListener("keydown", event => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      startLessonAfterNextModuleDialog();
+    }
+  });
+
+  nextModuleDialog.addEventListener("cancel", event => {
+    event.preventDefault();
+  });
+
+  nextModuleDialog.addEventListener("close", () => {
+    setTimeout(updatePracticeTimerPauseState, 0);
+    focusPracticeInputSoon();
+  });
+
   keySoundToggle.addEventListener("click", toggleKeySound);
   practiceTextSizeToggle.addEventListener("click", togglePracticeTextSize);
   themeToggle.addEventListener("click", toggleTheme);

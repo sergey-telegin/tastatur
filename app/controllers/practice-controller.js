@@ -309,33 +309,16 @@ function renderLessonTipDialog(imageSrc = lessonTipAvatarSrcFor(currentPracticeM
   lessonTipCharacter.alt = "";
 }
 
-function isPrivacyConsentPending() {
-  return window.flyKeyPrivacyConsentPending === true;
-}
-
-function queueGuidanceAfterPrivacyConsent(callback) {
-  if (window.flyKeyGuidanceAfterPrivacyQueued) return;
-  window.flyKeyGuidanceAfterPrivacyQueued = true;
-  window.addEventListener("flykeyprivacyconsentresolved", () => {
-    window.flyKeyGuidanceAfterPrivacyQueued = false;
-    callback();
-  }, { once: true });
-}
-
 function openCurrentLessonTip({ force = false } = {}) {
   const lesson = currentPracticeModuleData();
   if (!lessonTipDialog || lessonTipDialog.open || !currentLessonTips().length) return;
-  if (isPrivacyConsentPending()) {
-    queueGuidanceAfterPrivacyConsent(() => openCurrentLessonTip({ force }));
-    return;
-  }
   if (!onboardingCompleted || onboardingDialog?.open) return;
   if (!force && lastShownLessonTipModuleId === lesson.id) return;
 
   const imageSrc = lessonTipAvatarSrcFor(lesson);
 
   renderLessonTipDialog(imageSrc);
-  lessonTipDialog.showModal();
+  lessonTipDialog.show();
   lastShownLessonTipModuleId = lesson.id;
   updatePracticeTimerPauseState();
 }
@@ -707,6 +690,22 @@ const nextButtonText = {
   en: "Next"
 };
 
+const nextModuleKickerText = {
+  ru: "Следующий модуль",
+  uk: "Наступний модуль",
+  kk: "Келесі модуль",
+  de: "Nächstes Modul",
+  en: "Next module"
+};
+
+const startNextModuleText = {
+  ru: "Начать",
+  uk: "Почати",
+  kk: "Бастау",
+  de: "Starten",
+  en: "Start"
+};
+
 const defaultPracticeCompletionText = {
   ru: "Отлично. Молодец. Идём дальше.",
   uk: "Чудово. Гарна робота. Рухаємося далі.",
@@ -766,6 +765,33 @@ function closeCompletionDialog() {
   completionDialog.close();
 }
 
+function renderNextModuleDialog(lesson = currentPracticeModuleData()) {
+  nextModuleKicker.textContent = localizedUiText(nextModuleKickerText);
+  nextModuleTitle.textContent = lesson.name || "";
+  nextModulePurpose.textContent = lesson.intro?.purpose || "";
+  nextModuleNext.textContent = localizedUiText(startNextModuleText);
+  setDialogCharacterImage(nextModuleCharacter, lessonTipAvatarSrcFor(lesson));
+  nextModuleCharacter.alt = "";
+}
+
+function openNextModuleDialog(lesson = currentPracticeModuleData()) {
+  if (!nextModuleDialog || nextModuleDialog.open) return;
+
+  renderNextModuleDialog(lesson);
+  nextModuleDialog.showModal();
+  updatePracticeTimerPauseState();
+}
+
+function closeNextModuleDialog() {
+  if (!nextModuleDialog?.open) return;
+  nextModuleDialog.close();
+}
+
+function startLessonAfterNextModuleDialog() {
+  closeNextModuleDialog();
+  openCurrentLessonTip({ force: true });
+}
+
 function isLesson4FingeringReminderLesson(lesson = currentPracticeModuleData()) {
   return lesson?.id === "lesson4_4";
 }
@@ -787,8 +813,8 @@ function goToNextLessonAfterCompletion() {
   closeCompletionDialog();
   if (nextLesson && !nextLesson.customPractice) {
     applySettings({ language, module: nextLessonId });
-    openCurrentLessonTip({ force: true });
     renderModuleButtons();
+    openNextModuleDialog(nextLesson);
   }
 }
 
@@ -979,16 +1005,10 @@ function renderOnboardingDialog() {
 
 function openOnboardingIfNeeded() {
   if (onboardingCompleted || !onboardingDialog || onboardingDialog.open) return false;
-  if (isPrivacyConsentPending()) {
-    queueGuidanceAfterPrivacyConsent(() => {
-      if (!openOnboardingIfNeeded()) openCurrentLessonTip();
-    });
-    return true;
-  }
 
   onboardingStepIndex = 0;
   renderOnboardingDialog();
-  onboardingDialog.showModal();
+  onboardingDialog.show();
   updatePracticeTimerPauseState();
   return true;
 }
@@ -1171,6 +1191,7 @@ function shouldPausePracticeTimer() {
     settingsDialog.open ||
     lessonTipDialog.open ||
     completionDialog.open ||
+    nextModuleDialog.open ||
     fingeringTourActive ||
     learningProgramDialog.open ||
     customPracticeDialog.open ||
@@ -1556,6 +1577,7 @@ function isPracticeInputPaused() {
     settingsDialog.open ||
     lessonTipDialog.open ||
     completionDialog.open ||
+    nextModuleDialog.open ||
     learningProgramDialog.open ||
     customPracticeDialog.open ||
     statsDialog.open ||
