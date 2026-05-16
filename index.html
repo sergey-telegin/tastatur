@@ -20,9 +20,9 @@
     <meta property="og:title" content="FlyKey — тренажёр слепой печати">
     <meta property="og:description" content="Учитесь печатать вслепую комфортно: разные раскладки, подсказки пальцев, ассистенты обучения и гибкая настройка под пользователя.">
     <meta property="og:url" content="https://flykey.org/">
-    <meta property="og:image" content="https://flykey.org/assets/key/fly_welcome_no_bg.webp">
-    <meta property="og:image:width" content="900">
-    <meta property="og:image:height" content="1108">
+    <meta property="og:image" content="https://flykey.org/assets/key/fly_welcome_no_bg.png?v=20260516-4">
+    <meta property="og:image:width" content="1024">
+    <meta property="og:image:height" content="1536">
     <meta property="og:locale" content="ru_RU">
     <meta property="og:locale:alternate" content="uk_UA">
     <meta property="og:locale:alternate" content="kk_KZ">
@@ -31,7 +31,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="FlyKey — тренажёр слепой печати">
     <meta name="twitter:description" content="Мягкое обучение слепой печати с подсказками пальцев, несколькими раскладками и настройками под пользователя.">
-    <meta name="twitter:image" content="https://flykey.org/assets/key/fly_welcome_no_bg.webp">
+    <meta name="twitter:image" content="https://flykey.org/assets/key/fly_welcome_no_bg.png?v=20260516-4">
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -104,7 +104,7 @@
       }
     </script>
     <script src="app/theme-init.js?v=20260514-16"></script>
-    <link rel="stylesheet" href="styles/main.css?v=20260516-7">
+    <link rel="stylesheet" href="styles/main.css?v=20260516-10">
   </head>
   <body>
     <main class="app">
@@ -197,7 +197,7 @@
           <div class="lesson-tip-text onboarding-text" id="onboardingText"></div>
           <button class="apply-btn lesson-tip-start onboarding-next" id="onboardingNext" type="button">Далее</button>
         </section>
-        <img class="lesson-tip-character onboarding-character" id="onboardingCharacter" src="assets/key/key-onboarding.webp" alt="" aria-hidden="true">
+        <img class="lesson-tip-character onboarding-character" id="onboardingCharacter" src="assets/key/key-wave.webp?v=20260516-4" alt="" aria-hidden="true">
       </div>
     </dialog>
 
@@ -210,7 +210,7 @@
             <button class="apply-btn lesson-tip-start" id="lessonTipStart" type="button">Пуск</button>
           </div>
         </section>
-        <img class="lesson-tip-character" id="lessonTipCharacter" src="assets/key/key-wave.webp" alt="" aria-hidden="true">
+        <img class="lesson-tip-character" id="lessonTipCharacter" src="assets/key/key-wave.webp?v=20260516-4" alt="" aria-hidden="true">
       </div>
     </dialog>
 
@@ -224,7 +224,7 @@
             <button class="apply-btn lesson-tip-start completion-next" id="completionNext" type="button">Далее</button>
           </div>
         </section>
-        <img class="lesson-tip-character completion-character" id="completionCharacter" src="assets/key/key-completion.webp" alt="" aria-hidden="true">
+        <img class="lesson-tip-character completion-character" id="completionCharacter" src="assets/key/key-completion.webp?v=20260516-4" alt="" aria-hidden="true">
       </div>
     </dialog>
 
@@ -236,7 +236,7 @@
           <p class="next-module-purpose" id="nextModulePurpose"></p>
           <button class="apply-btn lesson-tip-start next-module-next" id="nextModuleNext" type="button">Далее</button>
         </section>
-        <img class="lesson-tip-character next-module-character" id="nextModuleCharacter" src="assets/key/key-wave.webp" alt="" aria-hidden="true">
+        <img class="lesson-tip-character next-module-character" id="nextModuleCharacter" src="assets/key/key-wave.webp?v=20260516-4" alt="" aria-hidden="true">
       </div>
     </dialog>
 
@@ -479,7 +479,7 @@
       </div>
     </dialog>
 
-    <dialog class="privacy-consent" id="privacyConsent" aria-labelledby="privacyConsentTitle">
+    <section class="privacy-consent" id="privacyConsent" role="dialog" aria-modal="false" aria-labelledby="privacyConsentTitle" aria-hidden="true" hidden>
       <div class="privacy-consent-panel">
         <div class="privacy-consent-copy">
           <h2 id="privacyConsentTitle">Конфиденциальность</h2>
@@ -490,7 +490,7 @@
           <button class="apply-btn" id="privacyConsentAccept" type="button">Принять</button>
         </div>
       </div>
-    </dialog>
+    </section>
 
     <script src="practice-content.js?v=20260514-16"></script>
     <script src="practice-content/modules/module1.js?v=20260514-16"></script>
@@ -518,14 +518,14 @@
     <script src="app/views/practice-view.js?v=20260514-16"></script>
     <script src="app/views/fingering-view.js?v=20260514-16"></script>
     <script src="app/views/settings-view.js?v=20260514-16"></script>
-    <script src="app/controllers/practice-controller.js?v=20260516-5"></script>
+    <script src="app/controllers/practice-controller.js?v=20260516-10"></script>
     <script src="app/controllers/custom-practice-controller.js?v=20260514-16"></script>
     <script src="app/controllers/fingering-draft.js?v=20260514-16"></script>
     <script src="app/controllers/fingering-controller.js?v=20260514-16"></script>
-    <script src="app/controllers/settings-controller.js?v=20260516-1"></script>
+    <script src="app/controllers/settings-controller.js?v=20260516-2"></script>
     <script src="app/controllers/app-runtime.js?v=20260514-16"></script>
     <script src="app/controllers/hand-calibration-controller.js?v=20260514-16"></script>
-    <script src="app/controllers/lesson-storyboard-controller.js?v=20260516-2"></script>
+    <script src="app/controllers/lesson-storyboard-controller.js?v=20260516-11"></script>
     <script src="app/controllers/app-bootstrap.js?v=20260516-1"></script>
     <script>
       let keyboardDesignWidth = 0;
@@ -535,7 +535,7 @@
 
       const practiceContent = window.PRACTICE_CONTENT || {};
     </script>
-    <script src="app/privacy-consent.js?v=20260516-6"></script>
+    <script src="app/privacy-consent.js?v=20260516-11"></script>
     <script>
       initializeApp();
     </script>

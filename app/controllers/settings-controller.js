@@ -52,6 +52,7 @@ function applySettings(nextSettings, { closeDialog = false } = {}) {
   restoreCurrentPracticeProgress();
   resetPracticeMetrics();
   persist();
+  window.dispatchEvent(new CustomEvent("flykey:languagechange", { detail: { language: currentLanguage } }));
   render();
   if (closeDialog) {
     settingsDialog.close();

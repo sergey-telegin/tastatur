@@ -132,10 +132,16 @@ function currentPracticeModuleData(language = currentLanguage, moduleId = curren
   return modules[moduleId] || modules[firstPracticeModuleId(language)] || Object.values(modules)[0] || { name: "", lines: [] };
 }
 
+const keyAssetVersion = "20260516-4";
+
+function keyAssetSrc(fileName) {
+  return "assets/key/" + fileName + "?v=" + keyAssetVersion;
+}
+
 const lessonTipAvatarByLessonId = {
   lesson1_1: "key-please.webp",
-  lesson1_2: "key-salute.webp",
-  lesson1_3: "key-open-soft.webp",
+  lesson1_2: "key-wave.webp",
+  lesson1_3: "fly_welcome_no_bg.png",
   lesson1_4: "key-explain.webp",
   lesson1_5: "key-wave.webp",
   lesson2_1: "key-idea.webp",
@@ -145,8 +151,8 @@ const lessonTipAvatarByLessonId = {
   lesson2_5: "key-arms-crossed.webp",
   lesson3_1: "key-thinking.webp",
   lesson3_2: "key-thumb.webp",
-  lesson3_3: "key-idea-front.webp",
-  lesson3_4: "key-open-soft.webp",
+  lesson3_3: "key-idea.webp",
+  lesson3_4: "fly_welcome_no_bg.png",
   lesson3_5: "key-confident.webp",
   lesson4_1: "key-point-strict.webp",
   lesson4_2: "key-explain.webp",
@@ -154,44 +160,44 @@ const lessonTipAvatarByLessonId = {
   lesson4_4: "key-thinking.webp",
   lesson4_5: "key-arms-crossed.webp",
   lesson5_1: "key-stop.webp",
-  lesson5_2: "key-idea-front.webp",
+  lesson5_2: "key-idea.webp",
   lesson5_3: "key-explain.webp",
   lesson5_4: "key-confident.webp",
-  lesson5_5: "key-shrug.webp",
+  lesson5_5: "key-thinking.webp",
   lesson6_1: "key-stop.webp",
   lesson6_2: "key-idea.webp",
   lesson6_3: "key-point-strict.webp",
   lesson6_4: "key-explain.webp",
   lesson6_5: "key-confident.webp",
   lesson7_1: "key-explain.webp",
-  lesson7_2: "key-idea-open.webp",
+  lesson7_2: "fly_welcome_no_bg.png",
   lesson7_3: "key-stop.webp",
   lesson7_4: "key-point-strict.webp",
   lesson7_5: "key-confident.webp",
-  lesson8_1: "key-idea-front.webp",
+  lesson8_1: "key-idea.webp",
   lesson8_2: "key-thinking.webp",
   lesson8_3: "key-explain.webp",
   lesson8_4: "key-confident.webp",
   lesson8_5: "key-arms-crossed.webp",
-  lesson9_1: "key-idea-small.webp",
+  lesson9_1: "key-idea.webp",
   lesson9_2: "key-explain.webp",
-  lesson9_3: "key-open-soft.webp",
+  lesson9_3: "fly_welcome_no_bg.png",
   lesson9_4: "key-confident.webp",
   lesson9_5: "key-arms-crossed.webp",
-  lesson10_1: "key-idea-open.webp",
+  lesson10_1: "fly_welcome_no_bg.png",
   lesson10_2: "key-explain.webp",
   lesson10_3: "key-explain.webp",
   lesson10_4: "key-confident.webp",
   lesson10_5: "key-book.webp",
   lesson11_1: "key-wave.webp",
-  lesson12_1: "key-open-soft.webp"
+  lesson12_1: "fly_welcome_no_bg.png"
 };
 
 const lessonCompletionAvatarByLessonId = {
   lesson1_1: "key-thumb.webp",
   lesson1_2: "key-confident.webp",
   lesson1_3: "key-wave.webp",
-  lesson1_4: "key-idea-open.webp",
+  lesson1_4: "fly_welcome_no_bg.png",
   lesson1_5: "key-arms-crossed.webp",
   lesson2_1: "key-thumb.webp",
   lesson2_2: "key-confident.webp",
@@ -201,16 +207,16 @@ const lessonCompletionAvatarByLessonId = {
   lesson3_1: "key-thumb.webp",
   lesson3_2: "key-wave.webp",
   lesson3_3: "key-confident.webp",
-  lesson3_4: "key-idea-open.webp",
+  lesson3_4: "fly_welcome_no_bg.png",
   lesson3_5: "key-arms-crossed.webp",
   lesson4_1: "key-thumb.webp",
-  lesson4_2: "key-idea-open.webp",
+  lesson4_2: "fly_welcome_no_bg.png",
   lesson4_3: "key-confident.webp",
   lesson4_4: "key-thinking.webp",
   lesson4_5: "key-arms-crossed.webp",
   lesson5_1: "key-thumb.webp",
   lesson5_2: "key-confident.webp",
-  lesson5_3: "key-idea-front.webp",
+  lesson5_3: "key-idea.webp",
   lesson5_4: "key-wave.webp",
   lesson5_5: "key-book.webp",
   lesson6_1: "key-thumb.webp",
@@ -219,23 +225,23 @@ const lessonCompletionAvatarByLessonId = {
   lesson6_4: "key-wave.webp",
   lesson6_5: "key-book.webp",
   lesson7_1: "key-thumb.webp",
-  lesson7_2: "key-idea-open.webp",
+  lesson7_2: "fly_welcome_no_bg.png",
   lesson7_3: "key-confident.webp",
   lesson7_4: "key-wave.webp",
   lesson7_5: "key-book.webp",
   lesson8_1: "key-thumb.webp",
   lesson8_2: "key-confident.webp",
-  lesson8_3: "key-idea-front.webp",
+  lesson8_3: "key-idea.webp",
   lesson8_4: "key-wave.webp",
   lesson8_5: "key-book.webp",
   lesson9_1: "key-thumb.webp",
   lesson9_2: "key-confident.webp",
-  lesson9_3: "key-idea-open.webp",
+  lesson9_3: "fly_welcome_no_bg.png",
   lesson9_4: "key-wave.webp",
   lesson9_5: "key-book.webp",
   lesson10_1: "key-thumb.webp",
   lesson10_2: "key-confident.webp",
-  lesson10_3: "key-idea-front.webp",
+  lesson10_3: "key-idea.webp",
   lesson10_4: "key-wave.webp",
   lesson10_5: "key-completion.webp",
   lesson11_1: "key-wave.webp",
@@ -273,12 +279,12 @@ function setDialogCharacterImage(character, src) {
 
 function lessonTipAvatarSrcFor(lesson) {
   const fileName = lessonTipAvatarByLessonId[lesson?.id] || "key-wave.webp";
-  return `assets/key/${fileName}`;
+  return keyAssetSrc(fileName);
 }
 
 function lessonCompletionAvatarSrcFor(lesson) {
   const fileName = lessonCompletionAvatarByLessonId[lesson?.id] || "key-completion.webp";
-  return `assets/key/${fileName}`;
+  return keyAssetSrc(fileName);
 }
 
 function currentLessonTips() {
@@ -529,7 +535,7 @@ function isFingeringTourCardEventTarget(target) {
 
 function isPrivacyConsentEventTarget(target) {
   const privacyConsent = document.querySelector("#privacyConsent");
-  return Boolean(privacyConsent?.open && target instanceof Node && privacyConsent.contains(target));
+  return Boolean(privacyConsent && !privacyConsent.hidden && target instanceof Node && privacyConsent.contains(target));
 }
 
 function isFingeringTourStepEventTarget(target) {

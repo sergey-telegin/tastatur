@@ -141,7 +141,10 @@
   transform: translateY(-78px);
 }
 
-.privacy-consent-active .lesson-tip-message {
+.privacy-consent-active .lesson-tip-message,
+.privacy-consent-active .guided-tour-card,
+.privacy-consent-active .guided-tour-menu-marker,
+.privacy-consent-active .guided-tour-target {
   pointer-events: none;
 }
 
@@ -230,6 +233,31 @@
   min-height: 38px;
 }
 
+.apply-btn.lesson-tip-start,
+.guided-tour-card .apply-btn,
+.privacy-consent-actions .apply-btn {
+  background: #f3f4f6;
+  color: #050608;
+  box-shadow: 0 8px 20px rgb(0 0 0 / 0.22);
+  transition: background 140ms ease, box-shadow 140ms ease, transform 140ms ease, filter 140ms ease;
+}
+
+.apply-btn.lesson-tip-start:hover,
+.guided-tour-card .apply-btn:hover,
+.privacy-consent-actions .apply-btn:hover {
+  background: #fff;
+  box-shadow: 0 10px 26px rgb(0 0 0 / 0.28);
+  filter: brightness(1.03);
+  transform: translateY(-1px);
+}
+
+.apply-btn.lesson-tip-start:active,
+.guided-tour-card .apply-btn:active,
+.privacy-consent-actions .apply-btn:active {
+  box-shadow: 0 5px 14px rgb(0 0 0 / 0.24);
+  transform: translateY(0);
+}
+
 .privacy-consent {
   position: fixed;
   z-index: 2147483647;
@@ -249,11 +277,11 @@
   display: flex;
   justify-content: center;
   overflow: visible;
+  pointer-events: none;
 }
 
-.privacy-consent::backdrop {
-  background: transparent;
-  pointer-events: none;
+.privacy-consent[hidden] {
+  display: none;
 }
 
 .privacy-consent-panel {
@@ -302,29 +330,29 @@
 
 .privacy-consent-actions .ghost-btn,
 .privacy-consent-actions .apply-btn {
+  position: relative;
+  z-index: 1;
   min-width: 128px;
   border-radius: 7px;
   padding: 0 16px;
+  pointer-events: auto;
+  user-select: none;
 }
 
 .privacy-consent-actions .ghost-btn {
   background: #8e929a;
   color: #050608;
+  transition: background 140ms ease, box-shadow 140ms ease, transform 140ms ease, filter 140ms ease;
 }
 
 .privacy-consent-actions .ghost-btn:hover {
   background: #a1a5ad;
   color: #050608;
+  box-shadow: 0 8px 20px rgb(0 0 0 / 0.22);
+  filter: brightness(1.02);
+  transform: translateY(-1px);
 }
 
-.privacy-consent-actions .apply-btn {
-  background: #f3f4f6;
-  color: #050608;
-}
-
-.privacy-consent-actions .apply-btn:hover {
-  background: #fff;
-}
 
 .privacy-consent-actions .ghost-btn:focus-visible,
 .privacy-consent-actions .apply-btn:focus-visible {
@@ -1246,6 +1274,16 @@
   color: var(--inverse-text);
   cursor: pointer;
   font-weight: 800;
+  transition: background 140ms ease, box-shadow 140ms ease, color 140ms ease, transform 140ms ease, filter 140ms ease;
+}
+
+.apply-btn:hover {
+  filter: brightness(1.06);
+  transform: translateY(-1px);
+}
+
+.apply-btn:active {
+  transform: translateY(0);
 }
 
 .status {

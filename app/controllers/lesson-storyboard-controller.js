@@ -1,30 +1,36 @@
 function isLessonStoryboardModeEnabled() {
-  return new URLSearchParams(window.location.search).has("lessonStoryboard");
+  const params = new URLSearchParams(window.location.search);
+  return params.has("lessonStoryboard") ||
+    params.has("roadmap") ||
+    params.get("mode") === "roadmap" ||
+    window.location.hash === "#lessonStoryboard" ||
+    window.location.hash === "#roadmap" ||
+    window.location.pathname.endsWith("/roadmap.html");
 }
 
 const storyboardKeyImages = [
-  "1.webp",
-  "fly_welcome_no_bg.webp",
+  "fly_welcome_no_bg.png",
   "key-arms-crossed.webp",
   "key-book.webp",
   "key-completion.webp",
   "key-confident.webp",
   "key-explain.webp",
-  "key-idea-front.webp",
-  "key-idea-open.webp",
-  "key-idea-small.webp",
   "key-idea.webp",
-  "key-onboarding.webp",
-  "key-open-soft.webp",
   "key-please.webp",
   "key-point-strict.webp",
-  "key-salute.webp",
-  "key-shrug.webp",
   "key-stop.webp",
   "key-thinking.webp",
   "key-thumb.webp",
   "key-wave.webp"
 ];
+
+function storyboardKeyAssetSrc(fileName) {
+  return typeof keyAssetSrc === "function" ? keyAssetSrc(fileName) : "assets/key/" + fileName;
+}
+
+function storyboardImageFileNameFromSrc(src) {
+  return String(src || "").replace("assets/key/", "").split("?")[0];
+}
 
 const storyboardDefaultCompletionText = {
   ru: "Отлично. Молодец. Идём дальше.",
@@ -71,6 +77,81 @@ function storyboardCardCategory(type) {
   return type.includes("Image") || type === "imageBank" ? "image" : "text";
 }
 
+function storyboardImageScalePercent(state) {
+  return `${Math.round((state.imageScale || 1) * 100)}%`;
+}
+
+function setStoryboardImageScale(state, scale) {
+  state.imageScale = Math.min(2.6, Math.max(0.55, scale));
+  renderLessonStoryboard(state);
+}
+
+function closeStoryboardImagePreview() {
+  document.querySelector("#storyboardImagePreview")?.remove();
+}
+
+function storyboardPreviewImageList(fileName) {
+  return storyboardKeyImages.includes(fileName)
+    ? storyboardKeyImages
+    : [fileName, ...storyboardKeyImages.filter(image => image !== fileName)];
+}
+
+function openStoryboardImagePreview(fileName) {
+  closeStoryboardImagePreview();
+
+  const images = storyboardPreviewImageList(fileName);
+  let imageIndex = Math.max(0, images.indexOf(fileName));
+  const overlay = document.createElement("div");
+  overlay.className = "storyboard-image-preview";
+  overlay.id = "storyboardImagePreview";
+  overlay.tabIndex = -1;
+  overlay.innerHTML = [
+    '<button class="storyboard-image-preview-close" type="button" aria-label="Закрыть">×</button>',
+    '<button class="storyboard-image-preview-nav storyboard-image-preview-prev" type="button" aria-label="Предыдущая картинка">‹</button>',
+    '<figure class="storyboard-image-preview-frame">',
+    '<img alt="">',
+    '<figcaption></figcaption>',
+    '</figure>',
+    '<button class="storyboard-image-preview-nav storyboard-image-preview-next" type="button" aria-label="Следующая картинка">›</button>'
+  ].join("");
+
+  const image = overlay.querySelector("img");
+  const caption = overlay.querySelector("figcaption");
+  const renderPreviewImage = () => {
+    const currentFileName = images[imageIndex];
+    image.src = storyboardKeyAssetSrc(currentFileName);
+    caption.textContent = currentFileName;
+  };
+  const shiftPreviewImage = direction => {
+    imageIndex = (imageIndex + direction + images.length) % images.length;
+    renderPreviewImage();
+  };
+
+  overlay.addEventListener("click", event => {
+    if (event.target === overlay) closeStoryboardImagePreview();
+  });
+  overlay.addEventListener("keydown", event => {
+    if (event.key === "Escape") {
+      closeStoryboardImagePreview();
+      return;
+    }
+    if (event.key === "ArrowLeft") {
+      event.preventDefault();
+      shiftPreviewImage(-1);
+    }
+    if (event.key === "ArrowRight") {
+      event.preventDefault();
+      shiftPreviewImage(1);
+    }
+  });
+  overlay.querySelector(".storyboard-image-preview-close").addEventListener("click", closeStoryboardImagePreview);
+  overlay.querySelector(".storyboard-image-preview-prev").addEventListener("click", () => shiftPreviewImage(-1));
+  overlay.querySelector(".storyboard-image-preview-next").addEventListener("click", () => shiftPreviewImage(1));
+  document.body.append(overlay);
+  renderPreviewImage();
+  overlay.focus({ preventScroll: true });
+}
+
 function createStoryboardCard(state, card) {
   const node = document.createElement("article");
   node.className = `storyboard-card ${storyboardCardCategory(card.type) === "image" ? "storyboard-image-card" : ""}`;
@@ -90,13 +171,21 @@ function createStoryboardCard(state, card) {
   node.append(title);
 
   if (storyboardCardCategory(card.type) === "image") {
+    const imageStage = document.createElement("div");
+    imageStage.className = "storyboard-image-stage";
     const image = document.createElement("img");
-    image.src = `assets/key/${card.value}`;
+    image.src = storyboardKeyAssetSrc(card.value);
     image.alt = "";
+    imageStage.addEventListener("dblclick", event => {
+      event.preventDefault();
+      event.stopPropagation();
+      openStoryboardImagePreview(card.value);
+    });
+    imageStage.append(image);
     const name = document.createElement("div");
     name.className = "storyboard-image-name";
     name.textContent = card.value;
-    node.append(image, name);
+    node.append(imageStage, name);
   } else {
     const editor = document.createElement("textarea");
     editor.className = "storyboard-text-editor";
@@ -254,10 +343,10 @@ function createStoryboardInitialState() {
       const number = `${moduleIndex + 1}.${lessonIndex + 1}`;
       const moduleTitle = storyboardLocalizedMap(module.title, sourceLanguages);
       const lessonTitle = storyboardLocalizedMap(lesson.title, sourceLanguages);
-      const introImage = (typeof lessonTipAvatarSrcFor === "function" ? lessonTipAvatarSrcFor(lesson) : "assets/key/key-wave.webp").replace("assets/key/", "");
+      const introImage = storyboardImageFileNameFromSrc(typeof lessonTipAvatarSrcFor === "function" ? lessonTipAvatarSrcFor(lesson) : "assets/key/key-wave.webp");
       const introTip = storyboardLocalizedMap(lesson.tips, sourceLanguages);
       const nextModuleText = storyboardLocalizedMap(storyboardLessonIntroPurpose(lesson), sourceLanguages);
-      const completionImage = (typeof lessonCompletionAvatarSrcFor === "function" ? lessonCompletionAvatarSrcFor(lesson) : "assets/key/key-completion.webp").replace("assets/key/", "");
+      const completionImage = storyboardImageFileNameFromSrc(typeof lessonCompletionAvatarSrcFor === "function" ? lessonCompletionAvatarSrcFor(lesson) : "assets/key/key-completion.webp");
       const completionText = storyboardLocalizedMap(lesson.completion, sourceLanguages, storyboardDefaultCompletionText);
 
       lessons.push({
@@ -287,6 +376,7 @@ function createStoryboardInitialState() {
     imageBank,
     languages: sourceLanguages,
     lessons,
+    imageScale: 1,
     nextCardId,
     parking: [],
     previewLanguage: currentLanguage || sourceLanguages[0] || "en"
@@ -311,8 +401,8 @@ function renderLessonStoryboard(state) {
 
   const table = board.querySelector("#storyboardTable");
   const parking = board.querySelector("#storyboardParking");
-  const imageBank = board.querySelector("#storyboardImageBank");
   const languageSelect = board.querySelector("#storyboardLanguage");
+  const imageScaleValue = board.querySelector("#storyboardImageScaleValue");
 
   languageSelect.innerHTML = "";
   state.languages.forEach(language => {
@@ -322,6 +412,11 @@ function renderLessonStoryboard(state) {
     option.selected = language === state.previewLanguage;
     languageSelect.append(option);
   });
+  if (imageScaleValue) {
+    imageScaleValue.textContent = storyboardImageScalePercent(state);
+  }
+  board.style.setProperty("--storyboard-image-width", storyboardImageScalePercent(state));
+  board.style.setProperty("--storyboard-image-max-height", `${Math.round(88 * (state.imageScale || 1))}px`);
 
   table.innerHTML = "";
   const header = document.createElement("div");
@@ -378,15 +473,6 @@ function renderLessonStoryboard(state) {
     });
   }
 
-  imageBank.innerHTML = "";
-  state.imageBank.forEach(cardId => {
-    const card = storyboardCard(state, cardId);
-    const wrapper = document.createElement("div");
-    wrapper.className = "storyboard-bank-card";
-    wrapper.dataset.storyboardSource = "bank";
-    wrapper.append(createStoryboardCard(state, card));
-    imageBank.append(wrapper);
-  });
 }
 
 function exportLessonStoryboard(state) {
@@ -429,12 +515,17 @@ function initializeLessonStoryboardMode() {
   board.id = "lessonStoryboardBoard";
   board.innerHTML = `
     <header class="storyboard-topbar">
-      <h1 class="storyboard-title">Lesson storyboard</h1>
+      <h1 class="storyboard-title">Дорожная карта</h1>
       <div class="storyboard-controls">
         <label>
           Preview
           <select class="storyboard-select" id="storyboardLanguage"></select>
         </label>
+        <div class="storyboard-scale-control" aria-label="Image zoom">
+          <button class="storyboard-button storyboard-scale-button" id="storyboardImageZoomOut" type="button">-</button>
+          <span class="storyboard-scale-value" id="storyboardImageScaleValue">100%</span>
+          <button class="storyboard-button storyboard-scale-button" id="storyboardImageZoomIn" type="button">+</button>
+        </div>
         <button class="storyboard-button" id="storyboardExport" type="button">Export JSON</button>
       </div>
     </header>
@@ -444,18 +535,15 @@ function initializeLessonStoryboardMode() {
       </div>
       <aside class="storyboard-side">
         <section class="storyboard-side-section">
-          <h2 class="storyboard-side-title">Parking</h2>
+          <h2 class="storyboard-side-title">Черновик</h2>
+          <p class="storyboard-side-note">Сюда можно временно убирать карточки из таблицы и потом возвращать их обратно.</p>
           <div class="storyboard-parking" id="storyboardParking"></div>
-        </section>
-        <section class="storyboard-side-section">
-          <h2 class="storyboard-side-title">Image bank</h2>
-          <div class="storyboard-image-bank" id="storyboardImageBank"></div>
         </section>
       </aside>
     </main>
     <footer class="storyboard-footer">
       <textarea class="storyboard-export-output" id="storyboardExportOutput" readonly aria-label="Storyboard JSON"></textarea>
-      <span>Drag cards between slots. Dropped-out cards stay in Parking.</span>
+      <span>Перетаскивай карточки между ячейками. Всё лишнее можно временно положить в Черновик.</span>
     </footer>
   `;
   document.body.append(board);
@@ -466,6 +554,17 @@ function initializeLessonStoryboardMode() {
   board.querySelector("#storyboardLanguage").addEventListener("change", event => {
     state.previewLanguage = event.target.value;
     renderLessonStoryboard(state);
+  });
+  board.querySelector("#storyboardImageZoomOut").addEventListener("click", () => {
+    setStoryboardImageScale(state, (state.imageScale || 1) - 0.15);
+  });
+  board.querySelector("#storyboardImageZoomIn").addEventListener("click", () => {
+    setStoryboardImageScale(state, (state.imageScale || 1) + 0.15);
+  });
+  board.addEventListener("keydown", event => {
+    if (event.key === "Escape") {
+      closeStoryboardImagePreview();
+    }
   });
 
   board.querySelector("#storyboardExport").addEventListener("click", () => {

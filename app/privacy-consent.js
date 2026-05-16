@@ -65,16 +65,43 @@ function updateAnalyticsConsent(analytics) {
   });
 }
 
+function isLessonStoryboardUrl() {
+  const params = new URLSearchParams(window.location.search);
+  return params.has("lessonStoryboard") ||
+    params.has("roadmap") ||
+    params.get("mode") === "roadmap" ||
+    window.location.hash === "#lessonStoryboard" ||
+    window.location.hash === "#roadmap" ||
+    window.location.pathname.endsWith("/roadmap.html");
+}
+
 function privacyConsentLanguage() {
   if (typeof currentLanguage !== "undefined" && privacyConsentCopy[currentLanguage]) {
     return currentLanguage;
   }
 
-  const browserLanguage = String(navigator.language || "").toLowerCase().split("-")[0];
-  return privacyConsentCopy[browserLanguage] ? browserLanguage : "en";
+  try {
+    const savedLanguage = JSON.parse(localStorage.getItem("keyboard-layout-editor-v1"))?.currentLanguage;
+    if (privacyConsentCopy[savedLanguage]) return savedLanguage;
+  } catch {
+    // Fall back to the browser language if saved settings are unavailable.
+  }
+
+  const browserLanguages = Array.isArray(navigator.languages) && navigator.languages.length
+    ? navigator.languages
+    : [navigator.language || navigator.userLanguage].filter(Boolean);
+
+  for (const browserLanguage of browserLanguages) {
+    const languageId = String(browserLanguage).toLowerCase().split("-")[0];
+    if (privacyConsentCopy[languageId]) return languageId;
+  }
+
+  return "en";
 }
 
 function initializePrivacyConsent() {
+  if (isLessonStoryboardUrl()) return;
+
   const banner = document.querySelector("#privacyConsent");
   const title = document.querySelector("#privacyConsentTitle");
   const text = document.querySelector("#privacyConsentText");
@@ -82,36 +109,54 @@ function initializePrivacyConsent() {
   const reject = document.querySelector("#privacyConsentReject");
   if (!banner || !title || !text || !accept || !reject) return;
 
+  const activeDialogHost = () => {
+    const openDialogs = Array.from(document.querySelectorAll("dialog[open]"));
+    return openDialogs.at(-1) || document.body;
+  };
+
+  const mountConsentBanner = () => {
+    const host = activeDialogHost();
+    if (banner.parentElement !== host) {
+      host.append(banner);
+    }
+  };
+
+  const hideConsentBanner = () => {
+    banner.hidden = true;
+    banner.setAttribute("aria-hidden", "true");
+    document.documentElement.classList.remove("privacy-consent-active");
+    if (banner.parentElement !== document.body) {
+      document.body.append(banner);
+    }
+  };
+
   const savedConsent = readPrivacyConsent();
   if (savedConsent && typeof savedConsent.analytics === "boolean") {
+    hideConsentBanner();
     updateAnalyticsConsent(savedConsent.analytics);
     return;
   }
 
-  const copy = privacyConsentCopy[privacyConsentLanguage()];
-  title.textContent = copy.title;
-  text.textContent = copy.text;
-  accept.textContent = copy.accept;
-  reject.textContent = copy.reject;
+  const applyPrivacyConsentCopy = () => {
+    const copy = privacyConsentCopy[privacyConsentLanguage()];
+    title.textContent = copy.title;
+    text.textContent = copy.text;
+    accept.textContent = copy.accept;
+    reject.textContent = copy.reject;
+  };
+
+  applyPrivacyConsentCopy();
+  window.addEventListener("flykey:languagechange", applyPrivacyConsentCopy);
 
   let consentResolved = false;
   let dialogObserver = null;
 
   const showConsentDialog = () => {
     if (consentResolved) return;
+    mountConsentBanner();
+    banner.hidden = false;
+    banner.setAttribute("aria-hidden", "false");
     document.documentElement.classList.add("privacy-consent-active");
-
-    if (typeof banner.showModal === "function") {
-      try {
-        if (banner.open) banner.close();
-        banner.showModal();
-        return;
-      } catch {
-        // Fall through to the non-modal fallback if the browser refuses showModal.
-      }
-    }
-
-    banner.setAttribute("open", "");
   };
 
   const queueConsentDialog = () => {
@@ -119,23 +164,35 @@ function initializePrivacyConsent() {
   };
 
   const closeWithChoice = analytics => {
+    if (consentResolved) return;
     consentResolved = true;
     dialogObserver?.disconnect();
+    window.removeEventListener("flykey:languagechange", applyPrivacyConsentCopy);
+    hideConsentBanner();
     savePrivacyConsent(analytics);
-    updateAnalyticsConsent(analytics);
-    document.documentElement.classList.remove("privacy-consent-active");
-    if (typeof banner.close === "function" && banner.open) {
-      banner.close();
-    } else {
-      banner.removeAttribute("open");
+    try {
+      updateAnalyticsConsent(analytics);
+    } catch (error) {
+      console.warn("FlyKey analytics consent update failed", error);
     }
   };
 
-  accept.addEventListener("click", () => closeWithChoice(true));
-  reject.addEventListener("click", () => closeWithChoice(false));
-  banner.addEventListener("cancel", event => {
+  const handleConsentChoice = analytics => event => {
     event.preventDefault();
-    closeWithChoice(false);
+    event.stopPropagation();
+    closeWithChoice(analytics);
+  };
+
+  ["pointerdown", "click", "touchstart"].forEach(eventName => {
+    accept.addEventListener(eventName, handleConsentChoice(true), { capture: true });
+    reject.addEventListener(eventName, handleConsentChoice(false), { capture: true });
+  });
+  banner.addEventListener("click", event => {
+    const button = event.target.closest?.("#privacyConsentAccept, #privacyConsentReject");
+    if (!button) return;
+    event.preventDefault();
+    event.stopPropagation();
+    closeWithChoice(button === accept);
   });
 
   dialogObserver = new MutationObserver(mutations => {
