@@ -21,6 +21,11 @@
         id: "lesson12_1",
         title: { ru: "Пользовательские тексты", de: "Eigene Texte", en: "Custom Texts" },
         description: { ru: "Вставка текста и настройки перед стартом", de: "Text einfügen und Einstellungen vor dem Start", en: "Paste text and tune settings before start" },
+        tips: {
+          ru: ["Свой текст полезен, когда хочется тренировать именно те слова и фразы, которые вы реально печатаете каждый день."],
+          de: ["Eigene Texte helfen, genau die Wörter und Sätze zu üben, die du im Alltag wirklich tippst."],
+          en: ["Custom text helps you practice the exact words and phrases you really type every day."]
+        },
         customPractice: { type: "custom" },
         symbolPolicy: { scope: "free-text", custom: true },
         target: { lines: 10, accuracy: 90 },

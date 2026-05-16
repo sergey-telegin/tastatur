@@ -7,6 +7,18 @@ const privacyConsentCopy = {
     accept: "Принять",
     reject: "Отклонить"
   },
+  uk: {
+    title: "Конфіденційність",
+    text: "FlyKey використовує Google Analytics, щоб розуміти, як розвивається сайт. Аналітика вмикається лише з вашої згоди.",
+    accept: "Прийняти",
+    reject: "Відхилити"
+  },
+  kk: {
+    title: "Құпиялылық",
+    text: "FlyKey сайттың қалай дамып жатқанын түсіну үшін Google Analytics қолданады. Аналитика тек сіздің келісіміңізбен қосылады.",
+    accept: "Қабылдау",
+    reject: "Бас тарту"
+  },
   en: {
     title: "Privacy",
     text: "FlyKey uses Google Analytics to understand how the site is used. Analytics is enabled only with your consent.",

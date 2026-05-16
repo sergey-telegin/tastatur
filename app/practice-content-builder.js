@@ -31,261 +31,365 @@ const defaultLessonCompletionText = {
 const lessonIntroPurpose = {
   lesson1_1: {
     ru: "Почувствовать стартовую позицию левой руки.",
+    uk: "Відчути стартову позицію лівої руки.",
+    kk: "Сол қолдың бастапқы қалпын сезіну.",
     de: "Die Grundposition der linken Hand fühlen.",
     en: "Feel the left-hand starting position."
   },
   lesson1_2: {
     ru: "Подключить правую руку к домашнему ряду.",
+    uk: "Підключити праву руку до домашнього ряду.",
+    kk: "Оң қолды негізгі қатарға қосу.",
     de: "Die rechte Hand zur Grundreihe bringen.",
     en: "Bring the right hand into the home row."
   },
   lesson1_3: {
     ru: "Собрать обе руки в один спокойный ритм.",
+    uk: "Зібрати обидві руки в один спокійний ритм.",
+    kk: "Екі қолды бір тыныш ырғаққа келтіру.",
     de: "Beide Hände in einen ruhigen Rhythmus bringen.",
     en: "Bring both hands into one calm rhythm."
   },
   lesson1_4: {
     ru: "Перенести домашний ряд в короткие слова.",
+    uk: "Перенести домашній ряд у короткі слова.",
+    kk: "Негізгі қатарды қысқа сөздерге көшіру.",
     de: "Die Grundreihe in kurze Wörter übertragen.",
     en: "Move the home row into short words."
   },
   lesson1_5: {
     ru: "Проверить, насколько уверенно держится база.",
+    uk: "Перевірити, наскільки впевнено тримається база.",
+    kk: "Негіздің қаншалықты сенімді бекігенін тексеру.",
     de: "Prüfen, wie stabil die Basis sitzt.",
     en: "Check how confidently the base holds."
   },
   lesson2_1: {
     ru: "Освоить центральные движения левой руки.",
+    uk: "Освоїти центральні рухи лівої руки.",
+    kk: "Сол қолдың орталық қимылдарын меңгеру.",
     de: "Zentrale Bewegungen der linken Hand üben.",
     en: "Learn the left-hand center movements."
   },
   lesson2_2: {
     ru: "Освоить центральные движения правой руки.",
+    uk: "Освоїти центральні рухи правої руки.",
+    kk: "Оң қолдың орталық қимылдарын меңгеру.",
     de: "Zentrale Bewegungen der rechten Hand üben.",
     en: "Learn the right-hand center movements."
   },
   lesson2_3: {
     ru: "Добавить первые переходы к нижнему ряду.",
+    uk: "Додати перші переходи до нижнього ряду.",
+    kk: "Төменгі қатарға алғашқы ауысуларды қосу.",
     de: "Erste Wege zur unteren Reihe hinzufügen.",
     en: "Add the first moves to the bottom row."
   },
   lesson2_4: {
     ru: "Собрать новые клавиши в короткие слова.",
+    uk: "Зібрати нові клавіші в короткі слова.",
+    kk: "Жаңа пернелерді қысқа сөздерге жинау.",
     de: "Neue Tasten in kurze Wörter bringen.",
     en: "Turn the new keys into short words."
   },
   lesson2_5: {
     ru: "Проверить центр клавиатуры без лишней спешки.",
+    uk: "Перевірити центр клавіатури без зайвого поспіху.",
+    kk: "Пернетақта ортасын артық асықпай тексеру.",
     de: "Das Tastaturzentrum ruhig prüfen.",
     en: "Check the keyboard center without rushing."
   },
   lesson3_1: {
     ru: "Научить левую руку подниматься вверх.",
+    uk: "Навчити ліву руку підніматися вгору.",
+    kk: "Сол қолды жоғары көтерілуге үйрету.",
     de: "Die linke Hand nach oben führen.",
     en: "Teach the left hand to move upward."
   },
   lesson3_2: {
     ru: "Научить правую руку подниматься вверх.",
+    uk: "Навчити праву руку підніматися вгору.",
+    kk: "Оң қолды жоғары көтерілуге үйрету.",
     de: "Die rechte Hand nach oben führen.",
     en: "Teach the right hand to move upward."
   },
   lesson3_3: {
     ru: "Собрать верхний ряд в цельную зону.",
+    uk: "Зібрати верхній ряд у цілісну зону.",
+    kk: "Жоғарғы қатарды тұтас аймаққа жинау.",
     de: "Die obere Reihe als ganze Zone festigen.",
     en: "Build the top row into one clear zone."
   },
   lesson3_4: {
     ru: "Перенести верхний ряд в короткие слова.",
+    uk: "Перенести верхній ряд у короткі слова.",
+    kk: "Жоғарғы қатарды қысқа сөздерге көшіру.",
     de: "Die obere Reihe in kurze Wörter übertragen.",
     en: "Move the top row into short words."
   },
   lesson3_5: {
     ru: "Проверить верхний ряд в спокойном темпе.",
+    uk: "Перевірити верхній ряд у спокійному темпі.",
+    kk: "Жоғарғы қатарды тыныш қарқында тексеру.",
     de: "Die obere Reihe ruhig prüfen.",
     en: "Check the top row at a calm pace."
   },
   lesson4_1: {
     ru: "Научить левую руку уходить вниз.",
+    uk: "Навчити ліву руку рухатися вниз.",
+    kk: "Сол қолды төмен түсуге үйрету.",
     de: "Die linke Hand nach unten führen.",
     en: "Teach the left hand to move downward."
   },
   lesson4_2: {
     ru: "Научить правую руку уходить вниз.",
+    uk: "Навчити праву руку рухатися вниз.",
+    kk: "Оң қолды төмен түсуге үйрету.",
     de: "Die rechte Hand nach unten führen.",
     en: "Teach the right hand to move downward."
   },
   lesson4_3: {
     ru: "Собрать нижний ряд в устойчивую зону.",
+    uk: "Зібрати нижній ряд у стійку зону.",
+    kk: "Төменгі қатарды тұрақты аймаққа жинау.",
     de: "Die untere Reihe stabilisieren.",
     en: "Build the bottom row into a stable zone."
   },
   lesson4_4: {
     ru: "Использовать нижний ряд в коротких словах.",
+    uk: "Використати нижній ряд у коротких словах.",
+    kk: "Төменгі қатарды қысқа сөздерде қолдану.",
     de: "Die untere Reihe in kurzen Wörtern nutzen.",
     en: "Use the bottom row in short words."
   },
   lesson4_5: {
     ru: "Проверить нижний ряд и возврат домой.",
+    uk: "Перевірити нижній ряд і повернення додому.",
+    kk: "Төменгі қатарды және негізгі қатарға оралуды тексеру.",
     de: "Untere Reihe und Rückkehr prüfen.",
     en: "Check the bottom row and return home."
   },
   lesson5_1: {
     ru: "Освоить вертикальные переходы слева.",
+    uk: "Освоїти вертикальні переходи ліворуч.",
+    kk: "Сол жақтағы тік ауысуларды меңгеру.",
     de: "Vertikale Wege links üben.",
     en: "Practice the left-side vertical paths."
   },
   lesson5_2: {
     ru: "Освоить вертикальные переходы справа.",
+    uk: "Освоїти вертикальні переходи праворуч.",
+    kk: "Оң жақтағы тік ауысуларды меңгеру.",
     de: "Vertikale Wege rechts üben.",
     en: "Practice the right-side vertical paths."
   },
   lesson5_3: {
     ru: "Добавить Shift без лишнего напряжения.",
+    uk: "Додати Shift без зайвого напруження.",
+    kk: "Shift пернесін артық күшсіз қосу.",
     de: "Shift ohne unnötige Spannung hinzufügen.",
     en: "Add Shift without extra tension."
   },
   lesson5_4: {
     ru: "Связать дальние движения в слова.",
+    uk: "Пов'язати далекі рухи у слова.",
+    kk: "Алыс қимылдарды сөздерге байланыстыру.",
     de: "Weite Wege in Wörter verbinden.",
     en: "Connect longer reaches into words."
   },
   lesson5_5: {
     ru: "Проверить первую большую часть навыка.",
+    uk: "Перевірити першу велику частину навички.",
+    kk: "Дағдының алғашқы үлкен бөлігін тексеру.",
     de: "Den ersten großen Lernblock prüfen.",
     en: "Check the first big skill block."
   },
   lesson6_1: {
     ru: "Добавить левую часть верхнего ряда и цифр.",
+    uk: "Додати ліву частину верхнього ряду й цифр.",
+    kk: "Жоғарғы қатар мен сандардың сол бөлігін қосу.",
     de: "Linke obere Reihe und Zahlen hinzufügen.",
     en: "Add the left top row and numbers."
   },
   lesson6_2: {
     ru: "Добавить правую часть верхнего ряда и цифр.",
+    uk: "Додати праву частину верхнього ряду й цифр.",
+    kk: "Жоғарғы қатар мен сандардың оң бөлігін қосу.",
     de: "Rechte obere Reihe und Zahlen hinzufügen.",
     en: "Add the right top row and numbers."
   },
   lesson6_3: {
     ru: "Собрать весь цифровой ряд в порядок.",
+    uk: "Зібрати весь цифровий ряд у порядок.",
+    kk: "Бүкіл сандық қатарды ретке келтіру.",
     de: "Die ganze Zahlenreihe ordnen.",
     en: "Bring the full number row into order."
   },
   lesson6_4: {
     ru: "Смешать буквы и цифры без потери ритма.",
+    uk: "Змішати літери й цифри без втрати ритму.",
+    kk: "Әріптер мен сандарды ырғақты жоғалтпай араластыру.",
     de: "Buchstaben und Zahlen rhythmisch mischen.",
     en: "Mix letters and numbers without losing rhythm."
   },
   lesson6_5: {
     ru: "Проверить цифры вместе с буквами.",
+    uk: "Перевірити цифри разом із літерами.",
+    kk: "Сандарды әріптермен бірге тексеру.",
     de: "Zahlen zusammen mit Buchstaben prüfen.",
     en: "Check numbers together with letters."
   },
   lesson7_1: {
     ru: "Добавить точку и запятую в привычный ритм.",
+    uk: "Додати крапку й кому у звичний ритм.",
+    kk: "Нүкте мен үтірді үйреншікті ырғаққа қосу.",
     de: "Punkt und Komma in den Rhythmus bringen.",
     en: "Add period and comma to the rhythm."
   },
   lesson7_2: {
     ru: "Освоить вопрос и восклицание с Shift.",
+    uk: "Освоїти питання й оклик із Shift.",
+    kk: "Сұрақ пен леп белгілерін Shift арқылы меңгеру.",
     de: "Frage und Ausruf mit Shift üben.",
     en: "Practice question and exclamation with Shift."
   },
   lesson7_3: {
     ru: "Разобрать сложные знаки без остановок.",
+    uk: "Розібрати складні знаки без зупинок.",
+    kk: "Күрделі белгілерді тоқтамай меңгеру.",
     de: "Schwierige Zeichen ohne Stopps üben.",
     en: "Handle complex signs without stopping."
   },
   lesson7_4: {
     ru: "Печатать фразы со знаками плавнее.",
+    uk: "Друкувати фрази зі знаками плавніше.",
+    kk: "Белгілері бар тіркестерді жұмсағырақ теру.",
     de: "Sätze mit Zeichen flüssiger tippen.",
     en: "Type signed phrases more smoothly."
   },
   lesson7_5: {
     ru: "Проверить пунктуацию в живых фразах.",
+    uk: "Перевірити пунктуацію в живих фразах.",
+    kk: "Тірі тіркестердегі тыныс белгілерін тексеру.",
     de: "Zeichensetzung in echten Sätzen prüfen.",
     en: "Check punctuation in real phrases."
   },
   lesson8_1: {
     ru: "Отработать частые сочетания левой руки.",
+    uk: "Відпрацювати часті поєднання лівої руки.",
+    kk: "Сол қолдың жиі тіркестерін жаттықтыру.",
     de: "Häufige Kombinationen links üben.",
     en: "Practice frequent left-hand patterns."
   },
   lesson8_2: {
     ru: "Отработать частые сочетания правой руки.",
+    uk: "Відпрацювати часті поєднання правої руки.",
+    kk: "Оң қолдың жиі тіркестерін жаттықтыру.",
     de: "Häufige Kombinationen rechts üben.",
     en: "Practice frequent right-hand patterns."
   },
   lesson8_3: {
     ru: "Смешать частые сочетания обеих рук.",
+    uk: "Змішати часті поєднання обох рук.",
+    kk: "Екі қолдың жиі тіркестерін араластыру.",
     de: "Häufige Kombinationen beider Hände mischen.",
     en: "Mix frequent patterns from both hands."
   },
   lesson8_4: {
     ru: "Нарастить выносливость без гонки.",
+    uk: "Наростити витривалість без гонитви.",
+    kk: "Жарыспай төзімділікті арттыру.",
     de: "Ausdauer ohne Hetze aufbauen.",
     en: "Build endurance without racing."
   },
   lesson8_5: {
     ru: "Проверить частые сочетания и устойчивость.",
+    uk: "Перевірити часті поєднання й стійкість.",
+    kk: "Жиі тіркестер мен тұрақтылықты тексеру.",
     de: "Kombinationen und Stabilität prüfen.",
     en: "Check frequent patterns and stability."
   },
   lesson9_1: {
     ru: "Добавить Shift к левой руке.",
+    uk: "Додати Shift до лівої руки.",
+    kk: "Shift пернесін сол қолға қосу.",
     de: "Shift zur linken Hand hinzufügen.",
     en: "Add Shift to the left hand."
   },
   lesson9_2: {
     ru: "Добавить Shift к правой руке.",
+    uk: "Додати Shift до правої руки.",
+    kk: "Shift пернесін оң қолға қосу.",
     de: "Shift zur rechten Hand hinzufügen.",
     en: "Add Shift to the right hand."
   },
   lesson9_3: {
     ru: "Смешать Shift и частые сочетания.",
+    uk: "Змішати Shift і часті поєднання.",
+    kk: "Shift пен жиі тіркестерді араластыру.",
     de: "Shift und häufige Kombinationen mischen.",
     en: "Mix Shift with frequent patterns."
   },
   lesson9_4: {
     ru: "Удержать ритм на длинных строках.",
+    uk: "Утримати ритм на довгих рядках.",
+    kk: "Ұзын жолдарда ырғақты сақтау.",
     de: "Rhythmus in langen Zeilen halten.",
     en: "Hold rhythm through longer lines."
   },
   lesson9_5: {
     ru: "Проверить Shift в устойчивой практике.",
+    uk: "Перевірити Shift у стійкій практиці.",
+    kk: "Shift пернесін тұрақты жаттығуда тексеру.",
     de: "Shift in stabiler Praxis prüfen.",
     en: "Check Shift in steady practice."
   },
   lesson10_1: {
     ru: "Соединить левую руку, Shift и знаки.",
+    uk: "Поєднати ліву руку, Shift і знаки.",
+    kk: "Сол қолды, Shift пернесін және белгілерді біріктіру.",
     de: "Linke Hand, Shift und Zeichen verbinden.",
     en: "Connect left hand, Shift, and signs."
   },
   lesson10_2: {
     ru: "Соединить правую руку, Shift и знаки.",
+    uk: "Поєднати праву руку, Shift і знаки.",
+    kk: "Оң қолды, Shift пернесін және белгілерді біріктіру.",
     de: "Rechte Hand, Shift und Zeichen verbinden.",
     en: "Connect right hand, Shift, and signs."
   },
   lesson10_3: {
     ru: "Смешать все частые движения вместе.",
+    uk: "Змішати всі часті рухи разом.",
+    kk: "Барлық жиі қимылдарды бірге араластыру.",
     de: "Alle häufigen Bewegungen mischen.",
     en: "Mix all frequent movements together."
   },
   lesson10_4: {
     ru: "Закрепить навык на длинной практике.",
+    uk: "Закріпити навичку на довгій практиці.",
+    kk: "Дағдыны ұзақ жаттығуда бекіту.",
     de: "Den Skill in längerer Praxis festigen.",
     en: "Lock the skill into longer practice."
   },
   lesson10_5: {
     ru: "Проверить весь основной курс.",
+    uk: "Перевірити весь основний курс.",
+    kk: "Бүкіл негізгі курсты тексеру.",
     de: "Den ganzen Grundkurs prüfen.",
     en: "Check the full core course."
   },
   lesson11_1: {
     ru: "Перейти к случайным живым текстам.",
+    uk: "Перейти до випадкових живих текстів.",
+    kk: "Кездейсоқ тірі мәтіндерге көшу.",
     de: "Zu zufälligen echten Texten wechseln.",
     en: "Move into random real text."
   },
   lesson12_1: {
     ru: "Тренировать собственные реальные тексты.",
+    uk: "Тренувати власні реальні тексти.",
+    kk: "Өз нақты мәтіндеріңізді жаттықтыру.",
     de: "Eigene echte Texte trainieren.",
     en: "Train your own real texts."
   }

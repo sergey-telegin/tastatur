@@ -45,6 +45,7 @@ function applySettings(nextSettings, { closeDialog = false } = {}) {
   const nextModules = practiceModulesFor(nextSettings.language);
 
   currentLanguage = nextSettings.language;
+  applyDocumentLanguage();
   currentPracticeModule = nextModules[nextSettings.module] ? nextSettings.module : firstPracticeModuleId(currentLanguage);
   saved.currentLanguage = currentLanguage;
   saved.currentPracticeModule = currentPracticeModule;

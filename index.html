@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>FlyKey — тренажёр слепой печати с подсказками пальцев</title>
-    <meta name="description" content="FlyKey — тренажёр слепой печати с поддержкой русской, английской и немецкой раскладок, ассистентами обучения, подсказками пальцев и гибкой настройкой под пользователя.">
+    <meta name="description" content="FlyKey — тренажёр слепой печати с поддержкой русской, украинской, казахской, немецкой и английской раскладок, ассистентами обучения, подсказками пальцев и гибкой настройкой под пользователя.">
     <meta name="keywords" content="тренажёр слепой печати, слепая печать, клавиатурный тренажёр, печать десятью пальцами, touch typing trainer, blind typing trainer, typing trainer with finger guides, multilingual typing trainer, Schreibtrainer, 10-Finger-System, Tipptrainer">
     <meta name="robots" content="index, follow">
     <meta name="application-name" content="FlyKey">
@@ -24,6 +24,8 @@
     <meta property="og:image:width" content="900">
     <meta property="og:image:height" content="1108">
     <meta property="og:locale" content="ru_RU">
+    <meta property="og:locale:alternate" content="uk_UA">
+    <meta property="og:locale:alternate" content="kk_KZ">
     <meta property="og:locale:alternate" content="en_US">
     <meta property="og:locale:alternate" content="de_DE">
     <meta name="twitter:card" content="summary_large_image">
@@ -38,7 +40,7 @@
         "url": "https://flykey.org/",
         "applicationCategory": "EducationalApplication",
         "operatingSystem": "Any",
-        "inLanguage": ["ru", "en", "de"],
+        "inLanguage": ["ru", "uk", "kk", "de", "en"],
         "description": "FlyKey is a multilingual touch typing trainer with custom keyboard layout support, finger guides, adaptive lessons and flexible user settings.",
         "keywords": [
           "тренажёр слепой печати",
@@ -501,12 +503,12 @@
     <script src="practice-content/modules/module8.js?v=20260514-16"></script>
     <script src="practice-content/modules/module9.js?v=20260514-16"></script>
     <script src="practice-content/modules/module10.js?v=20260514-16"></script>
-    <script src="practice-content/modules/module11.js?v=20260514-16"></script>
-    <script src="practice-content/modules/module12.js?v=20260514-16"></script>
+    <script src="practice-content/modules/module11.js?v=20260516-1"></script>
+    <script src="practice-content/modules/module12.js?v=20260516-1"></script>
     <script src="app/practice-content-builder.js?v=20260516-1"></script>
     <script src="app/data.js?v=20260514-16"></script>
     <script src="app/dom.js?v=20260516-1"></script>
-    <script src="app/state.js?v=20260514-16"></script>
+    <script src="app/state.js?v=20260516-1"></script>
     <script src="app/storage.js?v=20260514-16"></script>
     <script src="app/helpers.js?v=20260514-16"></script>
     <script src="app/audio.js?v=20260514-16"></script>
@@ -520,7 +522,7 @@
     <script src="app/controllers/custom-practice-controller.js?v=20260514-16"></script>
     <script src="app/controllers/fingering-draft.js?v=20260514-16"></script>
     <script src="app/controllers/fingering-controller.js?v=20260514-16"></script>
-    <script src="app/controllers/settings-controller.js?v=20260514-16"></script>
+    <script src="app/controllers/settings-controller.js?v=20260516-1"></script>
     <script src="app/controllers/app-runtime.js?v=20260514-16"></script>
     <script src="app/controllers/hand-calibration-controller.js?v=20260514-16"></script>
     <script src="app/controllers/lesson-storyboard-controller.js?v=20260516-2"></script>
@@ -533,7 +535,7 @@
 
       const practiceContent = window.PRACTICE_CONTENT || {};
     </script>
-    <script src="app/privacy-consent.js?v=20260516-4"></script>
+    <script src="app/privacy-consent.js?v=20260516-6"></script>
     <script>
       initializeApp();
     </script>

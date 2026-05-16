@@ -51,6 +51,10 @@ let alternateLinesEnabled = false;
 let metronomeBpm = 0;
 let practiceTypedValue = "";
 
+function applyDocumentLanguage() {
+  document.documentElement.lang = currentLanguage;
+}
+
 function browserPreferredLanguage() {
   const browserLanguages = Array.isArray(navigator.languages) && navigator.languages.length
     ? navigator.languages
@@ -66,6 +70,7 @@ function browserPreferredLanguage() {
 
 function initializeAppState(savedState = {}) {
   currentLanguage = languages[savedState.currentLanguage] ? savedState.currentLanguage : browserPreferredLanguage();
+  applyDocumentLanguage();
   currentPracticeModule = savedState.currentPracticeModule || "module1";
   saved.currentLanguage = currentLanguage;
   saved.currentPracticeModule = currentPracticeModule;

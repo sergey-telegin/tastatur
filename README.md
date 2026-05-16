@@ -1,2 +1,2 @@
-# tastatur
+# FlyKey
 Keyboard trainer + layout generator

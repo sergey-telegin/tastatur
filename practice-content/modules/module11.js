@@ -21,6 +21,11 @@
         id: "lesson11_1",
         title: { ru: "Случайные тексты", de: "Zufallstexte", en: "Random Texts" },
         description: { ru: "Меню текста и ассистентов перед стартом", de: "Text- und Assistentenmenü vor dem Start", en: "Text and assistant menu before start" },
+        tips: {
+          ru: ["Случайный текст ближе к настоящей печати: меньше повторов, больше живого языка и больше ответственности для пальцев."],
+          de: ["Zufällige Texte sind näher am echten Tippen: weniger Wiederholung, mehr echte Sprache und mehr Verantwortung für die Finger."],
+          en: ["Random text is closer to real typing: less repetition, more living language, and more responsibility for the fingers."]
+        },
         customPractice: { type: "random" },
         symbolPolicy: { scope: "free-text", random: true },
         target: { lines: 10, accuracy: 90 },
