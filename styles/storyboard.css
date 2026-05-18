@@ -92,14 +92,33 @@
   color: var(--on-panel);
 }
 
+.storyboard-apply-button {
+  background: var(--text);
+  color: var(--surface);
+  font-weight: 800;
+}
+
+.storyboard-apply-button:hover {
+  background: var(--on-panel);
+  color: var(--surface);
+}
+
 .storyboard-main {
   display: grid;
-  grid-template-columns: minmax(940px, 1fr) 340px;
+  grid-template-columns: minmax(0, 1fr) 10px var(--storyboard-side-width, 340px);
+  min-height: 0;
+}
+
+.storyboard-workspace {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) 10px var(--storyboard-bottom-height, 220px);
+  min-width: 0;
   min-height: 0;
 }
 
 .storyboard-table-wrap,
-.storyboard-side {
+.storyboard-side,
+.storyboard-bottom-panel {
   min-height: 0;
   overflow: auto;
 }
@@ -107,6 +126,52 @@
 .storyboard-table-wrap {
   padding: 14px;
   background: #000;
+}
+
+.storyboard-resize-handle {
+  position: relative;
+  background: var(--line-soft);
+  touch-action: none;
+}
+
+.storyboard-resize-handle::after {
+  content: "";
+  position: absolute;
+  border-radius: 999px;
+  background: var(--muted);
+  opacity: 0.55;
+}
+
+.storyboard-resize-handle:hover,
+.storyboard-resize-handle:focus-visible,
+.storyboard-resize-handle.is-resizing {
+  background: var(--panel-raised-hover);
+  outline: 2px solid var(--focus-ring);
+  outline-offset: -2px;
+}
+
+.storyboard-resize-handle-side {
+  cursor: col-resize;
+}
+
+.storyboard-resize-handle-side::after {
+  top: 50%;
+  left: 50%;
+  width: 2px;
+  height: 44px;
+  transform: translate(-50%, -50%);
+}
+
+.storyboard-resize-handle-bottom {
+  cursor: row-resize;
+}
+
+.storyboard-resize-handle-bottom::after {
+  top: 50%;
+  left: 50%;
+  width: 44px;
+  height: 2px;
+  transform: translate(-50%, -50%);
 }
 
 .storyboard-table {
@@ -287,18 +352,32 @@
   font-size: 12px;
 }
 
-.storyboard-side {
+.storyboard-side,
+.storyboard-bottom-panel {
   display: grid;
   align-content: start;
   gap: 14px;
   padding: 14px;
-  border-left: 1px solid rgba(255, 255, 255, 0.16);
   background: #050505;
+}
+
+.storyboard-side {
+  border-left: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.storyboard-bottom-panel {
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
 }
 
 .storyboard-side-section {
   display: grid;
   gap: 8px;
+  min-height: 0;
+}
+
+.storyboard-bottom-panel .storyboard-side-section {
+  height: 100%;
+  grid-template-rows: auto auto minmax(0, 1fr);
 }
 
 .storyboard-side-title {
@@ -323,6 +402,13 @@
   border: 1px dashed var(--line-soft);
   border-radius: 8px;
   background: var(--panel);
+}
+
+.storyboard-parking-bottom {
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  align-content: start;
+  min-height: 100%;
+  overflow: auto;
 }
 
 .storyboard-footer {

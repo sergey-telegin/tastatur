@@ -876,8 +876,21 @@ function buildPracticeContentForLanguage(source, language) {
 }
 
 function buildPracticeContent() {
-  const source = ensureKazakhPracticeContent(ensureUkrainianPracticeContent(window.PRACTICE_CONTENT_SOURCE));
+  const bundle = window.FlyKeyContentProvider?.getContentBundle?.() || window.PRACTICE_CONTENT_SOURCE || {};
+  const source = ensureKazakhPracticeContent(ensureUkrainianPracticeContent({
+    meta: bundle.meta,
+    languages: bundle.languages,
+    grades: bundle.grades,
+    modules: bundle.modules || []
+  }));
   const languages = source.languages || ["ru", "uk", "kk", "de", "en"];
+
+  window.PRACTICE_CONTENT_META = {
+    ...(source.meta || window.FLYKEY_CONTENT_VERSION || {}),
+    languages,
+    moduleCount: source.modules?.length || 0,
+    lessonCount: (source.modules || []).reduce((count, module) => count + (module.lessons?.length || 0), 0)
+  };
 
   window.PRACTICE_CONTENT = {};
   languages.forEach(language => {

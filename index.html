@@ -3,10 +3,28 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>FlyKey — тренажёр слепой печати с подсказками пальцев</title>
-    <meta name="description" content="FlyKey — тренажёр слепой печати с поддержкой русской, украинской, казахской, немецкой и английской раскладок, ассистентами обучения, подсказками пальцев и гибкой настройкой под пользователя.">
+    <title>FlyKey — клавиатурный тренажёр слепой печати онлайн</title>
+    <meta name="description" content="FlyKey — бесплатный клавиатурный тренажёр слепой печати онлайн для русской, украинской, казахской, немецкой и английской раскладок. Уроки, подсказки пальцев, статистика, метроном и настройка под пользователя.">
     <meta name="keywords" content="тренажёр слепой печати, слепая печать, клавиатурный тренажёр, печать десятью пальцами, touch typing trainer, blind typing trainer, typing trainer with finger guides, multilingual typing trainer, Schreibtrainer, 10-Finger-System, Tipptrainer">
     <meta name="robots" content="index, follow">
+    <script>
+      (() => {
+        const params = new URLSearchParams(window.location.search);
+        const isPrivateTool = params.has("lessonStoryboard") ||
+          params.has("roadmap") ||
+          params.get("mode") === "roadmap" ||
+          params.has("calibrateHands") ||
+          window.location.hash === "#lessonStoryboard" ||
+          window.location.hash === "#roadmap";
+
+        if (!isPrivateTool) return;
+
+        const robotsMeta = document.querySelector('meta[name="robots"]') || document.createElement("meta");
+        robotsMeta.name = "robots";
+        robotsMeta.content = "noindex, nofollow, noarchive";
+        document.head.append(robotsMeta);
+      })();
+    </script>
     <meta name="application-name" content="FlyKey">
     <meta name="theme-color" content="#111318">
     <link rel="canonical" href="https://flykey.org/">
@@ -17,10 +35,10 @@
     </script>
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="FlyKey">
-    <meta property="og:title" content="FlyKey — тренажёр слепой печати">
-    <meta property="og:description" content="Учитесь печатать вслепую комфортно: разные раскладки, подсказки пальцев, ассистенты обучения и гибкая настройка под пользователя.">
+    <meta property="og:title" content="FlyKey — клавиатурный тренажёр слепой печати онлайн">
+    <meta property="og:description" content="Бесплатный тренажёр слепой печати для пяти раскладок: уроки, подсказки пальцев, статистика, метроном и гибкие настройки.">
     <meta property="og:url" content="https://flykey.org/">
-    <meta property="og:image" content="https://flykey.org/assets/key/fly_welcome_no_bg.png?v=20260516-4">
+    <meta property="og:image" content="https://flykey.org/assets/key/fly_welcome_no_bg.png?v=20260516-5">
     <meta property="og:image:width" content="1024">
     <meta property="og:image:height" content="1536">
     <meta property="og:locale" content="ru_RU">
@@ -29,9 +47,9 @@
     <meta property="og:locale:alternate" content="en_US">
     <meta property="og:locale:alternate" content="de_DE">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="FlyKey — тренажёр слепой печати">
-    <meta name="twitter:description" content="Мягкое обучение слепой печати с подсказками пальцев, несколькими раскладками и настройками под пользователя.">
-    <meta name="twitter:image" content="https://flykey.org/assets/key/fly_welcome_no_bg.png?v=20260516-4">
+    <meta name="twitter:title" content="FlyKey — клавиатурный тренажёр слепой печати онлайн">
+    <meta name="twitter:description" content="Бесплатный тренажёр слепой печати с уроками, подсказками пальцев, статистикой и поддержкой пяти раскладок.">
+    <meta name="twitter:image" content="https://flykey.org/assets/key/fly_welcome_no_bg.png?v=20260516-5">
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -41,7 +59,16 @@
         "applicationCategory": "EducationalApplication",
         "operatingSystem": "Any",
         "inLanguage": ["ru", "uk", "kk", "de", "en"],
-        "description": "FlyKey is a multilingual touch typing trainer with custom keyboard layout support, finger guides, adaptive lessons and flexible user settings.",
+        "description": "FlyKey is a free multilingual touch typing trainer with finger guides, structured lessons, statistics, metronome practice and flexible user settings.",
+        "browserRequirements": "Requires JavaScript. Works in modern desktop and mobile browsers.",
+        "featureList": [
+          "Touch typing lessons",
+          "Finger guides",
+          "Typing accuracy and speed statistics",
+          "Custom text practice",
+          "Metronome practice",
+          "Russian, Ukrainian, Kazakh, German and English keyboard layouts"
+        ],
         "keywords": [
           "тренажёр слепой печати",
           "слепая печать",
@@ -63,6 +90,54 @@
           "price": "0",
           "priceCurrency": "USD"
         }
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Чем FlyKey отличается от обычного тренажера печати?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "FlyKey делает упор на мягкое обучение: подсказки пальцев, настраиваемая аппликатура, советы персонажа, метроном, тесты без ассистентов и поддержка нескольких раскладок."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Можно ли изменить, какой палец нажимает клавишу?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Да. В настройке аппликатуры можно выбрать палец и назначить ему клавиши прямо на экранной клавиатуре."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Можно ли отключить подсказки?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Да. Пользователь сам управляет подсветкой клавиш, пальцев, зон, нажатий, показом рук и метрономом. В тестовых уроках ассистенты могут отключаться автоматически."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Какие раскладки поддерживаются?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "FlyKey поддерживает русскую, украинскую, казахскую, немецкую и английскую раскладки."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Нужен ли аккаунт?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Для базовой тренировки аккаунт не нужен. Настройки и прогресс сохраняются локально в браузере."
+            }
+          }
+        ]
       }
     </script>
     <script>
@@ -104,9 +179,15 @@
       }
     </script>
     <script src="app/theme-init.js?v=20260514-16"></script>
-    <link rel="stylesheet" href="styles/main.css?v=20260516-10">
+    <link rel="stylesheet" href="styles/main.css?v=20260518-1">
   </head>
   <body>
+    <noscript>
+      <section class="noscript-content">
+        <h2>FlyKey работает с JavaScript</h2>
+        <p>Для интерактивной клавиатуры, уроков, подсказок пальцев и статистики включите JavaScript в браузере.</p>
+      </section>
+    </noscript>
     <main class="app">
       <header class="topbar">
         <h1 class="page-title" id="pageTitle"></h1>
@@ -191,13 +272,145 @@
       <div class="status" id="status" role="status" aria-live="polite"></div>
     </main>
 
+    <section class="seo-content" aria-labelledby="seoTitle">
+      <div class="seo-content-inner">
+        <p class="seo-eyebrow">Онлайн-тренажер слепой печати</p>
+        <h1 id="seoTitle">FlyKey — тренажер слепой печати, который можно настроить под себя</h1>
+        <p class="seo-lead">
+          FlyKey помогает учиться печатать вслепую без жесткого давления: тренажер показывает клавиатуру, пальцы,
+          зоны ответственности, текущую точность и скорость, а затем постепенно убирает лишние подсказки там, где
+          нужно проверить настоящий навык.
+        </p>
+        <nav class="seo-nav" aria-label="О FlyKey">
+          <a href="#seo-custom-layout">Аппликатура</a>
+          <a href="#seo-assistants">Ассистенты</a>
+          <a href="#seo-lessons">Уроки и тесты</a>
+          <a href="#seo-character">Советы</a>
+          <a href="#seo-practice">Свои тексты</a>
+          <a href="#seo-faq-title">FAQ</a>
+        </nav>
+
+        <div class="seo-summary-grid" aria-label="Ключевые особенности FlyKey">
+          <article>
+            <h2>5 раскладок</h2>
+            <p>Русская, украинская, казахская, немецкая и английская клавиатуры в одном тренажере.</p>
+          </article>
+          <article>
+            <h2>Настройка пальцев</h2>
+            <p>Можно поменять, каким пальцем нажимать конкретные клавиши, и сохранить свою карту.</p>
+          </article>
+          <article>
+            <h2>Ассистенты по выбору</h2>
+            <p>Подсветка клавиш, пальцев, зон и нажатий включается и отключается вручную.</p>
+          </article>
+          <article>
+            <h2>Тесты без подсказок</h2>
+            <p>В проверочных уроках ассистенты отключаются, чтобы оценить реальную автоматизацию движений.</p>
+          </article>
+        </div>
+
+        <article class="seo-article" id="seo-custom-layout">
+          <h2>Аппликатура не прибита к одному правилу</h2>
+          <p>
+            Во многих тренажерах предполагается, что схема пальцев одна для всех. FlyKey идет мягче: стандартная
+            карта есть, но ее можно изменить. Если клавиша ощущается неудобно, пользователь открывает настройку
+            аппликатуры, выбирает палец и назначает клавиши прямо на экранной клавиатуре.
+          </p>
+          <p>
+            Это полезно, когда у человека другая клавиатура, нестандартная привычка, маленькие руки или просто есть
+            клавиши, до которых неприятно тянуться. Тренажер не заставляет ломать руку ради абстрактного правила,
+            а помогает найти устойчивую схему и продолжить уроки с ней.
+          </p>
+        </article>
+
+        <article class="seo-article" id="seo-assistants">
+          <h2>Ассистенты помогают, но не мешают взрослеть навыку</h2>
+          <p>
+            В FlyKey можно отдельно управлять подсветкой клавиш, зонами пальцев, подсветкой пальцев, подсветкой
+            правильных и ошибочных нажатий, показом рук, режимом через строку и метрономом. Новичок может оставить
+            больше поддержки, а когда движения становятся увереннее — выключить часть подсказок.
+          </p>
+          <p>
+            Важная особенность: тестовые уроки могут отключать ассистентов автоматически. Это сделано честно: если
+            подсказки всегда включены, легко привыкнуть смотреть на них вместо того, чтобы запоминать движение.
+            Проверка без ассистентов показывает, какие клавиши уже стали автоматическими, а какие еще требуют практики.
+          </p>
+        </article>
+
+        <article class="seo-article" id="seo-lessons">
+          <h2>Программа идет от простого к реальному набору</h2>
+          <p>
+            Уроки начинаются с базовой позиции и постепенно добавляют руки, короткие слова, верхний и нижний ряды,
+            Shift, цифры, знаки препинания, ритм и длинные тексты. У каждого урока есть цель по строкам, точности,
+            иногда по скорости или ритму.
+          </p>
+          <p>
+            Такой подход отличается от тренировки случайных букв: пользователь понимает, зачем нужен следующий модуль,
+            видит прогресс и проходит проверочные этапы. FlyKey больше похож на спокойную программу обучения, чем на
+            бесконечное поле для набора символов.
+          </p>
+        </article>
+
+        <article class="seo-article" id="seo-character">
+          <h2>Персонаж объясняет, зачем упражнение нужно</h2>
+          <p>
+            В тренажере есть персонаж-помощник. Он появляется в приветствии, перед уроками, после завершения и при
+            переходе к следующему модулю. Его задача не украшать экран, а давать короткий человеческий контекст:
+            как держать руки, почему не стоит спешить, когда смотреть на пальцы, а когда доверять памяти.
+          </p>
+          <p>
+            Это особенно важно в слепой печати: ошибка часто не в том, что человек “не знает букву”, а в напряжении,
+            лишнем движении или попытке набрать быстрее, чем готова моторика. Советы помогают тренироваться мягче и
+            не превращать обучение в борьбу с клавиатурой.
+          </p>
+        </article>
+
+        <article class="seo-article" id="seo-practice">
+          <h2>Можно тренироваться не только на уроках</h2>
+          <p>
+            Помимо учебной программы, FlyKey поддерживает текстовую практику. Можно вставить собственный текст,
+            выбрать количество строк, включить случайный текст и настроить ассистентов именно для этой тренировки.
+            Это удобно, когда базовые движения уже знакомы и хочется перенести навык в обычные фразы.
+          </p>
+          <p>
+            Прогресс, настройки, выбранный язык, карта пальцев, тема, звук и размер текста сохраняются локально в
+            браузере. Сейчас аккаунт не обязателен: сайт можно открыть и сразу начать печатать.
+          </p>
+        </article>
+
+        <section class="seo-faq" aria-labelledby="seo-faq-title">
+          <h2 id="seo-faq-title">Вопросы о FlyKey</h2>
+          <details>
+            <summary>Чем FlyKey отличается от обычного тренажера печати?</summary>
+            <p>FlyKey делает упор на мягкое обучение: подсказки пальцев, настраиваемая аппликатура, советы персонажа, метроном, тесты без ассистентов и поддержка нескольких раскладок.</p>
+          </details>
+          <details>
+            <summary>Можно ли изменить, какой палец нажимает клавишу?</summary>
+            <p>Да. В настройке аппликатуры можно выбрать палец и назначить ему клавиши прямо на экранной клавиатуре.</p>
+          </details>
+          <details>
+            <summary>Можно ли отключить подсказки?</summary>
+            <p>Да. Пользователь сам управляет подсветкой клавиш, пальцев, зон, нажатий, показом рук и метрономом. В тестовых уроках ассистенты могут отключаться автоматически.</p>
+          </details>
+          <details>
+            <summary>Какие раскладки поддерживаются?</summary>
+            <p>Русская, украинская, казахская, немецкая и английская раскладки.</p>
+          </details>
+          <details>
+            <summary>Нужен ли аккаунт?</summary>
+            <p>Для базовой тренировки аккаунт не нужен. Настройки и прогресс сохраняются локально в браузере.</p>
+          </details>
+        </section>
+      </div>
+    </section>
+
     <dialog class="lesson-tip-dialog onboarding-dialog" id="onboardingDialog">
       <div class="lesson-tip-stage onboarding-stage">
         <section class="lesson-tip-message onboarding-message" aria-describedby="onboardingText">
           <div class="lesson-tip-text onboarding-text" id="onboardingText"></div>
           <button class="apply-btn lesson-tip-start onboarding-next" id="onboardingNext" type="button">Далее</button>
         </section>
-        <img class="lesson-tip-character onboarding-character" id="onboardingCharacter" src="assets/key/key-wave.webp?v=20260516-4" alt="" aria-hidden="true">
+        <img class="lesson-tip-character onboarding-character" id="onboardingCharacter" src="assets/key/key-wave.webp?v=20260516-5" alt="" aria-hidden="true">
       </div>
     </dialog>
 
@@ -210,7 +423,7 @@
             <button class="apply-btn lesson-tip-start" id="lessonTipStart" type="button">Пуск</button>
           </div>
         </section>
-        <img class="lesson-tip-character" id="lessonTipCharacter" src="assets/key/key-wave.webp?v=20260516-4" alt="" aria-hidden="true">
+        <img class="lesson-tip-character" id="lessonTipCharacter" src="assets/key/key-wave.webp?v=20260516-5" alt="" aria-hidden="true">
       </div>
     </dialog>
 
@@ -224,7 +437,7 @@
             <button class="apply-btn lesson-tip-start completion-next" id="completionNext" type="button">Далее</button>
           </div>
         </section>
-        <img class="lesson-tip-character completion-character" id="completionCharacter" src="assets/key/key-completion.webp?v=20260516-4" alt="" aria-hidden="true">
+        <img class="lesson-tip-character completion-character" id="completionCharacter" src="assets/key/key-completion.webp?v=20260516-5" alt="" aria-hidden="true">
       </div>
     </dialog>
 
@@ -236,7 +449,7 @@
           <p class="next-module-purpose" id="nextModulePurpose"></p>
           <button class="apply-btn lesson-tip-start next-module-next" id="nextModuleNext" type="button">Далее</button>
         </section>
-        <img class="lesson-tip-character next-module-character" id="nextModuleCharacter" src="assets/key/key-wave.webp?v=20260516-4" alt="" aria-hidden="true">
+        <img class="lesson-tip-character next-module-character" id="nextModuleCharacter" src="assets/key/key-wave.webp?v=20260516-5" alt="" aria-hidden="true">
       </div>
     </dialog>
 
@@ -492,7 +705,8 @@
       </div>
     </section>
 
-    <script src="practice-content.js?v=20260514-16"></script>
+    <script src="practice-content/content-version.js?v=20260517-1"></script>
+    <script src="practice-content.js?v=20260517-1"></script>
     <script src="practice-content/modules/module1.js?v=20260514-16"></script>
     <script src="practice-content/modules/module2.js?v=20260514-16"></script>
     <script src="practice-content/modules/module3.js?v=20260514-16"></script>
@@ -505,7 +719,9 @@
     <script src="practice-content/modules/module10.js?v=20260514-16"></script>
     <script src="practice-content/modules/module11.js?v=20260516-1"></script>
     <script src="practice-content/modules/module12.js?v=20260516-1"></script>
-    <script src="app/practice-content-builder.js?v=20260516-1"></script>
+    <script src="app/api-client.js?v=20260517-1"></script>
+    <script src="app/content-provider.js?v=20260517-2"></script>
+    <script src="app/practice-content-builder.js?v=20260517-2"></script>
     <script src="app/data.js?v=20260514-16"></script>
     <script src="app/dom.js?v=20260516-1"></script>
     <script src="app/state.js?v=20260516-1"></script>
@@ -518,14 +734,14 @@
     <script src="app/views/practice-view.js?v=20260514-16"></script>
     <script src="app/views/fingering-view.js?v=20260514-16"></script>
     <script src="app/views/settings-view.js?v=20260514-16"></script>
-    <script src="app/controllers/practice-controller.js?v=20260516-10"></script>
+    <script src="app/controllers/practice-controller.js?v=20260516-11"></script>
     <script src="app/controllers/custom-practice-controller.js?v=20260514-16"></script>
     <script src="app/controllers/fingering-draft.js?v=20260514-16"></script>
     <script src="app/controllers/fingering-controller.js?v=20260514-16"></script>
     <script src="app/controllers/settings-controller.js?v=20260516-2"></script>
     <script src="app/controllers/app-runtime.js?v=20260514-16"></script>
     <script src="app/controllers/hand-calibration-controller.js?v=20260514-16"></script>
-    <script src="app/controllers/lesson-storyboard-controller.js?v=20260516-11"></script>
+    <script src="app/controllers/lesson-storyboard-controller.js?v=20260516-15"></script>
     <script src="app/controllers/app-bootstrap.js?v=20260516-1"></script>
     <script>
       let keyboardDesignWidth = 0;

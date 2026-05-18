@@ -1,0 +1,25 @@
+window.FLYKEY_CONTENT_VERSION = {
+  id: "flykey-practice-content",
+  version: "2026.05.17.1",
+  updatedAt: "2026-05-17",
+  languages: ["ru", "uk", "kk", "de", "en"],
+  entry: "practice-content.js",
+  builder: "app/practice-content-builder.js",
+  modules: [
+    "practice-content/modules/module1.js",
+    "practice-content/modules/module2.js",
+    "practice-content/modules/module3.js",
+    "practice-content/modules/module4.js",
+    "practice-content/modules/module5.js",
+    "practice-content/modules/module6.js",
+    "practice-content/modules/module7.js",
+    "practice-content/modules/module8.js",
+    "practice-content/modules/module9.js",
+    "practice-content/modules/module10.js",
+    "practice-content/modules/module11.js",
+    "practice-content/modules/module12.js"
+  ],
+  assets: {
+    keyImages: "assets/key/"
+  }
+};

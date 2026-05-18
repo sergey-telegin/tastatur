@@ -1,0 +1,58 @@
+{
+  "name": "flykey",
+  "version": "0.1.0",
+  "private": true,
+  "description": "FlyKey touch typing trainer",
+  "main": "desktop/main.js",
+  "scripts": {
+    "start": "electron-forge start",
+    "desktop": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make",
+    "server": "node server/server.js",
+    "server:check": "node --check server/server.js",
+    "server:smoke": "node scripts/smoke-server-api.js",
+    "content:build": "node scripts/build-content-bundle.js",
+    "content:validate": "node scripts/validate-content-bundle.js",
+    "check:html": "sh scripts/check-index-html-js.sh",
+    "check:js": "find app practice-content desktop scripts server -name '*.js' -print0 | xargs -0 -n1 node --check",
+    "check": "npm run content:validate && npm run check:html && npm run check:js"
+  },
+  "devDependencies": {
+    "electron": "^36.0.0",
+    "@electron-forge/cli": "^7.0.0",
+    "@electron-forge/maker-dmg": "^7.0.0",
+    "@electron-forge/maker-zip": "^7.0.0"
+  },
+  "author": "Sergey Telegin",
+  "license": "UNLICENSED",
+  "config": {
+    "forge": {
+      "packagerConfig": {
+        "name": "FlyKey",
+        "executableName": "FlyKey",
+        "appBundleId": "org.flykey.app",
+        "appCategoryType": "public.app-category.education",
+        "asar": true
+      },
+      "makers": [
+        {
+          "name": "@electron-forge/maker-zip",
+          "platforms": [
+            "darwin"
+          ]
+        },
+        {
+          "name": "@electron-forge/maker-dmg",
+          "platforms": [
+            "darwin"
+          ],
+          "config": {
+            "name": "FlyKey",
+            "format": "ULFO"
+          }
+        }
+      ]
+    }
+  }
+}

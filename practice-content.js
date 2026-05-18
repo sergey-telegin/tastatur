@@ -1,4 +1,10 @@
 window.PRACTICE_CONTENT_SOURCE = {
+  meta: window.FLYKEY_CONTENT_VERSION || {
+    id: "flykey-practice-content",
+    version: "2026.05.17.1",
+    updatedAt: "2026-05-17",
+    languages: ["ru", "uk", "kk", "de", "en"]
+  },
   languages: ["ru", "uk", "kk", "de", "en"],
 
     grades: {ru: [

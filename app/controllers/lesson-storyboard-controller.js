@@ -12,12 +12,14 @@ const storyboardKeyImages = [
   "fly_welcome_no_bg.png",
   "key-arms-crossed.webp",
   "key-book.webp",
+  "key-celebrate.png",
   "key-completion.webp",
   "key-confident.webp",
   "key-explain.webp",
   "key-idea.webp",
   "key-please.webp",
   "key-point-strict.webp",
+  "key-score-ten.png",
   "key-stop.webp",
   "key-thinking.webp",
   "key-thumb.webp",
@@ -90,16 +92,26 @@ function closeStoryboardImagePreview() {
   document.querySelector("#storyboardImagePreview")?.remove();
 }
 
-function storyboardPreviewImageList(fileName) {
-  return storyboardKeyImages.includes(fileName)
-    ? storyboardKeyImages
-    : [fileName, ...storyboardKeyImages.filter(image => image !== fileName)];
+function storyboardAssignedPreviewImages(state, currentFileName) {
+  const images = [];
+  const addImage = fileName => {
+    if (fileName && !images.includes(fileName)) images.push(fileName);
+  };
+
+  state.lessons.forEach(lesson => {
+    const assignment = state.assignments[lesson.id] || {};
+    addImage(storyboardCard(state, assignment.introImage)?.value);
+    addImage(storyboardCard(state, assignment.completionImage)?.value);
+  });
+
+  return images.includes(currentFileName)
+    ? images
+    : [currentFileName, ...images];
 }
 
-function openStoryboardImagePreview(fileName) {
+function openStoryboardImagePreview(fileName, images = [fileName]) {
   closeStoryboardImagePreview();
 
-  const images = storyboardPreviewImageList(fileName);
   let imageIndex = Math.max(0, images.indexOf(fileName));
   const overlay = document.createElement("div");
   overlay.className = "storyboard-image-preview";
@@ -179,7 +191,7 @@ function createStoryboardCard(state, card) {
     imageStage.addEventListener("dblclick", event => {
       event.preventDefault();
       event.stopPropagation();
-      openStoryboardImagePreview(card.value);
+      openStoryboardImagePreview(card.value, storyboardAssignedPreviewImages(state, card.value));
     });
     imageStage.append(image);
     const name = document.createElement("div");
@@ -214,7 +226,8 @@ function createStoryboardCard(state, card) {
       cardId: card.id,
       from: node.closest("[data-storyboard-source]")?.dataset.storyboardSource || "",
       slotId: node.closest("[data-slot-id]")?.dataset.slotId || "",
-      parkingIndex: node.closest("[data-parking-index]")?.dataset.parkingIndex || ""
+      parkingIndex: node.closest("[data-parking-index]")?.dataset.parkingIndex || "",
+      parkingArea: node.closest("[data-parking-area]")?.dataset.parkingArea || "side"
     };
     event.dataTransfer.effectAllowed = "move";
     event.dataTransfer.setData("text/plain", card.id);
@@ -238,6 +251,10 @@ function storyboardCard(state, id) {
   return state.cards[id] || null;
 }
 
+function storyboardParkingList(state, area = "side") {
+  return area === "bottom" ? state.bottomParking : state.parking;
+}
+
 function removeStoryboardCardFromSource(state, drag) {
   if (drag.from === "slot" && drag.slotId) {
     const [lessonId, slotName] = drag.slotId.split(":");
@@ -247,7 +264,7 @@ function removeStoryboardCardFromSource(state, drag) {
   }
 
   if (drag.from === "parking" && drag.parkingIndex !== "") {
-    state.parking.splice(Number(drag.parkingIndex), 1);
+    storyboardParkingList(state, drag.parkingArea).splice(Number(drag.parkingIndex), 1);
   }
 }
 
@@ -290,7 +307,7 @@ function moveStoryboardCardToSlot(state, lessonId, slotName) {
   renderLessonStoryboard(state);
 }
 
-function moveStoryboardCardToParking(state) {
+function moveStoryboardCardToParking(state, area = "side") {
   if (!state.drag) return;
 
   const sourceCard = storyboardCard(state, state.drag.cardId);
@@ -301,8 +318,9 @@ function moveStoryboardCardToParking(state) {
     : sourceCard.id;
 
   removeStoryboardCardFromSource(state, state.drag);
-  if (!state.parking.includes(movingCardId)) {
-    state.parking.push(movingCardId);
+  const parking = storyboardParkingList(state, area);
+  if (!parking.includes(movingCardId)) {
+    parking.push(movingCardId);
   }
 
   state.drag = null;
@@ -325,7 +343,7 @@ function wireStoryboardDropTarget(node, onDrop) {
 }
 
 function createStoryboardInitialState() {
-  const source = window.PRACTICE_CONTENT_SOURCE || {};
+  const source = window.FlyKeyContentProvider?.getContentBundle?.() || window.PRACTICE_CONTENT_SOURCE || {};
   const sourceLanguages = source.languages || Object.keys(languages);
   const cards = {};
   const assignments = {};
@@ -378,8 +396,11 @@ function createStoryboardInitialState() {
     lessons,
     imageScale: 1,
     nextCardId,
+    bottomParking: [],
+    bottomParkingHeight: 220,
     parking: [],
-    previewLanguage: currentLanguage || sourceLanguages[0] || "en"
+    previewLanguage: currentLanguage || sourceLanguages[0] || "en",
+    sideParkingWidth: 340
   };
 }
 
@@ -401,6 +422,7 @@ function renderLessonStoryboard(state) {
 
   const table = board.querySelector("#storyboardTable");
   const parking = board.querySelector("#storyboardParking");
+  const bottomParking = board.querySelector("#storyboardBottomParking");
   const languageSelect = board.querySelector("#storyboardLanguage");
   const imageScaleValue = board.querySelector("#storyboardImageScaleValue");
 
@@ -417,6 +439,7 @@ function renderLessonStoryboard(state) {
   }
   board.style.setProperty("--storyboard-image-width", storyboardImageScalePercent(state));
   board.style.setProperty("--storyboard-image-max-height", `${Math.round(88 * (state.imageScale || 1))}px`);
+  setStoryboardLayoutSizeVars(board, state);
 
   table.innerHTML = "";
   const header = document.createElement("div");
@@ -458,21 +481,75 @@ function renderLessonStoryboard(state) {
     table.append(row);
   });
 
+  renderStoryboardParkingArea(state, parking, "side");
+  renderStoryboardParkingArea(state, bottomParking, "bottom");
+
+}
+
+function renderStoryboardParkingArea(state, parking, area) {
+  if (!parking) return;
+
+  const cardIds = storyboardParkingList(state, area);
   parking.innerHTML = "";
-  if (!state.parking.length) {
+  if (!cardIds.length) {
     parking.append(createStoryboardEmptySlot());
-  } else {
-    state.parking.forEach((cardId, index) => {
-      const card = storyboardCard(state, cardId);
-      if (!card) return;
-      const wrapper = document.createElement("div");
-      wrapper.dataset.storyboardSource = "parking";
-      wrapper.dataset.parkingIndex = String(index);
-      wrapper.append(createStoryboardCard(state, card));
-      parking.append(wrapper);
-    });
+    return;
   }
 
+  cardIds.forEach((cardId, index) => {
+    const card = storyboardCard(state, cardId);
+    if (!card) return;
+    const wrapper = document.createElement("div");
+    wrapper.dataset.storyboardSource = "parking";
+    wrapper.dataset.parkingArea = area;
+    wrapper.dataset.parkingIndex = String(index);
+    wrapper.append(createStoryboardCard(state, card));
+    parking.append(wrapper);
+  });
+}
+
+function setStoryboardLayoutSizeVars(board, state) {
+  board.style.setProperty("--storyboard-side-width", `${state.sideParkingWidth || 340}px`);
+  board.style.setProperty("--storyboard-bottom-height", `${state.bottomParkingHeight || 220}px`);
+}
+
+function clampStoryboardSize(value, min, max) {
+  return Math.min(Math.max(value, min), max);
+}
+
+function wireStoryboardResizeHandle(state, board, handle, direction) {
+  if (!handle) return;
+
+  handle.addEventListener("pointerdown", event => {
+    event.preventDefault();
+    const startX = event.clientX;
+    const startY = event.clientY;
+    const startWidth = state.sideParkingWidth || 340;
+    const startHeight = state.bottomParkingHeight || 220;
+    handle.setPointerCapture(event.pointerId);
+    handle.classList.add("is-resizing");
+
+    const resize = pointerEvent => {
+      if (direction === "side") {
+        const maxWidth = Math.max(280, Math.min(720, window.innerWidth - 520));
+        state.sideParkingWidth = clampStoryboardSize(startWidth - (pointerEvent.clientX - startX), 260, maxWidth);
+      } else {
+        const maxHeight = Math.max(180, Math.min(560, window.innerHeight - 260));
+        state.bottomParkingHeight = clampStoryboardSize(startHeight - (pointerEvent.clientY - startY), 140, maxHeight);
+      }
+      setStoryboardLayoutSizeVars(board, state);
+    };
+
+    const stopResize = pointerEvent => {
+      handle.classList.remove("is-resizing");
+      handle.releasePointerCapture(pointerEvent.pointerId);
+      handle.removeEventListener("pointermove", resize);
+    };
+
+    handle.addEventListener("pointermove", resize);
+    handle.addEventListener("pointerup", stopResize, { once: true });
+    handle.addEventListener("pointercancel", stopResize, { once: true });
+  });
 }
 
 function exportLessonStoryboard(state) {
@@ -493,7 +570,7 @@ function exportLessonStoryboard(state) {
     };
   });
 
-  const parkingLot = state.parking
+  const serializeParking = cardIds => cardIds
     .map(cardId => storyboardCard(state, cardId))
     .filter(Boolean)
     .map(card => ({
@@ -502,7 +579,39 @@ function exportLessonStoryboard(state) {
       origin: card.origin
     }));
 
-  return { lessonStoryboard, parkingLot };
+  return {
+    lessonStoryboard,
+    parkingLot: serializeParking(state.parking),
+    bottomParkingLot: serializeParking(state.bottomParking)
+  };
+}
+
+function storyboardExportFileName() {
+  const now = new Date();
+  const date = [
+    now.getFullYear(),
+    String(now.getMonth() + 1).padStart(2, "0"),
+    String(now.getDate()).padStart(2, "0")
+  ].join("-");
+  const time = [
+    String(now.getHours()).padStart(2, "0"),
+    String(now.getMinutes()).padStart(2, "0"),
+    String(now.getSeconds()).padStart(2, "0")
+  ].join("-");
+  return `flykey-roadmap-${date}-${time}.json`;
+}
+
+function downloadLessonStoryboardJson(state) {
+  const data = JSON.stringify(exportLessonStoryboard(state), null, 2);
+  const blob = new Blob([data], { type: "application/json;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = storyboardExportFileName();
+  document.body.append(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
 }
 
 function initializeLessonStoryboardMode() {
@@ -526,13 +635,25 @@ function initializeLessonStoryboardMode() {
           <span class="storyboard-scale-value" id="storyboardImageScaleValue">100%</span>
           <button class="storyboard-button storyboard-scale-button" id="storyboardImageZoomIn" type="button">+</button>
         </div>
+        <button class="storyboard-button storyboard-apply-button" id="storyboardApply" type="button">Применить</button>
         <button class="storyboard-button" id="storyboardExport" type="button">Export JSON</button>
       </div>
     </header>
     <main class="storyboard-main">
-      <div class="storyboard-table-wrap">
-        <div class="storyboard-table" id="storyboardTable"></div>
+      <div class="storyboard-workspace">
+        <div class="storyboard-table-wrap">
+          <div class="storyboard-table" id="storyboardTable"></div>
+        </div>
+        <div class="storyboard-resize-handle storyboard-resize-handle-bottom" id="storyboardBottomResize" role="separator" aria-label="Изменить высоту нижнего черновика" aria-orientation="horizontal" tabindex="0"></div>
+        <section class="storyboard-bottom-panel">
+          <section class="storyboard-side-section">
+            <h2 class="storyboard-side-title">Нижний черновик</h2>
+            <p class="storyboard-side-note">Сюда можно складывать карточки, когда справа мало места.</p>
+            <div class="storyboard-parking storyboard-parking-bottom" id="storyboardBottomParking"></div>
+          </section>
+        </section>
       </div>
+      <div class="storyboard-resize-handle storyboard-resize-handle-side" id="storyboardSideResize" role="separator" aria-label="Изменить ширину правого черновика" aria-orientation="vertical" tabindex="0"></div>
       <aside class="storyboard-side">
         <section class="storyboard-side-section">
           <h2 class="storyboard-side-title">Черновик</h2>
@@ -549,7 +670,10 @@ function initializeLessonStoryboardMode() {
   document.body.append(board);
 
   const state = createStoryboardInitialState();
-  wireStoryboardDropTarget(board.querySelector("#storyboardParking"), () => moveStoryboardCardToParking(state));
+  wireStoryboardDropTarget(board.querySelector("#storyboardParking"), () => moveStoryboardCardToParking(state, "side"));
+  wireStoryboardDropTarget(board.querySelector("#storyboardBottomParking"), () => moveStoryboardCardToParking(state, "bottom"));
+  wireStoryboardResizeHandle(state, board, board.querySelector("#storyboardSideResize"), "side");
+  wireStoryboardResizeHandle(state, board, board.querySelector("#storyboardBottomResize"), "bottom");
 
   board.querySelector("#storyboardLanguage").addEventListener("change", event => {
     state.previewLanguage = event.target.value;
@@ -573,6 +697,10 @@ function initializeLessonStoryboardMode() {
     output.textContent = output.value;
     output.focus();
     output.select();
+  });
+
+  board.querySelector("#storyboardApply").addEventListener("click", () => {
+    downloadLessonStoryboardJson(state);
   });
 
   renderLessonStoryboard(state);

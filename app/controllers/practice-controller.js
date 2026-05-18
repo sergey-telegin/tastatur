@@ -132,7 +132,7 @@ function currentPracticeModuleData(language = currentLanguage, moduleId = curren
   return modules[moduleId] || modules[firstPracticeModuleId(language)] || Object.values(modules)[0] || { name: "", lines: [] };
 }
 
-const keyAssetVersion = "20260516-4";
+const keyAssetVersion = "20260516-5";
 
 function keyAssetSrc(fileName) {
   return "assets/key/" + fileName + "?v=" + keyAssetVersion;
@@ -189,7 +189,7 @@ const lessonTipAvatarByLessonId = {
   lesson10_3: "key-explain.webp",
   lesson10_4: "key-confident.webp",
   lesson10_5: "key-book.webp",
-  lesson11_1: "key-wave.webp",
+  lesson11_1: "key-celebrate.png",
   lesson12_1: "fly_welcome_no_bg.png"
 };
 
@@ -198,7 +198,7 @@ const lessonCompletionAvatarByLessonId = {
   lesson1_2: "key-confident.webp",
   lesson1_3: "key-wave.webp",
   lesson1_4: "fly_welcome_no_bg.png",
-  lesson1_5: "key-arms-crossed.webp",
+  lesson1_5: "key-score-ten.png",
   lesson2_1: "key-thumb.webp",
   lesson2_2: "key-confident.webp",
   lesson2_3: "key-wave.webp",
@@ -243,9 +243,9 @@ const lessonCompletionAvatarByLessonId = {
   lesson10_2: "key-confident.webp",
   lesson10_3: "key-idea.webp",
   lesson10_4: "key-wave.webp",
-  lesson10_5: "key-completion.webp",
+  lesson10_5: "key-score-ten.png",
   lesson11_1: "key-wave.webp",
-  lesson12_1: "key-confident.webp"
+  lesson12_1: "key-celebrate.png"
 };
 
 let dialogImageRequestId = 0;
