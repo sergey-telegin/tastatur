@@ -1,0 +1,72 @@
+const flyKeyDefaultCompletionText = {
+  ru: "Отлично. Молодец. Идём дальше.",
+  uk: "Чудово. Гарна робота. Рухаємося далі.",
+  kk: "Керемет. Жақсы жұмыс. Әрі қарай өтейік.",
+  de: "Ausgezeichnet. Gut gemacht. Weiter geht's.",
+  en: "Excellent. Well done. Let's keep going."
+};
+
+function flyKeyLessonStoryboardEntry(introImage, completionImage, completionText = flyKeyDefaultCompletionText) {
+  return { introImage, completionImage, completionText };
+}
+
+window.FLYKEY_LESSON_STORYBOARD = {
+  lesson1_1: flyKeyLessonStoryboardEntry("key-please.webp", "key-thumb.webp"),
+  lesson1_2: flyKeyLessonStoryboardEntry("key-wave.webp", "key-confident.webp"),
+  lesson1_3: flyKeyLessonStoryboardEntry("key-explain.webp", "key-wave.webp"),
+  lesson1_4: flyKeyLessonStoryboardEntry("key-idea.webp", "key-confident.webp"),
+  lesson1_5: flyKeyLessonStoryboardEntry("key-arms-crossed.webp", "key-confident.webp"),
+  lesson2_1: flyKeyLessonStoryboardEntry("key-idea.webp", "key-thumb.webp"),
+  lesson2_2: flyKeyLessonStoryboardEntry("key-explain.webp", "key-confident.webp"),
+  lesson2_3: flyKeyLessonStoryboardEntry("key-point-strict.webp", "key-wave.webp"),
+  lesson2_4: flyKeyLessonStoryboardEntry("key-confident.webp", "key-thumb.webp"),
+  lesson2_5: flyKeyLessonStoryboardEntry("key-arms-crossed.webp", "key-completion.webp"),
+  lesson3_1: flyKeyLessonStoryboardEntry("key-explain.webp", "key-thumb.webp"),
+  lesson3_2: flyKeyLessonStoryboardEntry("key-idea.webp", "key-wave.webp"),
+  lesson3_3: flyKeyLessonStoryboardEntry("key-point-strict.webp", "key-confident.webp"),
+  lesson3_4: flyKeyLessonStoryboardEntry("key-thinking.webp", "key-wave.webp"),
+  lesson3_5: flyKeyLessonStoryboardEntry("key-book.webp", "key-completion.webp"),
+  lesson4_1: flyKeyLessonStoryboardEntry("key-explain.webp", "key-thumb.webp"),
+  lesson4_2: flyKeyLessonStoryboardEntry("key-idea.webp", "key-confident.webp"),
+  lesson4_3: flyKeyLessonStoryboardEntry("key-point-strict.webp", "key-confident.webp"),
+  lesson4_4: flyKeyLessonStoryboardEntry("key-thinking.webp", "key-wave.webp"),
+  lesson4_5: flyKeyLessonStoryboardEntry("key-arms-crossed.webp", "key-completion.webp"),
+  lesson5_1: flyKeyLessonStoryboardEntry("key-point-strict.webp", "key-thumb.webp"),
+  lesson5_2: flyKeyLessonStoryboardEntry("key-explain.webp", "key-confident.webp"),
+  lesson5_3: flyKeyLessonStoryboardEntry("key-stop.webp", "key-idea.webp"),
+  lesson5_4: flyKeyLessonStoryboardEntry("key-thinking.webp", "key-wave.webp"),
+  lesson5_5: flyKeyLessonStoryboardEntry("key-book.webp", "key-score-ten.png"),
+  lesson6_1: flyKeyLessonStoryboardEntry("key-point-strict.webp", "key-thumb.webp"),
+  lesson6_2: flyKeyLessonStoryboardEntry("key-idea.webp", "key-confident.webp"),
+  lesson6_3: flyKeyLessonStoryboardEntry("key-stop.webp", "key-idea.webp"),
+  lesson6_4: flyKeyLessonStoryboardEntry("key-thinking.webp", "key-wave.webp"),
+  lesson6_5: flyKeyLessonStoryboardEntry("key-arms-crossed.webp", "key-confident.webp"),
+  lesson7_1: flyKeyLessonStoryboardEntry("key-explain.webp", "key-thumb.webp"),
+  lesson7_2: flyKeyLessonStoryboardEntry("key-stop.webp", "key-confident.webp"),
+  lesson7_3: flyKeyLessonStoryboardEntry("key-point-strict.webp", "key-idea.webp"),
+  lesson7_4: flyKeyLessonStoryboardEntry("key-thinking.webp", "key-wave.webp"),
+  lesson7_5: flyKeyLessonStoryboardEntry("key-point-strict.webp", "key-completion.webp"),
+  lesson8_1: flyKeyLessonStoryboardEntry("key-idea.webp", "key-thumb.webp"),
+  lesson8_2: flyKeyLessonStoryboardEntry("key-explain.webp", "key-confident.webp"),
+  lesson8_3: flyKeyLessonStoryboardEntry("key-thinking.webp", "key-idea.webp"),
+  lesson8_4: flyKeyLessonStoryboardEntry("key-confident.webp", "key-wave.webp"),
+  lesson8_5: flyKeyLessonStoryboardEntry("key-confident.webp", "key-completion.webp"),
+  lesson9_1: flyKeyLessonStoryboardEntry("key-point-strict.webp", "key-thumb.webp"),
+  lesson9_2: flyKeyLessonStoryboardEntry("key-explain.webp", "key-confident.webp"),
+  lesson9_3: flyKeyLessonStoryboardEntry("key-stop.webp", "key-idea.webp"),
+  lesson9_4: flyKeyLessonStoryboardEntry("key-thinking.webp", "key-wave.webp"),
+  lesson9_5: flyKeyLessonStoryboardEntry("key-book.webp", "key-completion.webp"),
+  lesson10_1: flyKeyLessonStoryboardEntry("key-point-strict.webp", "key-thumb.webp"),
+  lesson10_2: flyKeyLessonStoryboardEntry("key-explain.webp", "key-confident.webp"),
+  lesson10_3: flyKeyLessonStoryboardEntry("key-stop.webp", "key-idea.webp"),
+  lesson10_4: flyKeyLessonStoryboardEntry("key-thinking.webp", "key-wave.webp"),
+  lesson10_5: flyKeyLessonStoryboardEntry("key-book.webp", "key-score-ten.png", {
+      ru: "Похоже, пришло время прощаться. Я рассказал тебе всё главное о слепой печати: базовые позиции, ряды, Shift, цифры, пунктуацию и ритм. Дальше всё зависит от практики и от того, как часто ты будешь использовать навык в реальной работе. Помни: настоящая скорость приходит не от спешки, а от спокойных и точных движений. Продолжай печатать вслепую в обычной жизни, меньше смотри на клавиатуру и доверяй своим пальцам. У тебя уже есть всё, чтобы расти дальше.",
+      uk: "Схоже, настав час прощатися. Я показав найважливіше у сліпому друці: базову позицію, ряди, Shift, цифри, пунктуацію й ритм. Далі все залежить від практики та від того, як часто ти використовуватимеш цю навичку в реальній роботі. Пам'ятай: справжня швидкість приходить не від поспіху, а від спокійних і точних рухів. Друкуй всліпу в повсякденному житті, менше дивись на клавіатуру й довіряй пальцям.",
+      kk: "Қоштасатын уақыт келген сияқты. Мен сізге соқыр терудің ең маңызды бөліктерін көрсеттім: негізгі позиция, қатарлар, Shift, сандар, тыныс белгілері және ырғақ. Енді бәрі жаттығуға және бұл дағдыны күнделікті жұмыста қаншалықты жиі қолданатыныңызға байланысты. Есіңізде болсын: шынайы жылдамдық асығудан емес, сабырлы әрі дәл қозғалыстан келеді. Пернетақтаға азырақ қарап, саусақтарыңызға сеніңіз.",
+      de: "Es ist Zeit, Abschied zu nehmen. Ich habe dir das Wichtigste über Blindtippen gezeigt: Grundposition, Reihen, Shift, Zahlen, Zeichensetzung und Rhythmus. Ab jetzt hängt viel von deiner Übung und davon ab, wie oft du diese Fähigkeit im Alltag benutzt. Denk daran: Echte Geschwindigkeit entsteht nicht durch Eile, sondern durch ruhige und genaue Bewegungen. Tippe weiter blind, schau seltener auf die Tastatur und vertraue deinen Fingern.",
+      en: "It is time to say goodbye. I have shown you the essentials of touch typing: home position, rows, Shift, numbers, punctuation, and rhythm. From here, progress depends on practice and on how often you use the skill in real work. Remember: real speed does not come from rushing, but from calm, precise movement. Keep touch typing in everyday life, look at the keyboard less, and trust your fingers."
+    }),
+  lesson11_1: flyKeyLessonStoryboardEntry("key-idea.webp", "key-completion.webp"),
+  lesson12_1: flyKeyLessonStoryboardEntry("fly_welcome_no_bg.png", "key-celebrate.png")
+};

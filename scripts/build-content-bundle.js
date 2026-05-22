@@ -11,6 +11,7 @@ const sourceFiles = [
   "practice-content/content-version.js",
   "practice-content.js",
   ...moduleFiles,
+  "practice-content/storyboard.js",
   "app/practice-content-builder.js",
   "app/content-provider.js"
 ];

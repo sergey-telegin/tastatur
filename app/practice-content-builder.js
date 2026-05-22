@@ -396,7 +396,8 @@ const lessonIntroPurpose = {
 };
 
 function contentLessonCompletion(lesson, language) {
-  const completion = lesson.completion;
+  const storyboardCompletion = window.FLYKEY_LESSON_STORYBOARD?.[lesson.id]?.completionText;
+  const completion = storyboardCompletion || lesson.completion;
   const text = completion && typeof completion === "object" && !Array.isArray(completion)
     ? completion[language] || completion.en || completion.ru || defaultLessonCompletionText[language] || defaultLessonCompletionText.en
     : completion || defaultLessonCompletionText[language] || defaultLessonCompletionText.en;
@@ -565,9 +566,6 @@ function ensureUkrainianPracticeContent(source) {
 
       lesson.tips = lesson.tips || {};
       lesson.tips.uk = lesson.tips.uk || ukrainianLessonTips[lesson.id] || ukrainianGenericLessonTips[lessonNumberSuffix(lesson.id)] || [];
-
-      lesson.completion = lesson.completion || {};
-      lesson.completion.uk = lesson.completion.uk || defaultLessonCompletionText.uk;
 
       lesson.lines = lesson.lines || {};
       if (!lesson.lines.uk) {
@@ -817,9 +815,6 @@ function ensureKazakhPracticeContent(source) {
 
       lesson.tips = lesson.tips || {};
       lesson.tips.kk = lesson.tips.kk || kazakhLessonTips[lesson.id] || kazakhGenericLessonTips[lessonNumberSuffix(lesson.id)] || [];
-
-      lesson.completion = lesson.completion || {};
-      lesson.completion.kk = lesson.completion.kk || defaultLessonCompletionText.kk;
 
       lesson.lines = lesson.lines || {};
       if (!lesson.lines.kk) {

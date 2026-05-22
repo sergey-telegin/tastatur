@@ -1,38 +1,5 @@
 const privacyConsentStorageKey = "flykey-privacy-consent-v1";
 
-const privacyConsentCopy = {
-  ru: {
-    title: "Конфиденциальность",
-    text: "FlyKey использует Google Analytics, чтобы понимать, как развивается сайт. Аналитика включается только с вашего согласия.",
-    accept: "Принять",
-    reject: "Отклонить"
-  },
-  uk: {
-    title: "Конфіденційність",
-    text: "FlyKey використовує Google Analytics, щоб розуміти, як розвивається сайт. Аналітика вмикається лише з вашої згоди.",
-    accept: "Прийняти",
-    reject: "Відхилити"
-  },
-  kk: {
-    title: "Құпиялылық",
-    text: "FlyKey сайттың қалай дамып жатқанын түсіну үшін Google Analytics қолданады. Аналитика тек сіздің келісіміңізбен қосылады.",
-    accept: "Қабылдау",
-    reject: "Бас тарту"
-  },
-  en: {
-    title: "Privacy",
-    text: "FlyKey uses Google Analytics to understand how the site is used. Analytics is enabled only with your consent.",
-    accept: "Accept",
-    reject: "Decline"
-  },
-  de: {
-    title: "Datenschutz",
-    text: "FlyKey verwendet Google Analytics, um die Nutzung der Website zu verstehen. Analytics wird nur mit Ihrer Zustimmung aktiviert.",
-    accept: "Akzeptieren",
-    reject: "Ablehnen"
-  }
-};
-
 function readPrivacyConsent() {
   try {
     return JSON.parse(localStorage.getItem(privacyConsentStorageKey)) || null;
@@ -76,13 +43,13 @@ function isLessonStoryboardUrl() {
 }
 
 function privacyConsentLanguage() {
-  if (typeof currentLanguage !== "undefined" && privacyConsentCopy[currentLanguage]) {
+  if (typeof currentLanguage !== "undefined" && uiText[currentLanguage]?.privacyConsent) {
     return currentLanguage;
   }
 
   try {
     const savedLanguage = JSON.parse(localStorage.getItem("keyboard-layout-editor-v1"))?.currentLanguage;
-    if (privacyConsentCopy[savedLanguage]) return savedLanguage;
+    if (uiText[savedLanguage]?.privacyConsent) return savedLanguage;
   } catch {
     // Fall back to the browser language if saved settings are unavailable.
   }
@@ -93,7 +60,7 @@ function privacyConsentLanguage() {
 
   for (const browserLanguage of browserLanguages) {
     const languageId = String(browserLanguage).toLowerCase().split("-")[0];
-    if (privacyConsentCopy[languageId]) return languageId;
+    if (uiText[languageId]?.privacyConsent) return languageId;
   }
 
   return "en";
@@ -138,7 +105,7 @@ function initializePrivacyConsent() {
   }
 
   const applyPrivacyConsentCopy = () => {
-    const copy = privacyConsentCopy[privacyConsentLanguage()];
+    const copy = textFor(privacyConsentLanguage()).privacyConsent;
     title.textContent = copy.title;
     text.textContent = copy.text;
     accept.textContent = copy.accept;

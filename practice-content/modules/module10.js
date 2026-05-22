@@ -132,13 +132,6 @@
           ]
         },
         description: { ru: "Все пройденные сочетания", de: "Alle geübten Kombinationen", en: "All practiced patterns" },
-        completion: {
-          ru: "Похоже, пришло время прощаться. Я рассказал тебе всё главное о слепой печати: базовые позиции, ряды, Shift, цифры, пунктуацию и ритм. Дальше всё зависит от практики и от того, как часто ты будешь использовать навык в реальной работе. Помни: настоящая скорость приходит не от спешки, а от спокойных и точных движений. Продолжай печатать вслепую в обычной жизни, меньше смотри на клавиатуру и доверяй своим пальцам. У тебя уже есть всё, чтобы расти дальше.",
-          de: "Es ist Zeit, Abschied zu nehmen. Ich habe dir das Wichtigste über Blindtippen gezeigt: Grundposition, Reihen, Shift, Zahlen, Zeichensetzung und Rhythmus. Ab jetzt hängt viel von deiner Übung und davon ab, wie oft du diese Fähigkeit im Alltag benutzt. Denk daran: Echte Geschwindigkeit entsteht nicht durch Eile, sondern durch ruhige und genaue Bewegungen. Tippe weiter blind, schau seltener auf die Tastatur und vertraue deinen Fingern.",
-          en: "It is time to say goodbye. I have shown you the essentials of touch typing: home position, rows, Shift, numbers, punctuation, and rhythm. From here, progress depends on practice and on how often you use the skill in real work. Remember: real speed does not come from rushing, but from calm, precise movement. Keep touch typing in everyday life, look at the keyboard less, and trust your fingers.",
-          uk: "Схоже, настав час прощатися. Я показав найважливіше у сліпому друці: базову позицію, ряди, Shift, цифри, пунктуацію й ритм. Далі все залежить від практики та від того, як часто ти використовуватимеш цю навичку в реальній роботі. Пам'ятай: справжня швидкість приходить не від поспіху, а від спокійних і точних рухів. Друкуй всліпу в повсякденному житті, менше дивись на клавіатуру й довіряй пальцям.",
-          kk: "Қоштасатын уақыт келген сияқты. Мен сізге соқыр терудің ең маңызды бөліктерін көрсеттім: негізгі позиция, қатарлар, Shift, сандар, тыныс белгілері және ырғақ. Енді бәрі жаттығуға және бұл дағдыны күнделікті жұмыста қаншалықты жиі қолданатыныңызға байланысты. Есіңізде болсын: шынайы жылдамдық асығудан емес, сабырлы әрі дәл қозғалыстан келеді. Пернетақтаға азырақ қарап, саусақтарыңызға сеніңіз."
-        },
         symbolPolicy: { scope: "program", pattern: "frequency-test", shift: true, punctuation: true, metronome: true },
         target: { lines: 20, accuracy: 95, rhythmTolerance: 10, assistants: false },
         lines: { ru: practiceLines(withShiftAndPunctuation(seeds.test.ru)), de: practiceLines(withShiftAndPunctuation(seeds.test.de)), en: practiceLines(withShiftAndPunctuation(seeds.test.en)) }

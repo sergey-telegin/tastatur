@@ -139,6 +139,7 @@ const uiText = {
     textSourceReady: "Text ist bereit.",
     textSourceFallback: "Quelle nicht erreichbar. Lokaler Text wird verwendet.",
     textTooShort: "Füge mehr Text ein.",
+    fallbackRandomText: "Freies Texttraining uebertraegt die geuebte Bewegung auf echte Schreibsituationen. Die Haende halten den Rhythmus, der Blick folgt der Zeile, und die Finger warten immer weniger auf Hinweise. Dieser Modus passt gut fuer Ausdauer und ruhiges Schreiben laengerer Abschnitte.",
     practiceErrors: "Fehler",
     trainingTime: "Trainingszeit",
     dailyStats: "Tageswerte",
@@ -178,6 +179,84 @@ const uiText = {
     lesson4FingeringReminder: "Jetzt kommen unbequemere Tasten dazu. Wenn sich etwas nach Strecken anfühlt, kannst du die Fingerkarte noch einmal prüfen.",
     openFingerMapAction: "Fingerkarte öffnen",
     close: "Schließen",
+    typingText: "Text zum Tippen",
+    keyboard: "Tastatur",
+    fingers: "Finger",
+    fingerChoice: "Finger auswählen",
+    selectedKeyEditor: "Editor für ausgewählte Taste",
+    selectedKey: "Ausgewählte Taste",
+    keyLabel: "Beschriftung",
+    keyLabelPlaceholder: "Zum Beispiel: A",
+    apply: "Anwenden",
+    emptyKey: "leer",
+    keyUpdated: "Taste \"{key}\" für {language} aktualisiert.",
+    layoutReset: "Layout {language} zurückgesetzt.",
+    fingerMapMenu: "Tasten den Fingern zuordnen",
+    privacyConsent: {
+      title: "Datenschutz",
+      text: "FlyKey verwendet Google Analytics, um die Nutzung der Website zu verstehen. Analytics wird nur mit Ihrer Zustimmung aktiviert.",
+      accept: "Akzeptieren",
+      reject: "Ablehnen"
+    },
+    onboarding: {
+      start: "Start",
+      screens: [
+        { paragraphs: ["FlyKey ist ein Trainer für Blindtippen.", "FlyKey macht die Tastatur zu einer Erweiterung deiner Gedanken.", "Tippe leicht, als würden deine Finger den Weg schon kennen."], character: false },
+        { paragraphs: ["Leichtigkeit, Geschwindigkeit und Sicherheit an der Tastatur warten schon auf dich."], character: false },
+        { paragraphs: ["Hier paukst du keine Tasten. Du lernst Schritt für Schritt frei zu tippen: weniger nach unten schauen, weniger anspannen und den Fingern mehr vertrauen."], character: false },
+        { paragraphs: ["Ich heiße Key. Ich bleibe bei dir.", "Dein kleiner fliegender Helfer gibt Hinweise, unterstützt dich und hilft dir, im Rhythmus zu bleiben. Kein strenger Lehrer, sondern ein Partner, mit dem Üben leichter wird."], character: true }
+      ]
+    },
+    nextModuleKicker: "Nächstes Modul",
+    startNextModule: "Starten",
+    defaultCompletion: "Ausgezeichnet. Gut gemacht. Weiter geht's.",
+    storyboard: {
+      closePreview: "Schließen",
+      previousImage: "Vorheriges Bild",
+      nextImage: "Nächstes Bild",
+      title: "Roadmap",
+      apply: "Anwenden",
+      resizeBottomDraft: "Höhe des unteren Entwurfs ändern",
+      bottomDraft: "Unterer Entwurf",
+      bottomDraftNote: "Hier kannst du Karten ablegen, wenn rechts wenig Platz ist.",
+      resizeSideDraft: "Breite des rechten Entwurfs ändern",
+      draft: "Entwurf",
+      draftNote: "Hier kannst du Karten vorübergehend aus der Tabelle ablegen und später zurückholen.",
+      hint: "Ziehe Karten zwischen Zellen. Alles Überzählige kann vorübergehend in den Entwurf.",
+      downloadJson: "JSON herunterladen",
+      applyCommandLabel: "Danach lokal ausführen",
+      applyCommandPlaceholder: "Lade JSON herunter, um den Befehl zu sehen.",
+      jsonPreviewLabel: "Storyboard JSON preview"
+    },
+    seo: {
+      navLabel: "Über FlyKey",
+      nav: ["Applikatur", "Assistenten", "Lektionen und Tests", "Tipps", "Eigene Texte", "FAQ"],
+      eyebrow: "Online-Trainer für Blindtippen",
+      title: "FlyKey - ein Trainer für Blindtippen, den du anpassen kannst",
+      lead: "FlyKey hilft beim Lernen des Blindtippens ohne harten Druck: Der Trainer zeigt Tastatur, Finger, Zuständigkeitszonen, aktuelle Genauigkeit und Tempo und nimmt zusätzliche Hinweise dort schrittweise weg, wo echte Routine geprüft werden soll.",
+      summaryLabel: "Wichtige FlyKey-Funktionen",
+      summary: [
+        ["5 Layouts", "Russische, ukrainische, kasachische, deutsche und englische Tastaturen in einem Trainer."],
+        ["Finger anpassen", "Ändere, welcher Finger bestimmte Tasten drückt, und speichere deine eigene Karte."],
+        ["Assistenten nach Wahl", "Hervorhebungen für Tasten, Finger, Zonen und Anschläge lassen sich manuell ein- und ausschalten."],
+        ["Tests ohne Hinweise", "In Prüflektüren werden Assistenten deaktiviert, um echte Bewegungsautomatik zu messen."]
+      ],
+      articles: [
+        ["Applikatur ist kein starres Gesetz", ["Viele Trainer gehen davon aus, dass ein Fingerschema für alle passt. FlyKey ist weicher: Es gibt eine Standardkarte, aber du kannst sie ändern. Wenn sich eine Taste unbequem anfühlt, öffne die Applikatur, wähle einen Finger und weise Tasten direkt auf der Bildschirmtastatur zu.", "Das hilft bei anderen Tastaturen, eigenen Gewohnheiten, kleineren Händen oder Tasten, nach denen man ungern greift. Der Trainer zwingt die Hand nicht in eine abstrakte Regel, sondern hilft, ein stabiles Schema zu finden."]],
+        ["Assistenten helfen, ohne den Fortschritt zu blockieren", ["In FlyKey steuerst du Tastenhervorhebung, Fingerzonen, Fingerhervorhebung, richtige und falsche Anschläge, Handanzeige, Jede-zweite-Zeile-Modus und Metronom getrennt. Anfänger können mehr Unterstützung behalten und später Teile davon abschalten.", "Testlektionen können Assistenten automatisch deaktivieren. Das ist Absicht: Wenn Hinweise immer sichtbar sind, schaut man leicht auf sie statt die Bewegung zu erinnern. Prüfungen ohne Assistenten zeigen, welche Tasten schon automatisch sind."]],
+        ["Das Programm führt vom Einfachen zum echten Tippen", ["Die Lektionen beginnen mit der Grundposition und fügen nach und nach Hände, kurze Wörter, obere und untere Reihen, Shift, Zahlen, Satzzeichen, Rhythmus und längere Texte hinzu. Jede Lektion hat Ziele für Zeilen, Genauigkeit und manchmal Tempo oder Rhythmus.", "So versteht man, warum das nächste Modul wichtig ist, sieht Fortschritt und durchläuft Prüfphasen. FlyKey fühlt sich eher wie ein ruhiges Lernprogramm an als wie ein endloses Symbolfeld."]],
+        ["Die Figur erklärt den Sinn der Übung", ["Der Trainer hat eine Helferfigur. Sie erscheint beim Einstieg, vor Lektionen, nach Abschlüssen und beim Wechsel zum nächsten Modul. Sie gibt kurzen menschlichen Kontext: wie die Hände liegen, warum Eile nicht hilft, wann man auf Finger schaut und wann man dem Gedächtnis vertraut.", "Beim Blindtippen liegt der Fehler oft nicht am fehlenden Buchstabenwissen, sondern an Spannung, Zusatzbewegung oder zu hohem Tempo. Tipps machen das Üben sanfter."]],
+        ["Üben geht auch außerhalb der Lektionen", ["Neben dem Lernprogramm unterstützt FlyKey Texttraining. Du kannst eigenen Text einfügen, die Zeilenzahl wählen, Zufallstext aktivieren und Assistenten genau für diese Sitzung einstellen.", "Fortschritt, Einstellungen, Sprache, Fingerkarte, Thema, Klang und Textgröße werden lokal im Browser gespeichert. Ein Konto ist derzeit nicht nötig."]]
+      ],
+      faqTitle: "Fragen zu FlyKey",
+      faq: [
+        ["Wie unterscheidet sich FlyKey von einem normalen Tipptrainer?", "FlyKey setzt auf sanftes Lernen: Fingerhinweise, anpassbare Applikatur, Figur-Tipps, Metronom, Tests ohne Assistenten und mehrere Layouts."],
+        ["Kann ich ändern, welcher Finger eine Taste drückt?", "Ja. In der Applikatur wählst du einen Finger und weist Tasten direkt auf der Bildschirmtastatur zu."],
+        ["Kann ich Hinweise ausschalten?", "Ja. Du steuerst Hervorhebungen, Handanzeige und Metronom selbst. In Testlektionen können Assistenten automatisch ausgeschaltet werden."],
+        ["Welche Layouts werden unterstützt?", "FlyKey unterstützt russische, ukrainische, kasachische, deutsche und englische Layouts."],
+        ["Brauche ich ein Konto?", "Für das grundlegende Training ist kein Konto nötig. Einstellungen und Fortschritt werden lokal im Browser gespeichert."]
+      ]
+    },
     fingerNames: {
       "left-pinky": "Linker kleiner Finger",
       "left-ring": "Linker Ringfinger",
@@ -236,6 +315,7 @@ const uiText = {
     textSourceReady: "Text is ready.",
     textSourceFallback: "Source unavailable. Using local text.",
     textTooShort: "Add more text.",
+    fallbackRandomText: "Free text practice moves the trained motion into real typing. The hands keep rhythm, the eyes follow the line, and the fingers rely less on hints. This mode is useful for endurance checks and calm practice with longer passages.",
     practiceErrors: "Errors",
     trainingTime: "Training time",
     dailyStats: "Daily stats",
@@ -275,6 +355,107 @@ const uiText = {
     lesson4FingeringReminder: "Now the keys get less comfortable. If something feels like a stretch, remember that you can check the finger map again.",
     openFingerMapAction: "Open Finger Map",
     close: "Close",
+    typingText: "Typing text",
+    keyboard: "Keyboard",
+    fingers: "Fingers",
+    fingerChoice: "Finger choice",
+    selectedKeyEditor: "Selected key editor",
+    selectedKey: "Selected key",
+    keyLabel: "Label",
+    keyLabelPlaceholder: "For example: A",
+    apply: "Apply",
+    emptyKey: "empty",
+    keyUpdated: "Key \"{key}\" updated for {language}.",
+    layoutReset: "{language} layout reset.",
+    fingerMapMenu: "Key-to-finger mapping",
+    privacyConsent: {
+      title: "Privacy",
+      text: "FlyKey uses Google Analytics to understand how the site is used. Analytics is enabled only with your consent.",
+      accept: "Accept",
+      reject: "Decline"
+    },
+    onboarding: {
+      start: "Start",
+      screens: [
+        {
+          paragraphs: [
+            "FlyKey is a touch typing trainer.",
+            "FlyKey turns the keyboard into an extension of your thoughts.",
+            "Type lightly, as if your fingers already know the way."
+          ],
+          character: false
+        },
+        {
+          paragraphs: [
+            "Ease, speed, and confidence at the keyboard are already waiting for you."
+          ],
+          character: false
+        },
+        {
+          paragraphs: [
+            "Here you do not memorize keys by force. You gradually learn to type freely: look down less, tense up less, and trust your fingers more."
+          ],
+          character: false
+        },
+        {
+          paragraphs: [
+            "My name is Key. I will stay with you.",
+            "Your little flying helper gives hints, supports you, and helps you keep the rhythm. Not a strict teacher, but a partner who makes practice easier."
+          ],
+          character: true
+        }
+      ]
+    },
+    nextModuleKicker: "Next module",
+    startNextModule: "Start",
+    defaultCompletion: "Excellent. Well done. Let's keep going.",
+    storyboard: {
+      closePreview: "Close",
+      previousImage: "Previous image",
+      nextImage: "Next image",
+      title: "Roadmap",
+      apply: "Apply",
+      resizeBottomDraft: "Resize bottom draft",
+      bottomDraft: "Bottom draft",
+      bottomDraftNote: "Drop cards here when the right side is short on space.",
+      resizeSideDraft: "Resize right draft",
+      draft: "Draft",
+      draftNote: "Temporarily move cards from the table here and return them later.",
+      hint: "Drag cards between cells. Anything extra can wait in Draft.",
+      downloadJson: "Download JSON",
+      applyCommandLabel: "Then run locally",
+      applyCommandPlaceholder: "Download JSON to see the command.",
+      jsonPreviewLabel: "Storyboard JSON preview"
+    },
+    seo: {
+      navLabel: "About FlyKey",
+      nav: ["Fingering", "Assistants", "Lessons and tests", "Tips", "Your texts", "FAQ"],
+      eyebrow: "Online touch typing trainer",
+      title: "FlyKey - a touch typing trainer you can adapt to yourself",
+      lead: "FlyKey helps you learn touch typing without harsh pressure: the trainer shows the keyboard, fingers, responsibility zones, current accuracy, and speed, then gradually removes extra hints where the real skill needs to be checked.",
+      summaryLabel: "Key FlyKey features",
+      summary: [
+        ["5 layouts", "Russian, Ukrainian, Kazakh, German, and English keyboards in one trainer."],
+        ["Finger setup", "Change which finger presses specific keys and save your own map."],
+        ["Optional assistants", "Key, finger, zone, and press highlights can be turned on and off manually."],
+        ["Tests without hints", "In check lessons, assistants turn off so real movement automation can be measured."]
+      ],
+      articles: [
+        ["Fingering is not nailed to one rule", ["Many trainers assume one finger scheme for everyone. FlyKey is softer: there is a standard map, but you can change it. If a key feels uncomfortable, open fingering setup, choose a finger, and assign keys directly on the on-screen keyboard.", "This helps when someone has a different keyboard, a nonstandard habit, smaller hands, or keys that feel unpleasant to reach. The trainer does not force the hand into an abstract rule; it helps find a stable scheme and continue lessons with it."]],
+        ["Assistants help without getting in the way", ["In FlyKey you can separately control key highlights, finger zones, finger highlights, correct and wrong press highlights, hand display, every-other-line mode, and the metronome. A beginner can keep more support, then turn part of it off as movements become steadier.", "A key feature: test lessons can turn assistants off automatically. That is intentional. If hints are always on, it is easy to look at them instead of remembering the movement. Checking without assistants shows which keys are already automatic and which still need practice."]],
+        ["The program moves from simple to real typing", ["Lessons start with the home position and gradually add hands, short words, top and bottom rows, Shift, numbers, punctuation, rhythm, and longer texts. Each lesson has a goal for lines, accuracy, and sometimes speed or rhythm.", "This differs from random-letter drills: the user understands why the next module matters, sees progress, and passes check stages. FlyKey feels more like a calm learning program than an endless field of symbols."]],
+        ["The character explains why the exercise matters", ["The trainer has a helper character. It appears in the welcome flow, before lessons, after completion, and when moving to the next module. Its job is not decoration, but short human context: how to hold your hands, why not to rush, when to look at fingers, and when to trust memory.", "That matters in touch typing: the error is often not that someone does not know the letter, but tension, extra movement, or trying to type faster than the motor skill is ready for. Tips make practice softer and keep learning from turning into a fight with the keyboard."]],
+        ["Practice is not limited to lessons", ["Beyond the learning program, FlyKey supports text practice. You can paste your own text, choose a line count, enable random text, and tune assistants for that specific session. This is useful once the basic movements are familiar and you want to carry the skill into normal phrases.", "Progress, settings, selected language, finger map, theme, sound, and text size are saved locally in the browser. For now, no account is required: open the site and start typing."]]
+      ],
+      faqTitle: "Questions about FlyKey",
+      faq: [
+        ["How is FlyKey different from a regular typing trainer?", "FlyKey focuses on gentle learning: finger hints, customizable fingering, character tips, metronome, tests without assistants, and support for multiple layouts."],
+        ["Can I change which finger presses a key?", "Yes. In fingering setup, choose a finger and assign keys directly on the on-screen keyboard."],
+        ["Can I turn hints off?", "Yes. You control key, finger, zone, and press highlights, hand display, and the metronome. In test lessons, assistants can turn off automatically."],
+        ["Which layouts are supported?", "FlyKey supports Russian, Ukrainian, Kazakh, German, and English layouts."],
+        ["Do I need an account?", "No account is needed for basic practice. Settings and progress are saved locally in the browser."]
+      ]
+    },
     fingerNames: {
       "left-pinky": "Left Pinky",
       "left-ring": "Left Ring",
@@ -333,6 +514,7 @@ const uiText = {
     textSourceReady: "Текст готов.",
     textSourceFallback: "Источник недоступен. Использую локальный текст.",
     textTooShort: "Добавь больше текста.",
+    fallbackRandomText: "Тренировка свободного текста помогает перенести навык из учебных строк в настоящую печать. Руки сохраняют ритм, взгляд держит строку, а пальцы постепенно перестают ждать подсказок. Такой режим хорошо подходит для проверки выносливости и спокойного набора длинных фрагментов.",
     practiceErrors: "Ошибки",
     trainingTime: "Время тренировки",
     dailyStats: "Показатели по дням",
@@ -372,6 +554,107 @@ const uiText = {
     lesson4FingeringReminder: "Теперь появились менее удобные клавиши. Если где-то приходится тянуться, помни: карту пальцев можно проверить ещё раз.",
     openFingerMapAction: "Открыть карту",
     close: "Закрыть",
+    typingText: "Текст для печати",
+    keyboard: "Клавиатура",
+    fingers: "Пальцы",
+    fingerChoice: "Выбор пальца",
+    selectedKeyEditor: "Редактор выбранной клавиши",
+    selectedKey: "Выбранная клавиша",
+    keyLabel: "Подпись",
+    keyLabelPlaceholder: "Например: Ж",
+    apply: "Применить",
+    emptyKey: "пусто",
+    keyUpdated: "Клавиша \"{key}\" обновлена для {language}.",
+    layoutReset: "Раскладка {language} сброшена.",
+    fingerMapMenu: "Привязка клавиш к пальцам",
+    privacyConsent: {
+      title: "Конфиденциальность",
+      text: "FlyKey использует Google Analytics, чтобы понимать, как развивается сайт. Аналитика включается только с вашего согласия.",
+      accept: "Принять",
+      reject: "Отклонить"
+    },
+    onboarding: {
+      start: "Пуск",
+      screens: [
+        {
+          paragraphs: [
+            "FlyKey — это тренажёр слепой печати.",
+            "FlyKey — преврати клавиатуру в продолжение твоих мыслей.",
+            "FlyKey — печатай легко, будто пальцы умеют летать."
+          ],
+          character: false
+        },
+        {
+          paragraphs: [
+            "Лёгкость, скорость и уверенность за клавиатурой тебя уже ждут."
+          ],
+          character: false
+        },
+        {
+          paragraphs: [
+            "Здесь ты не зубришь клавиши, а постепенно учишься печатать свободно: меньше смотреть вниз, меньше напрягаться и больше доверять пальцам."
+          ],
+          character: false
+        },
+        {
+          paragraphs: [
+            "Меня зовут Key. Я буду с тобой.",
+            "Твой маленький летающий помощник, который подсказывает, поддерживает и помогает не сбиться. Не строгий учитель, а напарник, с которым тренироваться проще и веселее."
+          ],
+          character: true
+        }
+      ]
+    },
+    nextModuleKicker: "Следующий модуль",
+    startNextModule: "Начать",
+    defaultCompletion: "Отлично. Молодец. Идём дальше.",
+    storyboard: {
+      closePreview: "Закрыть",
+      previousImage: "Предыдущая картинка",
+      nextImage: "Следующая картинка",
+      title: "Дорожная карта",
+      apply: "Применить",
+      resizeBottomDraft: "Изменить высоту нижнего черновика",
+      bottomDraft: "Нижний черновик",
+      bottomDraftNote: "Сюда можно складывать карточки, когда справа мало места.",
+      resizeSideDraft: "Изменить ширину правого черновика",
+      draft: "Черновик",
+      draftNote: "Сюда можно временно убирать карточки из таблицы и потом возвращать их обратно.",
+      hint: "Перетаскивай карточки между ячейками. Всё лишнее можно временно положить в Черновик.",
+      downloadJson: "Скачать JSON",
+      applyCommandLabel: "Потом запусти локально",
+      applyCommandPlaceholder: "Скачай JSON, чтобы увидеть команду.",
+      jsonPreviewLabel: "Предпросмотр Storyboard JSON"
+    },
+    seo: {
+      navLabel: "О FlyKey",
+      nav: ["Аппликатура", "Ассистенты", "Уроки и тесты", "Советы", "Свои тексты", "FAQ"],
+      eyebrow: "Онлайн-тренажер слепой печати",
+      title: "FlyKey — тренажер слепой печати, который можно настроить под себя",
+      lead: "FlyKey помогает учиться печатать вслепую без жесткого давления: тренажер показывает клавиатуру, пальцы, зоны ответственности, текущую точность и скорость, а затем постепенно убирает лишние подсказки там, где нужно проверить настоящий навык.",
+      summaryLabel: "Ключевые особенности FlyKey",
+      summary: [
+        ["5 раскладок", "Русская, украинская, казахская, немецкая и английская клавиатуры в одном тренажере."],
+        ["Настройка пальцев", "Можно поменять, каким пальцем нажимать конкретные клавиши, и сохранить свою карту."],
+        ["Ассистенты по выбору", "Подсветка клавиш, пальцев, зон и нажатий включается и отключается вручную."],
+        ["Тесты без подсказок", "В проверочных уроках ассистенты отключаются, чтобы оценить реальную автоматизацию движений."]
+      ],
+      articles: [
+        ["Аппликатура не прибита к одному правилу", ["Во многих тренажерах предполагается, что схема пальцев одна для всех. FlyKey идет мягче: стандартная карта есть, но ее можно изменить. Если клавиша ощущается неудобно, пользователь открывает настройку аппликатуры, выбирает палец и назначает клавиши прямо на экранной клавиатуре.", "Это полезно, когда у человека другая клавиатура, нестандартная привычка, маленькие руки или просто есть клавиши, до которых неприятно тянуться. Тренажер не заставляет ломать руку ради абстрактного правила, а помогает найти устойчивую схему и продолжить уроки с ней."]],
+        ["Ассистенты помогают, но не мешают взрослеть навыку", ["В FlyKey можно отдельно управлять подсветкой клавиш, зонами пальцев, подсветкой пальцев, подсветкой правильных и ошибочных нажатий, показом рук, режимом через строку и метрономом. Новичок может оставить больше поддержки, а когда движения становятся увереннее — выключить часть подсказок.", "Важная особенность: тестовые уроки могут отключать ассистентов автоматически. Это сделано честно: если подсказки всегда включены, легко привыкнуть смотреть на них вместо того, чтобы запоминать движение. Проверка без ассистентов показывает, какие клавиши уже стали автоматическими, а какие еще требуют практики."]],
+        ["Программа идет от простого к реальному набору", ["Уроки начинаются с базовой позиции и постепенно добавляют руки, короткие слова, верхний и нижний ряды, Shift, цифры, знаки препинания, ритм и длинные тексты. У каждого урока есть цель по строкам, точности, иногда по скорости или ритму.", "Такой подход отличается от тренировки случайных букв: пользователь понимает, зачем нужен следующий модуль, видит прогресс и проходит проверочные этапы. FlyKey больше похож на спокойную программу обучения, чем на бесконечное поле для набора символов."]],
+        ["Персонаж объясняет, зачем упражнение нужно", ["В тренажере есть персонаж-помощник. Он появляется в приветствии, перед уроками, после завершения и при переходе к следующему модулю. Его задача не украшать экран, а давать короткий человеческий контекст: как держать руки, почему не стоит спешить, когда смотреть на пальцы, а когда доверять памяти.", "Это особенно важно в слепой печати: ошибка часто не в том, что человек “не знает букву”, а в напряжении, лишнем движении или попытке набрать быстрее, чем готова моторика. Советы помогают тренироваться мягче и не превращать обучение в борьбу с клавиатурой."]],
+        ["Можно тренироваться не только на уроках", ["Помимо учебной программы, FlyKey поддерживает текстовую практику. Можно вставить собственный текст, выбрать количество строк, включить случайный текст и настроить ассистентов именно для этой тренировки. Это удобно, когда базовые движения уже знакомы и хочется перенести навык в обычные фразы.", "Прогресс, настройки, выбранный язык, карта пальцев, тема, звук и размер текста сохраняются локально в браузере. Сейчас аккаунт не обязателен: сайт можно открыть и сразу начать печатать."]]
+      ],
+      faqTitle: "Вопросы о FlyKey",
+      faq: [
+        ["Чем FlyKey отличается от обычного тренажера печати?", "FlyKey делает упор на мягкое обучение: подсказки пальцев, настраиваемая аппликатура, советы персонажа, метроном, тесты без ассистентов и поддержка нескольких раскладок."],
+        ["Можно ли изменить, какой палец нажимает клавишу?", "Да. В настройке аппликатуры можно выбрать палец и назначить ему клавиши прямо на экранной клавиатуре."],
+        ["Можно ли отключить подсказки?", "Да. Пользователь сам управляет подсветкой клавиш, пальцев, зон, нажатий, показом рук и метрономом. В тестовых уроках ассистенты могут отключаться автоматически."],
+        ["Какие раскладки поддерживаются?", "FlyKey поддерживает русскую, украинскую, казахскую, немецкую и английскую раскладки."],
+        ["Нужен ли аккаунт?", "Для базовой тренировки аккаунт не нужен. Настройки и прогресс сохраняются локально в браузере."]
+      ]
+    },
     fingerNames: {
       "left-pinky": "Левый мизинец",
       "left-ring": "Левый безымянный",
@@ -430,6 +713,7 @@ const uiText = {
     textSourceReady: "Текст готовий.",
     textSourceFallback: "Джерело недоступне. Використовую локальний текст.",
     textTooShort: "Додайте більше тексту.",
+    fallbackRandomText: "Тренування вільного тексту переносить навичку з навчальних рядків у справжній набір. Руки тримають ритм, погляд веде рядок, а пальці поступово менше чекають підказок. Такий режим добре підходить для перевірки витривалості й спокійного набору довших фрагментів.",
     practiceErrors: "Помилки",
     trainingTime: "Час тренування",
     dailyStats: "Показники за днями",
@@ -469,6 +753,84 @@ const uiText = {
     lesson4FingeringReminder: "Тепер з'явилися менш зручні клавіші. Якщо десь доводиться тягнутися, пам'ятай: карту пальців можна перевірити ще раз.",
     openFingerMapAction: "Відкрити карту",
     close: "Закрити",
+    typingText: "Текст для набору",
+    keyboard: "Клавіатура",
+    fingers: "Пальці",
+    fingerChoice: "Вибір пальця",
+    selectedKeyEditor: "Редактор вибраної клавіші",
+    selectedKey: "Вибрана клавіша",
+    keyLabel: "Підпис",
+    keyLabelPlaceholder: "Наприклад: Ж",
+    apply: "Застосувати",
+    emptyKey: "порожньо",
+    keyUpdated: "Клавішу \"{key}\" оновлено для {language}.",
+    layoutReset: "Розкладку {language} скинуто.",
+    fingerMapMenu: "Прив'язка клавіш до пальців",
+    privacyConsent: {
+      title: "Конфіденційність",
+      text: "FlyKey використовує Google Analytics, щоб розуміти, як розвивається сайт. Аналітика вмикається лише з вашої згоди.",
+      accept: "Прийняти",
+      reject: "Відхилити"
+    },
+    onboarding: {
+      start: "Старт",
+      screens: [
+        { paragraphs: ["FlyKey — це тренажер сліпого друку.", "FlyKey допомагає перетворити клавіатуру на продовження думок.", "Друкуй легко, ніби пальці вже знають дорогу."], character: false },
+        { paragraphs: ["Легкість, швидкість і впевненість за клавіатурою вже чекають на тебе."], character: false },
+        { paragraphs: ["Тут ти не зубриш клавіші. Ти поступово вчишся друкувати вільно: менше дивитися вниз, менше напружуватися і більше довіряти пальцям."], character: false },
+        { paragraphs: ["Мене звати Key. Я буду поруч.", "Твій маленький летючий помічник підказує, підтримує й допомагає не збиватися з ритму. Не суворий учитель, а напарник, з яким тренуватися легше."], character: true }
+      ]
+    },
+    nextModuleKicker: "Наступний модуль",
+    startNextModule: "Почати",
+    defaultCompletion: "Чудово. Гарна робота. Рухаємося далі.",
+    storyboard: {
+      closePreview: "Закрити",
+      previousImage: "Попередня картинка",
+      nextImage: "Наступна картинка",
+      title: "Дорожня карта",
+      apply: "Застосувати",
+      resizeBottomDraft: "Змінити висоту нижньої чернетки",
+      bottomDraft: "Нижня чернетка",
+      bottomDraftNote: "Сюди можна складати картки, коли справа мало місця.",
+      resizeSideDraft: "Змінити ширину правої чернетки",
+      draft: "Чернетка",
+      draftNote: "Сюди можна тимчасово прибирати картки з таблиці й потім повертати їх назад.",
+      hint: "Перетягуй картки між клітинками. Усе зайве можна тимчасово покласти в Чернетку.",
+      downloadJson: "Завантажити JSON",
+      applyCommandLabel: "Потім запусти локально",
+      applyCommandPlaceholder: "Завантаж JSON, щоб побачити команду.",
+      jsonPreviewLabel: "Попередній перегляд Storyboard JSON"
+    },
+    seo: {
+      navLabel: "Про FlyKey",
+      nav: ["Аплікатура", "Підказки", "Уроки й тести", "Поради", "Власні тексти", "FAQ"],
+      eyebrow: "Онлайн-тренажер сліпого друку",
+      title: "FlyKey — тренажер сліпого друку, який можна налаштувати під себе",
+      lead: "FlyKey допомагає вчитися друкувати наосліп без жорсткого тиску: тренажер показує клавіатуру, пальці, зони відповідальності, поточну точність і швидкість, а потім поступово прибирає зайві підказки там, де потрібно перевірити справжню навичку.",
+      summaryLabel: "Ключові можливості FlyKey",
+      summary: [
+        ["5 розкладок", "Російська, українська, казахська, німецька й англійська клавіатури в одному тренажері."],
+        ["Налаштування пальців", "Можна змінити, яким пальцем натискати конкретні клавіші, і зберегти свою карту."],
+        ["Підказки на вибір", "Підсвічування клавіш, пальців, зон і натискань вмикається та вимикається вручну."],
+        ["Тести без підказок", "У перевірочних уроках підказки вимикаються, щоб оцінити реальну автоматизацію рухів."]
+      ],
+      articles: [
+        ["Аплікатура не прибита до одного правила", ["У багатьох тренажерах передбачається, що схема пальців одна для всіх. FlyKey діє м'якше: стандартна карта є, але її можна змінити. Якщо клавіша відчувається незручно, користувач відкриває налаштування аплікатури, вибирає палець і призначає клавіші прямо на екранній клавіатурі.", "Це корисно, коли в людини інша клавіатура, нестандартна звичка, маленькі руки або просто є клавіші, до яких неприємно тягнутися. Тренажер не змушує ламати руку заради абстрактного правила, а допомагає знайти стійку схему."]],
+        ["Підказки допомагають, але не заважають дорослішати навичці", ["У FlyKey можна окремо керувати підсвічуванням клавіш, зонами пальців, підсвічуванням пальців, правильних і помилкових натискань, показом рук, режимом через рядок і метрономом.", "Тестові уроки можуть вимикати підказки автоматично. Це чесна перевірка: якщо підказки завжди ввімкнені, легко звикнути дивитися на них замість того, щоб запам'ятовувати рух."]],
+        ["Програма йде від простого до реального набору", ["Уроки починаються з базової позиції й поступово додають руки, короткі слова, верхній і нижній ряди, Shift, цифри, розділові знаки, ритм і довгі тексти.", "Такий підхід відрізняється від тренування випадкових літер: користувач розуміє, навіщо потрібен наступний модуль, бачить прогрес і проходить перевірочні етапи."]],
+        ["Персонаж пояснює, навіщо потрібна вправа", ["У тренажері є персонаж-помічник. Він з'являється у привітанні, перед уроками, після завершення і під час переходу до наступного модуля.", "У сліпому друці помилка часто не в тому, що людина не знає літеру, а в напруженні, зайвому русі або спробі набирати швидше, ніж готова моторика. Поради допомагають тренуватися м'якше."]],
+        ["Можна тренуватися не тільки на уроках", ["Окрім навчальної програми, FlyKey підтримує текстову практику. Можна вставити власний текст, вибрати кількість рядків, увімкнути випадковий текст і налаштувати підказки саме для цього тренування.", "Прогрес, налаштування, вибрана мова, карта пальців, тема, звук і розмір тексту зберігаються локально в браузері."]]
+      ],
+      faqTitle: "Питання про FlyKey",
+      faq: [
+        ["Чим FlyKey відрізняється від звичайного тренажера друку?", "FlyKey робить акцент на м'якому навчанні: підказки пальців, налаштовувана аплікатура, поради персонажа, метроном, тести без підказок і підтримка кількох розкладок."],
+        ["Чи можна змінити, який палець натискає клавішу?", "Так. У налаштуванні аплікатури можна вибрати палець і призначити йому клавіші прямо на екранній клавіатурі."],
+        ["Чи можна вимкнути підказки?", "Так. Користувач сам керує підсвічуванням клавіш, пальців, зон, натискань, показом рук і метрономом."],
+        ["Які розкладки підтримуються?", "FlyKey підтримує російську, українську, казахську, німецьку й англійську розкладки."],
+        ["Чи потрібен акаунт?", "Для базового тренування акаунт не потрібен. Налаштування і прогрес зберігаються локально в браузері."]
+      ]
+    },
     fingerNames: {
       "left-pinky": "Лівий мізинець",
       "left-ring": "Лівий безіменний",
@@ -527,6 +889,7 @@ const uiText = {
     textSourceReady: "Мәтін дайын.",
     textSourceFallback: "Дереккөз қолжетімсіз. Жергілікті мәтін қолданылады.",
     textTooShort: "Көбірек мәтін қосыңыз.",
+    fallbackRandomText: "Еркін мәтінмен жаттығу оқу жолдарындағы дағдыны күнделікті теруге көшіреді. Қол ырғақты сақтайды, көз жолды ұстайды, ал саусақтар біртіндеп кеңестерге азырақ сүйенеді. Бұл режим төзімділікті тексеруге және ұзақ үзінділерді сабырмен теруге ыңғайлы.",
     practiceErrors: "Қателер",
     trainingTime: "Жаттығу уақыты",
     dailyStats: "Күндер бойынша көрсеткіштер",
@@ -566,6 +929,84 @@ const uiText = {
     lesson4FingeringReminder: "Енді ыңғайсыздау пернелер пайда болды. Бір жерге созылу керек болса, саусақ картасын қайта қарап шығуға болады.",
     openFingerMapAction: "Картаны ашу",
     close: "Жабу",
+    typingText: "Теруге арналған мәтін",
+    keyboard: "Пернетақта",
+    fingers: "Саусақтар",
+    fingerChoice: "Саусақ таңдау",
+    selectedKeyEditor: "Таңдалған перне редакторы",
+    selectedKey: "Таңдалған перне",
+    keyLabel: "Жазу",
+    keyLabelPlaceholder: "Мысалы: Ә",
+    apply: "Қолдану",
+    emptyKey: "бос",
+    keyUpdated: "\"{key}\" пернесі {language} үшін жаңартылды.",
+    layoutReset: "{language} жаймасы өшірілді.",
+    fingerMapMenu: "Пернелерді саусақтарға бекіту",
+    privacyConsent: {
+      title: "Құпиялылық",
+      text: "FlyKey сайттың қалай дамып жатқанын түсіну үшін Google Analytics қолданады. Аналитика тек сіздің келісіміңізбен қосылады.",
+      accept: "Қабылдау",
+      reject: "Бас тарту"
+    },
+    onboarding: {
+      start: "Старт",
+      screens: [
+        { paragraphs: ["FlyKey — соқыр теруге арналған жаттықтырғыш.", "FlyKey пернетақтаны ойыңыздың жалғасына айналдыруға көмектеседі.", "Саусақтар жолды өзі білетіндей жеңіл теріңіз."], character: false },
+        { paragraphs: ["Пернетақтадағы жеңілдік, жылдамдық және сенімділік сізді күтіп тұр."], character: false },
+        { paragraphs: ["Мұнда пернелерді жаттап алмайсыз. Біртіндеп еркін теруді үйренесіз: төменге азырақ қарау, аз ширығу және саусақтарға көбірек сену."], character: false },
+        { paragraphs: ["Менің атым Key. Мен қасыңызда боламын.", "Кішкентай ұшқыш көмекшіңіз кеңес береді, қолдайды және ырғақтан жаңылмауға көмектеседі. Қатал мұғалім емес, жаттығуды жеңілдететін серіктес."], character: true }
+      ]
+    },
+    nextModuleKicker: "Келесі модуль",
+    startNextModule: "Бастау",
+    defaultCompletion: "Керемет. Жақсы жұмыс. Әрі қарай өтейік.",
+    storyboard: {
+      closePreview: "Жабу",
+      previousImage: "Алдыңғы сурет",
+      nextImage: "Келесі сурет",
+      title: "Жол картасы",
+      apply: "Қолдану",
+      resizeBottomDraft: "Төменгі шимай биіктігін өзгерту",
+      bottomDraft: "Төменгі шимай",
+      bottomDraftNote: "Оң жақта орын аз болса, карталарды осында қоюға болады.",
+      resizeSideDraft: "Оң жақ шимай енін өзгерту",
+      draft: "Шимай",
+      draftNote: "Карталарды кестеден уақытша осында алып, кейін қайта қайтаруға болады.",
+      hint: "Карталарды ұяшықтар арасында сүйреңіз. Артықтарын уақытша Шимайға қоюға болады.",
+      downloadJson: "JSON жүктеу",
+      applyCommandLabel: "Содан кейін жергілікті іске қосыңыз",
+      applyCommandPlaceholder: "Команданы көру үшін JSON жүктеңіз.",
+      jsonPreviewLabel: "Storyboard JSON алдын ала қарау"
+    },
+    seo: {
+      navLabel: "FlyKey туралы",
+      nav: ["Аппликатура", "Көмекшілер", "Сабақтар мен тесттер", "Кеңестер", "Өз мәтіндеріңіз", "FAQ"],
+      eyebrow: "Соқыр теруге арналған онлайн жаттықтырғыш",
+      title: "FlyKey — өзіңізге бейімдеуге болатын соқыр теру жаттықтырғышы",
+      lead: "FlyKey соқыр теруді қатты қысымсыз үйретеді: жаттықтырғыш пернетақтаны, саусақтарды, жауапты аймақтарды, ағымдағы дәлдік пен жылдамдықты көрсетеді, ал кейін нақты дағдыны тексеру керек жерде артық көмектерді біртіндеп азайтады.",
+      summaryLabel: "FlyKey негізгі мүмкіндіктері",
+      summary: [
+        ["5 жайма", "Орыс, украин, қазақ, неміс және ағылшын пернетақталары бір жаттықтырғышта."],
+        ["Саусақтарды баптау", "Нақты пернені қай саусақ басатынын өзгертіп, өз картаңызды сақтай аласыз."],
+        ["Таңдамалы көмекшілер", "Перне, саусақ, аймақ және басу ерекшелеулерін қолмен қосып-өшіруге болады."],
+        ["Көмексіз тесттер", "Тексеру сабақтарында қозғалыстың шынайы автоматтануын бағалау үшін көмекшілер өшеді."]
+      ],
+      articles: [
+        ["Аппликатура бір ғана ережеге байланбайды", ["Көп жаттықтырғышта саусақ сызбасы бәріне бірдей деп алынады. FlyKey жұмсағырақ: стандарт карта бар, бірақ оны өзгертуге болады. Егер бір перне ыңғайсыз болса, аппликатура баптауын ашып, саусақты таңдап, пернелерді экрандағы пернетақтадан тікелей бекітесіз.", "Бұл басқа пернетақта, қалыптасқан әдет, кішірек қол немесе созылуға ыңғайсыз пернелер болғанда пайдалы. Жаттықтырғыш қолды абстракт ережеге мәжбүрлемей, тұрақты сызба табуға көмектеседі."]],
+        ["Көмекшілер көмектеседі, бірақ дағдының өсуіне кедергі жасамайды", ["FlyKey ішінде пернелерді, саусақ аймақтарын, саусақтарды, дұрыс және қате басуларды, қол көрсетуді, бір жолдан кейін режимін және метрономды бөлек басқаруға болады.", "Тест сабақтары көмекшілерді автоматты түрде өшіре алады. Бұл шынайы тексеру: көмектер үнемі қосулы болса, қозғалысты есте сақтаудың орнына оларға қарауға үйреніп кету оңай."]],
+        ["Бағдарлама қарапайымнан нақты теруге өтеді", ["Сабақтар негізгі позициядан басталып, қолдарды, қысқа сөздерді, жоғарғы және төменгі қатарларды, Shift, сандарды, тыныс белгілерін, ырғақты және ұзын мәтіндерді біртіндеп қосады.", "Пайдаланушы келесі модульдің не үшін керек екенін түсінеді, прогресті көреді және тексеру кезеңдерінен өтеді."]],
+        ["Кейіпкер жаттығудың не үшін керек екенін түсіндіреді", ["Жаттықтырғышта көмекші кейіпкер бар. Ол қарсы алуда, сабақ алдында, аяқталғаннан кейін және келесі модульге өткенде көрінеді.", "Соқыр теруде қате көбіне әріпті білмеуден емес, ширығудан, артық қозғалыстан немесе моторика дайын болмай тұрып жылдам теруге тырысудан болады. Кеңестер жаттығуды жұмсартады."]],
+        ["Тек сабақтармен ғана жаттығу міндетті емес", ["Оқу бағдарламасынан бөлек, FlyKey мәтінмен жаттығуды қолдайды. Өз мәтініңізді енгізіп, жол санын таңдап, кездейсоқ мәтінді қосып, көмекшілерді нақты осы жаттығуға баптай аласыз.", "Прогресс, баптаулар, таңдалған тіл, саусақ картасы, тақырып, дыбыс және мәтін өлшемі браузерде жергілікті сақталады."]]
+      ],
+      faqTitle: "FlyKey туралы сұрақтар",
+      faq: [
+        ["FlyKey кәдімгі теру жаттықтырғышынан несімен ерекшеленеді?", "FlyKey жұмсақ оқытуға сүйенеді: саусақ кеңестері, бапталатын аппликатура, кейіпкер кеңестері, метроном, көмексіз тесттер және бірнеше жайманы қолдау."],
+        ["Қай саусақ пернені басатынын өзгертуге бола ма?", "Иә. Аппликатура баптауында саусақты таңдап, оған пернелерді экрандағы пернетақтадан тікелей бекітуге болады."],
+        ["Көмектерді өшіруге бола ма?", "Иә. Пайдаланушы перне, саусақ, аймақ, басу ерекшелеулерін, қол көрсетуді және метрономды өзі басқарады."],
+        ["Қандай жаймалар қолданылады?", "FlyKey орыс, украин, қазақ, неміс және ағылшын жаймаларын қолдайды."],
+        ["Аккаунт керек пе?", "Негізгі жаттығу үшін аккаунт қажет емес. Баптаулар мен прогресс браузерде жергілікті сақталады."]
+      ]
+    },
     fingerNames: {
       "left-pinky": "Сол жақ шынашақ",
       "left-ring": "Сол жақ аты жоқ саусақ",

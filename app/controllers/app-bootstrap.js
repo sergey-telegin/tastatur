@@ -36,7 +36,7 @@ function bindAppEvents() {
       delete saved[currentLanguage];
       persist();
       render();
-      setStatus(`Раскладка ${languages[currentLanguage].name} сброшена.`);
+      setStatus(formatUiText(textFor().layoutReset, { language: languages[currentLanguage].name }));
     });
   }
 

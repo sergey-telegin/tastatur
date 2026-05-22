@@ -45,6 +45,7 @@ function renderFingerMapPanel() {
   if (fingerMapSectionLabel) {
     fingerMapSectionLabel.textContent = text.fingerMap;
   }
-  fingerMapOpen.textContent = text.openFingerMap;
+  fingerMapOpen.querySelector("span").textContent = text.fingerMapMenu || text.openFingerMap;
+  fingerMapOpen.setAttribute("aria-label", text.fingerMapMenu || text.openFingerMap);
   renderKeyboardEditorPanel();
 }

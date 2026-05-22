@@ -198,6 +198,29 @@ function renderTabs() {
   learningProgramOpenText.textContent = text.learningProgram;
   learningProgramOpen.setAttribute("aria-label", text.learningProgram);
   learningProgramOpen.closest(".menu-section")?.setAttribute("aria-label", text.learningProgram);
+  trainer.setAttribute("aria-label", text.typingText);
+  practiceProgress.setAttribute("aria-label", text.currentModuleProgress);
+  practiceStats.setAttribute("aria-label", text.statistics);
+  practiceAccuracyLabel.textContent = text.practiceAccuracy;
+  practiceSpeedLabel.textContent = text.practiceSpeed;
+  document.querySelector(".practice-speed-unit").textContent = text.practiceSpeedUnit;
+  keyboardWrap.setAttribute("aria-label", text.keyboard);
+  handsLayer.setAttribute("aria-label", text.fingers);
+  keyboardFingerPicker.setAttribute("aria-label", text.fingerChoice);
+  document.querySelector(".editor")?.setAttribute("aria-label", text.selectedKeyEditor);
+  document.querySelector('label[for="keySelect"], .editor .field:nth-child(1) span').textContent = text.selectedKey;
+  document.querySelector(".editor .field:nth-child(2) span").textContent = text.keyLabel;
+  labelInput.placeholder = text.keyLabelPlaceholder;
+  applyLabel.textContent = text.apply;
+  keyboardEditorReset.textContent = text.restoreDefaults;
+  keyboardEditorCancel.textContent = text.cancel;
+  keyboardEditorSave.textContent = text.save;
+  if (fingerMapSectionLabel) {
+    fingerMapSectionLabel.textContent = text.fingerMapMenu;
+  }
+  fingerMapOpen.querySelector("span").textContent = text.fingerMapMenu;
+  fingerMapOpen.setAttribute("aria-label", text.fingerMapMenu);
+  fingerMapOpen.closest(".menu-section")?.setAttribute("aria-label", text.openFingerMap);
   learningProgramTitle.textContent = text.learningProgram;
   learningProgramClose.setAttribute("aria-label", text.close);
   statsOpenText.textContent = text.statistics;
@@ -226,6 +249,54 @@ function renderTabs() {
   renderDisplaySettings();
   renderLearningProgramSummary();
   renderStatsDialog();
+  renderSeoContent();
+}
+
+function replaceChildrenWithParagraphs(host, paragraphs) {
+  host.innerHTML = "";
+  paragraphs.forEach(paragraphText => {
+    const paragraph = document.createElement("p");
+    paragraph.textContent = paragraphText;
+    host.append(paragraph);
+  });
+}
+
+function renderSeoContent() {
+  const seo = textFor().seo;
+  const section = document.querySelector(".seo-content");
+  if (!section || !seo) return;
+
+  const nav = section.querySelector(".seo-nav");
+  nav?.setAttribute("aria-label", seo.navLabel);
+  nav?.querySelectorAll("a").forEach((link, index) => {
+    link.textContent = seo.nav[index] || link.textContent;
+  });
+
+  section.querySelector(".seo-eyebrow").textContent = seo.eyebrow;
+  section.querySelector("#seoTitle").textContent = seo.title;
+  section.querySelector(".seo-lead").textContent = seo.lead;
+  section.querySelector(".seo-summary-grid")?.setAttribute("aria-label", seo.summaryLabel);
+  section.querySelectorAll(".seo-summary-grid article").forEach((article, index) => {
+    const item = seo.summary[index];
+    if (!item) return;
+    article.querySelector("h2").textContent = item[0];
+    article.querySelector("p").textContent = item[1];
+  });
+  section.querySelectorAll(".seo-article").forEach((article, index) => {
+    const item = seo.articles[index];
+    if (!item) return;
+    const title = article.querySelector("h2") || document.createElement("h2");
+    title.textContent = item[0];
+    replaceChildrenWithParagraphs(article, item[1]);
+    article.prepend(title);
+  });
+  section.querySelector("#seo-faq-title").textContent = seo.faqTitle;
+  section.querySelectorAll(".seo-faq details").forEach((details, index) => {
+    const item = seo.faq[index];
+    if (!item) return;
+    details.querySelector("summary").textContent = item[0];
+    details.querySelector("p").textContent = item[1];
+  });
 }
 
 function renderKeySoundToggle() {

@@ -2,6 +2,21 @@ function textFor(language = currentLanguage) {
   return uiText[language] || uiText.en;
 }
 
+function formatUiText(template, values = {}) {
+  return String(template || "").replace(/\{(\w+)\}/g, (_, key) => values[key] ?? "");
+}
+
+function lessonStoryboardFor(lessonOrId) {
+  const lessonId = typeof lessonOrId === "string" ? lessonOrId : lessonOrId?.id;
+  return window.FLYKEY_LESSON_STORYBOARD?.[lessonId] || {};
+}
+
+function localizedTextValue(value, language = currentLanguage) {
+  if (Array.isArray(value)) return value.filter(Boolean).join("\n");
+  if (!value || typeof value !== "object") return value || "";
+  return localizedTextValue(value[language] || value.en || value.ru || Object.values(value)[0] || "", language);
+}
+
 function keyIds() {
   return geometry.map(([id]) => id);
 }

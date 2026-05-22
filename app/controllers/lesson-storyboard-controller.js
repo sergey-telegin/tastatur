@@ -34,14 +34,6 @@ function storyboardImageFileNameFromSrc(src) {
   return String(src || "").replace("assets/key/", "").split("?")[0];
 }
 
-const storyboardDefaultCompletionText = {
-  ru: "Отлично. Молодец. Идём дальше.",
-  uk: "Чудово. Гарна робота. Рухаємося далі.",
-  kk: "Керемет. Жақсы жұмыс. Әрі қарай өтейік.",
-  de: "Ausgezeichnet. Gut gemacht. Weiter geht's.",
-  en: "Excellent. Well done. Let's keep going."
-};
-
 function storyboardLocalizedText(value, language) {
   if (Array.isArray(value)) return value.filter(Boolean).join("\n");
   if (!value || typeof value !== "object") return value || "";
@@ -112,19 +104,20 @@ function storyboardAssignedPreviewImages(state, currentFileName) {
 function openStoryboardImagePreview(fileName, images = [fileName]) {
   closeStoryboardImagePreview();
 
+  const storyboardText = textFor().storyboard;
   let imageIndex = Math.max(0, images.indexOf(fileName));
   const overlay = document.createElement("div");
   overlay.className = "storyboard-image-preview";
   overlay.id = "storyboardImagePreview";
   overlay.tabIndex = -1;
   overlay.innerHTML = [
-    '<button class="storyboard-image-preview-close" type="button" aria-label="Закрыть">×</button>',
-    '<button class="storyboard-image-preview-nav storyboard-image-preview-prev" type="button" aria-label="Предыдущая картинка">‹</button>',
+    `<button class="storyboard-image-preview-close" type="button" aria-label="${storyboardText.closePreview}">×</button>`,
+    `<button class="storyboard-image-preview-nav storyboard-image-preview-prev" type="button" aria-label="${storyboardText.previousImage}">‹</button>`,
     '<figure class="storyboard-image-preview-frame">',
     '<img alt="">',
     '<figcaption></figcaption>',
     '</figure>',
-    '<button class="storyboard-image-preview-nav storyboard-image-preview-next" type="button" aria-label="Следующая картинка">›</button>'
+    `<button class="storyboard-image-preview-nav storyboard-image-preview-next" type="button" aria-label="${storyboardText.nextImage}">›</button>`
   ].join("");
 
   const image = overlay.querySelector("img");
@@ -361,11 +354,14 @@ function createStoryboardInitialState() {
       const number = `${moduleIndex + 1}.${lessonIndex + 1}`;
       const moduleTitle = storyboardLocalizedMap(module.title, sourceLanguages);
       const lessonTitle = storyboardLocalizedMap(lesson.title, sourceLanguages);
-      const introImage = storyboardImageFileNameFromSrc(typeof lessonTipAvatarSrcFor === "function" ? lessonTipAvatarSrcFor(lesson) : "assets/key/key-wave.webp");
+      const storyboardEntry = lessonStoryboardFor(lesson);
+      const introImage = storyboardEntry.introImage || "key-wave.webp";
       const introTip = storyboardLocalizedMap(lesson.tips, sourceLanguages);
       const nextModuleText = storyboardLocalizedMap(storyboardLessonIntroPurpose(lesson), sourceLanguages);
-      const completionImage = storyboardImageFileNameFromSrc(typeof lessonCompletionAvatarSrcFor === "function" ? lessonCompletionAvatarSrcFor(lesson) : "assets/key/key-completion.webp");
-      const completionText = storyboardLocalizedMap(lesson.completion, sourceLanguages, storyboardDefaultCompletionText);
+      const completionImage = storyboardEntry.completionImage || "key-completion.webp";
+      const completionText = storyboardLocalizedMap(storyboardEntry.completionText || lesson.completion, sourceLanguages, Object.fromEntries(
+        sourceLanguages.map(language => [language, textFor(language).defaultCompletion])
+      ));
 
       lessons.push({
         id: lesson.id,
@@ -602,29 +598,36 @@ function storyboardExportFileName() {
 }
 
 function downloadLessonStoryboardJson(state) {
+  const fileName = storyboardExportFileName();
   const data = JSON.stringify(exportLessonStoryboard(state), null, 2);
   const blob = new Blob([data], { type: "application/json;charset=utf-8" });
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.href = url;
-  link.download = storyboardExportFileName();
+  link.download = fileName;
   document.body.append(link);
   link.click();
   link.remove();
   URL.revokeObjectURL(url);
+  return { data, fileName };
+}
+
+function storyboardApplyCommandFor(fileName) {
+  return `npm run storyboard:apply -- ~/Downloads/${fileName}`;
 }
 
 function initializeLessonStoryboardMode() {
   if (!isLessonStoryboardModeEnabled()) return false;
 
   document.documentElement.classList.add("storyboard-mode");
+  const storyboardText = textFor().storyboard;
 
   const board = document.createElement("section");
   board.className = "storyboard-board";
   board.id = "lessonStoryboardBoard";
   board.innerHTML = `
     <header class="storyboard-topbar">
-      <h1 class="storyboard-title">Дорожная карта</h1>
+      <h1 class="storyboard-title">${storyboardText.title}</h1>
       <div class="storyboard-controls">
         <label>
           Preview
@@ -635,8 +638,7 @@ function initializeLessonStoryboardMode() {
           <span class="storyboard-scale-value" id="storyboardImageScaleValue">100%</span>
           <button class="storyboard-button storyboard-scale-button" id="storyboardImageZoomIn" type="button">+</button>
         </div>
-        <button class="storyboard-button storyboard-apply-button" id="storyboardApply" type="button">Применить</button>
-        <button class="storyboard-button" id="storyboardExport" type="button">Export JSON</button>
+        <button class="storyboard-button storyboard-apply-button" id="storyboardApply" type="button">${storyboardText.downloadJson}</button>
       </div>
     </header>
     <main class="storyboard-main">
@@ -644,27 +646,31 @@ function initializeLessonStoryboardMode() {
         <div class="storyboard-table-wrap">
           <div class="storyboard-table" id="storyboardTable"></div>
         </div>
-        <div class="storyboard-resize-handle storyboard-resize-handle-bottom" id="storyboardBottomResize" role="separator" aria-label="Изменить высоту нижнего черновика" aria-orientation="horizontal" tabindex="0"></div>
+        <div class="storyboard-resize-handle storyboard-resize-handle-bottom" id="storyboardBottomResize" role="separator" aria-label="${storyboardText.resizeBottomDraft}" aria-orientation="horizontal" tabindex="0"></div>
         <section class="storyboard-bottom-panel">
           <section class="storyboard-side-section">
-            <h2 class="storyboard-side-title">Нижний черновик</h2>
-            <p class="storyboard-side-note">Сюда можно складывать карточки, когда справа мало места.</p>
+            <h2 class="storyboard-side-title">${storyboardText.bottomDraft}</h2>
+            <p class="storyboard-side-note">${storyboardText.bottomDraftNote}</p>
             <div class="storyboard-parking storyboard-parking-bottom" id="storyboardBottomParking"></div>
           </section>
         </section>
       </div>
-      <div class="storyboard-resize-handle storyboard-resize-handle-side" id="storyboardSideResize" role="separator" aria-label="Изменить ширину правого черновика" aria-orientation="vertical" tabindex="0"></div>
+      <div class="storyboard-resize-handle storyboard-resize-handle-side" id="storyboardSideResize" role="separator" aria-label="${storyboardText.resizeSideDraft}" aria-orientation="vertical" tabindex="0"></div>
       <aside class="storyboard-side">
         <section class="storyboard-side-section">
-          <h2 class="storyboard-side-title">Черновик</h2>
-          <p class="storyboard-side-note">Сюда можно временно убирать карточки из таблицы и потом возвращать их обратно.</p>
+          <h2 class="storyboard-side-title">${storyboardText.draft}</h2>
+          <p class="storyboard-side-note">${storyboardText.draftNote}</p>
           <div class="storyboard-parking" id="storyboardParking"></div>
         </section>
       </aside>
     </main>
     <footer class="storyboard-footer">
-      <textarea class="storyboard-export-output" id="storyboardExportOutput" readonly aria-label="Storyboard JSON"></textarea>
-      <span>Перетаскивай карточки между ячейками. Всё лишнее можно временно положить в Черновик.</span>
+      <div class="storyboard-export-panel">
+        <label class="storyboard-command-label" for="storyboardApplyCommand">${storyboardText.applyCommandLabel}</label>
+        <input class="storyboard-apply-command" id="storyboardApplyCommand" type="text" readonly value="${storyboardText.applyCommandPlaceholder}">
+      </div>
+      <textarea class="storyboard-export-output" id="storyboardExportOutput" readonly aria-label="${storyboardText.jsonPreviewLabel}"></textarea>
+      <span>${storyboardText.hint}</span>
     </footer>
   `;
   document.body.append(board);
@@ -691,16 +697,15 @@ function initializeLessonStoryboardMode() {
     }
   });
 
-  board.querySelector("#storyboardExport").addEventListener("click", () => {
-    const output = board.querySelector("#storyboardExportOutput");
-    output.value = JSON.stringify(exportLessonStoryboard(state), null, 2);
-    output.textContent = output.value;
-    output.focus();
-    output.select();
-  });
-
   board.querySelector("#storyboardApply").addEventListener("click", () => {
-    downloadLessonStoryboardJson(state);
+    const { data, fileName } = downloadLessonStoryboardJson(state);
+    const output = board.querySelector("#storyboardExportOutput");
+    const command = board.querySelector("#storyboardApplyCommand");
+    output.value = data;
+    output.textContent = data;
+    command.value = storyboardApplyCommandFor(fileName);
+    command.focus();
+    command.select();
   });
 
   renderLessonStoryboard(state);

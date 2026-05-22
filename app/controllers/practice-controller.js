@@ -138,116 +138,6 @@ function keyAssetSrc(fileName) {
   return "assets/key/" + fileName + "?v=" + keyAssetVersion;
 }
 
-const lessonTipAvatarByLessonId = {
-  lesson1_1: "key-please.webp",
-  lesson1_2: "key-wave.webp",
-  lesson1_3: "fly_welcome_no_bg.png",
-  lesson1_4: "key-explain.webp",
-  lesson1_5: "key-wave.webp",
-  lesson2_1: "key-idea.webp",
-  lesson2_2: "key-point-strict.webp",
-  lesson2_3: "key-thumb.webp",
-  lesson2_4: "key-confident.webp",
-  lesson2_5: "key-arms-crossed.webp",
-  lesson3_1: "key-thinking.webp",
-  lesson3_2: "key-thumb.webp",
-  lesson3_3: "key-idea.webp",
-  lesson3_4: "fly_welcome_no_bg.png",
-  lesson3_5: "key-confident.webp",
-  lesson4_1: "key-point-strict.webp",
-  lesson4_2: "key-explain.webp",
-  lesson4_3: "key-stop.webp",
-  lesson4_4: "key-thinking.webp",
-  lesson4_5: "key-arms-crossed.webp",
-  lesson5_1: "key-stop.webp",
-  lesson5_2: "key-idea.webp",
-  lesson5_3: "key-explain.webp",
-  lesson5_4: "key-confident.webp",
-  lesson5_5: "key-thinking.webp",
-  lesson6_1: "key-stop.webp",
-  lesson6_2: "key-idea.webp",
-  lesson6_3: "key-point-strict.webp",
-  lesson6_4: "key-explain.webp",
-  lesson6_5: "key-confident.webp",
-  lesson7_1: "key-explain.webp",
-  lesson7_2: "fly_welcome_no_bg.png",
-  lesson7_3: "key-stop.webp",
-  lesson7_4: "key-point-strict.webp",
-  lesson7_5: "key-confident.webp",
-  lesson8_1: "key-idea.webp",
-  lesson8_2: "key-thinking.webp",
-  lesson8_3: "key-explain.webp",
-  lesson8_4: "key-confident.webp",
-  lesson8_5: "key-arms-crossed.webp",
-  lesson9_1: "key-idea.webp",
-  lesson9_2: "key-explain.webp",
-  lesson9_3: "fly_welcome_no_bg.png",
-  lesson9_4: "key-confident.webp",
-  lesson9_5: "key-arms-crossed.webp",
-  lesson10_1: "fly_welcome_no_bg.png",
-  lesson10_2: "key-explain.webp",
-  lesson10_3: "key-explain.webp",
-  lesson10_4: "key-confident.webp",
-  lesson10_5: "key-book.webp",
-  lesson11_1: "key-celebrate.png",
-  lesson12_1: "fly_welcome_no_bg.png"
-};
-
-const lessonCompletionAvatarByLessonId = {
-  lesson1_1: "key-thumb.webp",
-  lesson1_2: "key-confident.webp",
-  lesson1_3: "key-wave.webp",
-  lesson1_4: "fly_welcome_no_bg.png",
-  lesson1_5: "key-score-ten.png",
-  lesson2_1: "key-thumb.webp",
-  lesson2_2: "key-confident.webp",
-  lesson2_3: "key-wave.webp",
-  lesson2_4: "key-thumb.webp",
-  lesson2_5: "key-confident.webp",
-  lesson3_1: "key-thumb.webp",
-  lesson3_2: "key-wave.webp",
-  lesson3_3: "key-confident.webp",
-  lesson3_4: "fly_welcome_no_bg.png",
-  lesson3_5: "key-arms-crossed.webp",
-  lesson4_1: "key-thumb.webp",
-  lesson4_2: "fly_welcome_no_bg.png",
-  lesson4_3: "key-confident.webp",
-  lesson4_4: "key-thinking.webp",
-  lesson4_5: "key-arms-crossed.webp",
-  lesson5_1: "key-thumb.webp",
-  lesson5_2: "key-confident.webp",
-  lesson5_3: "key-idea.webp",
-  lesson5_4: "key-wave.webp",
-  lesson5_5: "key-book.webp",
-  lesson6_1: "key-thumb.webp",
-  lesson6_2: "key-confident.webp",
-  lesson6_3: "key-idea.webp",
-  lesson6_4: "key-wave.webp",
-  lesson6_5: "key-book.webp",
-  lesson7_1: "key-thumb.webp",
-  lesson7_2: "fly_welcome_no_bg.png",
-  lesson7_3: "key-confident.webp",
-  lesson7_4: "key-wave.webp",
-  lesson7_5: "key-book.webp",
-  lesson8_1: "key-thumb.webp",
-  lesson8_2: "key-confident.webp",
-  lesson8_3: "key-idea.webp",
-  lesson8_4: "key-wave.webp",
-  lesson8_5: "key-book.webp",
-  lesson9_1: "key-thumb.webp",
-  lesson9_2: "key-confident.webp",
-  lesson9_3: "fly_welcome_no_bg.png",
-  lesson9_4: "key-wave.webp",
-  lesson9_5: "key-book.webp",
-  lesson10_1: "key-thumb.webp",
-  lesson10_2: "key-confident.webp",
-  lesson10_3: "key-idea.webp",
-  lesson10_4: "key-wave.webp",
-  lesson10_5: "key-score-ten.png",
-  lesson11_1: "key-wave.webp",
-  lesson12_1: "key-celebrate.png"
-};
-
 let dialogImageRequestId = 0;
 const warmedDialogImages = new Set();
 
@@ -278,12 +168,12 @@ function setDialogCharacterImage(character, src) {
 }
 
 function lessonTipAvatarSrcFor(lesson) {
-  const fileName = lessonTipAvatarByLessonId[lesson?.id] || "key-wave.webp";
+  const fileName = lessonStoryboardFor(lesson).introImage || "key-wave.webp";
   return keyAssetSrc(fileName);
 }
 
 function lessonCompletionAvatarSrcFor(lesson) {
-  const fileName = lessonCompletionAvatarByLessonId[lesson?.id] || "key-completion.webp";
+  const fileName = lessonStoryboardFor(lesson).completionImage || "key-completion.webp";
   return keyAssetSrc(fileName);
 }
 
@@ -688,46 +578,11 @@ function finishFingeringTour({ keepFingerKeyboardMode = false, focusPractice = t
   }
 }
 
-const nextButtonText = {
-  ru: "Далее",
-  uk: "Далі",
-  kk: "Әрі қарай",
-  de: "Weiter",
-  en: "Next"
-};
-
-const nextModuleKickerText = {
-  ru: "Следующий модуль",
-  uk: "Наступний модуль",
-  kk: "Келесі модуль",
-  de: "Nächstes Modul",
-  en: "Next module"
-};
-
-const startNextModuleText = {
-  ru: "Начать",
-  uk: "Почати",
-  kk: "Бастау",
-  de: "Starten",
-  en: "Start"
-};
-
-const defaultPracticeCompletionText = {
-  ru: "Отлично. Молодец. Идём дальше.",
-  uk: "Чудово. Гарна робота. Рухаємося далі.",
-  kk: "Керемет. Жақсы жұмыс. Әрі қарай өтейік.",
-  de: "Ausgezeichnet. Gut gemacht. Weiter geht's.",
-  en: "Excellent. Well done. Let's keep going."
-};
-
-function localizedUiText(value) {
-  return value[currentLanguage] || value.en || value.ru || "";
-}
-
 function currentLessonCompletion() {
+  const storyboardCompletionText = lessonStoryboardFor(currentPracticeModuleData()).completionText;
   const completion = currentPracticeModuleData().completion || {};
   return {
-    text: completion.text || localizedUiText(defaultPracticeCompletionText)
+    text: localizedTextValue(storyboardCompletionText) || completion.text || textFor().defaultCompletion
   };
 }
 
@@ -749,7 +604,7 @@ function renderCompletionDialog(imageSrc = lessonCompletionAvatarSrcFor(currentP
     reminder.textContent = textFor().lesson4FingeringReminder;
     completionText.append(reminder);
   }
-  completionNext.textContent = localizedUiText(nextButtonText);
+  completionNext.textContent = textFor().tourNext;
   completionExtra.hidden = !isLesson4FingeringReminderLesson(lesson);
   completionExtra.textContent = textFor().openFingerMapAction;
   setDialogCharacterImage(completionCharacter, imageSrc);
@@ -772,10 +627,10 @@ function closeCompletionDialog() {
 }
 
 function renderNextModuleDialog(lesson = currentPracticeModuleData()) {
-  nextModuleKicker.textContent = localizedUiText(nextModuleKickerText);
+  nextModuleKicker.textContent = textFor().nextModuleKicker;
   nextModuleTitle.textContent = lesson.name || "";
   nextModulePurpose.textContent = lesson.intro?.purpose || "";
-  nextModuleNext.textContent = localizedUiText(startNextModuleText);
+  nextModuleNext.textContent = textFor().startNextModule;
   setDialogCharacterImage(nextModuleCharacter, lessonTipAvatarSrcFor(lesson));
   nextModuleCharacter.alt = "";
 }
@@ -824,171 +679,8 @@ function goToNextLessonAfterCompletion() {
   }
 }
 
-const onboardingCopy = {
-  ru: {
-    start: "Пуск",
-    screens: [
-      {
-        paragraphs: [
-          "FlyKey — это тренажёр слепой печати.",
-          "FlyKey — преврати клавиатуру в продолжение твоих мыслей.",
-          "FlyKey — печатай легко, будто пальцы умеют летать."
-        ],
-        character: false
-      },
-      {
-        paragraphs: [
-          "Лёгкость, скорость и уверенность за клавиатурой тебя уже ждут."
-        ],
-        character: false
-      },
-      {
-        paragraphs: [
-          "Здесь ты не зубришь клавиши, а постепенно учишься печатать свободно: меньше смотреть вниз, меньше напрягаться и больше доверять пальцам."
-        ],
-        character: false
-      },
-      {
-        paragraphs: [
-          "Меня зовут Key. Я буду с тобой.",
-          "Твой маленький летающий помощник, который подсказывает, поддерживает и помогает не сбиться. Не строгий учитель, а напарник, с которым тренироваться проще и веселее."
-        ],
-        character: true
-      }
-    ]
-  },
-  uk: {
-    start: "Старт",
-    screens: [
-      {
-        paragraphs: [
-          "FlyKey — це тренажер сліпого друку.",
-          "FlyKey допомагає перетворити клавіатуру на продовження думок.",
-          "Друкуй легко, ніби пальці вже знають дорогу."
-        ],
-        character: false
-      },
-      {
-        paragraphs: [
-          "Легкість, швидкість і впевненість за клавіатурою вже чекають на тебе."
-        ],
-        character: false
-      },
-      {
-        paragraphs: [
-          "Тут ти не зубриш клавіші. Ти поступово вчишся друкувати вільно: менше дивитися вниз, менше напружуватися і більше довіряти пальцям."
-        ],
-        character: false
-      },
-      {
-        paragraphs: [
-          "Мене звати Key. Я буду поруч.",
-          "Твій маленький летючий помічник підказує, підтримує й допомагає не збиватися з ритму. Не суворий учитель, а напарник, з яким тренуватися легше."
-        ],
-        character: true
-      }
-    ]
-  },
-  kk: {
-    start: "Старт",
-    screens: [
-      {
-        paragraphs: [
-          "FlyKey — соқыр теруге арналған жаттықтырғыш.",
-          "FlyKey пернетақтаны ойыңыздың жалғасына айналдыруға көмектеседі.",
-          "Саусақтар жолды өзі білетіндей жеңіл теріңіз."
-        ],
-        character: false
-      },
-      {
-        paragraphs: [
-          "Пернетақтадағы жеңілдік, жылдамдық және сенімділік сізді күтіп тұр."
-        ],
-        character: false
-      },
-      {
-        paragraphs: [
-          "Мұнда пернелерді жаттап алмайсыз. Біртіндеп еркін теруді үйренесіз: төменге азырақ қарау, аз ширығу және саусақтарға көбірек сену."
-        ],
-        character: false
-      },
-      {
-        paragraphs: [
-          "Менің атым Key. Мен қасыңызда боламын.",
-          "Кішкентай ұшқыш көмекшіңіз кеңес береді, қолдайды және ырғақтан жаңылмауға көмектеседі. Қатал мұғалім емес, жаттығуды жеңілдететін серіктес."
-        ],
-        character: true
-      }
-    ]
-  },
-  de: {
-    start: "Start",
-    screens: [
-      {
-        paragraphs: [
-          "FlyKey ist ein Trainer für Blindtippen.",
-          "FlyKey - mach die Tastatur zu einer Erweiterung deiner Gedanken.",
-          "FlyKey - tippe leicht, als könnten deine Finger fliegen."
-        ],
-        character: false
-      },
-      {
-        paragraphs: [
-          "Leichtigkeit, Geschwindigkeit und Sicherheit an der Tastatur warten schon auf dich."
-        ],
-        character: false
-      },
-      {
-        paragraphs: [
-          "Hier paukst du keine Tasten. Du lernst Schritt für Schritt, frei zu tippen: weniger nach unten schauen, weniger verkrampfen und den Fingern mehr vertrauen."
-        ],
-        character: false
-      },
-      {
-        paragraphs: [
-          "Ich heiße Key. Ich begleite dich.",
-          "Dein kleiner fliegender Helfer, der dir Hinweise gibt, dich unterstützt und dir hilft, nicht aus dem Rhythmus zu kommen. Kein strenger Lehrer, sondern ein Partner, mit dem das Training leichter und fröhlicher wird."
-        ],
-        character: true
-      }
-    ]
-  },
-  en: {
-    start: "Start",
-    screens: [
-      {
-        paragraphs: [
-          "FlyKey is a touch typing trainer.",
-          "FlyKey - turn the keyboard into an extension of your thoughts.",
-          "FlyKey - type lightly, as if your fingers could fly."
-        ],
-        character: false
-      },
-      {
-        paragraphs: [
-          "Ease, speed, and confidence at the keyboard are already waiting for you."
-        ],
-        character: false
-      },
-      {
-        paragraphs: [
-          "Here you do not memorize keys by force. You gradually learn to type freely: look down less, tense up less, and trust your fingers more."
-        ],
-        character: false
-      },
-      {
-        paragraphs: [
-          "My name is Key. I will be with you.",
-          "Your small flying helper gives you hints, supports you, and helps you stay on track. Not a strict teacher, but a teammate who makes training easier and more fun."
-        ],
-        character: true
-      }
-    ]
-  }
-};
-
 function currentOnboardingCopy() {
-  return onboardingCopy[currentLanguage] || onboardingCopy.en || onboardingCopy.ru;
+  return textFor().onboarding || uiText.en.onboarding;
 }
 
 function renderOnboardingDialog() {
@@ -1004,7 +696,7 @@ function renderOnboardingDialog() {
 
   onboardingNext.textContent = onboardingStepIndex >= copy.screens.length - 1
     ? copy.start
-    : localizedUiText(nextButtonText);
+    : textFor().tourNext;
   onboardingCharacter.hidden = !screen.character;
   onboardingDialog.classList.toggle("onboarding-with-character", screen.character);
 }
@@ -1041,9 +733,7 @@ function advanceOnboarding() {
 }
 
 function isAssistantDisabledTestLesson(lesson = currentPracticeModuleData()) {
-  const lessonName = String(lesson?.name || "").toLowerCase();
-
-  return /_5$/.test(String(lesson?.id || "")) && /test|тест/.test(lessonName);
+  return /_5$/.test(String(lesson?.id || ""));
 }
 
 function currentPracticeAssistantsEnabled() {

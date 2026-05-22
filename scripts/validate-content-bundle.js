@@ -2,9 +2,11 @@
 
 const fs = require("node:fs");
 const path = require("node:path");
+const vm = require("node:vm");
 
 const rootDir = path.resolve(__dirname, "..");
 const bundlePath = path.resolve(rootDir, process.argv[2] || "practice-content/content-bundle.json");
+const storyboardPath = path.join(rootDir, "practice-content", "storyboard.js");
 const errors = [];
 const warnings = [];
 
@@ -85,6 +87,45 @@ function collectStoryboardImages(bundle) {
   return images;
 }
 
+function readLessonStoryboard() {
+  if (!fs.existsSync(storyboardPath)) {
+    fail("practice-content/storyboard.js is required");
+    return {};
+  }
+
+  const window = {};
+  window.window = window;
+  vm.runInNewContext(fs.readFileSync(storyboardPath, "utf8"), { window }, { filename: storyboardPath });
+  return window.FLYKEY_LESSON_STORYBOARD || {};
+}
+
+function validateLessonStoryboard(storyboard, lessonIds, languages) {
+  if (!isPlainObject(storyboard)) {
+    fail("FLYKEY_LESSON_STORYBOARD must be an object");
+    return;
+  }
+
+  lessonIds.forEach(lessonId => {
+    const entry = storyboard[lessonId];
+    const fieldPath = `storyboard.${lessonId}`;
+
+    if (!isPlainObject(entry)) {
+      fail(`${fieldPath} must be an object`);
+      return;
+    }
+
+    if (!entry.introImage) fail(`${fieldPath}.introImage is required`);
+    if (!entry.completionImage) fail(`${fieldPath}.completionImage is required`);
+    imageExists(entry.introImage, `${fieldPath}.introImage`);
+    imageExists(entry.completionImage, `${fieldPath}.completionImage`);
+    localizedObjectHasLanguages(entry.completionText, languages, `${fieldPath}.completionText`);
+  });
+
+  Object.keys(storyboard).forEach(lessonId => {
+    if (!lessonIds.has(lessonId)) warn(`storyboard.${lessonId} does not match a known lesson id`);
+  });
+}
+
 function validateBundle(bundle) {
   if (!isPlainObject(bundle)) fail("bundle must be an object");
   if (!isPlainObject(bundle.meta)) fail("meta must be an object");
@@ -156,6 +197,8 @@ function validateBundle(bundle) {
   if (bundle.meta.lessonCount !== undefined && bundle.meta.lessonCount !== lessonCount) {
     fail(`meta.lessonCount is ${bundle.meta.lessonCount}, actual is ${lessonCount}`);
   }
+
+  validateLessonStoryboard(readLessonStoryboard(), lessonIds, languages);
 
   const storyboardImages = collectStoryboardImages(bundle);
   storyboardImages.forEach(file => imageExists(file, "storyboard image"));
