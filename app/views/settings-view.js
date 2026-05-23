@@ -171,6 +171,12 @@ function gradeLabelForAccuracy(accuracy, language = currentLanguage) {
 
 function renderTabs() {
   const text = textFor();
+  document.title = text.seo?.eyebrow ? `FlyKey — ${text.seo.eyebrow}` : document.title;
+  document.querySelector('meta[name="description"]')?.setAttribute("content", text.seo?.lead || "");
+  document.querySelector('meta[property="og:title"]')?.setAttribute("content", document.title);
+  document.querySelector('meta[property="og:description"]')?.setAttribute("content", text.seo?.lead || "");
+  document.querySelector('meta[name="twitter:title"]')?.setAttribute("content", document.title);
+  document.querySelector('meta[name="twitter:description"]')?.setAttribute("content", text.seo?.lead || "");
   languageTabs.innerHTML = "";
 
   Object.entries(languages).forEach(([id, language]) => {
@@ -251,6 +257,7 @@ function renderTabs() {
   renderLearningProgramSummary();
   renderStatsDialog();
   renderSeoContent();
+  document.documentElement.removeAttribute("data-fallback-localizing");
 }
 
 function renderCloudSyncPanel(message = "") {
