@@ -141,6 +141,11 @@ function bindAppEvents() {
   practiceTextSizeToggle.addEventListener("click", togglePracticeTextSize);
   themeToggle.addEventListener("click", toggleTheme);
   assistantsToggle.addEventListener("click", toggleAssistantsPanel);
+  cloudSyncToggle.addEventListener("click", toggleCloudSyncPanel);
+  cloudLogin.addEventListener("click", handleCloudLogin);
+  cloudRegister.addEventListener("click", handleCloudRegister);
+  cloudImport.addEventListener("click", handleCloudImport);
+  cloudLogout.addEventListener("click", handleCloudLogout);
   metronomeInput.addEventListener("input", handleMetronomeInput);
   keyHighlightToggle.addEventListener("click", () => toggleDisplaySetting("keyHighlightEnabled"));
   fingerZonesToggle.addEventListener("click", () => toggleDisplaySetting("fingerZonesEnabled"));
@@ -293,6 +298,7 @@ function bindAppEvents() {
   window.addEventListener("resize", positionFingeringTourCard);
   window.addEventListener("load", () => {
     scheduleKeyboardRefit();
+    loadCloudOAuthProviders();
   });
   window.addEventListener("pageshow", () => {
     scheduleKeyboardRefit();

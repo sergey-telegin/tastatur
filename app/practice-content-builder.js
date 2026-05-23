@@ -396,7 +396,8 @@ const lessonIntroPurpose = {
 };
 
 function contentLessonCompletion(lesson, language) {
-  const storyboardCompletion = window.FLYKEY_LESSON_STORYBOARD?.[lesson.id]?.completionText;
+  const storyboard = window.FLYKEY_LESSON_STORYBOARD || window.FLYKEY_CONTENT_STORYBOARD || {};
+  const storyboardCompletion = storyboard[lesson.id]?.completionText;
   const completion = storyboardCompletion || lesson.completion;
   const text = completion && typeof completion === "object" && !Array.isArray(completion)
     ? completion[language] || completion.en || completion.ru || defaultLessonCompletionText[language] || defaultLessonCompletionText.en
@@ -872,6 +873,7 @@ function buildPracticeContentForLanguage(source, language) {
 
 function buildPracticeContent() {
   const bundle = window.FlyKeyContentProvider?.getContentBundle?.() || window.PRACTICE_CONTENT_SOURCE || {};
+  window.FLYKEY_CONTENT_STORYBOARD = bundle.storyboard || window.FLYKEY_LESSON_STORYBOARD || {};
   const source = ensureKazakhPracticeContent(ensureUkrainianPracticeContent({
     meta: bundle.meta,
     languages: bundle.languages,

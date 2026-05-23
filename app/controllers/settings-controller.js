@@ -177,6 +177,133 @@ function toggleAssistantsPanel() {
   assistantsPanel.hidden = !nextExpanded;
 }
 
+function toggleCloudSyncPanel() {
+  const isExpanded = cloudSyncToggle.getAttribute("aria-expanded") === "true";
+  const nextExpanded = !isExpanded;
+
+  cloudSyncToggle.setAttribute("aria-expanded", String(nextExpanded));
+  cloudSyncPanel.hidden = !nextExpanded;
+}
+
+function cloudCredentials() {
+  return {
+    email: cloudEmailInput.value.trim(),
+    password: cloudPasswordInput.value,
+    profileName: cloudProfileInput.value.trim() || "Main"
+  };
+}
+
+function cloudErrorText(result) {
+  const text = textFor();
+  const message = result?.data?.error?.message || result?.message || "";
+
+  if (message.includes("profile_sync")) {
+    return text.cloudProfileSyncRequired;
+  }
+
+  return message || text.cloudError;
+}
+
+async function runCloudAction(action) {
+  const text = textFor();
+  cloudStatus.textContent = text.cloudWorking;
+
+  try {
+    const result = await action();
+    return result;
+  } catch (error) {
+    cloudStatus.textContent = error?.message || text.cloudError;
+    return { status: "error", error };
+  } finally {
+    renderCloudSyncPanel(cloudStatus.textContent);
+  }
+}
+
+async function handleCloudLogin() {
+  const text = textFor();
+  const credentials = cloudCredentials();
+  if (!credentials.email || !credentials.password) {
+    renderCloudSyncPanel(text.cloudMissingCredentials);
+    return;
+  }
+
+  const result = await runCloudAction(() => window.FlyKeyCloudSync.login({
+    email: credentials.email,
+    password: credentials.password,
+    device: { platform: "web", appVersion: "0.1.0" }
+  }));
+  renderCloudSyncPanel(result.status === "ok" ? text.cloudLoginOk : cloudErrorText(result));
+}
+
+async function handleCloudRegister() {
+  const text = textFor();
+  const credentials = cloudCredentials();
+  if (!credentials.email || !credentials.password) {
+    renderCloudSyncPanel(text.cloudMissingCredentials);
+    return;
+  }
+
+  const result = await runCloudAction(() => window.FlyKeyCloudSync.register({
+    email: credentials.email,
+    password: credentials.password,
+    device: { platform: "web", appVersion: "0.1.0" }
+  }));
+  renderCloudSyncPanel(result.status === "ok" ? text.cloudRegisterOk : cloudErrorText(result));
+}
+
+async function handleCloudImport() {
+  const text = textFor();
+  const credentials = cloudCredentials();
+  const result = await runCloudAction(() => window.FlyKeyCloudSync.importCurrentState(credentials.profileName));
+  renderCloudSyncPanel(result.status === "ok" ? text.cloudImportOk : cloudErrorText(result));
+}
+
+async function handleCloudLogout() {
+  const text = textFor();
+  await runCloudAction(() => window.FlyKeyCloudSync.logout());
+  cloudPasswordInput.value = "";
+  renderCloudSyncPanel(text.cloudLogoutOk);
+}
+
+async function loadCloudOAuthProviders() {
+  if (!window.FlyKeyCloudSync?.providers) return;
+
+  const result = await window.FlyKeyCloudSync.providers();
+  if (result.status === "ok") {
+    renderCloudOauthProviders(result.data.providers || []);
+  }
+}
+
+async function handleCloudOAuth(provider) {
+  const text = textFor();
+  const result = await runCloudAction(() => window.FlyKeyCloudSync.startOAuth(provider));
+  renderCloudSyncPanel(result.status === "ok" ? text.cloudWorking : cloudErrorText(result));
+}
+
+window.addEventListener("message", event => {
+  if (event.data?.type !== "flykey:oauth") return;
+  let backendOrigin = "";
+  try {
+    backendOrigin = new URL(window.FlyKeyApiClient.getConfig().backendBaseUrl).origin;
+  } catch {
+    return;
+  }
+  if (event.origin !== backendOrigin) return;
+
+  const payload = event.data.payload || {};
+  if (payload.error) {
+    renderCloudSyncPanel(payload.error.message || textFor().cloudError);
+    return;
+  }
+
+  try {
+    window.FlyKeyCloudSync.rememberOAuthResult(payload);
+    renderCloudSyncPanel(textFor().cloudLoginOk);
+  } catch {
+    renderCloudSyncPanel(textFor().cloudError);
+  }
+});
+
 function handleSettingsDialogClose() {
   setTimeout(updatePracticeTimerPauseState, 0);
   focusPracticeInputSoon();

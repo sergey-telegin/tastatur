@@ -243,6 +243,7 @@ function renderTabs() {
   assistantsToggleText.textContent = text.assistants;
   assistantsToggle.setAttribute("aria-label", text.assistants);
   keyHighlightLabel.closest(".menu-section")?.setAttribute("aria-label", text.assistants);
+  renderCloudSyncPanel();
   renderKeySoundToggle();
   renderPracticeTextSizeToggle();
   renderThemeToggle();
@@ -250,6 +251,57 @@ function renderTabs() {
   renderLearningProgramSummary();
   renderStatsDialog();
   renderSeoContent();
+}
+
+function renderCloudSyncPanel(message = "") {
+  if (!cloudSyncToggle) return;
+
+  const text = textFor();
+  const auth = window.FlyKeyCloudSync?.auth?.() || {};
+  const isConnected = Boolean(auth.accessToken || auth.refreshToken);
+
+  cloudSyncToggleText.textContent = text.account;
+  cloudSyncToggle.setAttribute("aria-label", text.account);
+  cloudSyncToggle.closest(".menu-section")?.setAttribute("aria-label", text.account);
+  cloudSyncState.textContent = isConnected ? text.cloudConnected : text.cloudLocal;
+  cloudEmailLabel.textContent = text.cloudEmail;
+  cloudPasswordLabel.textContent = text.cloudPassword;
+  cloudProfileLabel.textContent = text.cloudProfile;
+  cloudLogin.textContent = text.cloudLogin;
+  cloudRegister.textContent = text.cloudRegister;
+  cloudImport.textContent = text.cloudImport;
+  cloudLogout.textContent = text.cloudLogout;
+  cloudEmailInput.placeholder = "user@example.com";
+  cloudPasswordInput.placeholder = "••••••••";
+  cloudProfileInput.placeholder = text.cloudProfile;
+
+  if (!cloudEmailInput.value && auth.email) {
+    cloudEmailInput.value = auth.email;
+  }
+  if (!cloudProfileInput.value && auth.profileName) {
+    cloudProfileInput.value = auth.profileName;
+  }
+
+  cloudImport.disabled = !isConnected;
+  cloudLogout.disabled = !isConnected;
+  cloudStatus.textContent = message || (isConnected ? text.cloudReady : "");
+}
+
+function renderCloudOauthProviders(providers = []) {
+  if (!cloudOauthProviders) return;
+
+  cloudOauthProviders.innerHTML = "";
+  cloudOauthProviders.hidden = !providers.length;
+
+  providers.forEach(provider => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "nav-btn cloud-oauth-btn";
+    button.dataset.provider = provider.id;
+    button.textContent = provider.label;
+    button.addEventListener("click", () => handleCloudOAuth(provider.id));
+    cloudOauthProviders.append(button);
+  });
 }
 
 function replaceChildrenWithParagraphs(host, paragraphs) {

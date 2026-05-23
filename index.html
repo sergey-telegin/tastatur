@@ -537,6 +537,35 @@
             </button>
           </section>
 
+          <section class="menu-section cloud-section" aria-label="Аккаунт">
+            <button class="nav-btn menu-nav-btn disclosure-btn" id="cloudSyncToggle" type="button" aria-expanded="false" aria-controls="cloudSyncPanel">
+              <span id="cloudSyncToggleText">Аккаунт</span>
+              <span class="cloud-sync-state" id="cloudSyncState">Локально</span>
+            </button>
+            <div class="cloud-sync-panel" id="cloudSyncPanel" hidden>
+              <label class="cloud-field">
+                <span class="settings-label" id="cloudEmailLabel">Email</span>
+                <input class="cloud-input" id="cloudEmailInput" type="email" autocomplete="email" inputmode="email">
+              </label>
+              <label class="cloud-field">
+                <span class="settings-label" id="cloudPasswordLabel">Пароль</span>
+                <input class="cloud-input" id="cloudPasswordInput" type="password" autocomplete="current-password">
+              </label>
+              <label class="cloud-field">
+                <span class="settings-label" id="cloudProfileLabel">Профиль</span>
+                <input class="cloud-input" id="cloudProfileInput" type="text" autocomplete="off" value="Main">
+              </label>
+              <div class="cloud-oauth" id="cloudOauthProviders" hidden></div>
+              <div class="cloud-actions">
+                <button class="nav-btn cloud-action-btn" id="cloudLogin" type="button">Войти</button>
+                <button class="nav-btn cloud-action-btn" id="cloudRegister" type="button">Создать</button>
+                <button class="nav-btn cloud-action-btn" id="cloudImport" type="button">Импорт</button>
+                <button class="nav-btn cloud-action-btn" id="cloudLogout" type="button">Выйти</button>
+              </div>
+              <p class="cloud-status" id="cloudStatus" aria-live="polite"></p>
+            </div>
+          </section>
+
           <section class="menu-section assistants-section" aria-label="Отображение">
             <button class="nav-btn menu-nav-btn disclosure-btn" id="assistantsToggle" type="button" aria-expanded="false" aria-controls="assistantsPanel">
               <span id="assistantsToggleText">Ассистенты</span>
@@ -1164,7 +1193,8 @@
     <script src="practice-content/modules/module11.js?v=20260516-1"></script>
     <script src="practice-content/modules/module12.js?v=20260516-1"></script>
     <script src="practice-content/storyboard.js?v=20260522-1"></script>
-    <script src="app/api-client.js?v=20260517-1"></script>
+    <script src="app/api-client.js?v=20260523-1"></script>
+    <script src="app/cloud-sync.js?v=20260523-1"></script>
     <script src="app/content-provider.js?v=20260517-2"></script>
     <script src="app/practice-content-builder.js?v=20260517-2"></script>
     <script src="app/data.js?v=20260514-16"></script>

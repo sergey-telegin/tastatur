@@ -57,14 +57,7 @@ function storyboardLessonIntroPurpose(lesson) {
 }
 
 function storyboardCardLabel(type) {
-  return {
-    introImage: "Intro image",
-    introTip: "Intro tip",
-    nextModuleText: "Next module text",
-    completionImage: "Completion image",
-    completionText: "Completion text",
-    imageBank: "Image"
-  }[type] || type;
+  return textFor().storyboard?.cardLabels?.[type] || type;
 }
 
 function storyboardCardCategory(type) {
@@ -232,7 +225,7 @@ function createStoryboardCard(state, card) {
 function createStoryboardEmptySlot() {
   const node = document.createElement("div");
   node.className = "storyboard-empty";
-  node.textContent = "Drop card";
+  node.textContent = textFor().storyboard?.dropCard || "Drop card";
   return node;
 }
 
@@ -440,7 +433,8 @@ function renderLessonStoryboard(state) {
   table.innerHTML = "";
   const header = document.createElement("div");
   header.className = "storyboard-row storyboard-header";
-  ["№", "Lesson", "Intro image", "Intro tip", "Next module text", "Completion image", "Completion text"].forEach(label => {
+  const storyboardText = textFor().storyboard || {};
+  (storyboardText.tableHeaders || ["№", "Lesson", "Intro image", "Intro tip", "Next module text", "Completion image", "Completion text"]).forEach(label => {
     const cell = document.createElement("div");
     cell.textContent = label;
     header.append(cell);
@@ -630,10 +624,10 @@ function initializeLessonStoryboardMode() {
       <h1 class="storyboard-title">${storyboardText.title}</h1>
       <div class="storyboard-controls">
         <label>
-          Preview
+          ${storyboardText.preview}
           <select class="storyboard-select" id="storyboardLanguage"></select>
         </label>
-        <div class="storyboard-scale-control" aria-label="Image zoom">
+        <div class="storyboard-scale-control" aria-label="${storyboardText.imageZoom}">
           <button class="storyboard-button storyboard-scale-button" id="storyboardImageZoomOut" type="button">-</button>
           <span class="storyboard-scale-value" id="storyboardImageScaleValue">100%</span>
           <button class="storyboard-button storyboard-scale-button" id="storyboardImageZoomIn" type="button">+</button>

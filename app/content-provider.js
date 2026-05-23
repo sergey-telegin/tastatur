@@ -14,6 +14,7 @@ function flyKeyLocalContentBundle() {
     languages: source.languages || meta.languages || [],
     grades: source.grades || {},
     modules: source.modules || [],
+    storyboard: window.FLYKEY_LESSON_STORYBOARD || {},
     assets: meta.assets || {}
   };
 }

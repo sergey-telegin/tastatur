@@ -12,6 +12,7 @@
     "server": "node server/server.js",
     "server:check": "node --check server/server.js",
     "server:smoke": "node scripts/smoke-server-api.js",
+    "backend:smoke": "node scripts/smoke-backend-api.js",
     "content:build": "node scripts/build-content-bundle.js",
     "content:validate": "node scripts/validate-content-bundle.js",
     "storyboard:apply": "node scripts/apply-storyboard.js",

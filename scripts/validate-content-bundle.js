@@ -199,6 +199,7 @@ function validateBundle(bundle) {
   }
 
   validateLessonStoryboard(readLessonStoryboard(), lessonIds, languages);
+  validateLessonStoryboard(bundle.storyboard, lessonIds, languages);
 
   const storyboardImages = collectStoryboardImages(bundle);
   storyboardImages.forEach(file => imageExists(file, "storyboard image"));
