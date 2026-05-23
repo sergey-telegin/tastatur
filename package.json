@@ -18,8 +18,9 @@
     "storyboard:apply": "node scripts/apply-storyboard.js",
     "check:html": "sh scripts/check-index-html-js.sh",
     "check:cyrillic-ui": "sh scripts/check-cyrillic-ui.sh",
+    "check:homepage-localization": "node scripts/check-homepage-localization.js",
     "check:js": "find app practice-content desktop scripts server -name '*.js' -print0 | xargs -0 -n1 node --check",
-    "check": "npm run content:validate && npm run check:html && npm run check:cyrillic-ui && npm run check:js"
+    "check": "npm run content:validate && npm run check:html && npm run check:cyrillic-ui && npm run check:homepage-localization && npm run check:js"
   },
   "devDependencies": {
     "electron": "^36.0.0",
