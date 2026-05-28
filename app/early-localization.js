@@ -72,6 +72,56 @@
     const element = document.querySelector(selector);
     if (element) element.setAttribute(attribute, value);
   };
+  const replaceChildrenWithParagraphs = (host, paragraphs) => {
+    if (!host || !Array.isArray(paragraphs)) return;
+    host.innerHTML = "";
+    paragraphs.forEach(paragraphText => {
+      const paragraph = document.createElement("p");
+      paragraph.textContent = paragraphText;
+      host.append(paragraph);
+    });
+  };
+  const renderSeoContent = () => {
+    const seo = ui.seo;
+    const section = document.querySelector(".seo-content");
+    if (!section || !seo) return;
+
+    const nav = section.querySelector(".seo-nav");
+    if (nav && seo.navLabel) nav.setAttribute("aria-label", seo.navLabel);
+    nav?.querySelectorAll("a").forEach((link, index) => {
+      if (seo.nav?.[index]) link.textContent = seo.nav[index];
+    });
+
+    setText(".seo-eyebrow", seo.eyebrow);
+    setText("#seoTitle", seo.title);
+    setText(".seo-lead", seo.lead);
+    section.querySelector(".seo-summary-grid")?.setAttribute("aria-label", seo.summaryLabel);
+    section.querySelectorAll(".seo-summary-grid article").forEach((article, index) => {
+      const item = seo.summary?.[index];
+      if (!item) return;
+      const title = article.querySelector("h2");
+      const description = article.querySelector("p");
+      if (title) title.textContent = item[0];
+      if (description) description.textContent = item[1];
+    });
+    section.querySelectorAll(".seo-article").forEach((article, index) => {
+      const item = seo.articles?.[index];
+      if (!item) return;
+      const title = article.querySelector("h2") || document.createElement("h2");
+      title.textContent = item[0];
+      replaceChildrenWithParagraphs(article, item[1]);
+      article.prepend(title);
+    });
+    setText("#seo-faq-title", seo.faqTitle);
+    section.querySelectorAll(".seo-faq details").forEach((details, index) => {
+      const item = seo.faq?.[index];
+      if (!item) return;
+      const summary = details.querySelector("summary");
+      const paragraph = details.querySelector("p");
+      if (summary) summary.textContent = item[0];
+      if (paragraph) paragraph.textContent = item[1];
+    });
+  };
 
   document.title = text.title;
   if (metaDescription) metaDescription.content = text.description;
@@ -154,4 +204,5 @@
   setText("#privacyConsentText", text.privacyText);
   setText("#privacyConsentReject", text.reject);
   setText("#privacyConsentAccept", text.accept);
+  renderSeoContent();
 })();
