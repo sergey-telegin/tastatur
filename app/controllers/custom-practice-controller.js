@@ -141,7 +141,7 @@ async function fetchRandomPracticeText() {
     customPracticeText.value = sourceText;
     customPracticeStatus.textContent = text.textSourceReady;
   } catch {
-    customPracticeText.value = text.fallbackRandomText || uiText.en.fallbackRandomText;
+    customPracticeText.value = text.fallbackRandomText;
     customPracticeStatus.textContent = text.textSourceFallback;
   } finally {
     customPracticeRefresh.disabled = false;

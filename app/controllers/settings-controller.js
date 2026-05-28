@@ -195,13 +195,14 @@ function cloudCredentials() {
 
 function cloudErrorText(result) {
   const text = textFor();
-  const message = result?.data?.error?.message || result?.message || "";
+  const code = result?.data?.error?.code || result?.code || "";
+  const message = String(result?.data?.error?.message || result?.message || "");
 
-  if (message.includes("profile_sync")) {
+  if (code === "profile_sync_required" || message.includes("profile_sync")) {
     return text.cloudProfileSyncRequired;
   }
 
-  return message || text.cloudError;
+  return text.cloudError;
 }
 
 async function runCloudAction(action) {
@@ -212,7 +213,7 @@ async function runCloudAction(action) {
     const result = await action();
     return result;
   } catch (error) {
-    cloudStatus.textContent = error?.message || text.cloudError;
+    cloudStatus.textContent = text.cloudError;
     return { status: "error", error };
   } finally {
     renderCloudSyncPanel(cloudStatus.textContent);
@@ -292,7 +293,7 @@ window.addEventListener("message", event => {
 
   const payload = event.data.payload || {};
   if (payload.error) {
-    renderCloudSyncPanel(payload.error.message || textFor().cloudError);
+    renderCloudSyncPanel(cloudErrorText(payload));
     return;
   }
 

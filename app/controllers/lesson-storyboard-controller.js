@@ -37,7 +37,7 @@ function storyboardImageFileNameFromSrc(src) {
 function storyboardLocalizedText(value, language) {
   if (Array.isArray(value)) return value.filter(Boolean).join("\n");
   if (!value || typeof value !== "object") return value || "";
-  const localized = value[language] || value.en || value.ru || Object.values(value)[0] || "";
+  const localized = value[language] || "";
   return storyboardLocalizedText(localized, language);
 }
 
@@ -45,7 +45,7 @@ function storyboardLocalizedMap(value, languages, fallback = {}) {
   return Object.fromEntries(languages.map(language => [
     language,
     value && typeof value === "object" && !Array.isArray(value)
-      ? storyboardLocalizedText(value[language] || value.en || value.ru, language) || storyboardLocalizedText(fallback, language)
+      ? storyboardLocalizedText(value[language], language) || storyboardLocalizedText(fallback, language)
       : storyboardLocalizedText(value, language) || storyboardLocalizedText(fallback, language)
   ]));
 }
@@ -225,7 +225,7 @@ function createStoryboardCard(state, card) {
 function createStoryboardEmptySlot() {
   const node = document.createElement("div");
   node.className = "storyboard-empty";
-  node.textContent = textFor().storyboard?.dropCard || "Drop card";
+  node.textContent = textFor().storyboard.dropCard;
   return node;
 }
 

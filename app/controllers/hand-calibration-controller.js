@@ -99,7 +99,7 @@ function initializeHandCalibrationMode() {
     if (selectedNode) selectedNode.classList.remove("calibration-selected");
     selectedNode = node;
     if (selectedNode) selectedNode.classList.add("calibration-selected");
-    selectedLabel.textContent = selectedNode?.dataset.finger || "Drag a finger";
+    selectedLabel.textContent = selectedNode?.dataset.finger || textFor().handCalibrationDragFinger;
   }
 
   function exportCalibration() {

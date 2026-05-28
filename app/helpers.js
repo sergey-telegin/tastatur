@@ -14,7 +14,7 @@ function lessonStoryboardFor(lessonOrId) {
 function localizedTextValue(value, language = currentLanguage) {
   if (Array.isArray(value)) return value.filter(Boolean).join("\n");
   if (!value || typeof value !== "object") return value || "";
-  return localizedTextValue(value[language] || value.en || value.ru || Object.values(value)[0] || "", language);
+  return localizedTextValue(value[language] || "", language);
 }
 
 function keyIds() {

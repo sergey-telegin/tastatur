@@ -1,18 +1,18 @@
 function localizedContentText(value, language) {
   if (!value || typeof value !== "object") return value || "";
-  return value[language] || value.en || value.ru || Object.values(value)[0] || "";
+  return value[language] || "";
 }
 
 function localizedContentList(value, language) {
   const localized = Array.isArray(value)
     ? value
-    : value?.[language] || value?.en || value?.ru || [];
+    : value?.[language] || [];
   if (!Array.isArray(localized)) return localized ? [localized] : [];
   return localized.filter(Boolean);
 }
 
 function contentLessonLines(lesson, language) {
-  const lines = lesson.lines?.[language] || lesson.lines?.en || lesson.lines?.ru || [];
+  const lines = lesson.lines?.[language] || [];
   if (Array.isArray(lines) && lines.length) return lines;
 
   const fallback = localizedContentText(lesson.title, language) || lesson.id;

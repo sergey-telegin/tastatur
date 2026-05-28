@@ -680,7 +680,7 @@ function goToNextLessonAfterCompletion() {
 }
 
 function currentOnboardingCopy() {
-  return textFor().onboarding || uiText.en.onboarding;
+  return textFor().onboarding;
 }
 
 function renderOnboardingDialog() {

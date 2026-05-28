@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>FlyKey — online touch typing trainer</title>
     <meta name="description" content="FlyKey is a free online touch typing trainer for Russian, Ukrainian, Kazakh, German, and English layouts. Lessons, finger hints, statistics, metronome practice, and flexible settings.">
-    <meta name="keywords" content="touch typing trainer, blind typing trainer, typing trainer with finger guides, multilingual typing trainer, Schreibtrainer, 10-Finger-System, Tipptrainer, тренажёр слепой печати, слепая печать">
+    <meta name="keywords" content="touch typing trainer, blind typing trainer, typing trainer with finger guides, multilingual typing trainer, Schreibtrainer, 10-Finger-System, Tipptrainer">
     <meta name="robots" content="index, follow">
     <script>
       (() => {
@@ -106,9 +106,6 @@
           "Russian, Ukrainian, Kazakh, German and English keyboard layouts"
         ],
         "keywords": [
-          "тренажёр слепой печати",
-          "слепая печать",
-          "клавиатурный тренажёр",
           "touch typing trainer",
           "blind typing trainer",
           "typing trainer with custom keyboard layout",
@@ -450,7 +447,7 @@
           <div class="lesson-tip-text" id="lessonTipText"></div>
           <div class="lesson-tip-actions">
             <button class="ghost-btn lesson-tip-extra" id="lessonTipExtra" type="button" hidden></button>
-            <button class="apply-btn lesson-tip-start" id="lessonTipStart" type="button">Пуск</button>
+            <button class="apply-btn lesson-tip-start" id="lessonTipStart" type="button">Start</button>
           </div>
         </section>
         <img class="lesson-tip-character" id="lessonTipCharacter" src="assets/key/key-wave.webp?v=20260516-5" alt="" aria-hidden="true">
@@ -464,7 +461,7 @@
           <div class="lesson-tip-text completion-text" id="completionText"></div>
           <div class="lesson-tip-actions">
             <button class="ghost-btn completion-extra" id="completionExtra" type="button" hidden></button>
-            <button class="apply-btn lesson-tip-start completion-next" id="completionNext" type="button">Далее</button>
+            <button class="apply-btn lesson-tip-start completion-next" id="completionNext" type="button">Next</button>
           </div>
         </section>
         <img class="lesson-tip-character completion-character" id="completionCharacter" src="assets/key/key-completion.webp?v=20260516-5" alt="" aria-hidden="true">
@@ -474,10 +471,10 @@
     <dialog class="lesson-tip-dialog next-module-dialog" id="nextModuleDialog">
       <div class="lesson-tip-stage next-module-stage">
         <section class="lesson-tip-message next-module-message" aria-describedby="nextModulePurpose">
-          <p class="lesson-tip-kicker next-module-kicker" id="nextModuleKicker">Следующий модуль</p>
+          <p class="lesson-tip-kicker next-module-kicker" id="nextModuleKicker">Next module</p>
           <h2 class="next-module-title" id="nextModuleTitle"></h2>
           <p class="next-module-purpose" id="nextModulePurpose"></p>
-          <button class="apply-btn lesson-tip-start next-module-next" id="nextModuleNext" type="button">Далее</button>
+          <button class="apply-btn lesson-tip-start next-module-next" id="nextModuleNext" type="button">Next</button>
         </section>
         <img class="lesson-tip-character next-module-character" id="nextModuleCharacter" src="assets/key/key-wave.webp?v=20260516-5" alt="" aria-hidden="true">
       </div>
@@ -486,55 +483,55 @@
     <dialog class="settings-dialog" id="settingsDialog" aria-labelledby="settingsTitle">
       <div class="settings-panel">
         <div class="settings-head">
-          <h2 class="settings-title visually-hidden" id="settingsTitle">Настройки</h2>
-          <button class="settings-close" id="settingsClose" type="button" aria-label="Закрыть">×</button>
+          <h2 class="settings-title visually-hidden" id="settingsTitle">Settings</h2>
+          <button class="settings-close" id="settingsClose" type="button" aria-label="Close">×</button>
         </div>
 
         <div class="app-menu">
-          <section class="menu-section" aria-label="Основные">
-            <div class="settings-group sound-icon-group" aria-label="Звук">
-              <span class="settings-label visually-hidden" id="soundLabel">Звук</span>
+          <section class="menu-section" aria-label="Basics">
+            <div class="settings-group sound-icon-group" aria-label="Sound">
+              <span class="settings-label visually-hidden" id="soundLabel">Sound</span>
               <button class="sound-icon-btn" id="themeToggle" type="button" aria-pressed="false">
                 <img class="theme-icon" id="themeIcon" src="assets/theme-toggle.svg" alt="" aria-hidden="true">
-                <span class="visually-hidden" id="themeToggleText">Тёмная</span>
+                <span class="visually-hidden" id="themeToggleText">Dark</span>
               </button>
               <button class="sound-icon-btn" id="keySoundToggle" type="button" aria-pressed="true">
                 <img class="sound-icon" id="keySoundIcon" src="assets/sound-on.svg" alt="" aria-hidden="true">
-                <span class="visually-hidden" id="keySoundToggleText">Вкл</span>
+                <span class="visually-hidden" id="keySoundToggleText">On</span>
               </button>
-              <button class="sound-icon-btn text-size-icon-btn" id="practiceTextSizeToggle" type="button" aria-label="Размер текста: M">
+              <button class="sound-icon-btn text-size-icon-btn" id="practiceTextSizeToggle" type="button" aria-label="Text size: M">
                 <span class="text-size-icon" id="practiceTextSizeIcon" aria-hidden="true">M</span>
                 <span class="visually-hidden" id="practiceTextSizeToggleText">M</span>
               </button>
             </div>
-            <div class="settings-group" aria-label="Язык">
-              <span class="settings-label visually-hidden" id="languageLabel">Язык</span>
-              <div class="segmented" id="languageTabs" role="tablist" aria-label="Язык клавиатуры"></div>
+            <div class="settings-group" aria-label="Language">
+              <span class="settings-label visually-hidden" id="languageLabel">Language</span>
+              <div class="segmented" id="languageTabs" role="tablist" aria-label="Keyboard language"></div>
             </div>
           </section>
 
-          <section class="menu-section menu-section-flat" aria-label="Программа обучения">
+          <section class="menu-section menu-section-flat" aria-label="Learning program">
             <button class="nav-btn menu-nav-btn" id="learningProgramOpen" type="button">
-              <span id="learningProgramOpenText">Программа обучения</span>
+              <span id="learningProgramOpenText">Learning program</span>
             </button>
           </section>
 
-          <section class="menu-section menu-section-flat" aria-label="Статистика">
+          <section class="menu-section menu-section-flat" aria-label="Statistics">
             <button class="nav-btn menu-nav-btn" id="statsOpen" type="button">
-              <span id="statsOpenText">Статистика</span>
+              <span id="statsOpenText">Statistics</span>
             </button>
           </section>
 
-          <section class="menu-section menu-section-flat" aria-label="Настройка аппликатуры">
+          <section class="menu-section menu-section-flat" aria-label="Fingering setup">
             <button class="nav-btn menu-nav-btn" id="fingerMapOpen" type="button">
-              <span>Привязка клавиш к пальцам</span>
+              <span>Assign keys to fingers</span>
             </button>
           </section>
 
-          <section class="menu-section cloud-section" aria-label="Аккаунт">
+          <section class="menu-section cloud-section" aria-label="Account">
             <button class="nav-btn menu-nav-btn disclosure-btn" id="cloudSyncToggle" type="button" aria-expanded="false" aria-controls="cloudSyncPanel">
-              <span id="cloudSyncToggleText">Аккаунт</span>
-              <span class="cloud-sync-state" id="cloudSyncState">Локально</span>
+              <span id="cloudSyncToggleText">Account</span>
+              <span class="cloud-sync-state" id="cloudSyncState">Local</span>
             </button>
             <div class="cloud-sync-panel" id="cloudSyncPanel" hidden>
               <label class="cloud-field">
@@ -542,82 +539,82 @@
                 <input class="cloud-input" id="cloudEmailInput" type="email" autocomplete="email" inputmode="email">
               </label>
               <label class="cloud-field">
-                <span class="settings-label" id="cloudPasswordLabel">Пароль</span>
+                <span class="settings-label" id="cloudPasswordLabel">Password</span>
                 <input class="cloud-input" id="cloudPasswordInput" type="password" autocomplete="current-password">
               </label>
               <label class="cloud-field">
-                <span class="settings-label" id="cloudProfileLabel">Профиль</span>
+                <span class="settings-label" id="cloudProfileLabel">Profile</span>
                 <input class="cloud-input" id="cloudProfileInput" type="text" autocomplete="off" value="Main">
               </label>
               <div class="cloud-oauth" id="cloudOauthProviders" hidden></div>
               <div class="cloud-actions">
-                <button class="nav-btn cloud-action-btn" id="cloudLogin" type="button">Войти</button>
-                <button class="nav-btn cloud-action-btn" id="cloudRegister" type="button">Создать</button>
-                <button class="nav-btn cloud-action-btn" id="cloudImport" type="button">Импорт</button>
-                <button class="nav-btn cloud-action-btn" id="cloudLogout" type="button">Выйти</button>
+                <button class="nav-btn cloud-action-btn" id="cloudLogin" type="button">Sign in</button>
+                <button class="nav-btn cloud-action-btn" id="cloudRegister" type="button">Create</button>
+                <button class="nav-btn cloud-action-btn" id="cloudImport" type="button">Import</button>
+                <button class="nav-btn cloud-action-btn" id="cloudLogout" type="button">Sign out</button>
               </div>
               <p class="cloud-status" id="cloudStatus" aria-live="polite"></p>
             </div>
           </section>
 
-          <section class="menu-section assistants-section" aria-label="Отображение">
+          <section class="menu-section assistants-section" aria-label="Display">
             <button class="nav-btn menu-nav-btn disclosure-btn" id="assistantsToggle" type="button" aria-expanded="false" aria-controls="assistantsPanel">
-              <span id="assistantsToggleText">Ассистенты</span>
+              <span id="assistantsToggleText">Assistants</span>
               <span class="disclosure-arrow" aria-hidden="true"></span>
             </button>
             <div class="assistants-panel" id="assistantsPanel" hidden>
               <div class="settings-row">
-                <span class="settings-label" id="keyHighlightLabel">Подсветка клавиш</span>
+                <span class="settings-label" id="keyHighlightLabel">Key highlights</span>
                 <button class="sound-toggle compact-toggle" id="keyHighlightToggle" type="button" aria-pressed="true">
                   <span class="sound-toggle-track" aria-hidden="true"><span class="sound-toggle-thumb"></span></span>
-                  <span class="sound-toggle-text" id="keyHighlightToggleText">Вкл</span>
+                  <span class="sound-toggle-text" id="keyHighlightToggleText">On</span>
                 </button>
               </div>
               <div class="settings-row">
-                <span class="settings-label" id="fingerZonesLabel">Зоны пальцев</span>
+                <span class="settings-label" id="fingerZonesLabel">Finger zones</span>
                 <button class="sound-toggle compact-toggle" id="fingerZonesToggle" type="button" aria-pressed="false">
                   <span class="sound-toggle-track" aria-hidden="true"><span class="sound-toggle-thumb"></span></span>
-                  <span class="sound-toggle-text" id="fingerZonesToggleText">Выкл</span>
+                  <span class="sound-toggle-text" id="fingerZonesToggleText">Off</span>
                 </button>
               </div>
               <div class="settings-row">
-                <span class="settings-label" id="fingerHighlightLabel">Подсветка пальцев</span>
+                <span class="settings-label" id="fingerHighlightLabel">Finger highlights</span>
                 <button class="sound-toggle compact-toggle" id="fingerHighlightToggle" type="button" aria-pressed="true">
                   <span class="sound-toggle-track" aria-hidden="true"><span class="sound-toggle-thumb"></span></span>
-                  <span class="sound-toggle-text" id="fingerHighlightToggleText">Вкл</span>
+                  <span class="sound-toggle-text" id="fingerHighlightToggleText">On</span>
                 </button>
               </div>
               <div class="settings-row">
-                <span class="settings-label" id="pressHighlightLabel">Подсветка нажатий</span>
+                <span class="settings-label" id="pressHighlightLabel">Press highlights</span>
                 <button class="sound-toggle compact-toggle" id="pressHighlightToggle" type="button" aria-pressed="true">
                   <span class="sound-toggle-track" aria-hidden="true"><span class="sound-toggle-thumb"></span></span>
-                  <span class="sound-toggle-text" id="pressHighlightToggleText">Вкл</span>
+                  <span class="sound-toggle-text" id="pressHighlightToggleText">On</span>
                 </button>
               </div>
               <div class="settings-row">
-                <span class="settings-label" id="showFingersLabel">Показывать пальцы</span>
+                <span class="settings-label" id="showFingersLabel">Show fingers</span>
                 <button class="sound-toggle compact-toggle" id="showFingersToggle" type="button" aria-pressed="true">
                   <span class="sound-toggle-track" aria-hidden="true"><span class="sound-toggle-thumb"></span></span>
-                  <span class="sound-toggle-text" id="showFingersToggleText">Вкл</span>
+                  <span class="sound-toggle-text" id="showFingersToggleText">On</span>
                 </button>
               </div>
               <div class="settings-row">
-                <span class="settings-label" id="alternateLinesLabel">Режим “через строку”</span>
+                <span class="settings-label" id="alternateLinesLabel">Alternate-line mode</span>
                 <button class="sound-toggle compact-toggle" id="alternateLinesToggle" type="button" aria-pressed="false">
                   <span class="sound-toggle-track" aria-hidden="true"><span class="sound-toggle-thumb"></span></span>
-                  <span class="sound-toggle-text" id="alternateLinesToggleText">Выкл</span>
+                  <span class="sound-toggle-text" id="alternateLinesToggleText">Off</span>
                 </button>
               </div>
               <div class="settings-row">
-                <label class="settings-label" id="metronomeLabel" for="metronomeInput">Метроном</label>
+                <label class="settings-label" id="metronomeLabel" for="metronomeInput">Metronome</label>
                 <input class="metronome-input" id="metronomeInput" type="number" min="0" max="400" step="1" inputmode="numeric" placeholder="0" aria-labelledby="metronomeLabel">
               </div>
             </div>
           </section>
 
-          <section class="menu-section menu-section-flat" aria-label="Помощь">
+          <section class="menu-section menu-section-flat" aria-label="Help">
             <button class="nav-btn menu-nav-btn" id="helpOpen" type="button">
-              <span id="helpOpenText">Помощь</span>
+              <span id="helpOpenText">Help</span>
             </button>
           </section>
         </div>
@@ -628,87 +625,87 @@
     <dialog class="settings-dialog app-section-dialog" id="learningProgramDialog" aria-labelledby="learningProgramTitle">
       <div class="settings-panel">
         <div class="settings-head">
-          <h2 class="settings-title visually-hidden" id="learningProgramTitle">Программа обучения</h2>
-          <button class="settings-close" id="learningProgramClose" type="button" aria-label="Закрыть">×</button>
+          <h2 class="settings-title visually-hidden" id="learningProgramTitle">Learning program</h2>
+          <button class="settings-close" id="learningProgramClose" type="button" aria-label="Close">×</button>
         </div>
         <div class="settings-group">
-          <span class="settings-label visually-hidden" id="moduleLabel">Все модули</span>
+          <span class="settings-label visually-hidden" id="moduleLabel">All modules</span>
           <div class="module-list" id="practiceModuleList"></div>
         </div>
         <div class="menu-summary visually-hidden">
-          <span class="settings-label" id="programCurrentProgressLabel">Прогресс текущего модуля</span>
-          <strong id="programCurrentProgress">0 / 0 строк</strong>
+          <span class="settings-label" id="programCurrentProgressLabel">Current module progress</span>
+          <strong id="programCurrentProgress">0 / 0 lines</strong>
         </div>
-        <button class="nav-btn danger-nav-btn visually-hidden" id="currentModuleProgressReset" type="button">Сбросить прогресс текущего модуля</button>
+        <button class="nav-btn danger-nav-btn visually-hidden" id="currentModuleProgressReset" type="button">Reset current module progress</button>
       </div>
     </dialog>
 
     <dialog class="settings-dialog app-section-dialog custom-practice-dialog" id="customPracticeDialog" aria-labelledby="customPracticeTitle">
       <div class="settings-panel">
         <div class="settings-head">
-          <h2 class="settings-title" id="customPracticeTitle">Текстовая практика</h2>
-          <button class="settings-close" id="customPracticeClose" type="button" aria-label="Закрыть">×</button>
+          <h2 class="settings-title" id="customPracticeTitle">Text practice</h2>
+          <button class="settings-close" id="customPracticeClose" type="button" aria-label="Close">×</button>
         </div>
 
         <div class="custom-practice-layout">
           <label class="custom-practice-field">
-            <span class="settings-label" id="customPracticeTextLabel">Текст</span>
+            <span class="settings-label" id="customPracticeTextLabel">Text</span>
             <textarea id="customPracticeText" rows="8" spellcheck="false" aria-labelledby="customPracticeTextLabel"></textarea>
           </label>
 
           <div class="custom-practice-controls">
             <label class="custom-practice-number">
-              <span class="settings-label" id="customPracticeLineCountLabel">Строки</span>
+              <span class="settings-label" id="customPracticeLineCountLabel">Lines</span>
               <input class="metronome-input" id="customPracticeLineCount" type="number" min="3" max="30" step="1" value="10" inputmode="numeric" aria-labelledby="customPracticeLineCountLabel">
             </label>
-            <button class="ghost-btn" id="customPracticeRefresh" type="button">Обновить текст</button>
+            <button class="ghost-btn" id="customPracticeRefresh" type="button">Refresh text</button>
           </div>
 
-          <section class="custom-practice-assistants" aria-label="Ассистенты">
+          <section class="custom-practice-assistants" aria-label="Assistants">
             <div class="settings-row">
-              <span class="settings-label" id="customKeyHighlightLabel">Подсветка клавиш</span>
+              <span class="settings-label" id="customKeyHighlightLabel">Key highlights</span>
               <button class="sound-toggle compact-toggle" id="customKeyHighlightToggle" type="button" aria-pressed="true">
                 <span class="sound-toggle-track" aria-hidden="true"><span class="sound-toggle-thumb"></span></span>
-                <span class="sound-toggle-text" id="customKeyHighlightToggleText">Вкл</span>
+                <span class="sound-toggle-text" id="customKeyHighlightToggleText">On</span>
               </button>
             </div>
             <div class="settings-row">
-              <span class="settings-label" id="customFingerZonesLabel">Зоны пальцев</span>
+              <span class="settings-label" id="customFingerZonesLabel">Finger zones</span>
               <button class="sound-toggle compact-toggle" id="customFingerZonesToggle" type="button" aria-pressed="false">
                 <span class="sound-toggle-track" aria-hidden="true"><span class="sound-toggle-thumb"></span></span>
-                <span class="sound-toggle-text" id="customFingerZonesToggleText">Выкл</span>
+                <span class="sound-toggle-text" id="customFingerZonesToggleText">Off</span>
               </button>
             </div>
             <div class="settings-row">
-              <span class="settings-label" id="customFingerHighlightLabel">Подсветка пальцев</span>
+              <span class="settings-label" id="customFingerHighlightLabel">Finger highlights</span>
               <button class="sound-toggle compact-toggle" id="customFingerHighlightToggle" type="button" aria-pressed="true">
                 <span class="sound-toggle-track" aria-hidden="true"><span class="sound-toggle-thumb"></span></span>
-                <span class="sound-toggle-text" id="customFingerHighlightToggleText">Вкл</span>
+                <span class="sound-toggle-text" id="customFingerHighlightToggleText">On</span>
               </button>
             </div>
             <div class="settings-row">
-              <span class="settings-label" id="customPressHighlightLabel">Подсветка нажатий</span>
+              <span class="settings-label" id="customPressHighlightLabel">Press highlights</span>
               <button class="sound-toggle compact-toggle" id="customPressHighlightToggle" type="button" aria-pressed="true">
                 <span class="sound-toggle-track" aria-hidden="true"><span class="sound-toggle-thumb"></span></span>
-                <span class="sound-toggle-text" id="customPressHighlightToggleText">Вкл</span>
+                <span class="sound-toggle-text" id="customPressHighlightToggleText">On</span>
               </button>
             </div>
             <div class="settings-row">
-              <span class="settings-label" id="customShowFingersLabel">Показывать пальцы</span>
+              <span class="settings-label" id="customShowFingersLabel">Show fingers</span>
               <button class="sound-toggle compact-toggle" id="customShowFingersToggle" type="button" aria-pressed="true">
                 <span class="sound-toggle-track" aria-hidden="true"><span class="sound-toggle-thumb"></span></span>
-                <span class="sound-toggle-text" id="customShowFingersToggleText">Вкл</span>
+                <span class="sound-toggle-text" id="customShowFingersToggleText">On</span>
               </button>
             </div>
             <div class="settings-row">
-              <span class="settings-label" id="customAlternateLinesLabel">Режим “через строку”</span>
+              <span class="settings-label" id="customAlternateLinesLabel">Alternate-line mode</span>
               <button class="sound-toggle compact-toggle" id="customAlternateLinesToggle" type="button" aria-pressed="false">
                 <span class="sound-toggle-track" aria-hidden="true"><span class="sound-toggle-thumb"></span></span>
-                <span class="sound-toggle-text" id="customAlternateLinesToggleText">Выкл</span>
+                <span class="sound-toggle-text" id="customAlternateLinesToggleText">Off</span>
               </button>
             </div>
             <div class="settings-row">
-              <label class="settings-label" id="customMetronomeLabel" for="customMetronomeInput">Метроном</label>
+              <label class="settings-label" id="customMetronomeLabel" for="customMetronomeInput">Metronome</label>
               <input class="metronome-input" id="customMetronomeInput" type="number" min="0" max="400" step="1" inputmode="numeric" placeholder="0" aria-labelledby="customMetronomeLabel">
             </div>
           </section>
@@ -716,8 +713,8 @@
           <p class="custom-practice-status" id="customPracticeStatus" aria-live="polite"></p>
 
           <div class="dialog-actions custom-practice-actions">
-            <button class="ghost-btn" id="customPracticeCancel" type="button">Отменить</button>
-            <button class="apply-btn" id="customPracticeStart" type="button">Пуск</button>
+            <button class="ghost-btn" id="customPracticeCancel" type="button">Cancel</button>
+            <button class="apply-btn" id="customPracticeStart" type="button">Start</button>
           </div>
         </div>
       </div>
@@ -726,12 +723,12 @@
     <dialog class="settings-dialog app-section-dialog" id="statsDialog" aria-labelledby="statsTitle">
       <div class="settings-panel">
         <div class="settings-head">
-          <h2 class="settings-title visually-hidden" id="statsTitle">Статистика</h2>
-          <button class="settings-close" id="statsClose" type="button" aria-label="Закрыть">×</button>
+          <h2 class="settings-title visually-hidden" id="statsTitle">Statistics</h2>
+          <button class="settings-close" id="statsClose" type="button" aria-label="Close">×</button>
         </div>
         <div class="stats-grid" id="statsOverview" aria-live="polite"></div>
         <div class="settings-group">
-          <span class="settings-label" id="statsDailyLabel">Показатели по дням</span>
+          <span class="settings-label" id="statsDailyLabel">Daily metrics</span>
           <div class="daily-stats-list" id="dailyStatsList"></div>
         </div>
       </div>
@@ -740,13 +737,13 @@
     <dialog class="settings-dialog app-section-dialog" id="helpDialog" aria-labelledby="helpTitle">
       <div class="settings-panel">
         <div class="settings-head">
-          <h2 class="settings-title" id="helpTitle">Помощь</h2>
-          <button class="settings-close" id="helpClose" type="button" aria-label="Закрыть">×</button>
+          <h2 class="settings-title" id="helpTitle">Help</h2>
+          <button class="settings-close" id="helpClose" type="button" aria-label="Close">×</button>
         </div>
         <div class="help-list">
-          <p id="helpTextPractice">Печатай строку на экране. После завершения строки нажми Enter, чтобы перейти дальше.</p>
-          <p id="helpTextProgram">В программе обучения можно выбрать модуль и сбросить прогресс текущего модуля.</p>
-          <p id="helpTextFingering">В настройке аппликатуры выбери палец и назначай клавиши прямо на клавиатуре.</p>
+          <p id="helpTextPractice">Type the line on the screen. Press Enter after finishing a line to continue.</p>
+          <p id="helpTextProgram">Use the learning program to choose a module and reset the current module progress.</p>
+          <p id="helpTextFingering">In fingering setup, choose a finger and assign keys directly on the keyboard.</p>
         </div>
       </div>
     </dialog>
