@@ -3,10 +3,10 @@
 const fs = require("node:fs");
 const path = require("node:path");
 
-const files = [
-  "app/controllers/settings-controller.js",
-  "app/controllers/custom-practice-controller.js",
-  "app/controllers/practice-controller.js"
+const roots = [
+  "app/controllers",
+  "app/views",
+  "app/privacy-consent.js"
 ];
 
 const forbidden = [
@@ -16,6 +16,17 @@ const forbidden = [
 ];
 
 const failures = [];
+
+function collectFiles(target) {
+  const stat = fs.statSync(target);
+  if (stat.isFile()) return target.endsWith(".js") ? [target] : [];
+  return fs.readdirSync(target, { withFileTypes: true }).flatMap(entry => {
+    const entryPath = path.join(target, entry.name);
+    return entry.isDirectory() ? collectFiles(entryPath) : collectFiles(entryPath);
+  });
+}
+
+const files = roots.flatMap(collectFiles);
 
 for (const file of files) {
   const lines = fs.readFileSync(file, "utf8").split("\n");

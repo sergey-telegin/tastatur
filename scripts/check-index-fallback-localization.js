@@ -4,8 +4,7 @@ const fs = require("node:fs");
 
 const html = fs.readFileSync("index.html", "utf8");
 const cyrillicPattern = /[\u0400-\u04ff]/;
-const localizedCopyStart = html.indexOf("const copy = {");
-const staticHtml = localizedCopyStart === -1 ? html : html.slice(0, localizedCopyStart);
+const staticHtml = html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, "");
 
 if (cyrillicPattern.test(staticHtml)) {
   const line = staticHtml.slice(0, staticHtml.search(cyrillicPattern)).split("\n").length;

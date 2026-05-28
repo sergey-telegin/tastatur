@@ -20,10 +20,12 @@
     "check:cyrillic-ui": "sh scripts/check-cyrillic-ui.sh",
     "check:homepage-localization": "node scripts/check-homepage-localization.js",
     "check:index-fallback-localization": "node scripts/check-index-fallback-localization.js",
+    "check:index-copy-sync": "node scripts/check-index-copy-sync.js",
     "check:ui-text-parity": "node scripts/check-ui-text-parity.js",
+    "check:ui-language-leaks": "node scripts/check-ui-language-leaks.js",
     "check:no-raw-ui-errors": "node scripts/check-no-raw-ui-errors.js",
     "check:js": "find app practice-content desktop scripts server -name '*.js' -print0 | xargs -0 -n1 node --check",
-    "check": "npm run content:validate && npm run check:html && npm run check:cyrillic-ui && npm run check:homepage-localization && npm run check:index-fallback-localization && npm run check:ui-text-parity && npm run check:no-raw-ui-errors && npm run check:js"
+    "check": "npm run content:validate && npm run check:html && npm run check:cyrillic-ui && npm run check:homepage-localization && npm run check:index-fallback-localization && npm run check:index-copy-sync && npm run check:ui-text-parity && npm run check:ui-language-leaks && npm run check:no-raw-ui-errors && npm run check:js"
   },
   "devDependencies": {
     "electron": "^36.0.0",

@@ -30,18 +30,18 @@ function localizedObjectHasLanguages(value, languages, fieldPath) {
 
   languages.forEach(language => {
     if (!(language in value)) {
-      warn(`${fieldPath} is missing ${language}`);
+      fail(`${fieldPath} is missing ${language}`);
       return;
     }
 
     const localized = value[language];
     if (Array.isArray(localized)) {
-      if (!localized.length) warn(`${fieldPath}.${language} is empty`);
+      if (!localized.length) fail(`${fieldPath}.${language} is empty`);
       return;
     }
 
     if (typeof localized !== "string" || !localized.trim()) {
-      warn(`${fieldPath}.${language} is empty`);
+      fail(`${fieldPath}.${language} is empty`);
     }
   });
 }
@@ -122,7 +122,7 @@ function validateLessonStoryboard(storyboard, lessonIds, languages) {
   });
 
   Object.keys(storyboard).forEach(lessonId => {
-    if (!lessonIds.has(lessonId)) warn(`storyboard.${lessonId} does not match a known lesson id`);
+    if (!lessonIds.has(lessonId)) fail(`storyboard.${lessonId} does not match a known lesson id`);
   });
 }
 
