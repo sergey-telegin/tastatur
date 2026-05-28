@@ -1,7 +1,7 @@
 window.PRACTICE_CONTENT_SOURCE.modules = window.PRACTICE_CONTENT_SOURCE.modules || [];
 window.PRACTICE_CONTENT_SOURCE.modules.push({
   id: "module2",
-  title: { ru: "Module 2 — Центр", de: "Modul 2 — Zentrum", en: "Module 2 — Center" },
+  title: { ru: "Модуль 2 — Центр", de: "Modul 2 — Zentrum", en: "Module 2 — Center" },
   symbols: {
     ru: ["к", "е", "а", "п", "г", "н", "о", "р", "м", "и", "т", "ь"],
     de: ["r", "t", "f", "g", "u", "z", "j", "h", "v", "b", "n", "m"],

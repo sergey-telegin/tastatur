@@ -21,7 +21,7 @@
   window.PRACTICE_CONTENT_SOURCE.modules = window.PRACTICE_CONTENT_SOURCE.modules || [];
   window.PRACTICE_CONTENT_SOURCE.modules.push({
     id: "module7",
-    title: { ru: "Module 7 — Пунктуация", de: "Modul 7 — Zeichensetzung", en: "Module 7 — Punctuation" },
+    title: { ru: "Модуль 7 — Пунктуация", de: "Modul 7 — Zeichensetzung", en: "Module 7 — Punctuation" },
     symbols: {
       ru: [".", ",", "!", "?", "-", ":", "\""],
       de: [".", ",", "!", "?", "-", ":", "\""],

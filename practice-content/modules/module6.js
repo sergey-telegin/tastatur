@@ -21,7 +21,7 @@
   window.PRACTICE_CONTENT_SOURCE.modules = window.PRACTICE_CONTENT_SOURCE.modules || [];
   window.PRACTICE_CONTENT_SOURCE.modules.push({
     id: "module6",
-    title: { ru: "Module 6 — Верхний ряд + Цифры", de: "Modul 6 — Obere Reihe + Zahlen", en: "Module 6 — Top Row + Numbers" },
+    title: { ru: "Модуль 6 — Верхний ряд + Цифры", de: "Modul 6 — Obere Reihe + Zahlen", en: "Module 6 — Top Row + Numbers" },
     symbols: {
       ru: ["й", "ц", "у", "к", "е", "н", "г", "ш", "щ", "з", "х", "ъ", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"],
       de: ["q", "w", "e", "r", "t", "z", "u", "i", "o", "p", "ü", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"],

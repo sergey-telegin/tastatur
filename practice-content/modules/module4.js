@@ -21,7 +21,7 @@
   window.PRACTICE_CONTENT_SOURCE.modules = window.PRACTICE_CONTENT_SOURCE.modules || [];
   window.PRACTICE_CONTENT_SOURCE.modules.push({
     id: "module4",
-    title: { ru: "Module 4 — Нижний ряд", de: "Modul 4 — Untere Reihe", en: "Module 4 — Bottom Row" },
+    title: { ru: "Модуль 4 — Нижний ряд", de: "Modul 4 — Untere Reihe", en: "Module 4 — Bottom Row" },
     symbols: {
       ru: ["я", "ч", "с", "м", "и", "т", "ь", "б", "ю"],
       de: ["y", "x", "c", "v", "b", "n", "m"],

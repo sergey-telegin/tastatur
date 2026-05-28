@@ -174,7 +174,7 @@
   window.PRACTICE_CONTENT_SOURCE.modules = window.PRACTICE_CONTENT_SOURCE.modules || [];
   window.PRACTICE_CONTENT_SOURCE.modules.push({
     id: "module8",
-    title: { ru: "Module 8 — Частотные сочетания", de: "Modul 8 — Häufige Kombinationen", en: "Module 8 — Frequent Patterns" },
+    title: { ru: "Модуль 8 — Частотные сочетания", de: "Modul 8 — Häufige Kombinationen", en: "Module 8 — Frequent Patterns" },
     symbols: { ru: [], de: [], en: [] },
     lessons: [
       {

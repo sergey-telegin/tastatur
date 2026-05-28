@@ -1,7 +1,7 @@
 window.PRACTICE_CONTENT_SOURCE.modules = window.PRACTICE_CONTENT_SOURCE.modules || [];
 window.PRACTICE_CONTENT_SOURCE.modules.push({
   id: "module1",
-  title: { ru: "Module 1 — Домашний ряд", de: "Modul 1 — Grundreihe", en: "Module 1 — Home Row" },
+  title: { ru: "Модуль 1 — Домашний ряд", de: "Modul 1 — Grundreihe", en: "Module 1 — Home Row" },
   symbols: {
     ru: ["ф", "ы", "в", "а", "о", "л", "д", "ж", "э"],
     de: ["a", "s", "d", "f", "j", "k", "l", "ö", "ä"],

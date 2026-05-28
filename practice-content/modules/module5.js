@@ -21,7 +21,7 @@
   window.PRACTICE_CONTENT_SOURCE.modules = window.PRACTICE_CONTENT_SOURCE.modules || [];
   window.PRACTICE_CONTENT_SOURCE.modules.push({
     id: "module5",
-    title: { ru: "Module 5 — Вертикали и Shift", de: "Modul 5 — Vertikalen und Shift", en: "Module 5 — Verticals and Shift" },
+    title: { ru: "Модуль 5 — Вертикали и Shift", de: "Modul 5 — Vertikalen und Shift", en: "Module 5 — Verticals and Shift" },
     symbols: {
       ru: ["а", "б", "в", "г", "д", "е", "ж", "з", "и", "й", "к", "л", "м", "н", "о", "п", "р", "с", "т", "у", "ф", "х", "ц", "ч", "ш", "щ", "ъ", "ы", "ь", "э", "ю", "я"],
       de: ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "ä", "ö", "ü"],

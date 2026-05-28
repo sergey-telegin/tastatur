@@ -10,6 +10,7 @@ rg -n "$pattern" \
   --glob '!practice-content.js' \
   --glob '!practice-content/**' \
   --glob '!scripts/check-cyrillic-ui.sh' \
+  --glob '!scripts/check-content-language-leaks.js' \
   --glob '!scripts/smoke-server-api.js' \
   --glob '!node_modules/**' \
   . && {

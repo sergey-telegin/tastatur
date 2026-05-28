@@ -38,7 +38,7 @@
   window.PRACTICE_CONTENT_SOURCE.modules = window.PRACTICE_CONTENT_SOURCE.modules || [];
   window.PRACTICE_CONTENT_SOURCE.modules.push({
     id: "module10",
-    title: { ru: "Module 10 — Частотные сочетания + Shift + Пунктуация", de: "Modul 10 — Häufige Kombinationen + Shift + Zeichensetzung", en: "Module 10 — Frequent Patterns + Shift + Punctuation" },
+    title: { ru: "Модуль 10 — Частотные сочетания + Shift + Пунктуация", de: "Modul 10 — Häufige Kombinationen + Shift + Zeichensetzung", en: "Module 10 — Frequent Patterns + Shift + Punctuation" },
     symbols: { ru: [], de: [], en: [] },
     lessons: [
       {
