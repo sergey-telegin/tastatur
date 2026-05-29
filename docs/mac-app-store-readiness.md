@@ -41,10 +41,10 @@ The exact certificate name and provisioning profile come from Apple Developer / 
 - Mac App Store provisioning profile.
 - App Store Connect app record.
 - App name, subtitle, description, keywords, category, age rating.
-- macOS screenshots for every required size.
-- Support URL.
-- Privacy Policy URL.
-- App Privacy answers.
+- macOS screenshots from `docs/app-store/screenshots/mac`.
+- Support URL: `https://flykey.org/support.html`.
+- Privacy Policy URL: `https://flykey.org/privacy.html`.
+- App Privacy answers from `docs/app-store-metadata.md`.
 
 ## Current Product Scope
 
@@ -62,3 +62,11 @@ The App Store build should be local-first:
 - Test sandboxed app launch, storage, sound, lessons, settings, and restart behavior.
 - Upload the pkg through Transporter or Xcode.
 - Complete App Review metadata and privacy forms.
+
+## Prepared Submission Assets
+
+- Privacy policy page: `privacy.html`.
+- Support page: `support.html`.
+- App Store metadata: `docs/app-store-metadata.md`.
+- Apple Developer setup checklist: `docs/apple-developer-setup.md`.
+- Mac screenshots: `docs/app-store/screenshots/mac`.
