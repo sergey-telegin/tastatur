@@ -9,6 +9,10 @@
     "desktop": "electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make",
+    "package:mac": "electron-forge package --platform=darwin",
+    "make:mac": "electron-forge make --platform=darwin",
+    "package:mas": "FLYKEY_BUILD_TARGET=mas electron-forge package --platform=mas",
+    "make:mas": "FLYKEY_BUILD_TARGET=mas electron-forge make --platform=mas",
     "server": "node server/server.js",
     "server:check": "node --check server/server.js",
     "server:smoke": "node scripts/smoke-server-api.js",
@@ -25,44 +29,17 @@
     "check:ui-language-leaks": "node scripts/check-ui-language-leaks.js",
     "check:content-language-leaks": "node scripts/check-content-language-leaks.js",
     "check:no-raw-ui-errors": "node scripts/check-no-raw-ui-errors.js",
+    "check:mas-readiness": "node scripts/check-mas-readiness.js",
     "check:js": "find app practice-content desktop scripts server -name '*.js' -print0 | xargs -0 -n1 node --check",
-    "check": "npm run content:validate && npm run check:html && npm run check:cyrillic-ui && npm run check:homepage-localization && npm run check:index-fallback-localization && npm run check:index-single-ui-source && npm run check:ui-text-parity && npm run check:ui-language-leaks && npm run check:content-language-leaks && npm run check:no-raw-ui-errors && npm run check:js"
+    "check": "npm run content:validate && npm run check:html && npm run check:cyrillic-ui && npm run check:homepage-localization && npm run check:index-fallback-localization && npm run check:index-single-ui-source && npm run check:ui-text-parity && npm run check:ui-language-leaks && npm run check:content-language-leaks && npm run check:no-raw-ui-errors && npm run check:mas-readiness && npm run check:js"
   },
   "devDependencies": {
-    "electron": "^36.0.0",
     "@electron-forge/cli": "^7.0.0",
     "@electron-forge/maker-dmg": "^7.0.0",
-    "@electron-forge/maker-zip": "^7.0.0"
+    "@electron-forge/maker-pkg": "^7.11.2",
+    "@electron-forge/maker-zip": "^7.0.0",
+    "electron": "^36.0.0"
   },
   "author": "Sergey Telegin",
-  "license": "UNLICENSED",
-  "config": {
-    "forge": {
-      "packagerConfig": {
-        "name": "FlyKey",
-        "executableName": "FlyKey",
-        "appBundleId": "org.flykey.app",
-        "appCategoryType": "public.app-category.education",
-        "asar": true
-      },
-      "makers": [
-        {
-          "name": "@electron-forge/maker-zip",
-          "platforms": [
-            "darwin"
-          ]
-        },
-        {
-          "name": "@electron-forge/maker-dmg",
-          "platforms": [
-            "darwin"
-          ],
-          "config": {
-            "name": "FlyKey",
-            "format": "ULFO"
-          }
-        }
-      ]
-    }
-  }
+  "license": "UNLICENSED"
 }

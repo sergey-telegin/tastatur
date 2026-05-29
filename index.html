@@ -9,6 +9,26 @@
     <meta name="robots" content="index, follow">
     <script>
       (() => {
+        const params = new URLSearchParams(window.location.search);
+        const isDesktop = params.get("desktop") === "1" || window.FlyKeyDesktop?.isDesktop === true;
+        const isDesktopProduction = isDesktop && params.get("production") === "1";
+        const flyKeyRuntime = {
+          isDesktop,
+          isDesktopProduction,
+          isWeb: !isDesktop
+        };
+        Object.defineProperty(window, "FlyKeyRuntime", {
+          value: flyKeyRuntime,
+          configurable: false,
+          writable: false
+        });
+        if (isDesktop) {
+          document.documentElement.dataset.flykeyDesktop = "true";
+        }
+        if (isDesktopProduction) {
+          document.documentElement.dataset.flykeyProduction = "true";
+        }
+
         const supportedLanguages = { ru: true, uk: true, kk: true, de: true, en: true };
         const storageKey = "keyboard-layout-editor-v1";
 
@@ -42,10 +62,15 @@
       html[data-fallback-localizing="true"] body {
         visibility: hidden;
       }
+
+      html[data-flykey-desktop="true"] .seo-content {
+        display: none;
+      }
     </style>
     <script>
       (() => {
         const params = new URLSearchParams(window.location.search);
+        const isDesktopProduction = document.documentElement.dataset.flykeyProduction === "true";
         const isPrivateTool = params.has("lessonStoryboard") ||
           params.has("roadmap") ||
           params.get("mode") === "roadmap" ||
@@ -53,7 +78,7 @@
           window.location.hash === "#lessonStoryboard" ||
           window.location.hash === "#roadmap";
 
-        if (!isPrivateTool) return;
+        if (!isPrivateTool || isDesktopProduction) return;
 
         const robotsMeta = document.querySelector('meta[name="robots"]') || document.createElement("meta");
         robotsMeta.name = "robots";
@@ -175,6 +200,7 @@
     </script>
     <script>
       const flyKeyConsentState = (() => {
+        if (document.documentElement.dataset.flykeyDesktop === "true") return "disabled";
         try {
           const value = JSON.parse(localStorage.getItem("flykey-privacy-consent-v1")) || {};
           return value.analytics === true ? "granted" : "denied";
@@ -196,6 +222,7 @@
         security_storage: "granted"
       });
       window.loadFlyKeyAnalytics = () => {
+        if (flyKeyConsentState === "disabled") return;
         if (window.flyKeyAnalyticsLoaded) return;
         window.flyKeyAnalyticsLoaded = true;
         gtag("consent", "update", { analytics_storage: "granted" });

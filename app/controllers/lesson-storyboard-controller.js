@@ -1,4 +1,6 @@
 function isLessonStoryboardModeEnabled() {
+  if (document.documentElement.dataset.flykeyProduction === "true") return false;
+
   const params = new URLSearchParams(window.location.search);
   return params.has("lessonStoryboard") ||
     params.has("roadmap") ||

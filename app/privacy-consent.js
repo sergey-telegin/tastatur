@@ -67,6 +67,7 @@ function privacyConsentLanguage() {
 }
 
 function initializePrivacyConsent() {
+  if (document.documentElement.dataset.flykeyDesktop === "true") return;
   if (isLessonStoryboardUrl()) return;
 
   const banner = document.querySelector("#privacyConsent");

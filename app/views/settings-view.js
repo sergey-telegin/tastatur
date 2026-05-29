@@ -263,6 +263,13 @@ function renderTabs() {
 function renderCloudSyncPanel(message = "") {
   if (!cloudSyncToggle) return;
 
+  const section = cloudSyncToggle.closest(".cloud-section");
+  if (!window.FlyKeyApiClient?.isBackendConfigured?.()) {
+    if (section) section.hidden = true;
+    return;
+  }
+  if (section) section.hidden = false;
+
   const text = textFor();
   const auth = window.FlyKeyCloudSync?.auth?.() || {};
   const isConnected = Boolean(auth.accessToken || auth.refreshToken);

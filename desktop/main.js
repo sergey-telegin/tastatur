@@ -41,7 +41,12 @@ function createMainWindow() {
     }
   });
 
-  return window.loadFile(path.join(__dirname, "..", "index.html"));
+  return window.loadFile(path.join(__dirname, "..", "index.html"), {
+    query: {
+      desktop: "1",
+      production: app.isPackaged ? "1" : "0"
+    }
+  });
 }
 
 app.setName("FlyKey");
