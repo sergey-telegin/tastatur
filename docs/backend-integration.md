@@ -100,6 +100,8 @@ window.FLYKEY_API_CONFIG = {
 };
 ```
 
+The ready-to-copy production example is in `app/runtime-config.production.example.js`. Keep the committed `app/runtime-config.js` on `backendBaseUrl: null` until the production API smoke test passes.
+
 The account panel stays hidden when `backendBaseUrl` is not configured. The packaged Mac App Store production build ignores `backendBaseUrl` so accounts cannot be enabled there accidentally before App Store privacy, account deletion, and Sign in with Apple are production-ready.
 
 ## Verification
