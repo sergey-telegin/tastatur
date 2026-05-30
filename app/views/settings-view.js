@@ -285,6 +285,7 @@ function renderCloudSyncPanel(message = "") {
   cloudRegister.textContent = text.cloudRegister;
   cloudImport.textContent = text.cloudImport;
   cloudLogout.textContent = text.cloudLogout;
+  cloudDelete.textContent = text.cloudDelete;
   cloudEmailInput.placeholder = "user@example.com";
   cloudPasswordInput.placeholder = "••••••••";
   cloudProfileInput.placeholder = text.cloudProfile;
@@ -298,6 +299,7 @@ function renderCloudSyncPanel(message = "") {
 
   cloudImport.disabled = !isConnected;
   cloudLogout.disabled = !isConnected;
+  cloudDelete.disabled = !isConnected;
   cloudStatus.textContent = message || (isConnected ? text.cloudReady : "");
 }
 

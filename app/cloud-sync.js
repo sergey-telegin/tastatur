@@ -146,6 +146,15 @@ async function flyKeyCloudLogout() {
   return result;
 }
 
+async function flyKeyCloudDeleteAccount() {
+  const accessToken = await requireFlyKeyCloudAccessToken();
+  const result = await window.FlyKeyApiClient.deleteMe(accessToken);
+  if (result.status === "ok") {
+    clearFlyKeyCloudAuth();
+  }
+  return result;
+}
+
 async function flyKeyCloudProviders() {
   return window.FlyKeyApiClient.oauthProviders();
 }
@@ -238,6 +247,7 @@ window.FlyKeyCloudSync = {
   register: flyKeyCloudRegister,
   login: flyKeyCloudLogin,
   logout: flyKeyCloudLogout,
+  deleteAccount: flyKeyCloudDeleteAccount,
   providers: flyKeyCloudProviders,
   startOAuth: flyKeyCloudStartOAuth,
   importCurrentState: flyKeyCloudImportCurrentState,

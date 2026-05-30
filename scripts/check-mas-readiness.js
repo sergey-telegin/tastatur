@@ -58,7 +58,11 @@ assert(indexHtml.includes('return "disabled"'), "analytics must be disabled in d
 assert(privacyConsent.includes("dataset.flykeyDesktop"), "privacy consent must be disabled in desktop runtime");
 assert(storyboardController.includes("dataset.flykeyProduction"), "storyboard mode must be disabled in desktop production");
 assert(apiClient.includes("backendBaseUrl: null"), "backendBaseUrl must not default to localhost");
+assert(apiClient.includes("isDesktopProduction"), "backend config must be ignored in desktop production");
+assert(apiClient.includes("flyKeyIsLocalPage"), "backendBaseUrl query override must be limited to local development pages");
+assert(apiClient.includes("deleteMe(accessToken)"), "account deletion API client method is missing");
 assert(settingsView.includes("isBackendConfigured"), "cloud/account UI must hide when backend is not configured");
+assert(settingsView.includes("cloudDelete.disabled = !isConnected"), "account deletion UI must stay disabled until signed in");
 
 if (failures.length) {
   console.error(failures.join("\n"));

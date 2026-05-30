@@ -139,6 +139,7 @@ const cloudLogin = document.querySelector("#cloudLogin");
 const cloudRegister = document.querySelector("#cloudRegister");
 const cloudImport = document.querySelector("#cloudImport");
 const cloudLogout = document.querySelector("#cloudLogout");
+const cloudDelete = document.querySelector("#cloudDelete");
 const cloudStatus = document.querySelector("#cloudStatus");
 const keyboardEditorPanel = document.querySelector("#keyboardEditorPanel");
 const keyboardFingerPicker = document.querySelector("#keyboardFingerPicker");

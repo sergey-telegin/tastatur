@@ -5,6 +5,49 @@ const flyKeyApiDefaultConfig = {
   backendBaseUrl: null
 };
 
+function flyKeyIsLocalHostname(hostname) {
+  return ["localhost", "127.0.0.1", "::1", "[::1]"].includes(String(hostname || "").toLowerCase());
+}
+
+function flyKeyIsLocalPage() {
+  const location = window.location;
+  if (location?.protocol === "file:") return true;
+  return flyKeyIsLocalHostname(location?.hostname);
+}
+
+function flyKeyValidBackendUrl(value) {
+  if (!value) return "";
+  try {
+    const url = new URL(String(value));
+    if (url.protocol === "https:") return url.toString().replace(/\/$/, "");
+    if (url.protocol === "http:" && flyKeyIsLocalHostname(url.hostname)) {
+      return url.toString().replace(/\/$/, "");
+    }
+    return "";
+  } catch {
+    return "";
+  }
+}
+
+function flyKeyRuntimeBackendBaseUrl(configuredValue) {
+  if (window.FlyKeyRuntime?.isDesktopProduction) return "";
+
+  const configured = flyKeyValidBackendUrl(configuredValue);
+  if (configured) return configured;
+
+  if (!flyKeyIsLocalPage()) return "";
+
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const fromQuery = flyKeyValidBackendUrl(params.get("backendBaseUrl"));
+    if (fromQuery) return fromQuery;
+  } catch {
+    return "";
+  }
+
+  return "";
+}
+
 function createFlyKeyApiClient(config = {}) {
   const settings = { ...flyKeyApiDefaultConfig, ...config };
   const pageOrigin = window.location?.origin || "";
@@ -13,7 +56,7 @@ function createFlyKeyApiClient(config = {}) {
     : "";
   const configuredBaseUrl = settings.baseUrl == null ? sameOriginBaseUrl : settings.baseUrl;
   const baseUrl = String(configuredBaseUrl || "").replace(/\/$/, "");
-  const backendBaseUrl = String(settings.backendBaseUrl || "").replace(/\/$/, "");
+  const backendBaseUrl = flyKeyRuntimeBackendBaseUrl(settings.backendBaseUrl);
 
   function isConfigured() {
     return Boolean(baseUrl);
@@ -157,6 +200,13 @@ function createFlyKeyApiClient(config = {}) {
 
     async me(accessToken) {
       return requestBackendJson("/api/v1/me", { accessToken });
+    },
+
+    async deleteMe(accessToken) {
+      return requestBackendJson("/api/v1/me", {
+        method: "DELETE",
+        accessToken
+      });
     },
 
     async entitlements(accessToken) {

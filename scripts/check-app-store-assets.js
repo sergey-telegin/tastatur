@@ -33,7 +33,8 @@ const screenshots = fs.existsSync(screenshotDir)
   : [];
 
 assert(privacy.includes("FlyKey Privacy Policy"), "privacy.html must include a privacy title");
-assert(privacy.includes("does not collect personal data"), "privacy.html must state current no-collection behavior");
+assert(privacy.includes("The current Mac App Store version is local-first"), "privacy.html must state current Mac App Store local-first behavior");
+assert(privacy.includes("If you create a FlyKey account on the website"), "privacy.html must disclose website account data");
 assert(privacy.includes("support@flykey.org"), "privacy.html must include support contact");
 assert(support.includes("FlyKey Support"), "support.html must include a support title");
 assert(support.includes("/privacy.html"), "support.html must link to privacy policy");

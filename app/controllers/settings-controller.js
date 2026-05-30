@@ -266,6 +266,19 @@ async function handleCloudLogout() {
   renderCloudSyncPanel(text.cloudLogoutOk);
 }
 
+async function handleCloudDeleteAccount() {
+  const text = textFor();
+  if (!window.confirm(text.cloudDeleteConfirm)) return;
+
+  const result = await runCloudAction(() => window.FlyKeyCloudSync.deleteAccount());
+  if (result.status === "ok") {
+    cloudEmailInput.value = "";
+    cloudPasswordInput.value = "";
+    cloudProfileInput.value = "Main";
+  }
+  renderCloudSyncPanel(result.status === "ok" ? text.cloudDeleteOk : cloudErrorText(result));
+}
+
 async function loadCloudOAuthProviders() {
   if (!window.FlyKeyCloudSync?.providers) return;
 

@@ -146,6 +146,7 @@ function bindAppEvents() {
   cloudRegister.addEventListener("click", handleCloudRegister);
   cloudImport.addEventListener("click", handleCloudImport);
   cloudLogout.addEventListener("click", handleCloudLogout);
+  cloudDelete.addEventListener("click", handleCloudDeleteAccount);
   metronomeInput.addEventListener("input", handleMetronomeInput);
   keyHighlightToggle.addEventListener("click", () => toggleDisplaySetting("keyHighlightEnabled"));
   fingerZonesToggle.addEventListener("click", () => toggleDisplaySetting("fingerZonesEnabled"));
