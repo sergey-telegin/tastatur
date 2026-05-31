@@ -1,6 +1,8 @@
 const fs = require("node:fs/promises");
 const http = require("node:http");
+const os = require("node:os");
 const path = require("node:path");
+const { spawnSync } = require("node:child_process");
 const { pathToFileURL } = require("node:url");
 
 const rootDir = path.resolve(__dirname, "..");
@@ -46,7 +48,7 @@ function applyCors(request, response) {
   response.setHeader("Access-Control-Allow-Origin", origin);
   response.setHeader("Vary", "Origin");
   response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, If-Match");
-  response.setHeader("Access-Control-Allow-Methods", "GET, HEAD, OPTIONS");
+  response.setHeader("Access-Control-Allow-Methods", "GET, HEAD, POST, OPTIONS");
 }
 
 function sendJson(request, response, statusCode, payload) {
@@ -98,6 +100,45 @@ async function readJsonFile(relativePath, staticRoot = rootDir) {
   return JSON.parse(content);
 }
 
+function isLoopbackRequest(request) {
+  const address = String(request.socket.remoteAddress || "");
+  return address === "127.0.0.1" || address === "::1" || address === "::ffff:127.0.0.1";
+}
+
+function isTrustedPrivateToolRequest(request) {
+  if (!isLoopbackRequest(request)) return false;
+
+  const contentType = String(request.headers["content-type"] || "").toLowerCase();
+  if (!contentType.startsWith("application/json")) return false;
+
+  const origin = request.headers.origin;
+  if (!origin) return true;
+
+  const hostOrigin = `http://${request.headers.host || `${defaultHost}:${defaultPort}`}`;
+  return origin === hostOrigin;
+}
+
+async function readRequestJson(request, limitBytes = 5 * 1024 * 1024) {
+  let body = "";
+
+  for await (const chunk of request) {
+    body += chunk;
+    if (Buffer.byteLength(body, "utf8") > limitBytes) {
+      const error = new Error("Request body is too large");
+      error.statusCode = 413;
+      throw error;
+    }
+  }
+
+  try {
+    return JSON.parse(body || "{}");
+  } catch {
+    const error = new Error("Invalid JSON");
+    error.statusCode = 400;
+    throw error;
+  }
+}
+
 function isPrivateToolUrl(url) {
   return url.pathname.endsWith("/roadmap.html") ||
     url.searchParams.has("lessonStoryboard") ||
@@ -147,6 +188,51 @@ async function handleContentRoutes(request, response, pathname, staticRoot) {
   return false;
 }
 
+async function handlePrivateToolRoutes(request, response, pathname, staticRoot) {
+  if (pathname !== "/api/storyboard/apply") return false;
+
+  if (request.method !== "POST") {
+    sendError(request, response, 405, "Method not allowed");
+    return true;
+  }
+
+  if (!isTrustedPrivateToolRequest(request)) {
+    sendError(request, response, 403, "Storyboard apply is only available from the local Roadmap page");
+    return true;
+  }
+
+  const payload = await readRequestJson(request);
+  const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), "flykey-storyboard-"));
+  const exportPath = path.join(tempDir, "storyboard.json");
+  await fs.writeFile(exportPath, JSON.stringify(payload, null, 2));
+
+  const result = spawnSync(process.execPath, [
+    path.join(staticRoot, "scripts", "apply-storyboard.js"),
+    exportPath
+  ], {
+    cwd: staticRoot,
+    encoding: "utf8"
+  });
+
+  await fs.rm(tempDir, { recursive: true, force: true });
+
+  if (result.status !== 0) {
+    sendJson(request, response, 422, {
+      status: "error",
+      message: "Storyboard apply failed",
+      output: [result.stdout, result.stderr].filter(Boolean).join("\n").trim()
+    });
+    return true;
+  }
+
+  sendJson(request, response, 200, {
+    status: "ok",
+    message: "Storyboard applied",
+    output: [result.stdout, result.stderr].filter(Boolean).join("\n").trim()
+  });
+  return true;
+}
+
 async function handleApi(request, response, pathname, options) {
   const retryAfter = checkRateLimit(request);
   if (retryAfter > 0) {
@@ -164,6 +250,7 @@ async function handleApi(request, response, pathname, options) {
   }
 
   if (await handleContentRoutes(request, response, pathname, options.rootDir)) return true;
+  if (await handlePrivateToolRoutes(request, response, pathname, options.rootDir)) return true;
 
   if (pathname.startsWith("/api/")) {
     sendError(request, response, 404, "Static server only serves content endpoints. Use FlyKeyBackend for account and profile API.");

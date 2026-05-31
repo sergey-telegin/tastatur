@@ -397,7 +397,8 @@ const lessonIntroPurpose = {
 
 function contentLessonCompletion(lesson, language) {
   const storyboard = window.FLYKEY_LESSON_STORYBOARD || window.FLYKEY_CONTENT_STORYBOARD || {};
-  const storyboardCompletion = storyboard[lesson.id]?.completionText;
+  const storyboardEntry = storyboard[lesson.id] || {};
+  const storyboardCompletion = storyboardEntry.showCompletionText === false ? null : storyboardEntry.completionText;
   const completion = storyboardCompletion || lesson.completion;
   const text = completion && typeof completion === "object" && !Array.isArray(completion)
     ? completion[language] || completion.en || completion.ru || defaultLessonCompletionText[language] || defaultLessonCompletionText.en
@@ -406,7 +407,16 @@ function contentLessonCompletion(lesson, language) {
 }
 
 function contentLessonIntro(lesson, language) {
-  const intro = lesson.intro || lessonIntroPurpose[lesson.id] || {};
+  const storyboard = window.FLYKEY_LESSON_STORYBOARD || window.FLYKEY_CONTENT_STORYBOARD || {};
+  const storyboardEntry = storyboard[lesson.id] || {};
+  if (storyboardEntry.showNextModuleText === false) return { purpose: "" };
+  if (storyboardEntry.nextModuleText) {
+    return {
+      purpose: localizedContentText(storyboardEntry.nextModuleText, language)
+    };
+  }
+
+  const intro = lessonIntroPurpose[lesson.id] || lesson.intro || {};
   return {
     purpose: localizedContentText(intro, language)
   };
@@ -1151,6 +1161,7 @@ function buildPracticeContentForLanguage(source, language) {
 function buildPracticeContent() {
   const bundle = window.FlyKeyContentProvider?.getContentBundle?.() || window.PRACTICE_CONTENT_SOURCE || {};
   window.FLYKEY_CONTENT_STORYBOARD = bundle.storyboard || window.FLYKEY_LESSON_STORYBOARD || {};
+  window.FLYKEY_ONBOARDING_STORYBOARD = bundle.onboardingStoryboard || window.FLYKEY_ONBOARDING_STORYBOARD || {};
   const source = ensureKazakhPracticeContent(ensureUkrainianPracticeContent({
     meta: bundle.meta,
     languages: bundle.languages,

@@ -72,12 +72,25 @@ function normalizedStoryboardFromExport(exportData) {
 
     assertImageExists(entry.introImage, `${lessonId}.introImage`);
     assertImageExists(entry.completionImage, `${lessonId}.completionImage`);
+    if (entry.introTip !== undefined && entry.introTip !== null) {
+      assertLocalizedText(entry.introTip, `${lessonId}.introTip`);
+    }
+    if (entry.nextModuleText !== undefined && entry.nextModuleText !== null) {
+      assertLocalizedText(entry.nextModuleText, `${lessonId}.nextModuleText`);
+    }
     assertLocalizedText(entry.completionText, `${lessonId}.completionText`);
 
     result[lessonId] = {
       introImage: entry.introImage,
+      introTip: entry.introTip || null,
+      nextModuleText: entry.nextModuleText || null,
       completionImage: entry.completionImage,
-      completionText: Object.fromEntries(languages.map(language => [language, entry.completionText[language]]))
+      completionText: Object.fromEntries(languages.map(language => [language, entry.completionText[language]])),
+      showIntroImage: entry.showIntroImage !== false,
+      showIntroTip: entry.showIntroTip !== false,
+      showNextModuleText: entry.showNextModuleText !== false,
+      showCompletionImage: entry.showCompletionImage !== false,
+      showCompletionText: entry.showCompletionText !== false
     };
   });
 
@@ -88,6 +101,32 @@ function normalizedStoryboardFromExport(exportData) {
   });
 
   return result;
+}
+
+function normalizedOnboardingFromExport(exportData) {
+  const source = exportData.onboardingStoryboard;
+  if (!source) return null;
+  if (!Array.isArray(source.screens)) {
+    throw new Error("onboardingStoryboard.screens must be an array");
+  }
+
+  return {
+    screens: source.screens.map((screen, index) => {
+      if (!isPlainObject(screen)) {
+        throw new Error(`onboardingStoryboard.screens[${index}] must be an object`);
+      }
+      if (screen.image) assertImageExists(screen.image, `onboardingStoryboard.screens[${index}].image`);
+      assertLocalizedText(screen.text, `onboardingStoryboard.screens[${index}].text`);
+
+      return {
+        id: screen.id || `onboarding_${index + 1}`,
+        image: screen.image || null,
+        text: Object.fromEntries(languages.map(language => [language, screen.text[language]])),
+        visible: screen.visible !== false,
+        showImage: screen.showImage !== false
+      };
+    })
+  };
 }
 
 function stableLocalizedKey(value) {
@@ -119,26 +158,69 @@ function jsLocalizedObject(value, indent = "  ") {
   return lines.join("\n");
 }
 
-function storyboardJs(storyboard) {
+function jsBoolean(value) {
+  return value ? "true" : "false";
+}
+
+function storyboardJs(storyboard, onboarding) {
   const defaultCompletionText = mostCommonCompletionText(storyboard);
   const defaultKey = stableLocalizedKey(defaultCompletionText);
   const lines = [
     "const flyKeyDefaultCompletionText = " + jsLocalizedObject(defaultCompletionText, "  ") + ";",
     "",
-    "function flyKeyLessonStoryboardEntry(introImage, completionImage, completionText = flyKeyDefaultCompletionText) {",
-    "  return { introImage, completionImage, completionText };",
+    "function flyKeyLessonStoryboardEntry(entry) {",
+    "  return {",
+    "    introImage: entry.introImage,",
+    "    introTip: entry.introTip || null,",
+    "    nextModuleText: entry.nextModuleText || null,",
+    "    completionImage: entry.completionImage,",
+    "    completionText: entry.completionText || flyKeyDefaultCompletionText,",
+    "    showIntroImage: entry.showIntroImage !== false,",
+    "    showIntroTip: entry.showIntroTip !== false,",
+    "    showNextModuleText: entry.showNextModuleText !== false,",
+    "    showCompletionImage: entry.showCompletionImage !== false,",
+    "    showCompletionText: entry.showCompletionText !== false",
+    "  };",
     "}",
-    "",
-    "window.FLYKEY_LESSON_STORYBOARD = {"
+    ""
   ];
+
+  if (onboarding) {
+    lines.push("window.FLYKEY_ONBOARDING_STORYBOARD = {");
+    lines.push("  screens: [");
+    onboarding.screens.forEach((screen, index) => {
+      const comma = index === onboarding.screens.length - 1 ? "" : ",";
+      lines.push("    {");
+      lines.push(`      id: ${jsString(screen.id)},`);
+      lines.push(`      image: ${jsString(screen.image)},`);
+      lines.push(`      text: ${jsLocalizedObject(screen.text, "        ").replace(/\n/g, "\n      ")},`);
+      lines.push(`      visible: ${jsBoolean(screen.visible)},`);
+      lines.push(`      showImage: ${jsBoolean(screen.showImage)}`);
+      lines.push(`    }${comma}`);
+    });
+    lines.push("  ]");
+    lines.push("};", "");
+  }
+
+  lines.push("window.FLYKEY_LESSON_STORYBOARD = {");
 
   const entries = Object.entries(storyboard);
   entries.forEach(([lessonId, entry], index) => {
-    const completionArg = stableLocalizedKey(entry.completionText) === defaultKey
-      ? ""
-      : ", " + jsLocalizedObject(entry.completionText, "    ").replace(/\n/g, "\n  ");
     const comma = index === entries.length - 1 ? "" : ",";
-    lines.push(`  ${lessonId}: flyKeyLessonStoryboardEntry(${jsString(entry.introImage)}, ${jsString(entry.completionImage)}${completionArg})${comma}`);
+    lines.push(`  ${lessonId}: flyKeyLessonStoryboardEntry({`);
+    lines.push(`    introImage: ${jsString(entry.introImage)},`);
+    if (entry.introTip) lines.push(`    introTip: ${jsLocalizedObject(entry.introTip, "      ").replace(/\n/g, "\n    ")},`);
+    if (entry.nextModuleText) lines.push(`    nextModuleText: ${jsLocalizedObject(entry.nextModuleText, "      ").replace(/\n/g, "\n    ")},`);
+    lines.push(`    completionImage: ${jsString(entry.completionImage)},`);
+    if (stableLocalizedKey(entry.completionText) !== defaultKey) {
+      lines.push(`    completionText: ${jsLocalizedObject(entry.completionText, "      ").replace(/\n/g, "\n    ")},`);
+    }
+    lines.push(`    showIntroImage: ${jsBoolean(entry.showIntroImage)},`);
+    lines.push(`    showIntroTip: ${jsBoolean(entry.showIntroTip)},`);
+    lines.push(`    showNextModuleText: ${jsBoolean(entry.showNextModuleText)},`);
+    lines.push(`    showCompletionImage: ${jsBoolean(entry.showCompletionImage)},`);
+    lines.push(`    showCompletionText: ${jsBoolean(entry.showCompletionText)}`);
+    lines.push(`  })${comma}`);
   });
 
   lines.push("};", "");
@@ -163,8 +245,9 @@ if (!inputPath) usage();
 const absoluteInputPath = path.resolve(process.cwd(), inputPath.replace(/^~(?=$|\/)/, process.env.HOME || "~"));
 const exportData = readJson(absoluteInputPath);
 const storyboard = normalizedStoryboardFromExport(exportData);
+const onboarding = normalizedOnboardingFromExport(exportData);
 
-fs.writeFileSync(storyboardPath, storyboardJs(storyboard));
+fs.writeFileSync(storyboardPath, storyboardJs(storyboard, onboarding));
 console.log(`Updated ${path.relative(rootDir, storyboardPath)}`);
 
 runNodeScript(path.join(rootDir, "scripts", "build-content-bundle.js"));

@@ -239,7 +239,7 @@
       }
     </script>
     <script src="app/theme-init.js?v=20260514-16"></script>
-    <link rel="stylesheet" href="styles/main.css?v=20260518-1">
+    <link rel="stylesheet" href="styles/main.css?v=20260531-12">
   </head>
   <body>
     <noscript>
@@ -457,7 +457,10 @@
 
     <dialog class="lesson-tip-dialog" id="lessonTipDialog">
       <div class="lesson-tip-stage">
-        <section class="lesson-tip-message" aria-describedby="lessonTipText">
+        <section class="lesson-tip-message lesson-start-message" aria-describedby="lessonTipText">
+          <p class="lesson-tip-kicker lesson-start-kicker" id="lessonStartKicker">Next module</p>
+          <h2 class="next-module-title lesson-start-title" id="lessonStartTitle"></h2>
+          <p class="next-module-purpose lesson-start-purpose" id="lessonStartPurpose"></p>
           <div class="lesson-tip-text" id="lessonTipText"></div>
           <div class="lesson-tip-actions">
             <button class="ghost-btn lesson-tip-extra" id="lessonTipExtra" type="button" hidden></button>
@@ -776,7 +779,7 @@
       </div>
     </section>
 
-    <script src="app/data.js?v=20260523-4"></script>
+    <script src="app/data.js?v=20260531-12"></script>
     <script src="app/early-localization.js?v=20260528-1"></script>
 
     <script src="practice-content/content-version.js?v=20260517-1"></script>
@@ -793,16 +796,16 @@
     <script src="practice-content/modules/module10.js?v=20260514-16"></script>
     <script src="practice-content/modules/module11.js?v=20260516-1"></script>
     <script src="practice-content/modules/module12.js?v=20260516-1"></script>
-    <script src="practice-content/storyboard.js?v=20260523-4"></script>
+    <script src="practice-content/storyboard.js?v=20260531-6"></script>
     <script src="app/runtime-config.js?v=20260529-1"></script>
     <script src="app/api-client.js?v=20260523-4"></script>
     <script src="app/cloud-sync.js?v=20260523-4"></script>
-    <script src="app/content-provider.js?v=20260523-4"></script>
-    <script src="app/practice-content-builder.js?v=20260523-4"></script>
-    <script src="app/dom.js?v=20260523-4"></script>
+    <script src="app/content-provider.js?v=20260531-6"></script>
+    <script src="app/practice-content-builder.js?v=20260531-12"></script>
+    <script src="app/dom.js?v=20260531-12"></script>
     <script src="app/state.js?v=20260516-1"></script>
     <script src="app/storage.js?v=20260514-16"></script>
-    <script src="app/helpers.js?v=20260514-16"></script>
+    <script src="app/helpers.js?v=20260531-1"></script>
     <script src="app/audio.js?v=20260514-16"></script>
     <script src="app/utils/keymap.js?v=20260514-16"></script>
     <script src="app/utils/finger-map.js?v=20260514-16"></script>
@@ -810,14 +813,14 @@
     <script src="app/views/practice-view.js?v=20260514-16"></script>
     <script src="app/views/fingering-view.js?v=20260514-16"></script>
     <script src="app/views/settings-view.js?v=20260523-4"></script>
-    <script src="app/controllers/practice-controller.js?v=20260516-11"></script>
+    <script src="app/controllers/practice-controller.js?v=20260531-12"></script>
     <script src="app/controllers/custom-practice-controller.js?v=20260514-16"></script>
     <script src="app/controllers/fingering-draft.js?v=20260514-16"></script>
     <script src="app/controllers/fingering-controller.js?v=20260514-16"></script>
     <script src="app/controllers/settings-controller.js?v=20260523-4"></script>
     <script src="app/controllers/app-runtime.js?v=20260514-16"></script>
     <script src="app/controllers/hand-calibration-controller.js?v=20260514-16"></script>
-    <script src="app/controllers/lesson-storyboard-controller.js?v=20260523-4"></script>
+    <script src="app/controllers/lesson-storyboard-controller.js?v=20260531-12"></script>
     <script src="app/controllers/app-bootstrap.js?v=20260523-4"></script>
     <script>
       let keyboardDesignWidth = 0;

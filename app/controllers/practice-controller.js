@@ -168,18 +168,39 @@ function setDialogCharacterImage(character, src) {
 }
 
 function lessonTipAvatarSrcFor(lesson) {
-  const fileName = lessonStoryboardFor(lesson).introImage || "key-wave.webp";
+  const storyboard = lessonStoryboardFor(lesson);
+  const fileName = storyboardStepEnabled(storyboard, "showIntroImage")
+    ? storyboard.introImage || "key-wave.webp"
+    : "";
+  if (!fileName) return "";
   return keyAssetSrc(fileName);
 }
 
 function lessonCompletionAvatarSrcFor(lesson) {
-  const fileName = lessonStoryboardFor(lesson).completionImage || "key-completion.webp";
+  const storyboard = lessonStoryboardFor(lesson);
+  const fileName = storyboardStepEnabled(storyboard, "showCompletionImage")
+    ? storyboard.completionImage || "key-completion.webp"
+    : "";
+  if (!fileName) return "";
   return keyAssetSrc(fileName);
 }
 
 function currentLessonTips() {
-  const tips = currentPracticeModuleData().tips;
+  const lesson = currentPracticeModuleData();
+  const storyboard = lessonStoryboardFor(lesson);
+  if (!storyboardStepEnabled(storyboard, "showIntroTip")) return [];
+
+  const storyboardTip = localizedTextValue(storyboard.introTip);
+  if (storyboardTip) return storyboardTip.split("\n").map(line => line.trim()).filter(Boolean);
+
+  const tips = lesson.tips;
   return Array.isArray(tips) ? tips.filter(Boolean) : [];
+}
+
+function currentLessonStartPurpose(lesson = currentPracticeModuleData()) {
+  const storyboard = lessonStoryboardFor(lesson);
+  if (!storyboardStepEnabled(storyboard, "showNextModuleText")) return "";
+  return localizedTextValue(storyboard.nextModuleText) || lesson.intro?.purpose || "";
 }
 
 function isFingeringTourIntroLesson(lesson = currentPracticeModuleData()) {
@@ -190,7 +211,15 @@ function renderLessonTipDialog(imageSrc = lessonTipAvatarSrcFor(currentPracticeM
   const text = textFor();
   const lesson = currentPracticeModuleData();
   const tips = currentLessonTips();
+  const purpose = currentLessonStartPurpose(lesson);
   const isTourIntro = isFingeringTourIntroLesson(lesson);
+
+  lessonStartKicker.textContent = text.nextModuleKicker;
+  lessonStartTitle.textContent = lesson.name || "";
+  lessonStartPurpose.textContent = purpose;
+  lessonStartKicker.hidden = !purpose;
+  lessonStartTitle.hidden = !purpose;
+  lessonStartPurpose.hidden = !purpose;
 
   lessonTipText.innerHTML = "";
   tips.forEach(tip => {
@@ -201,17 +230,18 @@ function renderLessonTipDialog(imageSrc = lessonTipAvatarSrcFor(currentPracticeM
   lessonTipStart.textContent = isTourIntro ? text.tourNext : text.startPractice;
   lessonTipExtra.hidden = true;
   lessonTipExtra.textContent = text.showFingeringTour;
-  setDialogCharacterImage(lessonTipCharacter, imageSrc);
+  lessonTipCharacter.hidden = !imageSrc;
+  if (imageSrc) setDialogCharacterImage(lessonTipCharacter, imageSrc);
   lessonTipCharacter.alt = "";
 }
 
 function openCurrentLessonTip({ force = false } = {}) {
   const lesson = currentPracticeModuleData();
-  if (!lessonTipDialog || lessonTipDialog.open || !currentLessonTips().length) return;
+  const imageSrc = lessonTipAvatarSrcFor(lesson);
+  const purpose = currentLessonStartPurpose(lesson);
+  if (!lessonTipDialog || lessonTipDialog.open || (!purpose && !currentLessonTips().length && !imageSrc)) return;
   if (!onboardingCompleted || onboardingDialog?.open) return;
   if (!force && lastShownLessonTipModuleId === lesson.id) return;
-
-  const imageSrc = lessonTipAvatarSrcFor(lesson);
 
   renderLessonTipDialog(imageSrc);
   lessonTipDialog.show();
@@ -579,7 +609,10 @@ function finishFingeringTour({ keepFingerKeyboardMode = false, focusPractice = t
 }
 
 function currentLessonCompletion() {
-  const storyboardCompletionText = lessonStoryboardFor(currentPracticeModuleData()).completionText;
+  const storyboard = lessonStoryboardFor(currentPracticeModuleData());
+  const storyboardCompletionText = storyboardStepEnabled(storyboard, "showCompletionText")
+    ? storyboard.completionText
+    : null;
   const completion = currentPracticeModuleData().completion || {};
   return {
     text: localizedTextValue(storyboardCompletionText) || completion.text || textFor().defaultCompletion
@@ -596,9 +629,11 @@ function renderCompletionDialog(imageSrc = lessonCompletionAvatarSrcFor(currentP
   completionStars.textContent = ratingDetails.text || "";
   completionText.innerHTML = "";
 
-  const paragraph = document.createElement("p");
-  paragraph.textContent = completion.text;
-  completionText.append(paragraph);
+  if (completion.text) {
+    const paragraph = document.createElement("p");
+    paragraph.textContent = completion.text;
+    completionText.append(paragraph);
+  }
   if (isLesson4FingeringReminderLesson(lesson)) {
     const reminder = document.createElement("p");
     reminder.textContent = textFor().lesson4FingeringReminder;
@@ -607,7 +642,8 @@ function renderCompletionDialog(imageSrc = lessonCompletionAvatarSrcFor(currentP
   completionNext.textContent = textFor().tourNext;
   completionExtra.hidden = !isLesson4FingeringReminderLesson(lesson);
   completionExtra.textContent = textFor().openFingerMapAction;
-  setDialogCharacterImage(completionCharacter, imageSrc);
+  completionCharacter.hidden = !imageSrc;
+  if (imageSrc) setDialogCharacterImage(completionCharacter, imageSrc);
   completionCharacter.alt = "";
 }
 
@@ -615,6 +651,11 @@ function openCompletionDialog() {
   if (!completionDialog || completionDialog.open) return;
 
   const imageSrc = lessonCompletionAvatarSrcFor(currentPracticeModuleData());
+  const completion = currentLessonCompletion();
+  if (!imageSrc && !completion.text) {
+    goToNextLessonAfterCompletion();
+    return;
+  }
 
   renderCompletionDialog(imageSrc);
   completionDialog.showModal();
@@ -627,20 +668,21 @@ function closeCompletionDialog() {
 }
 
 function renderNextModuleDialog(lesson = currentPracticeModuleData()) {
+  const storyboard = lessonStoryboardFor(lesson);
   nextModuleKicker.textContent = textFor().nextModuleKicker;
   nextModuleTitle.textContent = lesson.name || "";
-  nextModulePurpose.textContent = lesson.intro?.purpose || "";
+  nextModulePurpose.textContent = storyboardStepEnabled(storyboard, "showNextModuleText")
+    ? localizedTextValue(storyboard.nextModuleText) || lesson.intro?.purpose || ""
+    : "";
   nextModuleNext.textContent = textFor().startNextModule;
-  setDialogCharacterImage(nextModuleCharacter, lessonTipAvatarSrcFor(lesson));
+  const imageSrc = lessonTipAvatarSrcFor(lesson);
+  nextModuleCharacter.hidden = !imageSrc;
+  if (imageSrc) setDialogCharacterImage(nextModuleCharacter, imageSrc);
   nextModuleCharacter.alt = "";
 }
 
 function openNextModuleDialog(lesson = currentPracticeModuleData()) {
-  if (!nextModuleDialog || nextModuleDialog.open) return;
-
-  renderNextModuleDialog(lesson);
-  nextModuleDialog.showModal();
-  updatePracticeTimerPauseState();
+  openCurrentLessonTip({ force: true });
 }
 
 function closeNextModuleDialog() {
@@ -675,12 +717,31 @@ function goToNextLessonAfterCompletion() {
   if (nextLesson && !nextLesson.customPractice) {
     applySettings({ language, module: nextLessonId });
     renderModuleButtons();
-    openNextModuleDialog(nextLesson);
+    openCurrentLessonTip({ force: true });
   }
 }
 
 function currentOnboardingCopy() {
-  return textFor().onboarding;
+  const defaultCopy = textFor().onboarding;
+  const storyboard = onboardingStoryboard();
+  const storyboardScreens = Array.isArray(storyboard.screens)
+    ? storyboard.screens
+      .filter(screen => screen.visible !== false)
+      .map(screen => {
+        const text = localizedTextValue(screen.text);
+        return {
+          paragraphs: text ? text.split("\n").map(line => line.trim()).filter(Boolean) : [],
+          image: screen.showImage === false ? "" : screen.image || "",
+          character: screen.showImage !== false && Boolean(screen.image)
+        };
+      })
+      .filter(screen => screen.paragraphs.length || screen.image)
+    : [];
+
+  return {
+    ...defaultCopy,
+    screens: storyboardScreens.length ? storyboardScreens : defaultCopy.screens
+  };
 }
 
 function renderOnboardingDialog() {
@@ -698,11 +759,18 @@ function renderOnboardingDialog() {
     ? copy.start
     : textFor().tourNext;
   onboardingCharacter.hidden = !screen.character;
-  onboardingDialog.classList.toggle("onboarding-with-character", screen.character);
+  if (screen.image) setDialogCharacterImage(onboardingCharacter, keyAssetSrc(screen.image));
+  onboardingDialog.classList.toggle("onboarding-with-character", Boolean(screen.character));
 }
 
 function openOnboardingIfNeeded() {
   if (onboardingCompleted || !onboardingDialog || onboardingDialog.open) return false;
+
+  const copy = currentOnboardingCopy();
+  if (!copy.screens.length) {
+    completeOnboarding();
+    return false;
+  }
 
   onboardingStepIndex = 0;
   renderOnboardingDialog();

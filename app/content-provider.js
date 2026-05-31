@@ -15,6 +15,7 @@ function flyKeyLocalContentBundle() {
     grades: source.grades || {},
     modules: source.modules || [],
     storyboard: window.FLYKEY_LESSON_STORYBOARD || {},
+    onboardingStoryboard: window.FLYKEY_ONBOARDING_STORYBOARD || {},
     assets: meta.assets || {}
   };
 }

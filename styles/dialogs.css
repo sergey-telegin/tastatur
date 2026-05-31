@@ -421,6 +421,17 @@
   transform: translateY(-86px);
 }
 
+.lesson-start-message {
+  gap: 14px;
+  transform: translateY(-86px);
+}
+
+.lesson-start-message .lesson-tip-text {
+  max-width: 680px;
+  font-size: clamp(20px, 2.2vw, 30px);
+  color: rgb(255 255 255 / 0.88);
+}
+
 .next-module-title {
   margin: 0;
   color: #fff;

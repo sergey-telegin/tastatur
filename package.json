@@ -1,6 +1,6 @@
 {
   "name": "flykey",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "description": "FlyKey touch typing trainer",
   "main": "desktop/main.js",
@@ -33,6 +33,7 @@
     "check:no-raw-ui-errors": "node scripts/check-no-raw-ui-errors.js",
     "check:mas-readiness": "node scripts/check-mas-readiness.js",
     "check:app-store-assets": "node scripts/check-app-store-assets.js",
+    "check:packaged-macos-app": "node scripts/check-packaged-macos-app.js",
     "check:js": "find app practice-content desktop scripts server site-content -name '*.js' -print0 | xargs -0 -n1 node --check",
     "check": "npm run content:validate && npm run check:site-content && npm run check:html && npm run check:cyrillic-ui && npm run check:homepage-localization && npm run check:index-fallback-localization && npm run check:index-single-ui-source && npm run check:ui-text-parity && npm run check:ui-language-leaks && npm run check:content-language-leaks && npm run check:no-raw-ui-errors && npm run check:mas-readiness && npm run check:app-store-assets && npm run check:js"
   },

@@ -134,6 +134,7 @@ sourceFiles.forEach(file => runFile(context, file));
 
 const practiceContent = context.window.PRACTICE_CONTENT || {};
 const storyboard = context.window.FLYKEY_CONTENT_STORYBOARD || {};
+const onboardingStoryboard = context.window.FLYKEY_ONBOARDING_STORYBOARD || {};
 const failures = [];
 
 ["de", "en"].forEach(language => {
@@ -173,6 +174,11 @@ walk(practiceContent.kk, ["PRACTICE_CONTENT.kk"], (text, pathName) => {
 
 ["de", "en"].forEach(language => {
   walk(storyboard, ["FLYKEY_CONTENT_STORYBOARD"], (text, pathName) => {
+    if (pathName.includes(`.${language}`) && cyrillicPattern.test(text)) {
+      failures.push(`${pathName} contains Cyrillic text`);
+    }
+  });
+  walk(onboardingStoryboard, ["FLYKEY_ONBOARDING_STORYBOARD"], (text, pathName) => {
     if (pathName.includes(`.${language}`) && cyrillicPattern.test(text)) {
       failures.push(`${pathName} contains Cyrillic text`);
     }

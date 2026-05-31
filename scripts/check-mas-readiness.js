@@ -30,6 +30,7 @@ const settingsView = read("app/views/settings-view.js");
 
 assertFile("build/entitlements.mas.plist");
 assertFile("build/entitlements.mas.inherit.plist");
+assertFile("build/icon.icns");
 
 assert(!packageJson.config?.forge, "Electron Forge config must live in forge.config.js, not package.json");
 assert(packageJson.scripts?.["package:mas"], "package:mas script is missing");
@@ -41,6 +42,11 @@ assert(forgeConfig.includes("@electron-forge/maker-pkg"), "forge.config.js must 
 assert(forgeConfig.includes("entitlements.mas.plist"), "MAS parent entitlements are not wired");
 assert(forgeConfig.includes("entitlements.mas.inherit.plist"), "MAS inherit entitlements are not wired");
 assert(forgeConfig.includes("FLYKEY_MAC_INSTALLER_IDENTITY"), "MAS pkg maker must read installer signing identity from env");
+assert(forgeConfig.includes('icon: path.join(__dirname, "build", "icon")'), "forge.config.js must use the FlyKey app icon");
+assert(forgeConfig.includes("CFBundleShortVersionString"), "forge.config.js must pin the App Store marketing version");
+assert(forgeConfig.includes("NSAllowsArbitraryLoads: false"), "App Transport Security must not allow arbitrary loads");
+assert(forgeConfig.includes("sanitizeMacInfoPlist"), "forge.config.js must sanitize inherited Electron privacy permissions");
+assert(forgeConfig.includes("postPackage"), "forge.config.js must sanitize packaged macOS metadata after packaging");
 
 const masEntitlements = read("build/entitlements.mas.plist");
 const masInheritEntitlements = read("build/entitlements.mas.inherit.plist");

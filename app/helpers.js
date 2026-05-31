@@ -11,6 +11,14 @@ function lessonStoryboardFor(lessonOrId) {
   return window.FLYKEY_LESSON_STORYBOARD?.[lessonId] || {};
 }
 
+function storyboardStepEnabled(entry, key) {
+  return entry?.[key] !== false;
+}
+
+function onboardingStoryboard() {
+  return window.FLYKEY_ONBOARDING_STORYBOARD || {};
+}
+
 function localizedTextValue(value, language = currentLanguage) {
   if (Array.isArray(value)) return value.filter(Boolean).join("\n");
   if (!value || typeof value !== "object") return value || "";
