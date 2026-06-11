@@ -1,0 +1,110 @@
+name: Deploy FlyKey site
+
+on:
+  workflow_dispatch:
+    inputs:
+      deploy_ref:
+        description: "Git ref to deploy"
+        required: true
+        default: "main"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: flykey-site-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy to Hetzner
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.deploy_ref }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run checks
+        run: npm run check
+
+      - name: Verify production runtime config
+        run: |
+          test -f app/runtime-config.js
+          grep -q 'https://api.flykey.org' app/runtime-config.js
+
+      - name: Prepare website files
+        run: |
+          target_dir="$RUNNER_TEMP/flykey-web"
+          rm -rf "$target_dir"
+          mkdir -p "$target_dir"
+
+          for file in \
+            CNAME \
+            googlea48f8e75ced8bc47.html \
+            hands.svg \
+            index.html \
+            practice-content.js \
+            privacy.html \
+            roadmap.html \
+            robots.txt \
+            sitemap.xml \
+            support.html
+          do
+            cp "$file" "$target_dir/"
+          done
+
+          for dir in \
+            app \
+            assets \
+            practice-content \
+            site-content \
+            styles
+          do
+            cp -R "$dir" "$target_dir/"
+          done
+
+          find "$target_dir" -name ".DS_Store" -delete
+
+      - name: Configure SSH
+        env:
+          FLYKEY_DEPLOY_SSH_KEY: ${{ secrets.FLYKEY_DEPLOY_SSH_KEY }}
+          FLYKEY_DEPLOY_KNOWN_HOSTS: ${{ secrets.FLYKEY_DEPLOY_KNOWN_HOSTS }}
+        run: |
+          test -n "$FLYKEY_DEPLOY_SSH_KEY"
+          test -n "$FLYKEY_DEPLOY_KNOWN_HOSTS"
+          mkdir -p "$HOME/.ssh"
+          printf '%s\n' "$FLYKEY_DEPLOY_SSH_KEY" > "$HOME/.ssh/flykey_deploy_key"
+          printf '%s\n' "$FLYKEY_DEPLOY_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          chmod 700 "$HOME/.ssh"
+          chmod 600 "$HOME/.ssh/flykey_deploy_key"
+          chmod 644 "$HOME/.ssh/known_hosts"
+
+      - name: Upload website
+        env:
+          FLYKEY_DEPLOY_HOST: ${{ secrets.FLYKEY_DEPLOY_HOST }}
+          FLYKEY_DEPLOY_USER: ${{ secrets.FLYKEY_DEPLOY_USER }}
+        run: |
+          test -n "$FLYKEY_DEPLOY_HOST"
+          test -n "$FLYKEY_DEPLOY_USER"
+          rsync -az --delete \
+            -e "ssh -i $HOME/.ssh/flykey_deploy_key -o IdentitiesOnly=yes" \
+            "$RUNNER_TEMP/flykey-web/" \
+            "$FLYKEY_DEPLOY_USER@$FLYKEY_DEPLOY_HOST:/srv/flykey-web/current/"
+
+      - name: Smoke test production site
+        run: |
+          curl -fsS https://flykey.org/api/health | grep -q '"service":"flykey-static"'
+          curl -fsS https://flykey.org/api/content/version | grep -q '"id": "flykey-practice-content"'
+          curl -fsS 'https://flykey.org/app/runtime-config.js?v=20260611-1' | grep -q 'https://api.flykey.org'
+          curl -fsSI https://www.flykey.org/ | grep -qi 'location: https://flykey.org/'
