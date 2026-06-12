@@ -16,6 +16,7 @@ for file in \
   googlea48f8e75ced8bc47.html \
   hands.svg \
   index.html \
+  mobile-game.html \
   practice-content.js \
   privacy.html \
   roadmap.html \

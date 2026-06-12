@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>FlyKey Jump — mobile mini game</title>
+    <meta name="description" content="A mobile-first FlyKey mini game about defeating the habit of looking at the keyboard.">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#101820">
+    <link rel="canonical" href="https://flykey.org/mobile-game.html">
+    <script>
+      if (location.protocol === "http:" && location.hostname === "flykey.org") {
+        location.replace(`https://${location.host}${location.pathname}${location.search}${location.hash}`);
+      }
+    </script>
+    <link rel="stylesheet" href="styles/mobile-game.css">
+  </head>
+  <body>
+    <main class="game-shell" aria-label="FlyKey Jump mobile game">
+      <canvas id="flykey-game" aria-label="FlyKey Jump game canvas"></canvas>
+
+      <section class="screen screen-menu is-visible" id="menu-screen" aria-labelledby="menu-title">
+        <img class="menu-mascot" src="assets/key/fly_welcome_no_bg.png" alt="FlyKey mascot">
+        <div class="menu-copy">
+          <p class="eyebrow">FlyKey mini game</p>
+          <h1 id="menu-title">FlyKey Jump</h1>
+          <p class="lede">On a phone you cannot truly learn touch typing, but you can defeat the habit of looking at the keys.</p>
+        </div>
+        <fieldset class="language-picker" id="language-picker">
+          <legend>Choose language</legend>
+          <label><input type="radio" name="game-language" value="en" checked> English</label>
+          <label><input type="radio" name="game-language" value="de"> Deutsch</label>
+          <label><input type="radio" name="game-language" value="ru"> &#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081;</label>
+          <label><input type="radio" name="game-language" value="uk"> &#1059;&#1082;&#1088;&#1072;&#1111;&#1085;&#1089;&#1100;&#1082;&#1072;</label>
+          <label><input type="radio" name="game-language" value="kk"> &#1178;&#1072;&#1079;&#1072;&#1179;&#1096;&#1072;</label>
+        </fieldset>
+        <button class="primary-action" id="start-button" type="button">Start</button>
+        <a class="desktop-link" href="index.html">Open the real trainer</a>
+      </section>
+
+      <section class="screen screen-over" id="game-over-screen" aria-labelledby="game-over-title">
+        <p class="eyebrow">Game over</p>
+        <h2 id="game-over-title">Fly looked down</h2>
+        <dl class="score-card">
+          <div>
+            <dt>Score</dt>
+            <dd id="final-score">0</dd>
+          </div>
+          <div>
+            <dt>Best</dt>
+            <dd id="best-score">0</dd>
+          </div>
+        </dl>
+        <button class="primary-action" id="restart-button" type="button">Restart</button>
+        <a class="cta-link" href="index.html">Learn touch typing for real on a computer</a>
+      </section>
+
+      <section class="screen screen-desktop" id="desktop-screen" aria-labelledby="desktop-title">
+        <img class="menu-mascot" src="assets/key/fly_welcome_no_bg.png" alt="FlyKey mascot">
+        <p class="eyebrow">FlyKey Jump</p>
+        <h2 id="desktop-title">Phone only</h2>
+        <p class="lede">This mini game opens on phones. On a computer, FlyKey is the real touch typing trainer.</p>
+        <a class="cta-link" href="index.html">Open FlyKey trainer</a>
+      </section>
+
+      <div class="hud" id="game-hud" aria-live="polite">
+        <span>Score <strong id="score-value">0</strong></span>
+        <span>Best <strong id="hud-best-value">0</strong></span>
+      </div>
+    </main>
+    <script src="app/mobile-game.js" defer></script>
+  </body>
+</html>

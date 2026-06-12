@@ -76,6 +76,34 @@
         window.flyKeyEarlyLanguage = language;
       })();
     </script>
+    <script>
+      (() => {
+        const params = new URLSearchParams(window.location.search);
+        const isDesktop = window.FlyKeyRuntime?.isDesktop === true || params.get("desktop") === "1";
+        const path = window.location.pathname.replace(/\/+$/, "") || "/";
+        const isHome = path === "/" || path.endsWith("/index.html");
+        const isPrivateTool = params.has("lessonStoryboard") ||
+          params.has("roadmap") ||
+          params.get("mode") === "roadmap" ||
+          params.has("previewWelcome") ||
+          params.has("freshUser") ||
+          params.has("calibrateHands") ||
+          window.location.hash === "#lessonStoryboard" ||
+          window.location.hash === "#roadmap";
+        const coarsePointer = window.matchMedia?.("(pointer: coarse)")?.matches === true;
+        const fineHover = window.matchMedia?.("(hover: hover) and (pointer: fine)")?.matches === true;
+        const narrowScreen = Math.min(window.screen?.width || window.innerWidth, window.screen?.height || window.innerHeight) <= 820;
+        const mobileUA = /Android|iPhone|iPod|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        const isPhone = !isDesktop && (mobileUA || (coarsePointer && narrowScreen && !fineHover));
+
+        if (isHome && isPhone && !isPrivateTool) {
+          const target = location.protocol === "http:" && location.hostname === "flykey.org"
+            ? `https://${location.host}/mobile-game.html`
+            : "mobile-game.html";
+          window.location.replace(target);
+        }
+      })();
+    </script>
     <style>
       html[data-fallback-localizing="true"] body {
         visibility: hidden;
