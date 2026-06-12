@@ -138,6 +138,7 @@
   const rand = (min, max) => min + Math.random() * (max - min);
   const choice = (items) => items[Math.floor(Math.random() * items.length)];
   const highScoreKey = () => `flykey_mobile_highscore_${state.language}`;
+  const abyssTop = () => state.cameraY + state.height - 26;
   const onDeviceOrientation = (event) => {
     if (typeof event.gamma !== "number") return;
     state.tilt.available = true;
@@ -449,6 +450,7 @@
 
     if (player.vy > 0) {
       for (const platform of state.platforms) {
+        if (platform.y > abyssTop()) continue;
         const previousFoot = player.y - player.vy * dt + player.footOffset;
         const foot = player.y + player.footOffset;
         const withinX = player.x > platform.x - 18 && player.x < platform.x + platform.width + 18;
@@ -467,7 +469,7 @@
     scoreValue.textContent = String(state.score);
     hudBestValue.textContent = String(Math.max(state.best, state.score));
 
-    if (player.y - state.cameraY > state.height + 120) {
+    if (player.y + player.footOffset >= abyssTop()) {
       gameOver();
     }
   };
@@ -517,6 +519,13 @@
       const y = (i * 137 + Math.abs(state.cameraY) * 0.32) % state.height;
       ctx.fillRect(x, y, 2, 2);
     }
+
+    const abyssGradient = ctx.createLinearGradient(0, state.height - 120, 0, state.height);
+    abyssGradient.addColorStop(0, "rgba(2, 4, 5, 0)");
+    abyssGradient.addColorStop(0.72, "rgba(2, 4, 5, 0.82)");
+    abyssGradient.addColorStop(1, "rgba(0, 0, 0, 1)");
+    ctx.fillStyle = abyssGradient;
+    ctx.fillRect(0, state.height - 120, state.width, 120);
   };
 
   const drawPlatform = (platform) => {
