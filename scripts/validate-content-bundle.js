@@ -2,9 +2,11 @@
 
 const fs = require("node:fs");
 const path = require("node:path");
+const vm = require("node:vm");
 
 const rootDir = path.resolve(__dirname, "..");
 const bundlePath = path.resolve(rootDir, process.argv[2] || "practice-content/content-bundle.json");
+const storyboardPath = path.join(rootDir, "practice-content", "storyboard.js");
 const errors = [];
 const warnings = [];
 
@@ -28,18 +30,18 @@ function localizedObjectHasLanguages(value, languages, fieldPath) {
 
   languages.forEach(language => {
     if (!(language in value)) {
-      warn(`${fieldPath} is missing ${language}`);
+      fail(`${fieldPath} is missing ${language}`);
       return;
     }
 
     const localized = value[language];
     if (Array.isArray(localized)) {
-      if (!localized.length) warn(`${fieldPath}.${language} is empty`);
+      if (!localized.length) fail(`${fieldPath}.${language} is empty`);
       return;
     }
 
     if (typeof localized !== "string" || !localized.trim()) {
-      warn(`${fieldPath}.${language} is empty`);
+      fail(`${fieldPath}.${language} is empty`);
     }
   });
 }
@@ -75,6 +77,12 @@ function imageExists(fileName, fieldPath) {
 
 function collectStoryboardImages(bundle) {
   const images = new Set();
+  (bundle.welcomeStoryboard?.screens || []).forEach(screen => {
+    if (typeof screen.image === "string" && screen.image.trim()) images.add(screen.image.trim());
+  });
+  (bundle.onboardingStoryboard?.screens || []).forEach(screen => {
+    if (typeof screen.image === "string" && screen.image.trim()) images.add(screen.image.trim());
+  });
   (bundle.modules || []).forEach(module => {
     (module.lessons || []).forEach(lesson => {
       [lesson.introImage, lesson.completionImage].forEach(image => {
@@ -83,6 +91,74 @@ function collectStoryboardImages(bundle) {
     });
   });
   return images;
+}
+
+function readLessonStoryboard() {
+  if (!fs.existsSync(storyboardPath)) {
+    fail("practice-content/storyboard.js is required");
+    return {};
+  }
+
+  const window = {};
+  window.window = window;
+  vm.runInNewContext(fs.readFileSync(storyboardPath, "utf8"), { window }, { filename: storyboardPath });
+  return window.FLYKEY_LESSON_STORYBOARD || {};
+}
+
+function validateLessonStoryboard(storyboard, lessonIds, languages) {
+  if (!isPlainObject(storyboard)) {
+    fail("FLYKEY_LESSON_STORYBOARD must be an object");
+    return;
+  }
+
+  lessonIds.forEach(lessonId => {
+    const entry = storyboard[lessonId];
+    const fieldPath = `storyboard.${lessonId}`;
+
+    if (!isPlainObject(entry)) {
+      fail(`${fieldPath} must be an object`);
+      return;
+    }
+
+    if (!entry.introImage) fail(`${fieldPath}.introImage is required`);
+    if (!entry.completionImage) fail(`${fieldPath}.completionImage is required`);
+    imageExists(entry.introImage, `${fieldPath}.introImage`);
+    imageExists(entry.completionImage, `${fieldPath}.completionImage`);
+    if (entry.introTip !== undefined && entry.introTip !== null) {
+      localizedObjectHasLanguages(entry.introTip, languages, `${fieldPath}.introTip`);
+    }
+    if (entry.nextModuleText !== undefined && entry.nextModuleText !== null) {
+      localizedObjectHasLanguages(entry.nextModuleText, languages, `${fieldPath}.nextModuleText`);
+    }
+    localizedObjectHasLanguages(entry.completionText, languages, `${fieldPath}.completionText`);
+  });
+
+  Object.keys(storyboard).forEach(lessonId => {
+    if (!lessonIds.has(lessonId)) fail(`storyboard.${lessonId} does not match a known lesson id`);
+  });
+}
+
+function validateScreenStoryboard(screenStoryboard, languages, fieldName) {
+  if (!screenStoryboard) return;
+  if (!isPlainObject(screenStoryboard)) {
+    fail(`${fieldName} must be an object`);
+    return;
+  }
+  if (screenStoryboard.screens === undefined) return;
+  if (!Array.isArray(screenStoryboard.screens)) {
+    fail(`${fieldName}.screens must be an array`);
+    return;
+  }
+
+  screenStoryboard.screens.forEach((screen, index) => {
+    const fieldPath = `${fieldName}.screens[${index}]`;
+    if (!isPlainObject(screen)) {
+      fail(`${fieldPath} must be an object`);
+      return;
+    }
+    if (screen.image) imageExists(screen.image, `${fieldPath}.image`);
+    localizedObjectHasLanguages(screen.text, languages, `${fieldPath}.text`);
+  });
 }
 
 function validateBundle(bundle) {
@@ -140,12 +216,16 @@ function validateBundle(bundle) {
       localizedObjectHasLanguages(lesson.tips, languages, `${lessonPath}.tips`);
       localizedLinesHaveContent(lesson.lines, languages, `${lessonPath}.lines`);
 
-      if (!isPlainObject(lesson.target)) fail(`${lessonPath}.target must be an object`);
-      if (lesson.target?.lines !== undefined && (!Number.isFinite(lesson.target.lines) || lesson.target.lines <= 0)) {
-        fail(`${lessonPath}.target.lines must be a positive number`);
+      if (!isPlainObject(lesson.content)) fail(`${lessonPath}.content must be an object`);
+      if (lesson.content?.lineCount !== undefined && (!Number.isFinite(lesson.content.lineCount) || lesson.content.lineCount <= 0)) {
+        fail(`${lessonPath}.content.lineCount must be a positive number`);
       }
-      if (lesson.target?.accuracy !== undefined && (!Number.isFinite(lesson.target.accuracy) || lesson.target.accuracy <= 0 || lesson.target.accuracy > 100)) {
-        fail(`${lessonPath}.target.accuracy must be between 1 and 100`);
+      if (!isPlainObject(lesson.scoring)) fail(`${lessonPath}.scoring must be an object`);
+      if (lesson.target?.lines !== undefined) {
+        fail(`${lessonPath}.target.lines is deprecated; use content.lineCount`);
+      }
+      if (lesson.scoring?.accuracy !== undefined && (!Number.isFinite(lesson.scoring.accuracy) || lesson.scoring.accuracy <= 0 || lesson.scoring.accuracy > 100)) {
+        fail(`${lessonPath}.scoring.accuracy must be between 1 and 100`);
       }
 
       imageExists(lesson.introImage, `${lessonPath}.introImage`);
@@ -156,6 +236,11 @@ function validateBundle(bundle) {
   if (bundle.meta.lessonCount !== undefined && bundle.meta.lessonCount !== lessonCount) {
     fail(`meta.lessonCount is ${bundle.meta.lessonCount}, actual is ${lessonCount}`);
   }
+
+  validateLessonStoryboard(readLessonStoryboard(), lessonIds, languages);
+  validateLessonStoryboard(bundle.storyboard, lessonIds, languages);
+  validateScreenStoryboard(bundle.welcomeStoryboard, languages, "welcomeStoryboard");
+  validateScreenStoryboard(bundle.onboardingStoryboard, languages, "onboardingStoryboard");
 
   const storyboardImages = collectStoryboardImages(bundle);
   storyboardImages.forEach(file => imageExists(file, "storyboard image"));

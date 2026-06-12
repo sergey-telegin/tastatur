@@ -10,7 +10,15 @@ function isKeySoundEnabled() {
 }
 
 function shouldUnlockAudioContext() {
-  return isKeySoundEnabled() || metronomeBpm > 0;
+  return isKeySoundEnabled() || isMetronomeActive();
+}
+
+function isAlternateLineNoAssistantRepeat() {
+  return alternateLinesEnabled && practiceAlternateLineRepeat;
+}
+
+function isMetronomeActive() {
+  return metronomeBpm > 0 && !isAlternateLineNoAssistantRepeat();
 }
 
 function createKeyAudioContext() {
@@ -85,7 +93,7 @@ function unlockKeyAudioContext() {
 }
 
 function unlockMetronomeAudioContext() {
-  if (metronomeBpm <= 0) return Promise.resolve(null);
+  if (!isMetronomeActive()) return Promise.resolve(null);
   return unlockAppAudioContext({ requireEnabledAudio: false });
 }
 
@@ -104,7 +112,7 @@ function ensureKeyAudioContext() {
 }
 
 function ensureMetronomeAudioContext() {
-  if (metronomeBpm <= 0) return null;
+  if (!isMetronomeActive()) return null;
 
   const context = createKeyAudioContext();
   if (!context) return null;
@@ -242,12 +250,12 @@ function stopMetronome() {
 
 function updateMetronome() {
   stopMetronome();
-  if (metronomeBpm <= 0) return;
+  if (!isMetronomeActive()) return;
 
   const generation = metronomeGeneration;
   const intervalMs = 60000 / metronomeBpm;
   unlockMetronomeAudioContext().then(() => {
-    if (metronomeBpm <= 0 || generation !== metronomeGeneration) return;
+    if (!isMetronomeActive() || generation !== metronomeGeneration) return;
 
     playMetronomeTick();
     metronomeTimerId = setInterval(playMetronomeTick, intervalMs);

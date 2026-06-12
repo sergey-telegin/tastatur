@@ -222,7 +222,7 @@ function renderKeyboard() {
     label.className = "label";
     label.textContent = id === "enter" ? "" : labels[id] ?? "";
     key.append(label);
-    key.setAttribute("aria-label", `${keyTitle(id)}: ${labels[id] || "пусто"}`);
+    key.setAttribute("aria-label", `${keyTitle(id)}: ${labels[id] || textFor().emptyKey}`);
     key.addEventListener("click", () => handleKeyboardKeyClick(id));
     keyboard.append(key);
   });
@@ -266,7 +266,10 @@ function applyCurrentLabel() {
 
   persist();
   renderKeyboard();
-  setStatus(`Клавиша "${keyTitle(selectedKey)}" обновлена для ${languages[currentLanguage].name}.`);
+  setStatus(formatUiText(textFor().keyUpdated, {
+    key: keyTitle(selectedKey),
+    language: languages[currentLanguage].name
+  }));
 }
 
 function fitKeyboardScene() {

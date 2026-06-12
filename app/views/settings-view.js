@@ -86,12 +86,9 @@ function renderModuleButtons() {
 
 function formatLessonMeta(lesson, language = currentLanguage) {
   const text = textFor(language);
-  const target = lesson.target || {};
+  const target = lesson.scoring || lesson.target || {};
   const goals = [];
 
-  if (target.lines) {
-    goals.push(`${text.targetLines}: ${target.lines}`);
-  }
   if (target.accuracy) {
     goals.push(`${text.practiceAccuracy}: ≥${target.accuracy}%`);
   }
@@ -141,7 +138,7 @@ function starRatingDetailsForLesson(lesson, progress) {
     return { text: "", isFlying: false };
   }
 
-  const target = lesson.target || {};
+  const target = lesson.scoring || lesson.target || {};
   const accuracy = progress.accuracy || 0;
   let filledStars = 2;
 
@@ -171,6 +168,12 @@ function gradeLabelForAccuracy(accuracy, language = currentLanguage) {
 
 function renderTabs() {
   const text = textFor();
+  document.title = text.seo?.eyebrow ? `FlyKey — ${text.seo.eyebrow}` : document.title;
+  document.querySelector('meta[name="description"]')?.setAttribute("content", text.seo?.lead || "");
+  document.querySelector('meta[property="og:title"]')?.setAttribute("content", document.title);
+  document.querySelector('meta[property="og:description"]')?.setAttribute("content", text.seo?.lead || "");
+  document.querySelector('meta[name="twitter:title"]')?.setAttribute("content", document.title);
+  document.querySelector('meta[name="twitter:description"]')?.setAttribute("content", text.seo?.lead || "");
   languageTabs.innerHTML = "";
 
   Object.entries(languages).forEach(([id, language]) => {
@@ -198,6 +201,29 @@ function renderTabs() {
   learningProgramOpenText.textContent = text.learningProgram;
   learningProgramOpen.setAttribute("aria-label", text.learningProgram);
   learningProgramOpen.closest(".menu-section")?.setAttribute("aria-label", text.learningProgram);
+  trainer.setAttribute("aria-label", text.typingText);
+  practiceProgress.setAttribute("aria-label", text.currentModuleProgress);
+  practiceStats.setAttribute("aria-label", text.statistics);
+  practiceAccuracyLabel.textContent = text.practiceAccuracy;
+  practiceSpeedLabel.textContent = text.practiceSpeed;
+  document.querySelector(".practice-speed-unit").textContent = text.practiceSpeedUnit;
+  keyboardWrap.setAttribute("aria-label", text.keyboard);
+  handsLayer.setAttribute("aria-label", text.fingers);
+  keyboardFingerPicker.setAttribute("aria-label", text.fingerChoice);
+  document.querySelector(".editor")?.setAttribute("aria-label", text.selectedKeyEditor);
+  document.querySelector('label[for="keySelect"], .editor .field:nth-child(1) span').textContent = text.selectedKey;
+  document.querySelector(".editor .field:nth-child(2) span").textContent = text.keyLabel;
+  labelInput.placeholder = text.keyLabelPlaceholder;
+  applyLabel.textContent = text.apply;
+  keyboardEditorReset.textContent = text.restoreDefaults;
+  keyboardEditorCancel.textContent = text.cancel;
+  keyboardEditorSave.textContent = text.save;
+  if (fingerMapSectionLabel) {
+    fingerMapSectionLabel.textContent = text.fingerMapMenu;
+  }
+  fingerMapOpen.querySelector("span").textContent = text.fingerMapMenu;
+  fingerMapOpen.setAttribute("aria-label", text.fingerMapMenu);
+  fingerMapOpen.closest(".menu-section")?.setAttribute("aria-label", text.openFingerMap);
   learningProgramTitle.textContent = text.learningProgram;
   learningProgramClose.setAttribute("aria-label", text.close);
   statsOpenText.textContent = text.statistics;
@@ -220,12 +246,180 @@ function renderTabs() {
   assistantsToggleText.textContent = text.assistants;
   assistantsToggle.setAttribute("aria-label", text.assistants);
   keyHighlightLabel.closest(".menu-section")?.setAttribute("aria-label", text.assistants);
+  renderCloudSyncPanel();
   renderKeySoundToggle();
   renderPracticeTextSizeToggle();
   renderThemeToggle();
   renderDisplaySettings();
   renderLearningProgramSummary();
   renderStatsDialog();
+  renderSeoContent();
+  document.documentElement.removeAttribute("data-fallback-localizing");
+}
+
+function renderCloudSyncPanel(message = "") {
+  if (!cloudSyncToggle) return;
+
+  if (!window.FlyKeyApiClient?.isBackendConfigured?.()) {
+    cloudSyncToggle.hidden = true;
+    cloudSyncPanel.hidden = true;
+    return;
+  }
+  cloudSyncToggle.hidden = false;
+
+  const text = textFor();
+  const auth = window.FlyKeyCloudSync?.auth?.() || {};
+  const isConnected = Boolean(auth.accessToken || auth.refreshToken);
+  const stateText = isConnected ? text.cloudConnected : text.cloudLocal;
+  const mode = isConnected ? "connected" : cloudSyncMode;
+
+  cloudSyncToggleText.textContent = text.account;
+  cloudSyncToggle.setAttribute("aria-label", `${text.account}: ${stateText}`);
+  cloudSyncToggle.setAttribute("title", `${text.account}: ${stateText}`);
+  cloudSyncToggle.classList.toggle("active", isConnected);
+  cloudSyncState.textContent = "";
+  cloudAccountTitle.textContent = mode === "start"
+    ? (text.cloudAuthTitle || `${text.cloudLogin} / ${text.cloudRegister}`)
+    : mode === "login"
+    ? text.cloudLogin
+    : (mode === "create" || mode === "email-create" ? text.cloudRegister : text.account);
+  cloudAccountIntro.textContent = mode === "start" ? (text.cloudAuthIntro || "") : "";
+  cloudAccountIntro.hidden = mode !== "start";
+  cloudAccountState.textContent = isConnected && auth.email
+    ? `${auth.email} · ${stateText}`
+    : stateText;
+  cloudAccountState.hidden = mode === "start";
+  cloudEmailLabel.textContent = text.cloudEmail;
+  cloudPasswordLabel.textContent = text.cloudPassword;
+  cloudProfileLabel.textContent = text.cloudProfile;
+  cloudAuthDivider.querySelector("span").textContent = text.cloudOr || "OR";
+  cloudLoginMode.textContent = text.cloudContinue || "Continue";
+  cloudCreateMode.textContent = text.cloudRegister;
+  cloudCreateEmail.textContent = text.cloudCreateWithEmail || text.cloudRegister;
+  cloudCreateBack.textContent = text.cloudBack || "Back";
+  cloudLoginBack.textContent = text.cloudBack || "Back";
+  cloudLogin.textContent = text.cloudLogin;
+  cloudRegister.textContent = text.cloudRegister;
+  cloudImport.textContent = text.cloudImport;
+  cloudLogout.textContent = text.cloudLogout;
+  cloudDelete.textContent = text.cloudDelete;
+  cloudEmailInput.placeholder = mode === "start" ? text.cloudEmail : "user@example.com";
+  cloudPasswordInput.placeholder = "••••••••";
+  cloudProfileInput.placeholder = text.cloudProfile;
+
+  if (!cloudEmailInput.value && auth.email) {
+    cloudEmailInput.value = auth.email;
+  }
+  if (!cloudProfileInput.value && auth.profileName) {
+    cloudProfileInput.value = auth.profileName;
+  }
+
+  cloudImport.disabled = !isConnected;
+  cloudLogout.disabled = !isConnected;
+  cloudDelete.disabled = !isConnected;
+  cloudAuthStart.hidden = mode !== "start";
+  cloudCreateOptions.hidden = mode !== "create";
+  cloudCredentialFields.hidden = !(mode === "start" || mode === "login" || mode === "email-create" || mode === "connected");
+  cloudCredentialFields.classList.toggle("email-only", mode === "start");
+  cloudActions.hidden = mode === "start" || mode === "create";
+  cloudLogin.hidden = mode !== "login";
+  cloudRegister.hidden = mode !== "email-create";
+  cloudImport.hidden = mode !== "connected";
+  cloudLogout.hidden = mode !== "connected";
+  cloudDelete.hidden = mode !== "connected";
+  cloudLoginBack.hidden = mode === "connected";
+  cloudStatus.textContent = message || (isConnected ? text.cloudReady : "");
+
+  if (mode === "start" && cloudOauthProviders && !cloudOauthProviders.children.length) {
+    renderCloudOauthProviders([]);
+  }
+}
+
+function renderCloudOauthProviders(providers = []) {
+  if (!cloudOauthProviders) return;
+
+  const defaultProviders = [
+    { id: "google", label: "Google" },
+    { id: "apple", label: "Apple" },
+    { id: "microsoft", label: "Microsoft" }
+  ];
+  const providerMap = new Map(defaultProviders.map(provider => [provider.id, provider]));
+  providers.forEach(provider => providerMap.set(provider.id, provider));
+  const visibleProviders = Array.from(providerMap.values());
+
+  cloudOauthProviders.innerHTML = "";
+  cloudOauthProviders.hidden = false;
+
+  visibleProviders.forEach(provider => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "nav-btn cloud-oauth-btn";
+    button.dataset.provider = provider.id;
+    button.dataset.providerIcon = provider.id;
+    const icon = document.createElement("span");
+    icon.className = "cloud-provider-icon";
+    icon.setAttribute("aria-hidden", "true");
+    if (provider.id === "microsoft") {
+      ["#f25022", "#7fba00", "#00a4ef", "#ffb900"].forEach(color => {
+        const tile = document.createElement("span");
+        tile.style.background = color;
+        icon.append(tile);
+      });
+    }
+    const label = document.createElement("span");
+    label.className = "cloud-provider-label";
+    label.textContent = (textFor().cloudContinueWithProvider || "{provider}").replace("{provider}", provider.label);
+    button.append(icon, label);
+    button.addEventListener("click", () => handleCloudOAuth(provider.id));
+    cloudOauthProviders.append(button);
+  });
+}
+
+function replaceChildrenWithParagraphs(host, paragraphs) {
+  host.innerHTML = "";
+  paragraphs.forEach(paragraphText => {
+    const paragraph = document.createElement("p");
+    paragraph.textContent = paragraphText;
+    host.append(paragraph);
+  });
+}
+
+function renderSeoContent() {
+  const seo = textFor().seo;
+  const section = document.querySelector(".seo-content");
+  if (!section || !seo) return;
+
+  const nav = section.querySelector(".seo-nav");
+  nav?.setAttribute("aria-label", seo.navLabel);
+  nav?.querySelectorAll("a").forEach((link, index) => {
+    link.textContent = seo.nav[index] || link.textContent;
+  });
+
+  section.querySelector(".seo-eyebrow").textContent = seo.eyebrow;
+  section.querySelector("#seoTitle").textContent = seo.title;
+  section.querySelector(".seo-lead").textContent = seo.lead;
+  section.querySelector(".seo-summary-grid")?.setAttribute("aria-label", seo.summaryLabel);
+  section.querySelectorAll(".seo-summary-grid article").forEach((article, index) => {
+    const item = seo.summary[index];
+    if (!item) return;
+    article.querySelector("h2").textContent = item[0];
+    article.querySelector("p").textContent = item[1];
+  });
+  section.querySelectorAll(".seo-article").forEach((article, index) => {
+    const item = seo.articles[index];
+    if (!item) return;
+    const title = article.querySelector("h2") || document.createElement("h2");
+    title.textContent = item[0];
+    replaceChildrenWithParagraphs(article, item[1]);
+    article.prepend(title);
+  });
+  section.querySelector("#seo-faq-title").textContent = seo.faqTitle;
+  section.querySelectorAll(".seo-faq details").forEach((details, index) => {
+    const item = seo.faq[index];
+    if (!item) return;
+    details.querySelector("summary").textContent = item[0];
+    details.querySelector("p").textContent = item[1];
+  });
 }
 
 function renderKeySoundToggle() {

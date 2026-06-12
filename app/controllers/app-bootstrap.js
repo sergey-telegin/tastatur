@@ -36,7 +36,7 @@ function bindAppEvents() {
       delete saved[currentLanguage];
       persist();
       render();
-      setStatus(`Раскладка ${languages[currentLanguage].name} сброшена.`);
+      setStatus(formatUiText(textFor().layoutReset, { language: languages[currentLanguage].name }));
     });
   }
 
@@ -141,6 +141,17 @@ function bindAppEvents() {
   practiceTextSizeToggle.addEventListener("click", togglePracticeTextSize);
   themeToggle.addEventListener("click", toggleTheme);
   assistantsToggle.addEventListener("click", toggleAssistantsPanel);
+  cloudSyncToggle.addEventListener("click", toggleCloudSyncPanel);
+  cloudLoginMode.addEventListener("click", () => setCloudSyncMode("login"));
+  cloudCreateMode.addEventListener("click", () => setCloudSyncMode("create"));
+  cloudCreateEmail.addEventListener("click", () => setCloudSyncMode("email-create"));
+  cloudCreateBack.addEventListener("click", () => setCloudSyncMode("start"));
+  cloudLoginBack.addEventListener("click", () => setCloudSyncMode("start"));
+  cloudLogin.addEventListener("click", handleCloudLogin);
+  cloudRegister.addEventListener("click", handleCloudRegister);
+  cloudImport.addEventListener("click", handleCloudImport);
+  cloudLogout.addEventListener("click", handleCloudLogout);
+  cloudDelete.addEventListener("click", handleCloudDeleteAccount);
   metronomeInput.addEventListener("input", handleMetronomeInput);
   keyHighlightToggle.addEventListener("click", () => toggleDisplaySetting("keyHighlightEnabled"));
   fingerZonesToggle.addEventListener("click", () => toggleDisplaySetting("fingerZonesEnabled"));
@@ -253,10 +264,15 @@ function bindAppEvents() {
   });
 
   fingerMapOpen.addEventListener("click", () => {
-    settingsDialog.close();
-    openFingerMapDraft();
-    enterFingerKeyboardMode();
-    updatePracticeTimerPauseState();
+    const openFingerMap = () => {
+      settingsDialog.close();
+      openFingerMapDraft();
+      enterFingerKeyboardMode();
+      updatePracticeTimerPauseState();
+    };
+
+    if (openOnboardingForTrigger("featureOpen", "", { onComplete: openFingerMap })) return;
+    openFingerMap();
   });
 
   keyboardEditorSave.addEventListener("click", () => {
@@ -293,6 +309,7 @@ function bindAppEvents() {
   window.addEventListener("resize", positionFingeringTourCard);
   window.addEventListener("load", () => {
     scheduleKeyboardRefit();
+    loadCloudOAuthProviders();
   });
   window.addEventListener("pageshow", () => {
     scheduleKeyboardRefit();

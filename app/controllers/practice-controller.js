@@ -44,7 +44,7 @@ function practiceLinesForModule(language = currentLanguage, moduleId = currentPr
   }
 
   if (module.customPractice && Array.isArray(module.lines) && module.lines.length) {
-    const targetLineCount = Math.max(1, module.target?.lines || module.lines.length);
+    const targetLineCount = Math.max(1, module.content?.lineCount || module.lines.length);
     return Array.from({ length: targetLineCount }, (_, index) => module.lines[index % module.lines.length]);
   }
 
@@ -60,16 +60,17 @@ function normalizePracticeProgressEntry(entry, totalLines) {
   const assistantsUsed = entry && Object.prototype.hasOwnProperty.call(entry, "assistantsUsed")
     ? entry.assistantsUsed === true
     : true;
+  const alternateLineRepeat = entry?.alternateLineRepeat === true;
   const metronomeAccuracy = Number.isFinite(entry?.metronomeAccuracy)
     ? Math.max(0, Math.min(100, Math.round(entry.metronomeAccuracy)))
     : null;
 
   if (safeTotal === 0) {
-    return { currentLine: 0, completedLines: 0, isComplete: true, accuracy, speed, assistantsUsed, metronomeAccuracy };
+    return { currentLine: 0, completedLines: 0, isComplete: true, accuracy, speed, assistantsUsed, alternateLineRepeat: false, metronomeAccuracy };
   }
 
   if (currentLine >= safeTotal || completedLines >= safeTotal) {
-    return { currentLine: safeTotal, completedLines: safeTotal, isComplete: true, accuracy, speed, assistantsUsed, metronomeAccuracy };
+    return { currentLine: safeTotal, completedLines: safeTotal, isComplete: true, accuracy, speed, assistantsUsed, alternateLineRepeat: false, metronomeAccuracy };
   }
 
   completedLines = Math.max(completedLines, Math.min(currentLine, safeTotal));
@@ -81,6 +82,7 @@ function normalizePracticeProgressEntry(entry, totalLines) {
     accuracy,
     speed,
     assistantsUsed,
+    alternateLineRepeat,
     metronomeAccuracy
   };
 }
@@ -105,6 +107,7 @@ function persistModuleProgress(language = currentLanguage, moduleId = currentPra
     accuracy: normalized.accuracy,
     speed: normalized.speed,
     assistantsUsed: normalized.assistantsUsed,
+    alternateLineRepeat: normalized.alternateLineRepeat,
     metronomeAccuracy: normalized.metronomeAccuracy
   };
   persist();
@@ -119,6 +122,7 @@ function restoreCurrentPracticeProgress() {
   normalizeCurrentPracticeModule();
   const progress = moduleProgressFor(currentLanguage, currentPracticeModule);
   practiceCompletedLines = progress.completedLines;
+  practiceAlternateLineRepeat = alternateLinesEnabled && progress.alternateLineRepeat === true;
   practiceAwaitingEnter = false;
   practiceLineIndex = progress.isComplete
     ? Math.max(progress.totalLines - 1, 0)
@@ -137,116 +141,6 @@ const keyAssetVersion = "20260516-5";
 function keyAssetSrc(fileName) {
   return "assets/key/" + fileName + "?v=" + keyAssetVersion;
 }
-
-const lessonTipAvatarByLessonId = {
-  lesson1_1: "key-please.webp",
-  lesson1_2: "key-wave.webp",
-  lesson1_3: "fly_welcome_no_bg.png",
-  lesson1_4: "key-explain.webp",
-  lesson1_5: "key-wave.webp",
-  lesson2_1: "key-idea.webp",
-  lesson2_2: "key-point-strict.webp",
-  lesson2_3: "key-thumb.webp",
-  lesson2_4: "key-confident.webp",
-  lesson2_5: "key-arms-crossed.webp",
-  lesson3_1: "key-thinking.webp",
-  lesson3_2: "key-thumb.webp",
-  lesson3_3: "key-idea.webp",
-  lesson3_4: "fly_welcome_no_bg.png",
-  lesson3_5: "key-confident.webp",
-  lesson4_1: "key-point-strict.webp",
-  lesson4_2: "key-explain.webp",
-  lesson4_3: "key-stop.webp",
-  lesson4_4: "key-thinking.webp",
-  lesson4_5: "key-arms-crossed.webp",
-  lesson5_1: "key-stop.webp",
-  lesson5_2: "key-idea.webp",
-  lesson5_3: "key-explain.webp",
-  lesson5_4: "key-confident.webp",
-  lesson5_5: "key-thinking.webp",
-  lesson6_1: "key-stop.webp",
-  lesson6_2: "key-idea.webp",
-  lesson6_3: "key-point-strict.webp",
-  lesson6_4: "key-explain.webp",
-  lesson6_5: "key-confident.webp",
-  lesson7_1: "key-explain.webp",
-  lesson7_2: "fly_welcome_no_bg.png",
-  lesson7_3: "key-stop.webp",
-  lesson7_4: "key-point-strict.webp",
-  lesson7_5: "key-confident.webp",
-  lesson8_1: "key-idea.webp",
-  lesson8_2: "key-thinking.webp",
-  lesson8_3: "key-explain.webp",
-  lesson8_4: "key-confident.webp",
-  lesson8_5: "key-arms-crossed.webp",
-  lesson9_1: "key-idea.webp",
-  lesson9_2: "key-explain.webp",
-  lesson9_3: "fly_welcome_no_bg.png",
-  lesson9_4: "key-confident.webp",
-  lesson9_5: "key-arms-crossed.webp",
-  lesson10_1: "fly_welcome_no_bg.png",
-  lesson10_2: "key-explain.webp",
-  lesson10_3: "key-explain.webp",
-  lesson10_4: "key-confident.webp",
-  lesson10_5: "key-book.webp",
-  lesson11_1: "key-celebrate.png",
-  lesson12_1: "fly_welcome_no_bg.png"
-};
-
-const lessonCompletionAvatarByLessonId = {
-  lesson1_1: "key-thumb.webp",
-  lesson1_2: "key-confident.webp",
-  lesson1_3: "key-wave.webp",
-  lesson1_4: "fly_welcome_no_bg.png",
-  lesson1_5: "key-score-ten.png",
-  lesson2_1: "key-thumb.webp",
-  lesson2_2: "key-confident.webp",
-  lesson2_3: "key-wave.webp",
-  lesson2_4: "key-thumb.webp",
-  lesson2_5: "key-confident.webp",
-  lesson3_1: "key-thumb.webp",
-  lesson3_2: "key-wave.webp",
-  lesson3_3: "key-confident.webp",
-  lesson3_4: "fly_welcome_no_bg.png",
-  lesson3_5: "key-arms-crossed.webp",
-  lesson4_1: "key-thumb.webp",
-  lesson4_2: "fly_welcome_no_bg.png",
-  lesson4_3: "key-confident.webp",
-  lesson4_4: "key-thinking.webp",
-  lesson4_5: "key-arms-crossed.webp",
-  lesson5_1: "key-thumb.webp",
-  lesson5_2: "key-confident.webp",
-  lesson5_3: "key-idea.webp",
-  lesson5_4: "key-wave.webp",
-  lesson5_5: "key-book.webp",
-  lesson6_1: "key-thumb.webp",
-  lesson6_2: "key-confident.webp",
-  lesson6_3: "key-idea.webp",
-  lesson6_4: "key-wave.webp",
-  lesson6_5: "key-book.webp",
-  lesson7_1: "key-thumb.webp",
-  lesson7_2: "fly_welcome_no_bg.png",
-  lesson7_3: "key-confident.webp",
-  lesson7_4: "key-wave.webp",
-  lesson7_5: "key-book.webp",
-  lesson8_1: "key-thumb.webp",
-  lesson8_2: "key-confident.webp",
-  lesson8_3: "key-idea.webp",
-  lesson8_4: "key-wave.webp",
-  lesson8_5: "key-book.webp",
-  lesson9_1: "key-thumb.webp",
-  lesson9_2: "key-confident.webp",
-  lesson9_3: "fly_welcome_no_bg.png",
-  lesson9_4: "key-wave.webp",
-  lesson9_5: "key-book.webp",
-  lesson10_1: "key-thumb.webp",
-  lesson10_2: "key-confident.webp",
-  lesson10_3: "key-idea.webp",
-  lesson10_4: "key-wave.webp",
-  lesson10_5: "key-score-ten.png",
-  lesson11_1: "key-wave.webp",
-  lesson12_1: "key-celebrate.png"
-};
 
 let dialogImageRequestId = 0;
 const warmedDialogImages = new Set();
@@ -278,21 +172,46 @@ function setDialogCharacterImage(character, src) {
 }
 
 function lessonTipAvatarSrcFor(lesson) {
-  const fileName = lessonTipAvatarByLessonId[lesson?.id] || "key-wave.webp";
+  const storyboard = lessonStoryboardFor(lesson);
+  const fileName = storyboardStepEnabled(storyboard, "showIntroImage")
+    ? storyboard.introImage || "key-wave.webp"
+    : "";
+  if (!fileName) return "";
   return keyAssetSrc(fileName);
 }
 
 function lessonCompletionAvatarSrcFor(lesson) {
-  const fileName = lessonCompletionAvatarByLessonId[lesson?.id] || "key-completion.webp";
+  const storyboard = lessonStoryboardFor(lesson);
+  const fileName = storyboardStepEnabled(storyboard, "showCompletionImage")
+    ? storyboard.completionImage || "key-completion.webp"
+    : "";
+  if (!fileName) return "";
   return keyAssetSrc(fileName);
 }
 
 function currentLessonTips() {
-  const tips = currentPracticeModuleData().tips;
+  const lesson = currentPracticeModuleData();
+  const storyboard = lessonStoryboardFor(lesson);
+  if (!storyboardStepEnabled(storyboard, "showIntroTip")) return [];
+
+  const storyboardTip = localizedTextValue(storyboard.introTip);
+  if (storyboardTip) return storyboardTip.split("\n").map(line => line.trim()).filter(Boolean);
+
+  const tips = lesson.tips;
   return Array.isArray(tips) ? tips.filter(Boolean) : [];
 }
 
+function currentLessonStartPurpose(lesson = currentPracticeModuleData()) {
+  const storyboard = lessonStoryboardFor(lesson);
+  if (!storyboardStepEnabled(storyboard, "showNextModuleText")) return "";
+  return localizedTextValue(storyboard.nextModuleText) || lesson.intro?.purpose || "";
+}
+
 function isFingeringTourIntroLesson(lesson = currentPracticeModuleData()) {
+  return lesson?.id === "lesson1_4";
+}
+
+function isFingeringTourAfterLesson(lesson = currentPracticeModuleData()) {
   return lesson?.id === "lesson1_4";
 }
 
@@ -300,7 +219,13 @@ function renderLessonTipDialog(imageSrc = lessonTipAvatarSrcFor(currentPracticeM
   const text = textFor();
   const lesson = currentPracticeModuleData();
   const tips = currentLessonTips();
+  const purpose = currentLessonStartPurpose(lesson);
   const isTourIntro = isFingeringTourIntroLesson(lesson);
+
+  lessonStartTitle.textContent = lesson.name || "";
+  lessonStartPurpose.textContent = purpose;
+  lessonStartTitle.hidden = !purpose;
+  lessonStartPurpose.hidden = !purpose;
 
   lessonTipText.innerHTML = "";
   tips.forEach(tip => {
@@ -308,20 +233,21 @@ function renderLessonTipDialog(imageSrc = lessonTipAvatarSrcFor(currentPracticeM
     paragraph.textContent = tip;
     lessonTipText.append(paragraph);
   });
-  lessonTipStart.textContent = isTourIntro ? text.tourNext : text.startPractice;
+  lessonTipStart.textContent = text.startPractice;
   lessonTipExtra.hidden = true;
   lessonTipExtra.textContent = text.showFingeringTour;
-  setDialogCharacterImage(lessonTipCharacter, imageSrc);
+  lessonTipCharacter.hidden = !imageSrc;
+  if (imageSrc) setDialogCharacterImage(lessonTipCharacter, imageSrc);
   lessonTipCharacter.alt = "";
 }
 
 function openCurrentLessonTip({ force = false } = {}) {
   const lesson = currentPracticeModuleData();
-  if (!lessonTipDialog || lessonTipDialog.open || !currentLessonTips().length) return;
+  const imageSrc = lessonTipAvatarSrcFor(lesson);
+  const purpose = currentLessonStartPurpose(lesson);
+  if (!lessonTipDialog || lessonTipDialog.open || (!purpose && !currentLessonTips().length && !imageSrc)) return;
   if (!onboardingCompleted || onboardingDialog?.open) return;
   if (!force && lastShownLessonTipModuleId === lesson.id) return;
-
-  const imageSrc = lessonTipAvatarSrcFor(lesson);
 
   renderLessonTipDialog(imageSrc);
   lessonTipDialog.show();
@@ -335,16 +261,11 @@ function closeLessonTipDialog() {
 }
 
 function handleLessonTipPrimaryAction() {
-  if (isFingeringTourIntroLesson()) {
-    startFingeringTourFromLessonTip();
-    return;
-  }
-
   closeLessonTipDialog();
 }
 
 function canDismissLessonTipDialog() {
-  return !isFingeringTourIntroLesson();
+  return true;
 }
 
 const fingeringTourSteps = [
@@ -397,6 +318,7 @@ const fingeringTourSteps = [
 
 const fingeringTourFingerDemoOrder = fingerIds.concat(fingerIds.slice(1, -1).reverse());
 let fingeringTourFingerDemoTimer = null;
+let advanceLessonAfterFingeringTour = false;
 
 function stopFingeringTourFingerDemo() {
   if (!fingeringTourFingerDemoTimer) return;
@@ -652,14 +574,19 @@ function renderFingeringTourStep() {
   });
 }
 
-function startFingeringTourFromLessonTip() {
-  if (currentPracticeModuleData().id !== "lesson1_4") return;
+function startFingeringTourAfterLesson() {
+  if (!isFingeringTourAfterLesson()) return;
 
+  advanceLessonAfterFingeringTour = true;
   fingeringTourActive = true;
   fingeringTourStepIndex = 0;
   document.documentElement.classList.add("guided-tour-active");
   renderFingeringTourStep();
   updatePracticeTimerPauseState();
+}
+
+function startFingeringTourFromLessonTip() {
+  startFingeringTourAfterLesson();
 }
 
 function advanceFingeringTour() {
@@ -672,62 +599,36 @@ function advanceFingeringTour() {
 function finishFingeringTour({ keepFingerKeyboardMode = false, focusPractice = true } = {}) {
   if (!fingeringTourActive) return;
 
+  const shouldAdvanceLesson = advanceLessonAfterFingeringTour;
+  advanceLessonAfterFingeringTour = false;
   removeFingeringTourCard();
   fingeringTourActive = false;
   fingeringTourStepIndex = 0;
   document.documentElement.classList.remove("guided-tour-active");
-  if (fingerKeyboardMode && !keepFingerKeyboardMode) {
+  if (fingerKeyboardMode && (!keepFingerKeyboardMode || shouldAdvanceLesson)) {
     cancelFingerKeyboardMode();
   }
   if (settingsDialog.open) {
     closeSettingsDialog();
   }
   updatePracticeTimerPauseState();
+  if (shouldAdvanceLesson) {
+    advanceToNextPracticeLessonAfterCompletion();
+    return;
+  }
   if (focusPractice) {
     focusPracticeInputSoon();
   }
 }
 
-const nextButtonText = {
-  ru: "Далее",
-  uk: "Далі",
-  kk: "Әрі қарай",
-  de: "Weiter",
-  en: "Next"
-};
-
-const nextModuleKickerText = {
-  ru: "Следующий модуль",
-  uk: "Наступний модуль",
-  kk: "Келесі модуль",
-  de: "Nächstes Modul",
-  en: "Next module"
-};
-
-const startNextModuleText = {
-  ru: "Начать",
-  uk: "Почати",
-  kk: "Бастау",
-  de: "Starten",
-  en: "Start"
-};
-
-const defaultPracticeCompletionText = {
-  ru: "Отлично. Молодец. Идём дальше.",
-  uk: "Чудово. Гарна робота. Рухаємося далі.",
-  kk: "Керемет. Жақсы жұмыс. Әрі қарай өтейік.",
-  de: "Ausgezeichnet. Gut gemacht. Weiter geht's.",
-  en: "Excellent. Well done. Let's keep going."
-};
-
-function localizedUiText(value) {
-  return value[currentLanguage] || value.en || value.ru || "";
-}
-
 function currentLessonCompletion() {
+  const storyboard = lessonStoryboardFor(currentPracticeModuleData());
+  const storyboardCompletionText = storyboardStepEnabled(storyboard, "showCompletionText")
+    ? storyboard.completionText
+    : null;
   const completion = currentPracticeModuleData().completion || {};
   return {
-    text: completion.text || localizedUiText(defaultPracticeCompletionText)
+    text: localizedTextValue(storyboardCompletionText) || completion.text || textFor().defaultCompletion
   };
 }
 
@@ -741,18 +642,21 @@ function renderCompletionDialog(imageSrc = lessonCompletionAvatarSrcFor(currentP
   completionStars.textContent = ratingDetails.text || "";
   completionText.innerHTML = "";
 
-  const paragraph = document.createElement("p");
-  paragraph.textContent = completion.text;
-  completionText.append(paragraph);
+  if (completion.text) {
+    const paragraph = document.createElement("p");
+    paragraph.textContent = completion.text;
+    completionText.append(paragraph);
+  }
   if (isLesson4FingeringReminderLesson(lesson)) {
     const reminder = document.createElement("p");
     reminder.textContent = textFor().lesson4FingeringReminder;
     completionText.append(reminder);
   }
-  completionNext.textContent = localizedUiText(nextButtonText);
+  completionNext.textContent = textFor().tourNext;
   completionExtra.hidden = !isLesson4FingeringReminderLesson(lesson);
   completionExtra.textContent = textFor().openFingerMapAction;
-  setDialogCharacterImage(completionCharacter, imageSrc);
+  completionCharacter.hidden = !imageSrc;
+  if (imageSrc) setDialogCharacterImage(completionCharacter, imageSrc);
   completionCharacter.alt = "";
 }
 
@@ -760,6 +664,11 @@ function openCompletionDialog() {
   if (!completionDialog || completionDialog.open) return;
 
   const imageSrc = lessonCompletionAvatarSrcFor(currentPracticeModuleData());
+  const completion = currentLessonCompletion();
+  if (!imageSrc && !completion.text) {
+    goToNextLessonAfterCompletion();
+    return;
+  }
 
   renderCompletionDialog(imageSrc);
   completionDialog.showModal();
@@ -772,20 +681,20 @@ function closeCompletionDialog() {
 }
 
 function renderNextModuleDialog(lesson = currentPracticeModuleData()) {
-  nextModuleKicker.textContent = localizedUiText(nextModuleKickerText);
+  const storyboard = lessonStoryboardFor(lesson);
   nextModuleTitle.textContent = lesson.name || "";
-  nextModulePurpose.textContent = lesson.intro?.purpose || "";
-  nextModuleNext.textContent = localizedUiText(startNextModuleText);
-  setDialogCharacterImage(nextModuleCharacter, lessonTipAvatarSrcFor(lesson));
+  nextModulePurpose.textContent = storyboardStepEnabled(storyboard, "showNextModuleText")
+    ? localizedTextValue(storyboard.nextModuleText) || lesson.intro?.purpose || ""
+    : "";
+  nextModuleNext.textContent = textFor().startNextModule;
+  const imageSrc = lessonTipAvatarSrcFor(lesson);
+  nextModuleCharacter.hidden = !imageSrc;
+  if (imageSrc) setDialogCharacterImage(nextModuleCharacter, imageSrc);
   nextModuleCharacter.alt = "";
 }
 
 function openNextModuleDialog(lesson = currentPracticeModuleData()) {
-  if (!nextModuleDialog || nextModuleDialog.open) return;
-
-  renderNextModuleDialog(lesson);
-  nextModuleDialog.showModal();
-  updatePracticeTimerPauseState();
+  openCurrentLessonTip({ force: true });
 }
 
 function closeNextModuleDialog() {
@@ -811,188 +720,111 @@ function openFingerMapFromCompletionReminder() {
 }
 
 function goToNextLessonAfterCompletion() {
+  closeCompletionDialog();
+  const lesson = currentPracticeModuleData();
+  if (openOnboardingForTrigger("afterLesson", lesson?.id || "", {
+    onComplete: () => {
+      if (isFingeringTourAfterLesson(lesson)) {
+        startFingeringTourAfterLesson();
+        return;
+      }
+      advanceToNextPracticeLessonAfterCompletion();
+    }
+  })) return;
+
+  if (isFingeringTourAfterLesson()) {
+    startFingeringTourAfterLesson();
+    return;
+  }
+
+  advanceToNextPracticeLessonAfterCompletion();
+}
+
+function advanceToNextPracticeLessonAfterCompletion() {
   const language = currentLanguage;
   const moduleId = currentPracticeModule;
   const nextLessonId = nextPracticeLessonId(language, moduleId);
   const nextLesson = nextLessonId ? practiceModulesFor(language)[nextLessonId] : null;
 
-  closeCompletionDialog();
   if (nextLesson && !nextLesson.customPractice) {
     applySettings({ language, module: nextLessonId });
     renderModuleButtons();
-    openNextModuleDialog(nextLesson);
+    if (openOnboardingForTrigger("beforeLesson", nextLessonId, {
+      onComplete: () => openCurrentLessonTip({ force: true })
+    })) return;
+    openCurrentLessonTip({ force: true });
   }
 }
 
-const onboardingCopy = {
-  ru: {
-    start: "Пуск",
-    screens: [
-      {
-        paragraphs: [
-          "FlyKey — это тренажёр слепой печати.",
-          "FlyKey — преврати клавиатуру в продолжение твоих мыслей.",
-          "FlyKey — печатай легко, будто пальцы умеют летать."
-        ],
-        character: false
-      },
-      {
-        paragraphs: [
-          "Лёгкость, скорость и уверенность за клавиатурой тебя уже ждут."
-        ],
-        character: false
-      },
-      {
-        paragraphs: [
-          "Здесь ты не зубришь клавиши, а постепенно учишься печатать свободно: меньше смотреть вниз, меньше напрягаться и больше доверять пальцам."
-        ],
-        character: false
-      },
-      {
-        paragraphs: [
-          "Меня зовут Key. Я буду с тобой.",
-          "Твой маленький летающий помощник, который подсказывает, поддерживает и помогает не сбиться. Не строгий учитель, а напарник, с которым тренироваться проще и веселее."
-        ],
-        character: true
-      }
-    ]
-  },
-  uk: {
-    start: "Старт",
-    screens: [
-      {
-        paragraphs: [
-          "FlyKey — це тренажер сліпого друку.",
-          "FlyKey допомагає перетворити клавіатуру на продовження думок.",
-          "Друкуй легко, ніби пальці вже знають дорогу."
-        ],
-        character: false
-      },
-      {
-        paragraphs: [
-          "Легкість, швидкість і впевненість за клавіатурою вже чекають на тебе."
-        ],
-        character: false
-      },
-      {
-        paragraphs: [
-          "Тут ти не зубриш клавіші. Ти поступово вчишся друкувати вільно: менше дивитися вниз, менше напружуватися і більше довіряти пальцям."
-        ],
-        character: false
-      },
-      {
-        paragraphs: [
-          "Мене звати Key. Я буду поруч.",
-          "Твій маленький летючий помічник підказує, підтримує й допомагає не збиватися з ритму. Не суворий учитель, а напарник, з яким тренуватися легше."
-        ],
-        character: true
-      }
-    ]
-  },
-  kk: {
-    start: "Старт",
-    screens: [
-      {
-        paragraphs: [
-          "FlyKey — соқыр теруге арналған жаттықтырғыш.",
-          "FlyKey пернетақтаны ойыңыздың жалғасына айналдыруға көмектеседі.",
-          "Саусақтар жолды өзі білетіндей жеңіл теріңіз."
-        ],
-        character: false
-      },
-      {
-        paragraphs: [
-          "Пернетақтадағы жеңілдік, жылдамдық және сенімділік сізді күтіп тұр."
-        ],
-        character: false
-      },
-      {
-        paragraphs: [
-          "Мұнда пернелерді жаттап алмайсыз. Біртіндеп еркін теруді үйренесіз: төменге азырақ қарау, аз ширығу және саусақтарға көбірек сену."
-        ],
-        character: false
-      },
-      {
-        paragraphs: [
-          "Менің атым Key. Мен қасыңызда боламын.",
-          "Кішкентай ұшқыш көмекшіңіз кеңес береді, қолдайды және ырғақтан жаңылмауға көмектеседі. Қатал мұғалім емес, жаттығуды жеңілдететін серіктес."
-        ],
-        character: true
-      }
-    ]
-  },
-  de: {
-    start: "Start",
-    screens: [
-      {
-        paragraphs: [
-          "FlyKey ist ein Trainer für Blindtippen.",
-          "FlyKey - mach die Tastatur zu einer Erweiterung deiner Gedanken.",
-          "FlyKey - tippe leicht, als könnten deine Finger fliegen."
-        ],
-        character: false
-      },
-      {
-        paragraphs: [
-          "Leichtigkeit, Geschwindigkeit und Sicherheit an der Tastatur warten schon auf dich."
-        ],
-        character: false
-      },
-      {
-        paragraphs: [
-          "Hier paukst du keine Tasten. Du lernst Schritt für Schritt, frei zu tippen: weniger nach unten schauen, weniger verkrampfen und den Fingern mehr vertrauen."
-        ],
-        character: false
-      },
-      {
-        paragraphs: [
-          "Ich heiße Key. Ich begleite dich.",
-          "Dein kleiner fliegender Helfer, der dir Hinweise gibt, dich unterstützt und dir hilft, nicht aus dem Rhythmus zu kommen. Kein strenger Lehrer, sondern ein Partner, mit dem das Training leichter und fröhlicher wird."
-        ],
-        character: true
-      }
-    ]
-  },
-  en: {
-    start: "Start",
-    screens: [
-      {
-        paragraphs: [
-          "FlyKey is a touch typing trainer.",
-          "FlyKey - turn the keyboard into an extension of your thoughts.",
-          "FlyKey - type lightly, as if your fingers could fly."
-        ],
-        character: false
-      },
-      {
-        paragraphs: [
-          "Ease, speed, and confidence at the keyboard are already waiting for you."
-        ],
-        character: false
-      },
-      {
-        paragraphs: [
-          "Here you do not memorize keys by force. You gradually learn to type freely: look down less, tense up less, and trust your fingers more."
-        ],
-        character: false
-      },
-      {
-        paragraphs: [
-          "My name is Key. I will be with you.",
-          "Your small flying helper gives you hints, supports you, and helps you stay on track. Not a strict teacher, but a teammate who makes training easier and more fun."
-        ],
-        character: true
-      }
-    ]
-  }
-};
+function screenStoryboardCopy(storyboard) {
+  const screens = Array.isArray(storyboard?.screens)
+    ? storyboard.screens
+      .filter(screen => screen.visible !== false)
+      .map(screen => {
+        const text = localizedTextValue(screen.text);
+        return {
+          id: screen.id || "",
+          trigger: screen.trigger || {},
+          paragraphs: text ? text.split("\n").map(line => line.trim()).filter(Boolean) : [],
+          image: screen.showImage === false ? "" : screen.image || "",
+          character: screen.showImage !== false && Boolean(screen.image)
+        };
+      })
+      .filter(screen => screen.paragraphs.length || screen.image)
+    : [];
 
-function currentOnboardingCopy() {
-  return onboardingCopy[currentLanguage] || onboardingCopy.en || onboardingCopy.ru;
+  return screens;
+}
+
+function currentWelcomeCopy() {
+  const defaultCopy = textFor().onboarding;
+  const storyboardScreens = screenStoryboardCopy(welcomeStoryboard());
+
+  return {
+    ...defaultCopy,
+    screens: storyboardScreens.length ? storyboardScreens : defaultCopy.screens
+  };
+}
+
+function onboardingEventScreensForTrigger(triggerType, lessonId = "") {
+  return screenStoryboardCopy(onboardingStoryboard()).filter(screen => {
+    const trigger = screen.trigger || {};
+    const type = trigger.type || "manual";
+    const triggerLessonId = trigger.lessonId || "";
+    if (type !== triggerType) return false;
+    if (shownOnboardingEventIds.has(screen.id)) return false;
+    if ((type === "beforeLesson" || type === "afterLesson") && triggerLessonId && triggerLessonId !== lessonId) return false;
+    return true;
+  });
+}
+
+function openOnboardingFlow(copy, flow = {}) {
+  if (!onboardingDialog || onboardingDialog.open || !copy?.screens?.length) return false;
+  activeOnboardingFlow = { ...flow, copy };
+  onboardingStepIndex = 0;
+  renderOnboardingDialog();
+  onboardingDialog.show();
+  updatePracticeTimerPauseState();
+  return true;
+}
+
+function openOnboardingForTrigger(triggerType, lessonId = "", { onComplete } = {}) {
+  const screens = onboardingEventScreensForTrigger(triggerType, lessonId);
+  if (!screens.length) return false;
+
+  const defaultCopy = textFor().onboarding;
+  return openOnboardingFlow({
+    ...defaultCopy,
+    screens
+  }, {
+    type: "event",
+    eventIds: screens.map(screen => screen.id).filter(Boolean),
+    onComplete
+  });
 }
 
 function renderOnboardingDialog() {
-  const copy = currentOnboardingCopy();
+  const copy = activeOnboardingFlow?.copy || currentWelcomeCopy();
   const screen = copy.screens[onboardingStepIndex] || copy.screens[0];
 
   onboardingText.innerHTML = "";
@@ -1004,33 +836,52 @@ function renderOnboardingDialog() {
 
   onboardingNext.textContent = onboardingStepIndex >= copy.screens.length - 1
     ? copy.start
-    : localizedUiText(nextButtonText);
+    : textFor().tourNext;
   onboardingCharacter.hidden = !screen.character;
-  onboardingDialog.classList.toggle("onboarding-with-character", screen.character);
+  if (screen.image) setDialogCharacterImage(onboardingCharacter, keyAssetSrc(screen.image));
+  onboardingDialog.classList.toggle("onboarding-with-character", Boolean(screen.character));
 }
 
 function openOnboardingIfNeeded() {
   if (onboardingCompleted || !onboardingDialog || onboardingDialog.open) return false;
 
-  onboardingStepIndex = 0;
-  renderOnboardingDialog();
-  onboardingDialog.show();
-  updatePracticeTimerPauseState();
-  return true;
+  const copy = currentWelcomeCopy();
+  if (!copy.screens.length) {
+    completeOnboarding();
+    return false;
+  }
+
+  return openOnboardingFlow(copy, {
+    type: "welcome",
+    onComplete: () => {
+      if (!openOnboardingForTrigger("firstLaunch", "", {
+        onComplete: () => openCurrentLessonTip({ force: true })
+      })) {
+        openCurrentLessonTip({ force: true });
+      }
+    }
+  });
 }
 
 function completeOnboarding() {
-  onboardingCompleted = true;
-  saved.onboardingCompleted = true;
+  const flow = activeOnboardingFlow;
+  if (flow?.type === "event") {
+    (flow.eventIds || []).forEach(id => shownOnboardingEventIds.add(id));
+    saved.shownOnboardingEventIds = Array.from(shownOnboardingEventIds);
+  } else {
+    onboardingCompleted = true;
+    saved.onboardingCompleted = true;
+  }
+  activeOnboardingFlow = null;
   persist();
   onboardingDialog.close();
-  openCurrentLessonTip({ force: true });
+  flow?.onComplete?.();
 }
 
 function advanceOnboarding() {
   if (!onboardingDialog?.open) return;
 
-  const copy = currentOnboardingCopy();
+  const copy = activeOnboardingFlow?.copy || currentWelcomeCopy();
   if (onboardingStepIndex < copy.screens.length - 1) {
     onboardingStepIndex += 1;
     renderOnboardingDialog();
@@ -1041,13 +892,11 @@ function advanceOnboarding() {
 }
 
 function isAssistantDisabledTestLesson(lesson = currentPracticeModuleData()) {
-  const lessonName = String(lesson?.name || "").toLowerCase();
-
-  return /_5$/.test(String(lesson?.id || "")) && /test|тест/.test(lessonName);
+  return /_5$/.test(String(lesson?.id || ""));
 }
 
 function currentPracticeAssistantsEnabled() {
-  return !isAssistantDisabledTestLesson();
+  return !isAssistantDisabledTestLesson() && !(alternateLinesEnabled && practiceAlternateLineRepeat);
 }
 
 function effectiveAssistantSetting(value) {
@@ -1071,7 +920,7 @@ function isDevCompletePracticeLineHotkey(event) {
   return (
     devCompletePracticeLineHotkeyEnabled &&
     event.key === "ArrowDown" &&
-    devCompletePracticeLineShiftCodes.has("ShiftRight")
+    (event.shiftKey || devCompletePracticeLineShiftCodes.has("ShiftRight"))
   );
 }
 
@@ -1155,7 +1004,7 @@ function ensurePracticeSessionStarted() {
     practicePausedAt = 0;
     practicePausedDurationMs = 0;
     practiceAssistantsUsed = visiblePracticeAssistantsEnabled();
-    practiceMetronomeUsed = metronomeBpm > 0;
+    practiceMetronomeUsed = isMetronomeActive();
   } else if (visiblePracticeAssistantsEnabled()) {
     practiceAssistantsUsed = true;
   }
@@ -1176,7 +1025,7 @@ function currentPracticeMetronomeAccuracy() {
 }
 
 function recordPracticeMetronomeInput(count = 1) {
-  if (metronomeBpm <= 0 || !practiceSessionStartedAt) return;
+  if (!isMetronomeActive() || !practiceSessionStartedAt) return;
 
   practiceMetronomeUsed = true;
   const intervalMs = 60000 / metronomeBpm;
@@ -1442,10 +1291,12 @@ function renderPracticeLine() {
     practiceLineIndex = Math.min(practiceLineIndex, lines.length - 1);
   } else {
     practiceLineIndex = 0;
+    practiceAlternateLineRepeat = false;
   }
   practiceLastMatchedIndex = 0;
   resetPracticeInputValue();
   renderCurrentPracticeSampleText();
+  renderPracticeModuleCaption();
   renderPracticeStats();
   renderPracticeProgress();
   renderKeyboard();
@@ -1453,14 +1304,21 @@ function renderPracticeLine() {
 
 function advancePracticeLine() {
   const totalLines = currentPracticeLines().length;
-  const lineStep = alternateLinesEnabled ? 2 : 1;
-  const nextCompletedLines = Math.min(practiceCompletedLines + lineStep, totalLines);
+  const shouldRepeatWithoutAssistants = alternateLinesEnabled && !practiceAlternateLineRepeat;
+  const nextCompletedLines = shouldRepeatWithoutAssistants
+    ? practiceCompletedLines
+    : Math.min(practiceCompletedLines + 1, totalLines);
   const isComplete = nextCompletedLines >= totalLines;
+  const nextAlternateLineRepeat = shouldRepeatWithoutAssistants && !isComplete;
 
   practiceCompletedLines = nextCompletedLines;
   practiceLineIndex = isComplete
     ? Math.max(totalLines - 1, 0)
-    : Math.min(practiceLineIndex + lineStep, totalLines - 1);
+    : nextAlternateLineRepeat
+      ? practiceLineIndex
+      : Math.min(practiceLineIndex + 1, totalLines - 1);
+  practiceAlternateLineRepeat = nextAlternateLineRepeat;
+  updateMetronome();
 
   const nextProgress = persistModuleProgress(currentLanguage, currentPracticeModule, {
     currentLine: isComplete ? totalLines : practiceLineIndex,
@@ -1468,6 +1326,7 @@ function advancePracticeLine() {
     accuracy: currentPracticeAccuracy(),
     speed: currentPracticeSpeed(),
     assistantsUsed: practiceAssistantsUsed,
+    alternateLineRepeat: practiceAlternateLineRepeat,
     metronomeAccuracy: currentPracticeMetronomeAccuracy()
   });
 
@@ -1592,6 +1451,21 @@ function isPracticeInputPaused() {
   );
 }
 
+function isDevCompletePracticeLinePaused() {
+  return (
+    fingeringTourActive ||
+    onboardingDialog.open ||
+    settingsDialog.open ||
+    lessonTipDialog.open ||
+    completionDialog.open ||
+    nextModuleDialog.open ||
+    learningProgramDialog.open ||
+    customPracticeDialog.open ||
+    statsDialog.open ||
+    helpDialog.open
+  );
+}
+
 function isSystemKeyCombination(event) {
   if (event.altKey) return true;
   return event.metaKey || event.ctrlKey;
@@ -1700,16 +1574,22 @@ function handleGlobalKeyDown(event) {
     devCompletePracticeLineShiftCodes.add(event.code);
   }
 
-  if (event.defaultPrevented || event.isComposing || isPracticeInputPaused()) return;
-
-  const target = event.target;
-  if (isTrainerTextEntryTarget(target)) return;
-
-  if (isDevCompletePracticeLineHotkey(event)) {
+  if (
+    !event.defaultPrevented &&
+    !event.isComposing &&
+    isDevCompletePracticeLineHotkey(event) &&
+    !isDevCompletePracticeLinePaused() &&
+    !isTrainerTextEntryTarget(event.target)
+  ) {
     event.preventDefault();
     completeCurrentPracticeLineForDev();
     return;
   }
+
+  if (event.defaultPrevented || event.isComposing || isPracticeInputPaused()) return;
+
+  const target = event.target;
+  if (isTrainerTextEntryTarget(target)) return;
 
   if (isSystemKeyCombination(event)) return;
 

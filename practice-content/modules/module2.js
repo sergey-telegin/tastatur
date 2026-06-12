@@ -1,7 +1,7 @@
 window.PRACTICE_CONTENT_SOURCE.modules = window.PRACTICE_CONTENT_SOURCE.modules || [];
 window.PRACTICE_CONTENT_SOURCE.modules.push({
   id: "module2",
-  title: { ru: "Module 2 — Центр", de: "Modul 2 — Zentrum", en: "Module 2 — Center" },
+  title: { ru: "Модуль 2 — Центр", de: "Modul 2 — Zentrum", en: "Module 2 — Center" },
   symbols: {
     ru: ["к", "е", "а", "п", "г", "н", "о", "р", "м", "и", "т", "ь"],
     de: ["r", "t", "f", "g", "u", "z", "j", "h", "v", "b", "n", "m"],
@@ -28,7 +28,8 @@ window.PRACTICE_CONTENT_SOURCE.modules.push({
         de: ["r", "t", "f", "g"],
         en: ["r", "t", "f", "g"]
       },
-      target: { lines: 10, accuracy: 90, speedMax: 120 },
+      content: { lineCount: 10 },
+      scoring: { accuracy: 90, speedMax: 120 },
       lines: {
         ru: [
           "кеап кеап кеап кеап апек апек паке паке кеап апек паке кеап апек паке кеап кеап апек паке кеап апек паке кеап кеап кеап кеап кеап",
@@ -88,7 +89,8 @@ window.PRACTICE_CONTENT_SOURCE.modules.push({
         de: ["u", "z", "j", "h"],
         en: ["u", "y", "j", "h"]
       },
-      target: { lines: 10, accuracy: 90, speedMax: 120 },
+      content: { lineCount: 10 },
+        scoring: { accuracy: 90, speedMax: 120 },
       lines: {
         ru: [
           "гнор гнор гнор гнор ронг ронг огнр огнр гнор ронг огнр гнор ронг огнр гнор гнор ронг огнр гнор ронг огнр гнор гнор гнор гнор гнор",
@@ -110,7 +112,7 @@ window.PRACTICE_CONTENT_SOURCE.modules.push({
           "uhj zjh juh hzu uhj zjh juh hzu uhj zjh juh hzu uhj zjh juh hzu uhj zjh juh hzu uhj zjh juh hzu uhj zjh juh hzu uhj zjh juh hzu",
           "uuu zzz jjj hhh uuu zzz jjj hhh uuu zzz jjj hhh uuu zzz jjj hhh uuu zzz jjj hhh uuu zzz jjj hhh uuu zzz jjj hhh uuu zzz jjj hhh",
           "huuj zjjh jhhu huuj zjjh jhhu huuj zjjh jhhu huuj zjjh jhhu huuj zjjh jhhu huuj zjjh jhhu huuj huuj zjjh jhhu huuj zjjh jhhu huuj",
-          "uju zjz hjh joj uju zjz hjh joj uju zjz hjh joj uju zjz hjh joj uju zjz hjh joj uju zjz hjh uju zjz hjh joj uju zjz hjh joj uju",
+          "uju zjz hjh jhj uju zjz hjh jhj uju zjz hjh jhj uju zjz hjh jhj uju zjz hjh jhj uju zjz hjh uju zjz hjh jhj uju zjz hjh jhj uju",
           "uhu zjz jhh uju uhu zjz jhh uju uhu zjz jhh uju uhu zjz jhh uju uhu zjz jhh uju uhu zjz jhh uhu zjz jhh uju uhu zjz jhh uju uhu",
           "uzjhuzjh hjzuhjzu juzhjuzh uzjhuzjh hjzuhjzu juzhjuzh uzjhuzjh hjzuhjzu juzhjuzh uzjhuzjh uzjhuzjh hjzuhjzu juzhjuzh uzjhuzjh"
         ],
@@ -122,7 +124,7 @@ window.PRACTICE_CONTENT_SOURCE.modules.push({
           "uhj yjh juh hyu uhj yjh juh hyu uhj yjh juh hyu uhj yjh juh hyu uhj yjh juh hyu uhj yjh juh hyu uhj yjh juh hyu uhj yjh juh hyu",
           "uuu yyy jjj hhh uuu yyy jjj hhh uuu yyy jjj hhh uuu yyy jjj hhh uuu yyy jjj hhh uuu yyy jjj hhh uuu yyy jjj hhh uuu yyy jjj hhh",
           "huuj yjjh jhhu huuj yjjh jhhu huuj yjjh jhhu huuj yjjh jhhu huuj yjjh jhhu huuj yjjh jhhu huuj huuj yjjh jhhu huuj yjjh jhhu huuj",
-          "uju yjy hjh joj uju yjy hjh joj uju yjy hjh joj uju yjy hjh joj uju yjy hjh joj uju yjy hjh uju yjy hjh joj uju yjy hjh joj uju",
+          "uju yjy hjh jhj uju yjy hjh jhj uju yjy hjh jhj uju yjy hjh jhj uju yjy hjh jhj uju yjy hjh uju yjy hjh jhj uju yjy hjh jhj uju",
           "uhu yjy jhh uju uhu yjy jhh uju uhu yjy jhh uju uhu yjy jhh uju uhu yjy jhh uju uhu yjy jhh uhu yjy jhh uju uhu yjy jhh uju uhu",
           "uyjhuyjh hjyuhjyu juyhjuyh uyjhuyjh hjyuhjyu juyhjuyh uyjhuyjh hjyuhjyu juyhjuyh uyjhuyjh uyjhuyjh hjyuhjyu juyhjuyh uyjhuyjh"
         ]
@@ -148,7 +150,8 @@ window.PRACTICE_CONTENT_SOURCE.modules.push({
         de: ["v", "b", "n", "m"],
         en: ["v", "b", "n", "m"]
       },
-      target: { lines: 10, accuracy: 90, speedMax: 120 },
+      content: { lineCount: 10 },
+        scoring: { accuracy: 90, speedMax: 120 },
       lines: {
         ru: [
           "мить мить мить мить ьтим ьтим имть имть мить ьтим имть мить ьтим имть мить мить ьтим имть мить ьтим имть мить мить мить мить мить",
@@ -208,7 +211,8 @@ window.PRACTICE_CONTENT_SOURCE.modules.push({
         de: ["r", "t", "f", "g", "u", "z", "j", "h", "v", "b", "n", "m"],
         en: ["r", "t", "f", "g", "u", "y", "j", "h", "v", "b", "n", "m"]
       },
-      target: { lines: 10, accuracy: 90, speed: 40 },
+      content: { lineCount: 10 },
+        scoring: { accuracy: 90, speed: 40 },
       lines: {
         ru: [
           "мама папа тема кит мир тир рот тон гора нора нить книга мама папа тема кит мир тир рот тон гора нора нить книга",
@@ -223,28 +227,28 @@ window.PRACTICE_CONTENT_SOURCE.modules.push({
           "мама папа тема кит мир тир рот тон гора нора нить книга мама папа тема кит мир тир рот тон гора нора мама папа тема кит мир тир"
         ],
         de: [
-          "rat gut rot ton mut rum nur hut fern form gern gurt rat gut rot ton mut rum nur hut fern form gern gurt rat gut rot ton mut rum",
-          "form fern gern gurt rat gut rot ton mut rum nur hut form fern gern gurt rat gut rot ton mut rum form fern gern gurt rat gut rot",
-          "mut rum nur hut rot ton rat gut fern form gern gurt mut rum nur hut rot ton rat gut fern form mut rum nur hut rot ton rat gut",
-          "rat gut fern form gern gurt mut rum nur hut rot ton rat gut fern form gern gurt mut rum nur hut rat gut fern form gern gurt mut",
-          "gurt gern form fern hut nur rum mut ton rot gut rat gurt gern form fern hut nur rum mut ton rot gurt gern form fern hut nur rum",
-          "rat rat gut gut rot rot ton ton mut mut rum rum nur nur hut hut fern fern form form rat rat gut gut rot rot ton ton mut mut rum",
-          "fern form gern gurt rat gut rot ton mut rum nur hut fern form gern gurt rat gut rot ton mut fern form gern gurt rat gut rot ton",
-          "rot ton mut rum nur hut fern form gern gurt rat gut rot ton mut rum nur hut fern form gern rot ton mut rum nur hut fern form gern",
-          "ton rot gut rat gurt gern form fern hut nur rum mut ton rot gut rat gurt gern form fern hut ton rot gut rat gurt gern form fern",
-          "rat gut rot ton mut rum nur hut fern form gern gurt rat gut rot ton mut rum nur hut fern form rat gut rot ton mut rum nur hut"
+          "rat gut rat tun mut rum nur hut gurt rum gurt gurt rat gut rat tun mut rum nur hut gurt rum gurt gurt rat gut rat tun mut rum",
+          "rum gurt gurt gurt rat gut rat tun mut rum nur hut rum gurt gurt gurt rat gut rat tun mut rum rum gurt gurt gurt rat gut rat",
+          "mut rum nur hut rat tun rat gut gurt rum gurt gurt mut rum nur hut rat tun rat gut gurt rum mut rum nur hut rat tun rat gut",
+          "rat gut gurt rum gurt gurt mut rum nur hut rat tun rat gut gurt rum gurt gurt mut rum nur hut rat gut gurt rum gurt gurt mut",
+          "gurt gurt rum gurt hut nur rum mut tun rat gut rat gurt gurt rum gurt hut nur rum mut tun rat gurt gurt rum gurt hut nur rum",
+          "rat rat gut gut rat rat tun tun mut mut rum rum nur nur hut hut gurt gurt rum rum rat rat gut gut rat rat tun tun mut mut rum",
+          "gurt rum gurt gurt rat gut rat tun mut rum nur hut gurt rum gurt gurt rat gut rat tun mut gurt rum gurt gurt rat gut rat tun",
+          "rat tun mut rum nur hut gurt rum gurt gurt rat gut rat tun mut rum nur hut gurt rum gurt rat tun mut rum nur hut gurt rum gurt",
+          "tun rat gut rat gurt gurt rum gurt hut nur rum mut tun rat gut rat gurt gurt rum gurt hut tun rat gut rat gurt gurt rum gurt",
+          "rat gut rat tun mut rum nur hut gurt rum gurt gurt rat gut rat tun mut rum nur hut gurt rum rat gut rat tun mut rum nur hut"
         ],
         en: [
-          "run rug hut hum turn burn hurt hunt front form grunt run rug hut hum turn burn hurt hunt front form grunt run rug hut hum turn",
-          "form front grunt turn run rug hut hum burn hurt hunt form front grunt turn run rug hut hum burn hurt form front grunt turn run",
-          "hum run hurt hunt turn burn rug hut front form grunt hum run hurt hunt turn burn rug hut front form hum run hurt hunt turn burn",
-          "run rug front form grunt turn burn hum hut hurt hunt run rug front form grunt turn burn hum hut hurt run rug front form grunt",
-          "grunt front form hut hunt hurt burn turn rug run hum grunt front form hut hunt hurt burn turn rug run grunt front form hut hunt",
-          "run run rug rug hut hut hum hum turn turn burn burn hurt hurt hunt hunt front front form form run run rug rug hut hut hum hum",
-          "front form grunt run rug hut hum turn burn hurt hunt front form grunt run rug hut hum turn burn front form grunt run rug hut hum",
-          "hurt hunt turn burn hum hut front form grunt run rug hurt hunt turn burn hum hut front form grunt hurt hunt turn burn hum hut",
-          "hunt hurt burn turn hum hut rug run front form grunt hunt hurt burn turn hum hut rug run front hunt hurt burn turn hum hut rug",
-          "run rug hut hum turn burn hurt hunt front form grunt run rug hut hum turn burn hurt hunt front run rug hut hum turn burn hurt"
+          "run rug hut hum turn burn hurt hunt grunt rum grunt run rug hut hum turn burn hurt hunt grunt rum grunt run rug hut hum turn",
+          "rum grunt grunt turn run rug hut hum burn hurt hunt rum grunt grunt turn run rug hut hum burn hurt rum grunt grunt turn run",
+          "hum run hurt hunt turn burn rug hut grunt rum grunt hum run hurt hunt turn burn rug hut grunt rum hum run hurt hunt turn burn",
+          "run rug grunt rum grunt turn burn hum hut hurt hunt run rug grunt rum grunt turn burn hum hut hurt run rug grunt rum grunt",
+          "grunt grunt rum hut hunt hurt burn turn rug run hum grunt grunt rum hut hunt hurt burn turn rug run grunt grunt rum hut hunt",
+          "run run rug rug hut hut hum hum turn turn burn burn hurt hurt hunt hunt grunt grunt rum rum run run rug rug hut hut hum hum",
+          "grunt rum grunt run rug hut hum turn burn hurt hunt grunt rum grunt run rug hut hum turn burn grunt rum grunt run rug hut hum",
+          "hurt hunt turn burn hum hut grunt rum grunt run rug hurt hunt turn burn hum hut grunt rum grunt hurt hunt turn burn hum hut",
+          "hunt hurt burn turn hum hut rug run grunt rum grunt hunt hurt burn turn hum hut rug run grunt hunt hurt burn turn hum hut rug",
+          "run rug hut hum turn burn hurt hunt grunt rum grunt run rug hut hum turn burn hurt hunt grunt run rug hut hum turn burn hurt"
         ]
       }
     },
@@ -268,7 +272,8 @@ window.PRACTICE_CONTENT_SOURCE.modules.push({
         de: ["a", "s", "d", "f", "j", "k", "l", "ö", "ä", "r", "t", "g", "u", "z", "h", "v", "b", "n", "m"],
         en: ["a", "s", "d", "f", "j", "k", "l", "r", "t", "g", "u", "y", "h", "v", "b", "n", "m"]
       },
-      target: { lines: 15, accuracy: 90, speed: 40, assistants: false },
+      content: { lineCount: 15 },
+        scoring: { accuracy: 90, speed: 40, assistants: false },
       lines: {
         ru: [
           "мама папа тема вода лава жало овал книга нора гора мир тир рот тон вдова элла эд мама папа тема вода мама папа тема вода лава",
@@ -288,35 +293,35 @@ window.PRACTICE_CONTENT_SOURCE.modules.push({
           "мама папа тема вода лава жало овал книга нора гора мир тир рот тон фыва олджэ кеап гнор мама папа тема вода лава жало овал книга"
         ],
         de: [
-          "rat gut rot ton mut rum nur hut als das falls lass fass saal fern form gern gurt rat gut rot ton rat gut rot ton mut rum nur hut",
-          "asdf jklöä rtfg uzjh vbnm rat gut rot ton mut rum nur hut fern form gern gurt asdf jklöä asdf jklöä rtfg uzjh vbnm rat gut rot",
-          "fass lass saal fall als das da rat gut rot ton mut rum nur hut fern form gern gurt fass lass fass lass saal fall als das da rat",
-          "a s d f j k l ö ä r t g u z h v b n m rat gut rot ton mut rum nur hut a s d f j k l ö ä r t g u z h v b n m rat gut rot ton mut",
-          "rat gut fern form gern gurt mut rum nur hut rot ton als das falls lass fass saal da fall rat gut fern form gern gurt mut rum nur",
-          "als das falls lass fass saal da fall rat gut rot ton mut rum nur hut fern form gern gurt als das falls lass fass saal da fall rat",
-          "rtfg uzjh vbnm asdf jklöä rtfg uzjh vbnm asdf jklöä rat gut rot ton mut rum nur hut rtfg uzjh vbnm asdf jklöä rtfg uzjh vbnm asdf",
-          "rat rat gut gut rot rot ton ton mut mut rum rum nur nur hut hut fern fern form form rat rat gut gut rot rot ton ton mut mut rum",
-          "fern form gern gurt rat gut rot ton mut rum nur hut als das falls lass fass saal da fern form gern gurt rat gut rot ton mut rum",
-          "asdfjklöä rtfguzjh vbnmvbnm adsfälökj rat gut rot ton mut rum nur hut fern form gern asdfjklöä rtfguzjh vbnmvbnm adsfälökj rat",
-          "fass lass saal fall da als asdf jklöä rat gut rot ton mut rum nur hut fern form gern fass lass saal fall da als asdf jklöä rat",
-          "fall falls als das lass fass saal da fern form gern gurt rat gut rot ton mut rum fall falls als das lass fass saal da fern form",
-          "saal da als das falls lass fass fall rtfg uzjh vbnm rat gut rot ton mut rum saal da als das falls lass fass fall rtfg uzjh vbnm",
-          "jklöä asdf rtfg uzjh vbnm als das falls lass fass saal da fall rat gut rot jklöä asdf rtfg uzjh vbnm als das falls lass fass saal",
-          "rat gut rot ton mut rum nur hut als das falls lass fass saal asdf jklöä rtfg uzjh rat gut rot ton mut rum nur hut als das falls"
+          "rat gut rat tun mut rum nur hut als das falls lass fass saal gurt rum gurt gurt rat gut rat tun rat gut rat tun mut rum nur hut",
+          "asdf jklöä rtfg uzjh vbnm rat gut rat tun mut rum nur hut gurt rum gurt gurt asdf jklöä asdf jklöä rtfg uzjh vbnm rat gut rat",
+          "fass lass saal fall als das da rat gut rat tun mut rum nur hut gurt rum gurt gurt fass lass fass lass saal fall als das da rat",
+          "a s d f j k l ö ä r t g u z h v b n m rat gut rat tun mut rum nur hut a s d f j k l ö ä r t g u z h v b n m rat gut rat tun mut",
+          "rat gut gurt rum gurt gurt mut rum nur hut rat tun als das falls lass fass saal da fall rat gut gurt rum gurt gurt mut rum nur",
+          "als das falls lass fass saal da fall rat gut rat tun mut rum nur hut gurt rum gurt gurt als das falls lass fass saal da fall rat",
+          "rtfg uzjh vbnm asdf jklöä rtfg uzjh vbnm asdf jklöä rat gut rat tun mut rum nur hut rtfg uzjh vbnm asdf jklöä rtfg uzjh vbnm asdf",
+          "rat rat gut gut rat rat tun tun mut mut rum rum nur nur hut hut gurt gurt rum rum rat rat gut gut rat rat tun tun mut mut rum",
+          "gurt rum gurt gurt rat gut rat tun mut rum nur hut als das falls lass fass saal da gurt rum gurt gurt rat gut rat tun mut rum",
+          "asdfjklöä rtfguzjh vbnmvbnm adsfälökj rat gut rat tun mut rum nur hut gurt rum gurt asdfjklöä rtfguzjh vbnmvbnm adsfälökj rat",
+          "fass lass saal fall da als asdf jklöä rat gut rat tun mut rum nur hut gurt rum gurt fass lass saal fall da als asdf jklöä rat",
+          "fall falls als das lass fass saal da gurt rum gurt gurt rat gut rat tun mut rum fall falls als das lass fass saal da gurt rum",
+          "saal da als das falls lass fass fall rtfg uzjh vbnm rat gut rat tun mut rum saal da als das falls lass fass fall rtfg uzjh vbnm",
+          "jklöä asdf rtfg uzjh vbnm als das falls lass fass saal da fall rat gut rat jklöä asdf rtfg uzjh vbnm als das falls lass fass saal",
+          "rat gut rat tun mut rum nur hut als das falls lass fass saal asdf jklöä rtfg uzjh rat gut rat tun mut rum nur hut als das falls"
         ],
         en: [
-          "run rug hut hum turn burn hurt hunt all sad dad ask fall lass front form grunt run rug hut hum run rug hut hum turn burn hurt",
-          "asdf jkl rtfg uyjh vbnm run rug hut hum turn burn hurt hunt front form grunt asdf jkl asdf jkl rtfg uyjh vbnm run rug hut",
-          "fall lass flask glass all sad dad run rug hut hum turn burn hurt hunt front form grunt fall lass fall lass flask glass all sad",
+          "run rug hut hum turn burn hurt hunt all sad dad ask fall lass grunt rum grunt run rug hut hum run rug hut hum turn burn hurt",
+          "asdf jkl rtfg uyjh vbnm run rug hut hum turn burn hurt hunt grunt rum grunt asdf jkl asdf jkl rtfg uyjh vbnm run rug hut",
+          "fall lass flask glass all sad dad run rug hut hum turn burn hurt hunt grunt rum grunt fall lass fall lass flask glass all sad",
           "a s d f j k l r t g u y h v b n m run rug hut hum turn burn a s d f j k l r t g u y h v b n m run rug hut hum turn burn",
-          "run rug front form grunt turn burn hum hut hurt hunt all sad dad ask fall lass flask lads glass run rug front form grunt turn",
-          "all sad dad ask fall lass flask lads glass add run rug hut hum turn burn hurt hunt front form all sad dad ask fall lass flask",
+          "run rug grunt rum grunt turn burn hum hut hurt hunt all sad dad ask fall lass flask lads glass run rug grunt rum grunt turn",
+          "all sad dad ask fall lass flask lads glass add run rug hut hum turn burn hurt hunt grunt rum all sad dad ask fall lass flask",
           "rtfg uyjh vbnm asdf jkl rtfg uyjh vbnm asdf jkl run rug hut hum turn burn hurt rtfg uyjh vbnm asdf jkl rtfg uyjh vbnm asdf",
-          "run run rug rug hut hut hum hum turn turn burn burn hurt hurt hunt hunt front front form form run run rug rug hut hut hum hum",
-          "front form grunt run rug hut hum turn burn hurt hunt all sad dad ask fall lass flask lads front form grunt run rug hut hum turn",
-          "asdfjkl rtfguyjh vbnmvbnm adsf lkj run rug hut hum turn burn hurt hunt front form grunt asdfjkl rtfguyjh vbnmvbnm adsf lkj",
-          "fall lass flask glass add all asdf jkl run rug hut hum turn burn hurt hunt front form fall lass flask glass add all asdf jkl",
-          "lads fall lass flask glass add front form grunt run rug hut hum turn burn hurt hunt lads fall lass flask glass add front form",
+          "run run rug rug hut hut hum hum turn turn burn burn hurt hurt hunt hunt grunt grunt rum rum run run rug rug hut hut hum hum",
+          "grunt rum grunt run rug hut hum turn burn hurt hunt all sad dad ask fall lass flask lads grunt rum grunt run rug hut hum turn",
+          "asdfjkl rtfguyjh vbnmvbnm adsf lkj run rug hut hum turn burn hurt hunt grunt rum grunt asdfjkl rtfguyjh vbnmvbnm adsf lkj",
+          "fall lass flask glass add all asdf jkl run rug hut hum turn burn hurt hunt grunt rum fall lass flask glass add all asdf jkl",
+          "lads fall lass flask glass add grunt rum grunt run rug hut hum turn burn hurt hunt lads fall lass flask glass add grunt rum",
           "glass add all sad dad ask fall lass rtfg uyjh vbnm run rug hut hum turn burn glass add all sad dad ask fall lass rtfg uyjh vbnm",
           "jkl asdf rtfg uyjh vbnm all sad dad ask fall lass flask lads run rug hut jkl asdf rtfg uyjh vbnm all sad dad ask fall lass",
           "run rug hut hum turn burn hurt hunt all sad dad ask fall lass asdf jkl rtfg uyjh run rug hut hum turn burn hurt hunt all sad"

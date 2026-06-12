@@ -11,6 +11,7 @@ const sourceFiles = [
   "practice-content/content-version.js",
   "practice-content.js",
   ...moduleFiles,
+  "practice-content/storyboard.js",
   "app/practice-content-builder.js",
   "app/content-provider.js"
 ];
@@ -37,11 +38,38 @@ function createBuildContext() {
   });
 }
 
-function keyImageFiles() {
+function keyImageFileExists(fileName) {
   const keyImageDir = path.join(rootDir, "assets", "key");
-  return fs.readdirSync(keyImageDir)
-    .filter(file => /\.(png|webp)$/i.test(file))
-    .sort();
+  return fs.existsSync(path.join(keyImageDir, fileName));
+}
+
+function addKeyImageFile(files, fileName) {
+  if (typeof fileName !== "string") return;
+  const normalized = fileName.trim();
+  if (!normalized || !/\.(png|webp)$/i.test(normalized)) return;
+  if (!keyImageFileExists(normalized)) {
+    throw new Error(`Referenced key image is missing: ${normalized}`);
+  }
+  files.add(normalized);
+}
+
+function referencedKeyImageFiles(bundle) {
+  const files = new Set();
+
+  (bundle.welcomeStoryboard?.screens || []).forEach(screen => addKeyImageFile(files, screen.image));
+  (bundle.onboardingStoryboard?.screens || []).forEach(screen => addKeyImageFile(files, screen.image));
+  Object.values(bundle.storyboard || {}).forEach(entry => {
+    addKeyImageFile(files, entry?.introImage);
+    addKeyImageFile(files, entry?.completionImage);
+  });
+  (bundle.modules || []).forEach(module => {
+    (module.lessons || []).forEach(lesson => {
+      addKeyImageFile(files, lesson.introImage);
+      addKeyImageFile(files, lesson.completionImage);
+    });
+  });
+
+  return Array.from(files).sort();
 }
 
 function buildContentBundle() {
@@ -66,7 +94,7 @@ function buildContentBundle() {
     assets: {
       ...(bundle.assets || {}),
       keyImages: bundle.assets?.keyImages || "assets/key/",
-      keyImageFiles: keyImageFiles()
+      keyImageFiles: referencedKeyImageFiles(bundle)
     }
   };
 }

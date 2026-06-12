@@ -34,14 +34,6 @@ const randomTextSources = {
   ]
 };
 
-const fallbackRandomTexts = {
-  ru: "Тренировка свободного текста помогает перенести навык из учебных строк в настоящую печать. Руки сохраняют ритм, взгляд держит строку, а пальцы постепенно перестают ждать подсказок. Такой режим хорошо подходит для проверки выносливости и спокойного набора длинных фрагментов.",
-  uk: "Тренування вільного тексту переносить навичку з навчальних рядків у справжній набір. Руки тримають ритм, погляд веде рядок, а пальці поступово менше чекають підказок. Такий режим добре підходить для перевірки витривалості й спокійного набору довших фрагментів.",
-  kk: "Еркін мәтінмен жаттығу оқу жолдарындағы дағдыны күнделікті теруге көшіреді. Қол ырғақты сақтайды, көз жолды ұстайды, ал саусақтар біртіндеп кеңестерге азырақ сүйенеді. Бұл режим төзімділікті тексеруге және ұзақ үзінділерді сабырмен теруге ыңғайлы.",
-  de: "Freies Texttraining uebertraegt die geuebte Bewegung auf echte Schreibsituationen. Die Haende halten den Rhythmus, der Blick folgt der Zeile, und die Finger warten immer weniger auf Hinweise. Dieser Modus passt gut fuer Ausdauer und ruhiges Schreiben laengerer Abschnitte.",
-  en: "Free text practice moves the trained motion into real typing. The hands keep rhythm, the eyes follow the line, and the fingers rely less on hints. This mode is useful for endurance checks and calm practice with longer passages."
-};
-
 function customPracticeModule(moduleId = customPracticeDraftModuleId) {
   return practiceModulesFor(currentLanguage)[moduleId] || null;
 }
@@ -149,7 +141,7 @@ async function fetchRandomPracticeText() {
     customPracticeText.value = sourceText;
     customPracticeStatus.textContent = text.textSourceReady;
   } catch {
-    customPracticeText.value = fallbackRandomTexts[currentLanguage] || fallbackRandomTexts.en;
+    customPracticeText.value = text.fallbackRandomText;
     customPracticeStatus.textContent = text.textSourceFallback;
   } finally {
     customPracticeRefresh.disabled = false;
@@ -195,7 +187,7 @@ function openCustomPracticeDialog(moduleId) {
 
   customPracticeDraftModuleId = moduleId;
   customPracticeStatus.textContent = "";
-  customPracticeLineCount.value = String(module.target?.lines || 10);
+  customPracticeLineCount.value = String(module.content?.lineCount || 10);
   customPracticeText.value = module.customPractice.type === "custom" ? (saved.customPracticeText?.[currentLanguage] || "") : "";
   learningProgramDialog.close();
   renderCustomPracticeDialog();

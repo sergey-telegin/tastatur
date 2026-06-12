@@ -21,7 +21,7 @@
   window.PRACTICE_CONTENT_SOURCE.modules = window.PRACTICE_CONTENT_SOURCE.modules || [];
   window.PRACTICE_CONTENT_SOURCE.modules.push({
     id: "module5",
-    title: { ru: "Module 5 — Вертикали и Shift", de: "Modul 5 — Vertikalen und Shift", en: "Module 5 — Verticals and Shift" },
+    title: { ru: "Модуль 5 — Вертикали и Shift", de: "Modul 5 — Vertikalen und Shift", en: "Module 5 — Verticals and Shift" },
     symbols: {
       ru: ["а", "б", "в", "г", "д", "е", "ж", "з", "и", "й", "к", "л", "м", "н", "о", "п", "р", "с", "т", "у", "ф", "х", "ц", "ч", "ш", "щ", "ъ", "ы", "ь", "э", "ю", "я"],
       de: ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "ä", "ö", "ü"],
@@ -55,7 +55,8 @@
           de: ["q", "w", "e", "r", "t", "a", "s", "d", "f", "g", "y", "x", "c", "v", "b"],
           en: ["q", "w", "e", "r", "t", "a", "s", "d", "f", "g", "z", "x", "c", "v", "b"]
         },
-        target: { lines: 10, accuracy: 90, speedMax: 120 },
+        content: { lineCount: 10 },
+      scoring: { accuracy: 90, speedMax: 120 },
         lines: {
           ru: practiceLines([
             "Фа фа Йа йа Ву ву Км км Па па Се се Фа фа Йа йа Ву ву Км км Па па",
@@ -122,7 +123,8 @@
           de: ["z", "u", "i", "o", "p", "ü", "h", "j", "k", "l", "ö", "ä", "n", "m"],
           en: ["y", "u", "i", "o", "p", "h", "j", "k", "l", "n", "m"]
         },
-        target: { lines: 10, accuracy: 90, speedMax: 120 },
+        content: { lineCount: 10 },
+        scoring: { accuracy: 90, speedMax: 120 },
         lines: {
           ru: practiceLines([
             "Он он Рн рн Го го Шл шл Щд щд Зж зж Он он Рн рн Го го Шл шл Щд щд",
@@ -188,7 +190,8 @@
           de: ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "ä", "ö", "ü"],
           en: ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
         },
-        target: { lines: 10, accuracy: 90, speedMax: 120 },
+        content: { lineCount: 10 },
+        scoring: { accuracy: 90, speedMax: 120 },
         lines: {
           ru: practiceLines([
             "Анна Вера Оля Лада Эля Мила Ира Нина Анна Вера Оля Лада Эля Мила Ира Нина",
@@ -254,7 +257,8 @@
           de: ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "ä", "ö", "ü"],
           en: ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
         },
-        target: { lines: 10, accuracy: 90, speed: 40 },
+        content: { lineCount: 10 },
+        scoring: { accuracy: 90, speed: 40 },
         lines: {
           ru: practiceLines([
             "прыжок крышка мышка нитка карта ветка ручка точка сучок мячик прыжок крышка мышка",
@@ -320,7 +324,8 @@
           de: ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "ä", "ö", "ü"],
           en: ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
         },
-        target: { lines: 20, accuracy: 90, speed: 40, assistants: false },
+        content: { lineCount: 20 },
+        scoring: { accuracy: 90, speed: 40, assistants: false },
         lines: {
           ru: practiceLines([
             "Анна пишет Мила читает Вера учит Нина знает Оля рисует Лада дома Анна пишет",

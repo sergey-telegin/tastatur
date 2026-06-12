@@ -1,8 +1,50 @@
 const flyKeyApiDefaultConfig = {
   baseUrl: null,
   contentVersionPath: "/api/content/version",
-  contentBundlePath: "/api/content/bundle"
+  contentBundlePath: "/api/content/bundle",
+  backendBaseUrl: null
 };
+
+function flyKeyIsLocalHostname(hostname) {
+  return ["localhost", "127.0.0.1", "::1", "[::1]"].includes(String(hostname || "").toLowerCase());
+}
+
+function flyKeyIsLocalPage() {
+  const location = window.location;
+  if (location?.protocol === "file:") return true;
+  return flyKeyIsLocalHostname(location?.hostname);
+}
+
+function flyKeyValidBackendUrl(value) {
+  if (!value) return "";
+  try {
+    const url = new URL(String(value));
+    if (url.protocol === "https:") return url.toString().replace(/\/$/, "");
+    if (url.protocol === "http:" && flyKeyIsLocalHostname(url.hostname)) {
+      return url.toString().replace(/\/$/, "");
+    }
+    return "";
+  } catch {
+    return "";
+  }
+}
+
+function flyKeyRuntimeBackendBaseUrl(configuredValue) {
+  const configured = flyKeyValidBackendUrl(configuredValue);
+  if (configured) return configured;
+
+  if (!flyKeyIsLocalPage()) return "";
+
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const fromQuery = flyKeyValidBackendUrl(params.get("backendBaseUrl"));
+    if (fromQuery) return fromQuery;
+  } catch {
+    return "";
+  }
+
+  return "";
+}
 
 function createFlyKeyApiClient(config = {}) {
   const settings = { ...flyKeyApiDefaultConfig, ...config };
@@ -12,13 +54,22 @@ function createFlyKeyApiClient(config = {}) {
     : "";
   const configuredBaseUrl = settings.baseUrl == null ? sameOriginBaseUrl : settings.baseUrl;
   const baseUrl = String(configuredBaseUrl || "").replace(/\/$/, "");
+  const backendBaseUrl = flyKeyRuntimeBackendBaseUrl(settings.backendBaseUrl);
 
   function isConfigured() {
     return Boolean(baseUrl);
   }
 
+  function isBackendConfigured() {
+    return Boolean(backendBaseUrl);
+  }
+
   function apiUrl(path) {
     return `${baseUrl}${path}`;
+  }
+
+  function backendUrl(path) {
+    return `${backendBaseUrl}${path}`;
   }
 
   async function fetchJson(path) {
@@ -56,11 +107,57 @@ function createFlyKeyApiClient(config = {}) {
     }
   }
 
+  async function requestBackendJson(path, options = {}) {
+    if (!isBackendConfigured()) {
+      return {
+        status: "skipped",
+        reason: "backend-not-configured"
+      };
+    }
+
+    const headers = {
+      Accept: "application/json",
+      ...(options.body ? { "Content-Type": "application/json" } : {}),
+      ...(options.accessToken ? { Authorization: `Bearer ${options.accessToken}` } : {})
+    };
+
+    try {
+      const response = await fetch(backendUrl(path), {
+        method: options.method || "GET",
+        headers,
+        cache: "no-store",
+        body: options.body ? JSON.stringify(options.body) : undefined
+      });
+      const data = await response.json().catch(() => null);
+
+      if (!response.ok) {
+        return {
+          status: "error",
+          reason: "http-error",
+          statusCode: response.status,
+          data
+        };
+      }
+
+      return {
+        status: "ok",
+        data
+      };
+    } catch (error) {
+      return {
+        status: "error",
+        reason: "network-error",
+        message: error?.message || String(error)
+      };
+    }
+  }
+
   return {
     isConfigured,
+    isBackendConfigured,
 
     getConfig() {
-      return { ...settings, baseUrl };
+      return { ...settings, baseUrl, backendBaseUrl };
     },
 
     async getContentVersion() {
@@ -69,6 +166,120 @@ function createFlyKeyApiClient(config = {}) {
 
     async getContentBundle() {
       return fetchJson(settings.contentBundlePath);
+    },
+
+    async register(payload) {
+      return requestBackendJson("/api/v1/auth/register", {
+        method: "POST",
+        body: payload
+      });
+    },
+
+    async login(payload) {
+      return requestBackendJson("/api/v1/auth/login", {
+        method: "POST",
+        body: payload
+      });
+    },
+
+    async refresh(refreshToken) {
+      return requestBackendJson("/api/v1/auth/refresh", {
+        method: "POST",
+        body: { refreshToken }
+      });
+    },
+
+    async logout(accessToken) {
+      return requestBackendJson("/api/v1/auth/logout", {
+        method: "POST",
+        accessToken
+      });
+    },
+
+    async me(accessToken) {
+      return requestBackendJson("/api/v1/me", { accessToken });
+    },
+
+    async deleteMe(accessToken) {
+      return requestBackendJson("/api/v1/me", {
+        method: "DELETE",
+        accessToken
+      });
+    },
+
+    async entitlements(accessToken) {
+      return requestBackendJson("/api/v1/me/entitlements", { accessToken });
+    },
+
+    async oauthProviders() {
+      return requestBackendJson("/api/v1/oauth/providers");
+    },
+
+    async oauthStart(provider) {
+      return requestBackendJson(`/api/v1/oauth/${encodeURIComponent(provider)}/start?returnTo=${encodeURIComponent(window.location.href)}`);
+    },
+
+    async listProfiles(accessToken) {
+      return requestBackendJson("/api/v1/profiles", { accessToken });
+    },
+
+    async createProfile(accessToken, payload) {
+      return requestBackendJson("/api/v1/profiles", {
+        method: "POST",
+        accessToken,
+        body: payload
+      });
+    },
+
+    async getProfile(accessToken, profileId) {
+      return requestBackendJson(`/api/v1/profiles/${encodeURIComponent(profileId)}`, { accessToken });
+    },
+
+    async updateProfile(accessToken, profileId, payload) {
+      return requestBackendJson(`/api/v1/profiles/${encodeURIComponent(profileId)}`, {
+        method: "PATCH",
+        accessToken,
+        body: payload
+      });
+    },
+
+    async deleteProfile(accessToken, profileId) {
+      return requestBackendJson(`/api/v1/profiles/${encodeURIComponent(profileId)}`, {
+        method: "DELETE",
+        accessToken
+      });
+    },
+
+    async getProfileState(accessToken, profileId) {
+      return requestBackendJson(`/api/v1/profiles/${encodeURIComponent(profileId)}/state`, { accessToken });
+    },
+
+    async putProfileState(accessToken, profileId, payload) {
+      return requestBackendJson(`/api/v1/profiles/${encodeURIComponent(profileId)}/state`, {
+        method: "PUT",
+        accessToken,
+        body: payload
+      });
+    },
+
+    async getProfileProgress(accessToken, profileId) {
+      return requestBackendJson(`/api/v1/profiles/${encodeURIComponent(profileId)}/progress`, { accessToken });
+    },
+
+    async putProfileProgress(accessToken, profileId, payload) {
+      return requestBackendJson(`/api/v1/profiles/${encodeURIComponent(profileId)}/progress`, {
+        method: "PUT",
+        accessToken,
+        body: payload
+      });
+    },
+
+    async importLocalState(accessToken, payload) {
+      return requestBackendJson("/api/v1/migration/local-state", {
+        method: "POST",
+        accessToken,
+        body: payload
+      });
     }
   };
 }

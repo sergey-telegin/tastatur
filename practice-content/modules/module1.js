@@ -1,7 +1,7 @@
 window.PRACTICE_CONTENT_SOURCE.modules = window.PRACTICE_CONTENT_SOURCE.modules || [];
 window.PRACTICE_CONTENT_SOURCE.modules.push({
   id: "module1",
-  title: { ru: "Module 1 — Домашний ряд", de: "Modul 1 — Grundreihe", en: "Module 1 — Home Row" },
+  title: { ru: "Модуль 1 — Домашний ряд", de: "Modul 1 — Grundreihe", en: "Module 1 — Home Row" },
   symbols: {
     ru: ["ф", "ы", "в", "а", "о", "л", "д", "ж", "э"],
     de: ["a", "s", "d", "f", "j", "k", "l", "ö", "ä"],
@@ -28,43 +28,29 @@ window.PRACTICE_CONTENT_SOURCE.modules.push({
         de: ["a", "s", "d", "f"],
         en: ["a", "s", "d", "f"]
       },
-      target: { lines: 10, accuracy: 90, speedMax: 120 },
+      content: { lineCount: 5 },
+      scoring: { accuracy: 90, speedMax: 120 },
       lines: {
         ru: [
           "фыва фыва фыва фыва вафы вафы авыф авыф фыва вафы авыф фыва вафы авыф авыф фыва фыва вафы авыф авыф фыва фыва фыва фыва вафы вафы",
           "фф ыы вв аа фф вв ыы аа фф аа вв ыы фф ыы вв аа фф вв ыы аа фф аа вв ыы фф ыы вв аа фф вв ыы аа фф ыы вв аа фф вв ыы аа фф аа вв",
           "авав ывыв фафа вава авав ывыв фафа вава авав ывыв фафа вава авав ывыв фафа вава авав ывыв фафа вава авав ывыв фафа вава авав ывыв",
           "афф фыв ваф афф фыв ваф афф фыв ваф афф фыв ваф афф фыв ваф афф фыв ваф афф фыв ваф афф фыв ваф афф фыв ваф афф фыв ваф афф фыв",
-          "ава афа авы ава афа авы ава афа авы ава афа авы ава афа авы ава афа авы ава афа авы ава афа авы ава афа авы ава афа авы ава афа",
-          "ааа ффф ыыы ввв ааа ффф ыыы ввв ааа ффф ыыы ввв ааа ффф ыыы ввв ааа ффф ыыы ввв ааа ффф ыыы ввв ааа ффф ыыы ввв ааа ффф ыыы ввв",
-          "вафф ывва аафф вафф ывва аафф вафф ывва аафф вафф ывва аафф вафф ывва аафф вафф ывва аафф вафф ывва аафф вафф ывва аафф вафф ывва",
-          "фффф аааа ыыыы вввв фффф аааа ыыыы вввв фффф аааа ыыыы вввв фффф аааа ыыыы вввв фффф аааа фффф аааа ыыыы вввв фффф аааа ыыыы вввв",
-          "выв фаф авав выв фаф авав выв фаф авав выв фаф авав выв фаф авав выв фаф авав выв фаф авав выв фаф авав выв фаф авав выв фаф авав",
-          "фывафыва вафывафы авыфавыф фывафыва вафывафы авыфавыф фывафыва вафывафы авыфавыф фывафыва вафывафы авыфавыф фывафыва вафывафы"
+          "ава афа авы ава афа авы ава афа авы ава афа авы ава афа авы ава афа авы ава афа авы ава афа авы ава афа авы ава афа авы ава афа"
         ],
         de: [
           "asdf asdf asdf asdf fdsa fdsa adsf adsf asdf fdsa adsf asdf fdsa adsf adsf asdf asdf fdsa adsf adsf asdf asdf asdf asdf fdsa fdsa",
           "aa ss dd ff aa dd ss ff aa ff dd ss aa ss dd ff aa dd ss ff aa ff dd ss aa ss dd ff aa dd ss ff aa ss dd ff aa dd ss ff aa ff dd",
           "asas sdsd afaf dada asas sdsd afaf dada asas sdsd afaf dada asas sdsd afaf dada asas sdsd afaf dada asas sdsd afaf dada asas sdsd",
           "aff asd daf aff asd daf aff asd daf aff asd daf aff asd daf aff asd daf aff asd daf aff asd daf aff asd daf aff asd daf aff asd",
-          "ada afa ads ada afa ads ada afa ads ada afa ads ada afa ads ada afa ads ada afa ads ada afa ads ada afa ads ada afa ads ada afa",
-          "aaa fff sss ddd aaa fff sss ddd aaa fff sss ddd aaa fff sss ddd aaa fff sss ddd aaa fff sss ddd aaa fff sss ddd aaa fff sss ddd",
-          "daff sdda aaff daff sdda aaff daff sdda aaff daff sdda aaff daff sdda aaff daff sdda aaff daff sdda aaff daff sdda aaff daff sdda",
-          "ffff aaaa ssss dddd ffff aaaa ssss dddd ffff aaaa ssss dddd ffff aaaa ssss dddd ffff aaaa ffff aaaa ssss dddd ffff aaaa ssss dddd",
-          "sds faf asas sds faf asas sds faf asas sds faf asas sds faf asas sds faf asas sds faf asas sds faf asas sds faf asas sds faf asas",
-          "asdfasdf fdsaasdf adsfadsf asdfasdf fdsaasdf adsfadsf asdfasdf fdsaasdf adsfadsf asdfasdf fdsaasdf adsfadsf asdfasdf fdsaasdf"
+          "ada afa ads ada afa ads ada afa ads ada afa ads ada afa ads ada afa ads ada afa ads ada afa ads ada afa ads ada afa ads ada afa"
         ],
         en: [
           "asdf asdf asdf asdf fdsa fdsa adsf adsf asdf fdsa adsf asdf fdsa adsf adsf asdf asdf fdsa adsf adsf asdf asdf asdf asdf fdsa fdsa",
           "aa ss dd ff aa dd ss ff aa ff dd ss aa ss dd ff aa dd ss ff aa ff dd ss aa ss dd ff aa dd ss ff aa ss dd ff aa dd ss ff aa ff dd",
           "asas sdsd afaf dada asas sdsd afaf dada asas sdsd afaf dada asas sdsd afaf dada asas sdsd afaf dada asas sdsd afaf dada asas sdsd",
           "aff asd daf aff asd daf aff asd daf aff asd daf aff asd daf aff asd daf aff asd daf aff asd daf aff asd daf aff asd daf aff asd",
-          "ada afa ads ada afa ads ada afa ads ada afa ads ada afa ads ada afa ads ada afa ads ada afa ads ada afa ads ada afa ads ada afa",
-          "aaa fff sss ddd aaa fff sss ddd aaa fff sss ddd aaa fff sss ddd aaa fff sss ddd aaa fff sss ddd aaa fff sss ddd aaa fff sss ddd",
-          "daff sdda aaff daff sdda aaff daff sdda aaff daff sdda aaff daff sdda aaff daff sdda aaff daff sdda aaff daff sdda aaff daff sdda",
-          "ffff aaaa ssss dddd ffff aaaa ssss dddd ffff aaaa ssss dddd ffff aaaa ssss dddd ffff aaaa ffff aaaa ssss dddd ffff aaaa ssss dddd",
-          "sds faf asas sds faf asas sds faf asas sds faf asas sds faf asas sds faf asas sds faf asas sds faf asas sds faf asas sds faf asas",
-          "asdfasdf fdsaasdf adsfadsf asdfasdf fdsaasdf adsfadsf asdfasdf fdsaasdf adsfadsf asdfasdf fdsaasdf adsfadsf asdfasdf fdsaasdf"
+          "ada afa ads ada afa ads ada afa ads ada afa ads ada afa ads ada afa ads ada afa ads ada afa ads ada afa ads ada afa ads ada afa"
         ]
       }
     },
@@ -88,43 +74,29 @@ window.PRACTICE_CONTENT_SOURCE.modules.push({
         de: ["j", "k", "l", "ö", "ä"],
         en: ["j", "k", "l"]
       },
-      target: { lines: 10, accuracy: 90, speedMax: 120 },
+      content: { lineCount: 5 },
+        scoring: { accuracy: 90, speedMax: 120 },
       lines: {
         ru: [
           "олджэ олджэ олджэ эдлож эдлож жэдло олджэ жэдло дэлжо олджэ лдэож олджэ жэдло дэлжо олджэ олджэ олджэ олджэ эдлож эдлож жэдло",
           "оо лл дд жж ээ оо ээ жж дд лл оо лл дд жж ээ оо ээ жж дд лл оо лл дд жж ээ оо ээ жж дд лл оо лл дд жж ээ оо ээ жж дд лл оо лл дд",
           "олол длдл жэжэ эжэж олол длдл жэжэ эжэж олол длдл жэжэ эжэж олол длдл жэжэ эжэж олол длдл жэжэ эжэж олол длдл жэжэ эжэж олол длдл",
           "ожо лэл дод жож эло ожо лэл дод жож эло ожо лэл дод жож эло ожо лэл дод жож эло ожо лэл дод жож эло ожо лэл дод жож эло ожо лэл",
-          "олд жэл лод эжо олд жэл лод эжо олд жэл лод эжо олд жэл лод эжо олд жэл лод эжо олд жэл лод эжо олд жэл лод эжо олд жэл лод эжо",
-          "ооо ллл ддд жжж эээ ооо ллл ддд жжж эээ ооо ллл ддд жжж эээ ооо ллл ддд жжж эээ ооо ллл ддд жжж эээ ооо ллл ддд жжж эээ ооо ллл",
-          "лдож эждо одлэ лдож эждо одлэ лдож эждо одлэ лдож эждо одлэ лдож эждо одлэ лдож эждо одлэ лдож эждо одлэ лдож эждо одлэ лдож эждо",
-          "жооо дллл ээож жооо дллл ээож жооо дллл ээож жооо дллл ээож жооо дллл ээож жооо дллл ээож жооо дллл ээож жооо дллл ээож жооо дллл",
-          "оллд жжол ээдж оллд жжол ээдж оллд жжол ээдж оллд жжол ээдж оллд жжол ээдж оллд жжол ээдж оллд жжол ээдж оллд жжол ээдж оллд жжол",
-          "олджэолджэ эдложэдлож жэлоджэло олджэолджэ эдложэдлож жэлоджэло олджэолджэ олджэолджэ эдложэдлож жэлоджэло олджэолджэ эдложэдлож"
+          "олд жэл лод эжо олд жэл лод эжо олд жэл лод эжо олд жэл лод эжо олд жэл лод эжо олд жэл лод эжо олд жэл лод эжо олд жэл лод эжо"
         ],
         de: [
           "jklöä jklöä jklöä älökj älökj öäklj jklöä öäklj käölj jklöä löäjk jklöä öäklj käölj jklöä jklöä jklöä jklöä älökj älökj öäklj",
           "jj kk ll öö ää jj ää öö ll kk jj kk ll öö ää jj ää öö ll kk jj kk ll öö ää jj ää öö ll kk jj kk ll öö ää jj ää öö ll kk jj kk ll",
           "jkjk lklk öäöä äöäö jkjk lklk öäöä äöäö jkjk lklk öäöä äöäö jkjk lklk öäöä äöäö jkjk lklk öäöä äöäö jkjk lklk öäöä äöäö jkjk lklk",
           "jöj käk löl äjö jöj käk löl äjö jöj käk löl äjö jöj käk löl äjö jöj käk löl äjö jöj käk löl äjö jöj käk löl äjö jöj käk löl äjö",
-          "jkl öäl lkj äjö jkl öäl lkj äjö jkl öäl lkj äjö jkl öäl lkj äjö jkl öäl lkj äjö jkl öäl lkj äjö jkl öäl lkj äjö jkl öäl lkj äjö",
-          "jjj kkk lll ööö äää jjj kkk lll ööö äää jjj kkk lll ööö äää jjj kkk lll ööö äää jjj kkk lll ööö äää jjj kkk lll ööö äää jjj kkk",
-          "lköj äökj jklä lköj äökj jklä lköj äökj jklä lköj äökj jklä lköj äökj jklä lköj äökj jklä lköj äökj jklä lköj äökj jklä lköj äökj",
-          "öjjj klll ääjö öjjj klll ääjö öjjj klll ääjö öjjj klll ääjö öjjj klll ääjö öjjj klll ääjö öjjj klll ääjö öjjj klll ääjö öjjj klll",
-          "jllk ööjl äälö jllk ööjl äälö jllk ööjl äälö jllk ööjl äälö jllk ööjl äälö jllk ööjl äälö jllk ööjl äälö jllk ööjl äälö jllk ööjl",
-          "jklöäjklöä älökjälökj öälkjäölj jklöäjklöä älökjälökj öälkjäölj jklöäjklöä jklöäjklöä älökjälökj öälkjäölj jklöäjklöä älökjälökj"
+          "jkl öäl lkj äjö jkl öäl lkj äjö jkl öäl lkj äjö jkl öäl lkj äjö jkl öäl lkj äjö jkl öäl lkj äjö jkl öäl lkj äjö jkl öäl lkj äjö"
         ],
         en: [
           "jkl jkl jkl lkj lkj klj jkl klj k lj jkl l jk jkl klj k lj jkl jkl jkl jkl lkj lkj klj jkl jkl jkl lkj lkj klj jkl klj k lj jkl l",
           "jj kk ll jj ll kk jj kk ll jj ll kk jj kk ll jj ll kk jj kk ll jj ll kk jj kk ll jj kk ll jj ll kk jj kk ll jj ll kk jj kk ll jj",
           "jkjk lklk jkjk lklk jkjk lklk jkjk lklk jkjk lklk jkjk lklk jkjk lklk jkjk lklk jkjk lklk jkjk lklk jkjk lklk jkjk lklk jkjk lklk",
           "j j k k l l j j j k k l l j j j k k l l j j j k k l l j j j k k l l j j j k k l l j j j k k l l j j j k k l l j",
-          "jkl l lkj j jkl l lkj j jkl l lkj j jkl l lkj j jkl l lkj j jkl l lkj j jkl l lkj j jkl l lkj j jkl l lkj j jkl l lkj j jkl l lkj",
-          "jjj kkk lll jjj kkk lll jjj kkk lll jjj kkk lll jjj kkk lll jjj kkk lll jjj kkk jjj kkk lll jjj kkk lll jjj kkk lll jjj kkk lll",
-          "lk j kj jkl lk j kj jkl lk j kj jkl lk j kj jkl lk j kj jkl lk j kj jkl lk j kj jkl lk j kj jkl lk j kj lk j kj jkl lk j kj jkl",
-          "jjj klll j jjj klll j jjj klll j jjj klll j jjj klll j jjj klll j jjj klll j jjj klll j jjj klll jjj klll j jjj klll j jjj klll j",
-          "jllk jl l jllk jl l jllk jl l jllk jl l jllk jl l jllk jl l jllk jl l jllk jl l jllk jl jllk jl l jllk jl l jllk jl l jllk jl l",
-          "jkl jkl lkj lkj lkj lj jkl jkl lkj lkj lkj lj jkl jkl jkl jkl lkj lkj lkj lj jkl jkl lkj lkj jkl jkl lkj lkj lkj lj jkl jkl lkj"
+          "jkl l lkj j jkl l lkj j jkl l lkj j jkl l lkj j jkl l lkj j jkl l lkj j jkl l lkj j jkl l lkj j jkl l lkj j jkl l lkj j jkl l lkj"
         ]
       }
     },
@@ -148,7 +120,8 @@ window.PRACTICE_CONTENT_SOURCE.modules.push({
         de: ["a", "s", "d", "f", "j", "k", "l", "ö", "ä"],
         en: ["a", "s", "d", "f", "j", "k", "l"]
       },
-      target: { lines: 10, accuracy: 90, speedMax: 120 },
+      content: { lineCount: 10 },
+        scoring: { accuracy: 90, speedMax: 120 },
       lines: {
         ru: [
           "фыва олджэ фыва олджэ фыва олджэ фыва олджэ вафы эдлож вафы эдлож авыф жэдло авыф жэдло фыва олджэ фыва олджэ фыва олджэ фыва",
@@ -208,7 +181,8 @@ window.PRACTICE_CONTENT_SOURCE.modules.push({
         de: ["a", "s", "d", "f", "j", "k", "l", "ö", "ä"],
         en: ["a", "s", "d", "f", "j", "k", "l"]
       },
-      target: { lines: 10, accuracy: 90, speed: 40 },
+      content: { lineCount: 10 },
+        scoring: { accuracy: 90, speed: 40 },
       lines: {
         ru: [
           "вал вода лава жало овал лад вдова элла эд вал вода лава жало овал лад вдова элла эд вал вода лава жало вал вода лава жало овал",
@@ -235,16 +209,16 @@ window.PRACTICE_CONTENT_SOURCE.modules.push({
           "als das falls lass fass saal da fall als das falls lass fass saal da fall als das falls lass als das falls lass fass saal da fall"
         ],
         en: [
-          "all sad dad ask fall lass flask lads glass add all sad dad ask fall lass flask lads glass add all sad dad all sad dad ask fall",
-          "glass flask lads add fall lass all sad dad ask glass flask lads add fall lass all sad dad ask glass flask glass flask lads add",
-          "sad all flask lads glass add lad fall ask sad all flask lads glass add lad fall ask sad all flask sad all flask lads glass add",
-          "ask fall lass flask lads glass add lad all sad dad ask fall lass flask lads glass add lad all sad ask fall lass flask lads glass",
-          "fall glass ask fall lass flask all sad dad lads glass add fall glass ask fall lass flask all sad dad fall glass ask fall lass",
-          "all all sad sad dad dad ask ask fall fall lass lass flask flask lads lads glass glass add add all all sad sad dad dad ask ask",
-          "lads fall lass flask glass add all sad dad ask lads fall lass flask glass add all sad dad ask lads lads fall lass flask glass add",
-          "flask all sad dad ask fall lass lads glass add flask all sad dad ask fall lass lads glass add flask flask all sad dad ask fall",
-          "add glass lads flask lass fall ask dad sad all add glass lads flask lass fall ask dad sad all add add glass lads flask lass fall",
-          "all sad dad ask fall lass flask lads glass add all sad dad ask fall lass flask lads glass add all all sad dad ask fall lass flask"
+          "all sad dad ask fall lass flask lads flask add all sad dad ask fall lass flask lads flask add all sad dad all sad dad ask fall",
+          "flask flask lads add fall lass all sad dad ask flask flask lads add fall lass all sad dad ask flask flask flask flask lads add",
+          "sad all flask lads flask add lad fall ask sad all flask lads flask add lad fall ask sad all flask sad all flask lads flask add",
+          "ask fall lass flask lads flask add lad all sad dad ask fall lass flask lads flask add lad all sad ask fall lass flask lads flask",
+          "fall flask ask fall lass flask all sad dad lads flask add fall flask ask fall lass flask all sad dad fall flask ask fall lass",
+          "all all sad sad dad dad ask ask fall fall lass lass flask flask lads lads flask flask add add all all sad sad dad dad ask ask",
+          "lads fall lass flask flask add all sad dad ask lads fall lass flask flask add all sad dad ask lads lads fall lass flask flask add",
+          "flask all sad dad ask fall lass lads flask add flask all sad dad ask fall lass lads flask add flask flask all sad dad ask fall",
+          "add flask lads flask lass fall ask dad sad all add flask lads flask lass fall ask dad sad all add add flask lads flask lass fall",
+          "all sad dad ask fall lass flask lads flask add all sad dad ask fall lass flask lads flask add all all sad dad ask fall lass flask"
         ]
       }
     },
@@ -268,7 +242,8 @@ window.PRACTICE_CONTENT_SOURCE.modules.push({
         de: ["a", "s", "d", "f", "j", "k", "l", "ö", "ä"],
         en: ["a", "s", "d", "f", "j", "k", "l"]
       },
-      target: { lines: 15, accuracy: 90, speed: 40, assistants: false },
+      content: { lineCount: 15 },
+        scoring: { accuracy: 90, speed: 40, assistants: false },
       lines: {
         ru: [
           "вал вода лава жало овал лад вдова элла эд фыва олджэ вал вода лава жало овал лад вдова элла вал вода лава жало овал лад вдова",
@@ -305,21 +280,21 @@ window.PRACTICE_CONTENT_SOURCE.modules.push({
           "als das falls lass fass saal da fall asdf jklöä adsf älökj als das falls lass als das falls lass fass saal da fall asdf jklöä"
         ],
         en: [
-          "all sad dad ask fall lass flask lads glass add asdf jkl all sad dad ask fall lass flask lads all sad dad ask fall lass flask",
-          "asdf jkl adsf lkj all sad dad ask fall lass flask lads glass add asdf jkl adsf lkj asdf jkl adsf lkj all sad dad ask",
-          "fall lass flask glass all sad dad asdf jkl adsf lkj fall lass flask glass all sad dad fall lass flask glass all sad dad asdf",
+          "all sad dad ask fall lass flask lads flask add asdf jkl all sad dad ask fall lass flask lads all sad dad ask fall lass flask",
+          "asdf jkl adsf lkj all sad dad ask fall lass flask lads flask add asdf jkl adsf lkj asdf jkl adsf lkj all sad dad ask",
+          "fall lass flask flask all sad dad asdf jkl adsf lkj fall lass flask flask all sad dad fall lass flask flask all sad dad asdf",
           "a s d f j k l a s d f j k l all sad dad ask fall lass flask a s d f j k l a s d f j k l all sad dad ask fall lass",
-          "adfj jkl adfj jkl all sad dad ask fall lass flask lads glass add adfj jkl adfj jkl adfj jkl adfj jkl all sad dad ask",
-          "all all sad sad dad dad ask ask fall fall lass lass flask flask lads lads glass glass add add all all sad sad dad dad ask ask",
+          "adfj jkl adfj jkl all sad dad ask fall lass flask lads flask add adfj jkl adfj jkl adfj jkl adfj jkl all sad dad ask",
+          "all all sad sad dad dad ask ask fall fall lass lass flask flask lads lads flask flask add add all all sad sad dad dad ask ask",
           "sdas afas kj lkj sdas afas kj lkj all sad dad ask fall lass flask lads sdas afas kj lkj sdas afas kj lkj all sad",
           "jj kk ll aa ss dd ff jj kk ll aa ss dd ff all sad dad ask jj kk ll aa ss dd ff jj kk ll aa ss dd ff all jj kk ll aa ss dd ff jj",
           "a d j k l l a f s d a j k l all sad dad ask fall lass a d j k l l a f s d a j k l all sad dad ask fall lass a d j k l l a f s d a",
-          "asdfjkl asdfjkl adsf lkj adsf lkj all sad dad ask fall lass flask lads glass asdfjkl asdfjkl adsf lkj adsf lkj all",
-          "fall lass flask glass add all asdf jkl adsf lkj fall lass flask glass add all fall lass flask glass add all asdf jkl adsf",
-          "lads fall lass flask glass add all sad dad ask asdf jkl lads fall lass flask glass add lads fall lass flask glass add all sad",
-          "glass add all sad dad ask fall lass adsf lkj asdf jkl glass add all sad dad glass add all sad dad ask fall lass adsf lkj",
+          "asdfjkl asdfjkl adsf lkj adsf lkj all sad dad ask fall lass flask lads flask asdfjkl asdfjkl adsf lkj adsf lkj all",
+          "fall lass flask flask add all asdf jkl adsf lkj fall lass flask flask add all fall lass flask flask add all asdf jkl adsf",
+          "lads fall lass flask flask add all sad dad ask asdf jkl lads fall lass flask flask add lads fall lass flask flask add all sad",
+          "flask add all sad dad ask fall lass adsf lkj asdf jkl flask add all sad dad flask add all sad dad ask fall lass adsf lkj",
           "jkl asdf lkj adsf all sad dad ask fall lass flask lads jkl asdf lkj jkl asdf lkj adsf all sad dad ask fall lass flask",
-          "all sad dad ask fall lass flask lads glass add asdf jkl adsf lkj all sad dad all sad dad ask fall lass flask lads glass add"
+          "all sad dad ask fall lass flask lads flask add asdf jkl adsf lkj all sad dad all sad dad ask fall lass flask lads flask add"
         ]
       }
     }

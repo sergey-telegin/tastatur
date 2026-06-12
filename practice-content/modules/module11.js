@@ -1,13 +1,13 @@
 (() => {
   const sample = {
     ru: [
-      "случайный текст появится здесь после загрузки источника и будет разбит на строки для спокойной практики"
+      "случайный текст помогает перейти от учебных строк к живой печати сохраняя спокойный темп и точность"
     ],
     de: [
-      "ein zufaelliger text erscheint hier nach dem laden der quelle und wird in ruhige uebungszeilen geteilt"
+      "ein zufaelliger text bringt dich naeher an echtes tippen mit ruhigem tempo und klarer genauigkeit"
     ],
     en: [
-      "a random text appears here after loading the source and is split into calm practice lines"
+      "random text brings practice closer to real typing with steady rhythm and clear accuracy"
     ]
   };
 
@@ -28,7 +28,8 @@
         },
         customPractice: { type: "random" },
         symbolPolicy: { scope: "free-text", random: true },
-        target: { lines: 10, accuracy: 90 },
+        content: { lineCount: 10 },
+      scoring: { accuracy: 90 },
         lines: sample
       }
     ]

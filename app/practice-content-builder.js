@@ -1,23 +1,36 @@
 function localizedContentText(value, language) {
   if (!value || typeof value !== "object") return value || "";
-  return value[language] || value.en || value.ru || Object.values(value)[0] || "";
+  return value[language] || "";
 }
 
 function localizedContentList(value, language) {
   const localized = Array.isArray(value)
     ? value
-    : value?.[language] || value?.en || value?.ru || [];
+    : value?.[language] || [];
   if (!Array.isArray(localized)) return localized ? [localized] : [];
   return localized.filter(Boolean);
 }
 
 function contentLessonLines(lesson, language) {
-  const lines = lesson.lines?.[language] || lesson.lines?.en || lesson.lines?.ru || [];
+  const lines = lesson.lines?.[language] || [];
   if (Array.isArray(lines) && lines.length) return lines;
 
   const fallback = localizedContentText(lesson.title, language) || lesson.id;
-  const count = Math.max(lesson.target?.lines || 10, 10);
+  const count = Math.max(lesson.content?.lineCount || lesson.target?.lines || 10, 10);
   return Array.from({ length: count }, () => fallback);
+}
+
+function contentLessonLineCount(lesson, language) {
+  const explicitCount = lesson.content?.lineCount || lesson.target?.lines;
+  if (Number.isFinite(explicitCount) && explicitCount > 0) return explicitCount;
+  const lines = lesson.lines?.[language];
+  return Array.isArray(lines) ? lines.length : 0;
+}
+
+function contentLessonScoring(lesson) {
+  if (lesson.scoring && typeof lesson.scoring === "object") return lesson.scoring;
+  const { lines, ...scoring } = lesson.target || {};
+  return scoring;
 }
 
 const defaultLessonCompletionText = {
@@ -396,7 +409,10 @@ const lessonIntroPurpose = {
 };
 
 function contentLessonCompletion(lesson, language) {
-  const completion = lesson.completion;
+  const storyboard = window.FLYKEY_LESSON_STORYBOARD || window.FLYKEY_CONTENT_STORYBOARD || {};
+  const storyboardEntry = storyboard[lesson.id] || {};
+  const storyboardCompletion = storyboardEntry.showCompletionText === false ? null : storyboardEntry.completionText;
+  const completion = storyboardCompletion || lesson.completion;
   const text = completion && typeof completion === "object" && !Array.isArray(completion)
     ? completion[language] || completion.en || completion.ru || defaultLessonCompletionText[language] || defaultLessonCompletionText.en
     : completion || defaultLessonCompletionText[language] || defaultLessonCompletionText.en;
@@ -404,7 +420,16 @@ function contentLessonCompletion(lesson, language) {
 }
 
 function contentLessonIntro(lesson, language) {
-  const intro = lesson.intro || lessonIntroPurpose[lesson.id] || {};
+  const storyboard = window.FLYKEY_LESSON_STORYBOARD || window.FLYKEY_CONTENT_STORYBOARD || {};
+  const storyboardEntry = storyboard[lesson.id] || {};
+  if (storyboardEntry.showNextModuleText === false) return { purpose: "" };
+  if (storyboardEntry.nextModuleText) {
+    return {
+      purpose: localizedContentText(storyboardEntry.nextModuleText, language)
+    };
+  }
+
+  const intro = lessonIntroPurpose[lesson.id] || lesson.intro || {};
   return {
     purpose: localizedContentText(intro, language)
   };
@@ -566,9 +591,6 @@ function ensureUkrainianPracticeContent(source) {
       lesson.tips = lesson.tips || {};
       lesson.tips.uk = lesson.tips.uk || ukrainianLessonTips[lesson.id] || ukrainianGenericLessonTips[lessonNumberSuffix(lesson.id)] || [];
 
-      lesson.completion = lesson.completion || {};
-      lesson.completion.uk = lesson.completion.uk || defaultLessonCompletionText.uk;
-
       lesson.lines = lesson.lines || {};
       if (!lesson.lines.uk) {
         lesson.lines.uk = ukrainianSamples[lesson.id] || adaptRussianKeyboardTextToUkrainian(lesson.lines.ru || lesson.lines.en || []);
@@ -707,6 +729,282 @@ const kazakhSamples = {
   lesson12_1: ["старт алдында өз мәтініңізді енгізіп осы жаттығуға ыңғайлы көмекшілерді баптаңыз"]
 };
 
+const kazakhLessonLines = {
+  lesson1_4: repeatPracticePattern([
+    "ал ол дала жол ал ол дала жол",
+    "дала алда жолда ол ал",
+    "ол жол ал дала алда жол",
+    "ал дала ол жол ал дала",
+    "жол дала ал ол жол дала",
+    "дала жол ал ол алда дала",
+    "ол ал жол дала ол ал",
+    "алда дала жол ол алда",
+    "ал ол жол дала ал ол",
+    "дала ал жол ол дала ал"
+  ]),
+  lesson1_5: repeatPracticePattern([
+    "фыва олджэ ал ол дала жол",
+    "ал ол дала жол фыва олджэ",
+    "авыф эдлож алда дала жол",
+    "дала жол ал ол фыва олджэ",
+    "ол ал жол дала авыф эдлож",
+    "фыва олджэ ол жол дала",
+    "ал дала жол ол алда",
+    "олджэ фыва ал ол дала",
+    "жол дала ал ол авыф",
+    "фыва олджэ алда жол",
+    "дала жол ол ал фыва",
+    "ал ол алда дала жол",
+    "эдлож авыф дала жол",
+    "ол жол ал дала ол",
+    "фыва олджэ дала ал"
+  ]),
+  lesson2_4: repeatPracticePattern([
+    "ана ата апа мен ер ел",
+    "ата мен ана кел ер кел",
+    "ел мен жер ата ана",
+    "апа кел ана кел ата кел",
+    "мен ер ол ел жер",
+    "ана апа ата ел мен",
+    "ер кел мен кел ана кел",
+    "жер ел жол ата ана",
+    "ата ана апа ер мен",
+    "ел жер ана ата апа"
+  ]),
+  lesson2_1: repeatPracticePattern([
+    "кеап кеап екпа екпа",
+    "кака епеа апек екпа",
+    "еапк кеап акеп пеак",
+    "кеке апап еаек пкап",
+    "акеп екпа кеап еапк",
+    "ке ак пе ап ек па",
+    "еа ке ап пе ка ек",
+    "пеак акеп еапк кеап",
+    "кепа аекп пека акпе",
+    "ап ек ке па пе ак"
+  ]),
+  lesson2_5: repeatPracticePattern([
+    "фыва олджэ кеап гнор мить",
+    "ана ата апа мен ер ел",
+    "ата мен ана кел ер кел",
+    "дала жол ел жер ана",
+    "кеап гнор мить ана ата",
+    "апа кел ана кел ата кел",
+    "фыва олджэ ана ата апа",
+    "мен ер ол ел жер",
+    "ана апа ата ел мен",
+    "гнор кеап мить ел жер",
+    "ер кел мен кел ана кел",
+    "жер ел жол ата ана",
+    "ата ана апа ер мен",
+    "ел жер ана ата апа",
+    "фыва олджэ кеап ана"
+  ]),
+  lesson3_5: repeatPracticePattern([
+    "ана ата апа мен ер ел жер",
+    "дала жол ел жер ана ата",
+    "жолда адам ер адам кел",
+    "ер мен ол ел жер",
+    "ана хат жаз ата хат жаз",
+    "жер мен ел кел",
+    "алма нан ана кел",
+    "адам жолда ата кел",
+    "ел жер дала жол",
+    "ер жаз мен жаз ол жаз",
+    "ана ата апа жолда",
+    "жер ел адам жол",
+    "хат жаз адам кел",
+    "далада жол ер",
+    "мен ер ел жер"
+  ]),
+  lesson4_5: repeatPracticePattern([
+    "ана ата апа бала жолда",
+    "адам далада хат жазды",
+    "сен мен ол кел",
+    "дала жол адам",
+    "ана нан алды ата кел",
+    "бала санады адам жазды",
+    "ел жер дала жол",
+    "апа хат жазды ана кел",
+    "жолда адам аз болды",
+    "сен сабырмен тер",
+    "ата ана бала мен",
+    "дала мен жол мол",
+    "адам кел бала жазды",
+    "жол дала адам ел",
+    "мен сен ол адам"
+  ]),
+  lesson5_3: repeatPracticePattern([
+    "Ана кел Ата кел Бала жазды",
+    "Апа хат жазды Адам жолда Ел тыныш",
+    "Дала мол Жолда адам Ел тыныш",
+    "Сен жаз Мен жаз Ол хат жазды",
+    "Ана хат жазды Ата хат жазды",
+    "Бала санады Адам жауап бер",
+    "Ел мен жер жолда",
+    "Жолда адам аз болды",
+    "Апа кел Ана жазды",
+    "Сабыр бол Жолды жаз"
+  ]),
+  lesson5_4: repeatPracticePattern([
+    "жолда адам дала",
+    "ана хат бала жауап",
+    "сен мен ол кел",
+    "дала мол жолда адам",
+    "адам сабыр болды",
+    "бала жауап бер",
+    "жол алыс ой мол",
+    "ата ана апа бала",
+    "ел жер жол дала",
+    "хат жауап ой жол"
+  ]),
+  lesson5_5: repeatPracticePattern([
+    "Ана хат жазды Ата хат жазды Бала жауап бер",
+    "жолда адам аз болды дала тыныш ел мол",
+    "Сен тер Мен сабыр боламын Ол жазды",
+    "ата ана апа бала мен кел",
+    "ел мен жер адам жолы",
+    "Бала санады Адам жазды Ана хат жазды",
+    "дала жол ел адам",
+    "Апа кел Ана жазды Ата жазды",
+    "хат жауап ой жол",
+    "жол алыс ой мол темп тыныш",
+    "Сабыр бол Жолды жаз",
+    "адам жолда далада",
+    "ана ата бала апа",
+    "ел жер жол дала",
+    "Мен жазамын Сен жаз Ол тер",
+    "бала жауап бер адам сабыр болды",
+    "дала емес жол мол",
+    "жолда адам бар ел тыныш",
+    "Ана мен Ата кел",
+    "хат аз ой мол"
+  ]),
+  lesson8_3: repeatPracticePattern([
+    "қазақ тілі әдемі әрі бай",
+    "күн сайын қысқа жаттығу пайдалы",
+    "саусақтар ырғақты сақтап тереді",
+    "мәтін анық болса қате азаяды",
+    "жол қысқа ой нақты",
+    "үйрену сабыр мен тұрақты еңбекті қажет етеді",
+    "әр жолда бірдей тыныш темп сақта",
+    "қала мен дала туралы мәтін",
+    "әріптер орны есте қалды",
+    "жаттығу соңында қол бос қалсын"
+  ]),
+  lesson8_4: repeatPracticePattern([
+    "қазақ тілі әдемі әрі бай",
+    "күн сайын қысқа жаттығу пайдалы",
+    "саусақтар ырғақты сақтап тереді",
+    "мәтін анық болса қате азаяды",
+    "жол қысқа ой нақты",
+    "үйрену сабыр мен тұрақты еңбекті қажет етеді",
+    "әр жолда бірдей тыныш темп сақта",
+    "қала мен дала туралы мәтін",
+    "әріптер орны есте қалды",
+    "жаттығу соңында қол бос қалсын"
+  ]),
+  lesson8_5: repeatPracticePattern([
+    "қазақ тілі әдемі әрі бай",
+    "күн сайын қысқа жаттығу пайдалы",
+    "саусақтар ырғақты сақтап тереді",
+    "мәтін анық болса қате азаяды",
+    "жол қысқа ой нақты",
+    "үйрену сабыр мен тұрақты еңбекті қажет етеді",
+    "әр жолда бірдей тыныш темп сақта",
+    "қала мен дала туралы мәтін",
+    "әріптер орны есте қалды",
+    "жаттығу соңында қол бос қалсын",
+    "қол шаршаса темпті азайт",
+    "дәлдік жылдамдықтан бұрын келеді",
+    "әр сөзді толық оқып тер",
+    "көз мәтінде қол пернеде",
+    "сабырлы жаттығу сенімділік береді"
+  ]),
+  lesson9_3: repeatPracticePattern([
+    "Қазақ тілі әдемі әрі бай",
+    "Күн сайын қысқа жаттығу пайдалы",
+    "Саусақтар ырғақты сақтап тереді",
+    "Мәтін анық болса қате азаяды",
+    "Жол қысқа Ой нақты",
+    "Үйрену сабыр мен тұрақты еңбекті қажет етеді",
+    "Әр жолда бірдей тыныш темп сақта",
+    "Қала мен дала туралы мәтін",
+    "Әріптер орны есте қалды",
+    "Жаттығу соңында қол бос қалсын"
+  ]),
+  lesson9_4: repeatPracticePattern([
+    "Қазақ тілі әдемі әрі бай",
+    "Күн сайын қысқа жаттығу пайдалы",
+    "Саусақтар ырғақты сақтап тереді",
+    "Мәтін анық болса қате азаяды",
+    "Жол қысқа Ой нақты",
+    "Үйрену сабыр мен тұрақты еңбекті қажет етеді",
+    "Әр жолда бірдей тыныш темп сақта",
+    "Қала мен дала туралы мәтін",
+    "Әріптер орны есте қалды",
+    "Жаттығу соңында қол бос қалсын"
+  ]),
+  lesson9_5: repeatPracticePattern([
+    "Қазақ тілі әдемі әрі бай",
+    "Күн сайын қысқа жаттығу пайдалы",
+    "Саусақтар ырғақты сақтап тереді",
+    "Мәтін анық болса қате азаяды",
+    "Жол қысқа Ой нақты",
+    "Үйрену сабыр мен тұрақты еңбекті қажет етеді",
+    "Әр жолда бірдей тыныш темп сақта",
+    "Қала мен дала туралы мәтін",
+    "Әріптер орны есте қалды",
+    "Жаттығу соңында қол бос қалсын",
+    "Қол шаршаса темпті азайт",
+    "Дәлдік жылдамдықтан бұрын келеді",
+    "Әр сөзді толық оқып тер",
+    "Көз мәтінде қол пернеде",
+    "Сабырлы жаттығу сенімділік береді"
+  ]),
+  lesson10_3: repeatPracticePattern([
+    "Қазақ тілі: әдемі әрі бай!",
+    "Күн сайын қысқа жаттығу пайдалы.",
+    "Саусақтар ырғақты сақтап тереді?",
+    "Мәтін анық болса, қате азаяды.",
+    "Жол қысқа, ой нақты!",
+    "Үйрену: сабыр және тұрақты еңбек.",
+    "Әр жолда бірдей тыныш темп сақта.",
+    "Қала мен дала туралы мәтін дайын.",
+    "Әріптер орны есте қалды!",
+    "Жаттығу соңында қол бос қалсын."
+  ]),
+  lesson10_4: repeatPracticePattern([
+    "Қазақ тілі: әдемі әрі бай!",
+    "Күн сайын қысқа жаттығу пайдалы.",
+    "Саусақтар ырғақты сақтап тереді?",
+    "Мәтін анық болса, қате азаяды.",
+    "Жол қысқа, ой нақты!",
+    "Үйрену: сабыр және тұрақты еңбек.",
+    "Әр жолда бірдей тыныш темп сақта.",
+    "Қала мен дала туралы мәтін дайын.",
+    "Әріптер орны есте қалды!",
+    "Жаттығу соңында қол бос қалсын."
+  ]),
+  lesson10_5: repeatPracticePattern([
+    "Қазақ тілі: әдемі әрі бай!",
+    "Күн сайын қысқа жаттығу пайдалы.",
+    "Саусақтар ырғақты сақтап тереді?",
+    "Мәтін анық болса, қате азаяды.",
+    "Жол қысқа, ой нақты!",
+    "Үйрену: сабыр және тұрақты еңбек.",
+    "Әр жолда бірдей тыныш темп сақта.",
+    "Қала мен дала туралы мәтін дайын.",
+    "Әріптер орны есте қалды!",
+    "Жаттығу соңында қол бос қалсын.",
+    "Қол шаршаса, темпті азайт.",
+    "Дәлдік жылдамдықтан бұрын келеді!",
+    "Әр сөзді толық оқып тер.",
+    "Көз мәтінде, қол пернеде.",
+    "Сабырлы жаттығу сенімділік береді!"
+  ])
+};
+
 const kazakhModule6Lines = {
   lesson6_1: repeatPracticePattern([
     "әі ңғ әі ңғ іә ғң әі ңғ әә іі ңң ғғ",
@@ -818,12 +1116,10 @@ function ensureKazakhPracticeContent(source) {
       lesson.tips = lesson.tips || {};
       lesson.tips.kk = lesson.tips.kk || kazakhLessonTips[lesson.id] || kazakhGenericLessonTips[lessonNumberSuffix(lesson.id)] || [];
 
-      lesson.completion = lesson.completion || {};
-      lesson.completion.kk = lesson.completion.kk || defaultLessonCompletionText.kk;
-
       lesson.lines = lesson.lines || {};
       if (!lesson.lines.kk) {
         lesson.lines.kk = kazakhSamples[lesson.id]
+          || kazakhLessonLines[lesson.id]
           || kazakhModule6Lines[lesson.id]
           || kazakhModule7Lines[lesson.id]
           || adaptRussianKeyboardTextToKazakh(lesson.lines.ru || lesson.lines.en || []);
@@ -859,7 +1155,12 @@ function buildPracticeContentForLanguage(source, language) {
           intro: contentLessonIntro(lesson, language),
           tips: localizedContentList(lesson.tips, language),
           completion: contentLessonCompletion(lesson, language),
-          target: lesson.target || {},
+          content: {
+            ...(lesson.content || {}),
+            lineCount: contentLessonLineCount(lesson, language)
+          },
+          scoring: contentLessonScoring(lesson),
+          target: contentLessonScoring(lesson),
           lines: contentLessonLines(lesson, language)
         };
 
@@ -877,6 +1178,9 @@ function buildPracticeContentForLanguage(source, language) {
 
 function buildPracticeContent() {
   const bundle = window.FlyKeyContentProvider?.getContentBundle?.() || window.PRACTICE_CONTENT_SOURCE || {};
+  window.FLYKEY_CONTENT_STORYBOARD = bundle.storyboard || window.FLYKEY_LESSON_STORYBOARD || {};
+  window.FLYKEY_WELCOME_STORYBOARD = bundle.welcomeStoryboard || window.FLYKEY_WELCOME_STORYBOARD || {};
+  window.FLYKEY_ONBOARDING_STORYBOARD = bundle.onboardingStoryboard || window.FLYKEY_ONBOARDING_STORYBOARD || {};
   const source = ensureKazakhPracticeContent(ensureUkrainianPracticeContent({
     meta: bundle.meta,
     languages: bundle.languages,
