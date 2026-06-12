@@ -352,26 +352,67 @@
     }
   };
 
+  const rayToScreenEdge = (fromX, fromY, targetX, targetY) => {
+    let dx = targetX - fromX;
+    let dy = targetY - fromY;
+    const length = Math.hypot(dx, dy);
+    if (length < 0.001) {
+      dx = 0;
+      dy = -1;
+    } else {
+      dx /= length;
+      dy /= length;
+    }
+
+    const top = state.cameraY;
+    const bottom = state.cameraY + state.height;
+    const candidates = [];
+    if (dx > 0) candidates.push((state.width - fromX) / dx);
+    if (dx < 0) candidates.push((0 - fromX) / dx);
+    if (dy > 0) candidates.push((bottom - fromY) / dy);
+    if (dy < 0) candidates.push((top - fromY) / dy);
+
+    const distance = Math.min(...candidates.filter((candidate) => candidate > 0));
+    return {
+      x: fromX + dx * distance,
+      y: fromY + dy * distance,
+      dx,
+      dy,
+      distance
+    };
+  };
+
+  const distanceToBeam = (x, y, fromX, fromY, directionX, directionY, beamLength) => {
+    const relX = x - fromX;
+    const relY = y - fromY;
+    const projection = relX * directionX + relY * directionY;
+    if (projection < 0 || projection > beamLength) return Infinity;
+    const closestX = fromX + directionX * projection;
+    const closestY = fromY + directionY * projection;
+    return Math.hypot(x - closestX, y - closestY);
+  };
+
   const shootAt = (x, y) => {
     if (!state.player) return;
+    const fromX = state.player.x;
+    const fromY = state.player.y - 10;
+    const edge = rayToScreenEdge(fromX, fromY, x, y);
     state.beams.push({
-      fromX: state.player.x,
-      fromY: state.player.y - 10,
-      toX: x,
-      toY: y,
+      fromX,
+      fromY,
+      toX: edge.x,
+      toY: edge.y,
       life: 0.14
     });
 
     for (const platform of state.platforms) {
       if (!platform.eye?.alive) continue;
-      const dx = x - platform.eye.x;
-      const dy = y - platform.eye.y;
-      if (Math.hypot(dx, dy) < 28) {
+      const distance = distanceToBeam(platform.eye.x, platform.eye.y, fromX, fromY, edge.dx, edge.dy, edge.distance);
+      if (distance < 22) {
         platform.eye.alive = false;
         state.score += 10;
         scoreValue.textContent = String(state.score);
         addPop(platform.eye.x, platform.eye.y);
-        break;
       }
     }
   };
