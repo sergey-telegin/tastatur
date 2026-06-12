@@ -49,7 +49,8 @@ module.exports = {
   },
   hooks: {
     postPackage: async (_config, packageResult) => {
-      if (packageResult.platform !== "darwin" && packageResult.platform !== "mas") return;
+      if (isMasBuild) return;
+      if (packageResult.platform !== "darwin") return;
 
       for (const outputPath of packageResult.outputPaths) {
         sanitizeMacInfoPlist(path.join(outputPath, "FlyKey.app"));

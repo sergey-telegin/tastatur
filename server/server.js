@@ -153,6 +153,24 @@ function privateToolHeaders(url) {
     : {};
 }
 
+function staticCacheControl(resolvedPath, extension) {
+  const normalizedPath = resolvedPath.split(path.sep).join("/");
+  if (
+    extension === ".html" ||
+    normalizedPath.endsWith("/styles/main.css") ||
+    normalizedPath.endsWith("/styles/storyboard.css") ||
+    normalizedPath.endsWith("/app/data.js") ||
+    normalizedPath.endsWith("/app/controllers/lesson-storyboard-controller.js") ||
+    normalizedPath.endsWith("/practice-content/storyboard.js") ||
+    normalizedPath.endsWith("/practice-content/content-bundle.json") ||
+    normalizedPath.endsWith("/practice-content/content-version.json")
+  ) {
+    return "no-store";
+  }
+
+  return "public, max-age=3600";
+}
+
 function safeStaticPath(urlPath, staticRoot = rootDir) {
   const normalizedPath = decodeURIComponent(urlPath.split("?")[0]);
   const relativePath = normalizedPath === "/" ? "index.html" : normalizedPath.replace(/^\/+/, "");
@@ -286,7 +304,7 @@ async function handleStatic(request, response, urlOrPath, staticRoot = rootDir) 
     setSecurityHeaders(response);
     response.writeHead(200, {
       "Content-Type": contentType,
-      "Cache-Control": extension === ".html" ? "no-store" : "public, max-age=3600",
+      "Cache-Control": staticCacheControl(resolvedPath, extension),
       ...robotsHeaders
     });
     response.end(request.method === "HEAD" ? undefined : file);

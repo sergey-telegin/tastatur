@@ -17,6 +17,9 @@
     "server:check": "node --check server/server.js",
     "server:smoke": "node scripts/smoke-server-api.js",
     "backend:smoke": "node scripts/smoke-backend-api.js",
+    "backend:smoke-sync": "node scripts/smoke-backend-profile-sync.js",
+    "backend:smoke:prod": "FLYKEY_BACKEND_URL=https://api.flykey.org node scripts/smoke-backend-api.js",
+    "backend:smoke-sync:prod": "FLYKEY_BACKEND_URL=https://api.flykey.org FLYKEY_PROFILE_SYNC_GRANT_COMMAND='ssh -o BatchMode=yes root@178.105.146.135 \"cd /srv/flykey-backend && docker compose --env-file .env.local -f compose.prod.yaml exec -T app php bin/console app:grant-entitlement {email} {entitlement} --env=prod --no-debug\"' node scripts/smoke-backend-profile-sync.js",
     "content:build": "node scripts/build-content-bundle.js",
     "content:validate": "node scripts/validate-content-bundle.js",
     "site:build": "node scripts/build-site-content.js",
@@ -33,6 +36,8 @@
     "check:no-raw-ui-errors": "node scripts/check-no-raw-ui-errors.js",
     "check:mas-readiness": "node scripts/check-mas-readiness.js",
     "check:app-store-assets": "node scripts/check-app-store-assets.js",
+    "release:check-apple-signing": "node scripts/check-apple-signing.js",
+    "release:mas": "npm run check && npm run release:check-apple-signing && npm run make:mas && npm run check:packaged-macos-app",
     "check:packaged-macos-app": "node scripts/check-packaged-macos-app.js",
     "check:js": "find app practice-content desktop scripts server site-content -name '*.js' -print0 | xargs -0 -n1 node --check",
     "check": "npm run content:validate && npm run check:site-content && npm run check:html && npm run check:cyrillic-ui && npm run check:homepage-localization && npm run check:index-fallback-localization && npm run check:index-single-ui-source && npm run check:ui-text-parity && npm run check:ui-language-leaks && npm run check:content-language-leaks && npm run check:no-raw-ui-errors && npm run check:mas-readiness && npm run check:app-store-assets && npm run check:js"
