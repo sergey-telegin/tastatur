@@ -221,38 +221,38 @@
     }
   };
 
-  const shootEye = (platform) => {
-    if (!platform.eye?.alive || !state.player) return;
-    platform.eye.alive = false;
-    state.score += 10;
-    scoreValue.textContent = String(state.score);
+  const shootAt = (x, y) => {
+    if (!state.player) return;
     state.beams.push({
       fromX: state.player.x,
       fromY: state.player.y - 10,
-      toX: platform.eye.x,
-      toY: platform.eye.y,
+      toX: x,
+      toY: y,
       life: 0.14
     });
-    addPop(platform.eye.x, platform.eye.y);
+
+    for (const platform of state.platforms) {
+      if (!platform.eye?.alive) continue;
+      const dx = x - platform.eye.x;
+      const dy = y - platform.eye.y;
+      if (Math.hypot(dx, dy) < 28) {
+        platform.eye.alive = false;
+        state.score += 10;
+        scoreValue.textContent = String(state.score);
+        addPop(platform.eye.x, platform.eye.y);
+        break;
+      }
+    }
   };
 
-  const handlePointer = (event) => {
+  const handlePointer = (event, shouldShoot) => {
     if (state.mode !== "playing") return;
     const rect = canvas.getBoundingClientRect();
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top + state.cameraY;
     state.pointerX = x;
     state.moving = true;
-
-    for (const platform of state.platforms) {
-      if (!platform.eye?.alive) continue;
-      const dx = x - platform.eye.x;
-      const dy = y - platform.eye.y;
-      if (Math.hypot(dx, dy) < 34) {
-        shootEye(platform);
-        break;
-      }
-    }
+    if (shouldShoot) shootAt(x, y);
   };
 
   const updatePlayer = (dt) => {
@@ -469,8 +469,8 @@
 
   startButton.addEventListener("click", startGame);
   restartButton.addEventListener("click", startGame);
-  canvas.addEventListener("pointerdown", handlePointer);
-  canvas.addEventListener("pointermove", handlePointer);
+  canvas.addEventListener("pointerdown", (event) => handlePointer(event, true));
+  canvas.addEventListener("pointermove", (event) => handlePointer(event, false));
   canvas.addEventListener("pointerup", () => {
     state.moving = false;
   });
