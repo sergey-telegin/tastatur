@@ -1,6 +1,7 @@
 (() => {
   const canvas = document.getElementById("flykey-game");
   const ctx = canvas.getContext("2d");
+  const gameShell = document.querySelector(".game-shell");
   const menuScreen = document.getElementById("menu-screen");
   const gameOverScreen = document.getElementById("game-over-screen");
   const desktopScreen = document.getElementById("desktop-screen");
@@ -19,6 +20,89 @@
     ru: ["\u0410", "\u041e", "\u0415", "\u0418", "\u041d", "\u0422", "\u0421", "\u0420", "\u0434\u043e\u043c", "\u043a\u043e\u0442", "\u043c\u0438\u0440", "\u0441\u0432\u0435\u0442"],
     uk: ["\u0410", "\u041e", "\u0415", "\u0406", "\u041d", "\u0422", "\u0421", "\u0434\u0456\u043c", "\u043a\u0456\u0442", "\u043c\u0438\u0440"],
     kk: ["\u0410", "\u04d8", "\u041e", "\u04e8", "\u04b0", "\u04ae", "\u049a", "\u0492", "\u04a2", "\u043a\u04af\u043d", "\u0442\u0456\u043b", "\u04af\u0439"]
+  };
+
+  const uiText = {
+    en: {
+      menuEyebrow: "FlyKey mini game",
+      menuTitle: "FlyKey Jump",
+      menuLede: "On a phone you cannot truly learn touch typing, but you can defeat the habit of looking at the keys.",
+      chooseLanguage: "Choose language",
+      start: "Start",
+      openTrainer: "Open the real trainer",
+      gameOverEyebrow: "Game over",
+      gameOverTitle: "Fly looked down",
+      score: "Score",
+      best: "Best",
+      restart: "Restart",
+      desktopCta: "Learn touch typing for real on a computer",
+      phoneOnly: "Phone only",
+      phoneOnlyLede: "This mini game opens on phones. On a computer, FlyKey is the real touch typing trainer."
+    },
+    de: {
+      menuEyebrow: "FlyKey Minispiel",
+      menuTitle: "FlyKey Jump",
+      menuLede: "Auf dem Handy kannst du Zehnfingerschreiben nicht wirklich lernen, aber du kannst die Gewohnheit besiegen, auf die Tasten zu schauen.",
+      chooseLanguage: "Sprache wählen",
+      start: "Start",
+      openTrainer: "Echten Trainer öffnen",
+      gameOverEyebrow: "Spiel vorbei",
+      gameOverTitle: "Fly hat nach unten geschaut",
+      score: "Punkte",
+      best: "Rekord",
+      restart: "Neu starten",
+      desktopCta: "Lerne Zehnfingerschreiben richtig am Computer",
+      phoneOnly: "Nur fürs Handy",
+      phoneOnlyLede: "Dieses Minispiel öffnet sich auf Handys. Am Computer ist FlyKey der echte Tipptrainer."
+    },
+    ru: {
+      menuEyebrow: "\u041c\u0438\u043d\u0438-\u0438\u0433\u0440\u0430 FlyKey",
+      menuTitle: "FlyKey Jump",
+      menuLede: "\u041d\u0430 \u0442\u0435\u043b\u0435\u0444\u043e\u043d\u0435 \u043d\u0435\u043b\u044c\u0437\u044f \u043f\u043e-\u043d\u0430\u0441\u0442\u043e\u044f\u0449\u0435\u043c\u0443 \u0443\u0447\u0438\u0442\u044c\u0441\u044f \u0441\u043b\u0435\u043f\u043e\u0439 \u043f\u0435\u0447\u0430\u0442\u0438, \u043d\u043e \u043c\u043e\u0436\u043d\u043e \u043f\u043e\u0431\u0435\u0434\u0438\u0442\u044c \u043f\u0440\u0438\u0432\u044b\u0447\u043a\u0443 \u0441\u043c\u043e\u0442\u0440\u0435\u0442\u044c \u043d\u0430 \u043a\u043b\u0430\u0432\u0438\u0448\u0438.",
+      chooseLanguage: "\u0412\u044b\u0431\u0435\u0440\u0438 \u044f\u0437\u044b\u043a",
+      start: "\u0421\u0442\u0430\u0440\u0442",
+      openTrainer: "\u041e\u0442\u043a\u0440\u044b\u0442\u044c \u043d\u0430\u0441\u0442\u043e\u044f\u0449\u0438\u0439 \u0442\u0440\u0435\u043d\u0430\u0436\u0435\u0440",
+      gameOverEyebrow: "\u0418\u0433\u0440\u0430 \u043e\u043a\u043e\u043d\u0447\u0435\u043d\u0430",
+      gameOverTitle: "Fly \u043f\u043e\u0441\u043c\u043e\u0442\u0440\u0435\u043b \u0432\u043d\u0438\u0437",
+      score: "\u0421\u0447\u0435\u0442",
+      best: "\u0420\u0435\u043a\u043e\u0440\u0434",
+      restart: "\u0417\u0430\u043d\u043e\u0432\u043e",
+      desktopCta: "\u0423\u0447\u0438\u0441\u044c \u0441\u043b\u0435\u043f\u043e\u0439 \u043f\u0435\u0447\u0430\u0442\u0438 \u043f\u043e-\u043d\u0430\u0441\u0442\u043e\u044f\u0449\u0435\u043c\u0443 \u043d\u0430 \u043a\u043e\u043c\u043f\u044c\u044e\u0442\u0435\u0440\u0435",
+      phoneOnly: "\u0422\u043e\u043b\u044c\u043a\u043e \u0434\u043b\u044f \u0442\u0435\u043b\u0435\u0444\u043e\u043d\u0430",
+      phoneOnlyLede: "\u042d\u0442\u0430 \u043c\u0438\u043d\u0438-\u0438\u0433\u0440\u0430 \u043e\u0442\u043a\u0440\u044b\u0432\u0430\u0435\u0442\u0441\u044f \u043d\u0430 \u0442\u0435\u043b\u0435\u0444\u043e\u043d\u0430\u0445. \u041d\u0430 \u043a\u043e\u043c\u043f\u044c\u044e\u0442\u0435\u0440\u0435 FlyKey - \u044d\u0442\u043e \u043d\u0430\u0441\u0442\u043e\u044f\u0449\u0438\u0439 \u0442\u0440\u0435\u043d\u0430\u0436\u0435\u0440."
+    },
+    uk: {
+      menuEyebrow: "\u041c\u0456\u043d\u0456-\u0433\u0440\u0430 FlyKey",
+      menuTitle: "FlyKey Jump",
+      menuLede: "\u041d\u0430 \u0442\u0435\u043b\u0435\u0444\u043e\u043d\u0456 \u043d\u0435\u043c\u043e\u0436\u043b\u0438\u0432\u043e \u043f\u043e-\u0441\u043f\u0440\u0430\u0432\u0436\u043d\u044c\u043e\u043c\u0443 \u0432\u0447\u0438\u0442\u0438\u0441\u044f \u0441\u043b\u0456\u043f\u043e\u0433\u043e \u0434\u0440\u0443\u043a\u0443, \u0430\u043b\u0435 \u043c\u043e\u0436\u043d\u0430 \u043f\u0435\u0440\u0435\u043c\u043e\u0433\u0442\u0438 \u0437\u0432\u0438\u0447\u043a\u0443 \u0434\u0438\u0432\u0438\u0442\u0438\u0441\u044f \u043d\u0430 \u043a\u043b\u0430\u0432\u0456\u0448\u0456.",
+      chooseLanguage: "\u041e\u0431\u0435\u0440\u0438 \u043c\u043e\u0432\u0443",
+      start: "\u0421\u0442\u0430\u0440\u0442",
+      openTrainer: "\u0412\u0456\u0434\u043a\u0440\u0438\u0442\u0438 \u0441\u043f\u0440\u0430\u0432\u0436\u043d\u0456\u0439 \u0442\u0440\u0435\u043d\u0430\u0436\u0435\u0440",
+      gameOverEyebrow: "\u0413\u0440\u0443 \u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u043e",
+      gameOverTitle: "Fly \u043f\u043e\u0434\u0438\u0432\u0438\u0432\u0441\u044f \u0432\u043d\u0438\u0437",
+      score: "\u0420\u0430\u0445\u0443\u043d\u043e\u043a",
+      best: "\u0420\u0435\u043a\u043e\u0440\u0434",
+      restart: "\u0417\u0430\u043d\u043e\u0432\u043e",
+      desktopCta: "\u0412\u0447\u0438\u0441\u044f \u0441\u043b\u0456\u043f\u043e\u0433\u043e \u0434\u0440\u0443\u043a\u0443 \u043f\u043e-\u0441\u043f\u0440\u0430\u0432\u0436\u043d\u044c\u043e\u043c\u0443 \u043d\u0430 \u043a\u043e\u043c\u043f'\u044e\u0442\u0435\u0440\u0456",
+      phoneOnly: "\u0422\u0456\u043b\u044c\u043a\u0438 \u0434\u043b\u044f \u0442\u0435\u043b\u0435\u0444\u043e\u043d\u0430",
+      phoneOnlyLede: "\u0426\u044f \u043c\u0456\u043d\u0456-\u0433\u0440\u0430 \u0432\u0456\u0434\u043a\u0440\u0438\u0432\u0430\u0454\u0442\u044c\u0441\u044f \u043d\u0430 \u0442\u0435\u043b\u0435\u0444\u043e\u043d\u0430\u0445. \u041d\u0430 \u043a\u043e\u043c\u043f'\u044e\u0442\u0435\u0440\u0456 FlyKey - \u0446\u0435 \u0441\u043f\u0440\u0430\u0432\u0436\u043d\u0456\u0439 \u0442\u0440\u0435\u043d\u0430\u0436\u0435\u0440."
+    },
+    kk: {
+      menuEyebrow: "FlyKey \u043c\u0438\u043d\u0438-\u043e\u0439\u044b\u043d\u044b",
+      menuTitle: "FlyKey Jump",
+      menuLede: "\u0422\u0435\u043b\u0435\u0444\u043e\u043d\u0434\u0430 \u0441\u043e\u049b\u044b\u0440 \u0442\u0435\u0440\u0443\u0434\u0456 \u0448\u044b\u043d\u044b\u043c\u0435\u043d \u04af\u0439\u0440\u0435\u043d\u0443 \u049b\u0438\u044b\u043d, \u0431\u0456\u0440\u0430\u049b \u043f\u0435\u0440\u043d\u0435\u043b\u0435\u0440\u0433\u0435 \u049b\u0430\u0440\u0430\u0443 \u04d9\u0434\u0435\u0442\u0456\u043d \u0436\u0435\u04a3\u0443\u0433\u0435 \u0431\u043e\u043b\u0430\u0434\u044b.",
+      chooseLanguage: "\u0422\u0456\u043b\u0434\u0456 \u0442\u0430\u04a3\u0434\u0430",
+      start: "\u0411\u0430\u0441\u0442\u0430\u0443",
+      openTrainer: "\u041d\u0430\u0493\u044b\u0437 \u0436\u0430\u0442\u0442\u044b\u049b\u0442\u044b\u0440\u0493\u044b\u0448\u0442\u044b \u0430\u0448\u0443",
+      gameOverEyebrow: "\u041e\u0439\u044b\u043d \u0430\u044f\u049b\u0442\u0430\u043b\u0434\u044b",
+      gameOverTitle: "Fly \u0442\u04e9\u043c\u0435\u043d \u049b\u0430\u0440\u0430\u0434\u044b",
+      score: "\u04b0\u043f\u0430\u0439",
+      best: "\u0420\u0435\u043a\u043e\u0440\u0434",
+      restart: "\u049a\u0430\u0439\u0442\u0430 \u0431\u0430\u0441\u0442\u0430\u0443",
+      desktopCta: "\u041a\u043e\u043c\u043f\u044c\u044e\u0442\u0435\u0440\u0434\u0435 \u0441\u043e\u049b\u044b\u0440 \u0442\u0435\u0440\u0443\u0434\u0456 \u0448\u044b\u043d\u044b\u043c\u0435\u043d \u04af\u0439\u0440\u0435\u043d",
+      phoneOnly: "\u0422\u0435\u043a \u0442\u0435\u043b\u0435\u0444\u043e\u043d\u0493\u0430",
+      phoneOnlyLede: "\u0411\u04b1\u043b \u043c\u0438\u043d\u0438-\u043e\u0439\u044b\u043d \u0442\u0435\u043b\u0435\u0444\u043e\u043d\u0434\u0430 \u0430\u0448\u044b\u043b\u0430\u0434\u044b. \u041a\u043e\u043c\u043f\u044c\u044e\u0442\u0435\u0440\u0434\u0435 FlyKey - \u043d\u0430\u0493\u044b\u0437 \u0442\u0435\u0440\u0443 \u0436\u0430\u0442\u0442\u044b\u049b\u0442\u044b\u0440\u0493\u044b\u0448\u044b."
+    }
   };
 
   const state = {
@@ -99,11 +183,57 @@
     gameOverScreen.classList.toggle("is-visible", mode === "over");
     desktopScreen.classList.toggle("is-visible", mode === "desktop");
     hud.classList.toggle("is-visible", mode === "playing");
+    gameShell.classList.toggle("is-overlay", mode !== "playing");
   };
 
   const selectedLanguage = () => {
     const selected = languagePicker.querySelector("input[name='game-language']:checked");
     return selected?.value || "en";
+  };
+
+  const browserLanguage = () => {
+    const languages = Array.isArray(navigator.languages) && navigator.languages.length
+      ? navigator.languages
+      : [navigator.language].filter(Boolean);
+    for (const language of languages) {
+      const languageId = String(language).toLowerCase().split("-")[0];
+      if (uiText[languageId]) return languageId;
+    }
+    return "en";
+  };
+
+  const setSelectedLanguage = (language) => {
+    const normalized = uiText[language] ? language : "en";
+    const input = languagePicker.querySelector(`input[name='game-language'][value='${normalized}']`);
+    if (input) input.checked = true;
+    state.language = normalized;
+    document.documentElement.lang = normalized;
+  };
+
+  const applyLanguage = (language) => {
+    const normalized = uiText[language] ? language : "en";
+    const labels = uiText[normalized];
+    setSelectedLanguage(normalized);
+    document.querySelectorAll("[data-i18n]").forEach((element) => {
+      const key = element.dataset.i18n;
+      if (labels[key]) element.textContent = labels[key];
+    });
+    document.title = `${labels.menuTitle} - FlyKey`;
+    try {
+      localStorage.setItem("flykey_mobile_game_language", normalized);
+    } catch {
+      // Language selection should still work when localStorage is unavailable.
+    }
+  };
+
+  const initialLanguage = () => {
+    try {
+      const savedLanguage = localStorage.getItem("flykey_mobile_game_language");
+      if (savedLanguage && uiText[savedLanguage]) return savedLanguage;
+    } catch {
+      // Ignore blocked storage and fall back to the browser language.
+    }
+    return browserLanguage();
   };
 
   const loadBest = () => {
@@ -188,6 +318,7 @@
 
   const startGame = async () => {
     state.language = selectedLanguage();
+    applyLanguage(state.language);
     state.score = 0;
     state.cameraY = 0;
     state.beams = [];
@@ -469,6 +600,9 @@
 
   startButton.addEventListener("click", startGame);
   restartButton.addEventListener("click", startGame);
+  languagePicker.addEventListener("change", () => {
+    applyLanguage(selectedLanguage());
+  });
   canvas.addEventListener("pointerdown", (event) => handlePointer(event, true));
   canvas.addEventListener("pointermove", (event) => handlePointer(event, false));
   canvas.addEventListener("pointerup", () => {
@@ -481,6 +615,7 @@
   window.addEventListener("orientationchange", resize);
 
   resize();
+  applyLanguage(initialLanguage());
   loadBest();
   setScreen(isPhone() ? "menu" : "desktop");
   requestAnimationFrame(loop);

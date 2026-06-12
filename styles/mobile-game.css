@@ -40,6 +40,10 @@ input {
   background: linear-gradient(180deg, #14231d 0%, #111614 48%, #0d1110 100%);
 }
 
+.game-shell.is-overlay {
+  touch-action: pan-y;
+}
+
 #flykey-game {
   display: block;
   width: 100%;
@@ -55,12 +59,20 @@ input {
   flex-direction: column;
   gap: 18px;
   padding: max(22px, env(safe-area-inset-top)) 22px max(24px, env(safe-area-inset-bottom));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
   text-align: center;
   background: linear-gradient(180deg, rgba(17, 22, 20, 0.93), rgba(17, 22, 20, 0.76));
 }
 
 .screen.is-visible {
   display: flex;
+}
+
+.screen-menu {
+  justify-content: flex-start;
+  padding-bottom: max(32px, env(safe-area-inset-bottom));
 }
 
 .menu-mascot {
