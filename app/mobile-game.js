@@ -183,8 +183,13 @@
     gameOverScreen.classList.toggle("is-visible", mode === "over");
     desktopScreen.classList.toggle("is-visible", mode === "desktop");
     hud.classList.toggle("is-visible", mode === "playing");
-    gameShell.classList.toggle("is-overlay", mode !== "playing");
-    document.body.classList.toggle("is-game-overlay", mode !== "playing");
+    const isOverlay = mode !== "playing";
+    gameShell.classList.toggle("is-overlay", isOverlay);
+    document.documentElement.classList.toggle("is-game-overlay", isOverlay);
+    document.documentElement.classList.toggle("is-game-playing", !isOverlay);
+    document.body.classList.toggle("is-game-overlay", isOverlay);
+    document.body.classList.toggle("is-game-playing", !isOverlay);
+    if (!isOverlay) window.scrollTo(0, 0);
   };
 
   const selectedLanguage = () => {

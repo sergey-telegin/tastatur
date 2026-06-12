@@ -22,9 +22,17 @@ body {
   background: var(--bg);
   color: var(--ink);
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+html.is-game-playing,
+body.is-game-playing {
+  height: 100%;
   overflow: hidden;
 }
 
+html.is-game-overlay,
 body.is-game-overlay {
   overflow-y: auto;
   min-height: 100dvh;
@@ -85,6 +93,7 @@ input {
   inset: auto;
   z-index: 1;
   min-height: 100dvh;
+  overflow: visible;
 }
 
 .screen.is-visible {
