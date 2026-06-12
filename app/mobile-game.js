@@ -37,6 +37,14 @@
     lastTime: 0,
     pointerX: 0,
     moving: false,
+    tilt: {
+      available: false,
+      active: false,
+      permissionAsked: false,
+      gamma: 0,
+      baseGamma: null,
+      targetX: null
+    },
     mascot: new Image()
   };
 
@@ -46,6 +54,37 @@
   const rand = (min, max) => min + Math.random() * (max - min);
   const choice = (items) => items[Math.floor(Math.random() * items.length)];
   const highScoreKey = () => `flykey_mobile_highscore_${state.language}`;
+  const onDeviceOrientation = (event) => {
+    if (typeof event.gamma !== "number") return;
+    state.tilt.available = true;
+    if (state.tilt.baseGamma === null) {
+      state.tilt.baseGamma = event.gamma;
+    }
+    state.tilt.gamma = event.gamma;
+    const delta = clamp(event.gamma - state.tilt.baseGamma, -26, 26);
+    state.tilt.targetX = clamp(state.width / 2 + (delta / 26) * (state.width * 0.46), 28, state.width - 28);
+  };
+
+  const enableTiltControls = async () => {
+    if (!("DeviceOrientationEvent" in window)) return false;
+    if (state.tilt.active) return true;
+
+    try {
+      const requestPermission = window.DeviceOrientationEvent?.requestPermission;
+      if (typeof requestPermission === "function" && !state.tilt.permissionAsked) {
+        state.tilt.permissionAsked = true;
+        const result = await requestPermission();
+        if (result !== "granted") return false;
+      }
+
+      window.addEventListener("deviceorientation", onDeviceOrientation, true);
+      state.tilt.active = true;
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
   const isPhone = () => {
     const coarsePointer = window.matchMedia?.("(pointer: coarse)")?.matches === true;
     const fineHover = window.matchMedia?.("(hover: hover) and (pointer: fine)")?.matches === true;
@@ -146,13 +185,16 @@
     }
   };
 
-  const startGame = () => {
+  const startGame = async () => {
     state.language = selectedLanguage();
     state.score = 0;
     state.cameraY = 0;
     state.beams = [];
     state.particles = [];
+    state.tilt.baseGamma = null;
+    state.tilt.targetX = null;
     state.player = makePlayer();
+    await enableTiltControls();
     loadBest();
     resetPlatforms();
     setScreen("playing");
@@ -214,7 +256,8 @@
 
   const updatePlayer = (dt) => {
     const player = state.player;
-    const targetX = state.moving ? state.pointerX : player.x + player.vx * dt;
+    const tiltTarget = state.tilt.active && state.tilt.targetX !== null ? state.tilt.targetX : null;
+    const targetX = state.moving ? state.pointerX : tiltTarget ?? player.x + player.vx * dt;
     player.x += (targetX - player.x) * clamp(dt * 8, 0, 1);
     player.vy += 1260 * dt;
     player.y += player.vy * dt;
