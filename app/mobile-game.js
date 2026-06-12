@@ -141,6 +141,7 @@
     x: state.width * 0.5,
     y: state.height - 130,
     radius: 25,
+    footOffset: 43,
     vx: 80,
     vy: -620,
     aimX: state.width * 0.5,
@@ -270,12 +271,12 @@
 
     if (player.vy > 0) {
       for (const platform of state.platforms) {
-        const previousBottom = player.y - player.vy * dt + player.radius;
-        const bottom = player.y + player.radius;
+        const previousFoot = player.y - player.vy * dt + player.footOffset;
+        const foot = player.y + player.footOffset;
         const withinX = player.x > platform.x - 18 && player.x < platform.x + platform.width + 18;
-        const crossesTop = previousBottom <= platform.y && bottom >= platform.y;
+        const crossesTop = previousFoot <= platform.y && foot >= platform.y;
         if (withinX && crossesTop) {
-          player.y = platform.y - player.radius;
+          player.y = platform.y - player.footOffset;
           player.vy = -650;
           break;
         }
