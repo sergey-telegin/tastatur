@@ -77,22 +77,15 @@ function initializePrivacyConsent() {
   const reject = document.querySelector("#privacyConsentReject");
   if (!banner || !title || !text || !accept || !reject) return;
 
-  const activeDialogHost = () => {
-    const openDialogs = Array.from(document.querySelectorAll("dialog[open]"));
-    return openDialogs.at(-1) || document.body;
-  };
-
   const mountConsentBanner = () => {
-    const host = activeDialogHost();
-    if (banner.parentElement !== host) {
-      host.append(banner);
+    if (banner.parentElement !== document.body) {
+      document.body.append(banner);
     }
   };
 
   const hideConsentBanner = () => {
     banner.hidden = true;
     banner.setAttribute("aria-hidden", "true");
-    document.documentElement.classList.remove("privacy-consent-active");
     if (banner.parentElement !== document.body) {
       document.body.append(banner);
     }
@@ -124,7 +117,6 @@ function initializePrivacyConsent() {
     mountConsentBanner();
     banner.hidden = false;
     banner.setAttribute("aria-hidden", "false");
-    document.documentElement.classList.add("privacy-consent-active");
   };
 
   const queueConsentDialog = () => {

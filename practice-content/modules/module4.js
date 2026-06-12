@@ -48,7 +48,8 @@
           de: ["y", "x", "c", "v", "b"],
           en: ["z", "x", "c", "v", "b"]
         },
-        target: { lines: 10, accuracy: 90, speedMax: 120 },
+        content: { lineCount: 10 },
+      scoring: { accuracy: 90, speedMax: 120 },
         lines: {
           ru: practiceLines([
             "ячсми ячсми ячсми имсчя имсчя чясим чясим ячсми имсчя чясим",
@@ -108,7 +109,8 @@
           de: ["n", "m"],
           en: ["n", "m"]
         },
-        target: { lines: 10, accuracy: 90, speedMax: 120 },
+        content: { lineCount: 10 },
+        scoring: { accuracy: 90, speedMax: 120 },
         lines: {
           ru: practiceLines([
             "тьбю тьбю тьбю юбьт юбьт бтюь бтюь тьбю юбьт бтюь тьбю",
@@ -168,7 +170,8 @@
           de: ["y", "x", "c", "v", "b", "n", "m"],
           en: ["z", "x", "c", "v", "b", "n", "m"]
         },
-        target: { lines: 10, accuracy: 90, speedMax: 120 },
+        content: { lineCount: 10 },
+        scoring: { accuracy: 90, speedMax: 120 },
         lines: {
           ru: practiceLines([
             "ячсми тьбю ячсми тьбю имсчя юбьт ячсми тьбю ячсми тьбю",
@@ -228,7 +231,8 @@
           de: ["y", "x", "c", "v", "b", "n", "m"],
           en: ["z", "x", "c", "v", "b", "n", "m"]
         },
-        target: { lines: 10, accuracy: 90, speed: 40 },
+        content: { lineCount: 10 },
+        scoring: { accuracy: 90, speed: 40 },
         lines: {
           ru: practiceLines([
             "мяч час сям мяс тишь тьма туча бита юла мим мяч час сям мяс тишь тьма",
@@ -288,7 +292,8 @@
           de: ["a", "s", "d", "f", "j", "k", "l", "ö", "ä", "r", "t", "g", "u", "z", "h", "v", "b", "n", "m", "q", "w", "e", "i", "o", "p", "ü", "y", "x", "c"],
           en: ["a", "s", "d", "f", "j", "k", "l", "r", "t", "g", "u", "y", "h", "v", "b", "n", "m", "q", "w", "e", "i", "o", "p", "z", "x", "c"]
         },
-        target: { lines: 15, accuracy: 90, speed: 40, assistants: false },
+        content: { lineCount: 15 },
+        scoring: { accuracy: 90, speed: 40, assistants: false },
         lines: {
           ru: practiceLines([
             "мама папа тема вода лава книга нора гора мяч час тьма туча бита юла",

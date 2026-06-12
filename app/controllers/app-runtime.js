@@ -19,6 +19,7 @@ function render() {
   renderModuleButtons();
   restoreCurrentPracticeProgress();
   renderPracticeLine();
+  renderPracticeModuleCaption();
   renderFingerMapPanel();
   renderKeyboard();
   renderSelect();

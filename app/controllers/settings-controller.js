@@ -138,7 +138,11 @@ function toggleDisplaySetting(settingName) {
   if (settingName === "fingerHighlightEnabled") fingerHighlightEnabled = nextValue;
   if (settingName === "pressHighlightEnabled") pressHighlightEnabled = nextValue;
   if (settingName === "showFingersEnabled") showFingersEnabled = nextValue;
-  if (settingName === "alternateLinesEnabled") alternateLinesEnabled = nextValue;
+  if (settingName === "alternateLinesEnabled") {
+    alternateLinesEnabled = nextValue;
+    if (!nextValue) practiceAlternateLineRepeat = false;
+    updateMetronome();
+  }
 
   saved[settingName] = nextValue;
   persist();
@@ -177,12 +181,26 @@ function toggleAssistantsPanel() {
   assistantsPanel.hidden = !nextExpanded;
 }
 
+let cloudSyncMode = "start";
+
+function setCloudSyncMode(mode) {
+  cloudSyncMode = mode;
+  renderCloudSyncPanel();
+}
+
 function toggleCloudSyncPanel() {
+  if (!window.FlyKeyApiClient?.isBackendConfigured?.()) return;
+
   const isExpanded = cloudSyncToggle.getAttribute("aria-expanded") === "true";
   const nextExpanded = !isExpanded;
 
   cloudSyncToggle.setAttribute("aria-expanded", String(nextExpanded));
   cloudSyncPanel.hidden = !nextExpanded;
+  settingsDialog.classList.toggle("account-mode", nextExpanded);
+  if (nextExpanded) {
+    cloudSyncMode = "start";
+    renderCloudSyncPanel();
+  }
 }
 
 function cloudCredentials() {
@@ -319,6 +337,10 @@ window.addEventListener("message", event => {
 });
 
 function handleSettingsDialogClose() {
+  settingsDialog.classList.remove("account-mode");
+  cloudSyncToggle.setAttribute("aria-expanded", "false");
+  cloudSyncPanel.hidden = true;
+  cloudSyncMode = "start";
   setTimeout(updatePracticeTimerPauseState, 0);
   focusPracticeInputSoon();
 }

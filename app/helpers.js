@@ -19,6 +19,10 @@ function onboardingStoryboard() {
   return window.FLYKEY_ONBOARDING_STORYBOARD || {};
 }
 
+function welcomeStoryboard() {
+  return window.FLYKEY_WELCOME_STORYBOARD || window.FLYKEY_ONBOARDING_STORYBOARD || {};
+}
+
 function localizedTextValue(value, language = currentLanguage) {
   if (Array.isArray(value)) return value.filter(Boolean).join("\n");
   if (!value || typeof value !== "object") return value || "";

@@ -47,7 +47,8 @@
           punctuation: [".", ","],
           placeholders: ["X", "Y"]
         },
-        target: { lines: 10, accuracy: 90, speedMax: 120 },
+        content: { lineCount: 10 },
+      scoring: { accuracy: 90, speedMax: 120 },
         lines: {
           ru: practiceLines([
             "мама, папа. тема, вода. лава, книга. нора, гора. мир, тир. рот, тон.",
@@ -71,7 +72,7 @@
             "mama papa, thema wasser. lava glas, oval lad. anna vera, mila ira.",
             "rat, gut. rot, ton. mut, rum. nur, hut. fern, form.",
             "mix, nix. vim, bin. min, my. row, word. finger, reihe.",
-            "anna schreibt, mila liest. vera lernt, nina weiß. olga malt, lara da."
+            "anna schreibt, mila liest. vera lernt, nina weiss. olga malt, lara da."
           ]),
           en: practiceLines([
             "mama, papa. theme, water. lava, book. nora, hill. mir, tier. rot, tone.",
@@ -107,7 +108,8 @@
           punctuation: ["!", "?"],
           placeholders: ["X", "Y"]
         },
-        target: { lines: 10, accuracy: 90, speedMax: 120 },
+        content: { lineCount: 10 },
+        scoring: { accuracy: 90, speedMax: 120 },
         lines: {
           ru: practiceLines([
             "мама! папа? тема! вода? лава! книга? нора! гора? мир! тир?",
@@ -131,7 +133,7 @@
             "mama papa! thema wasser? lava glas! oval lad? anna vera!",
             "rat? gut! rot? ton! mut? rum! nur? hut! fern? form!",
             "mix! nix? vim! bin? min! my? row! wort? finger! reihe?",
-            "anna schreibt? mila liest! vera lernt? nina weiß! olga malt?"
+            "anna schreibt? mila liest! vera lernt? nina weiss! olga malt?"
           ]),
           en: practiceLines([
             "mama! papa? theme! water? lava! book? nora! hill? mir! tier?",
@@ -167,7 +169,8 @@
           punctuation: ["-", ":", "\""],
           placeholders: ["X", "Y", "Z"]
         },
-        target: { lines: 10, accuracy: 90, speedMax: 120 },
+        content: { lineCount: 10 },
+        scoring: { accuracy: 90, speedMax: 120 },
         lines: {
           ru: practiceLines([
             "мама- папа: \"тема\" вода- лава: \"книга\" нора- гора: \"мир\"",
@@ -191,7 +194,7 @@
             "mama papa- thema wasser: \"lava\" glas- oval: \"lad\" anna- vera:",
             "rat- gut: \"rot\" ton- mut: \"rum\" nur- hut: \"fern\"",
             "mix- nix: \"vim\" bin- min: \"my\" row- wort: \"finger\"",
-            "anna schreibt- mila liest: \"vera\" lernt- nina weiß: \"olga\""
+            "anna schreibt- mila liest: \"vera\" lernt- nina weiss: \"olga\""
           ]),
           en: practiceLines([
             "mama- papa: \"theme\" water- lava: \"book\" nora- hill: \"mir\"",
@@ -227,7 +230,8 @@
           digits: true,
           punctuation: [".", ",", "!", "?", "-", ":", "\""]
         },
-        target: { lines: 10, accuracy: 90, speed: 40 },
+        content: { lineCount: 10 },
+        scoring: { accuracy: 90, speed: 40 },
         lines: {
           ru: practiceLines([
             "Анна пишет, Мила читает. Вера учит? Нина знает! Оля рисует- Лада дома:",
@@ -242,13 +246,13 @@
             "Анна Вера, Мила Ира. Нина? Лада! Эля- Оля: \"Яна\""
           ]),
           de: practiceLines([
-            "Anna schreibt, Mila liest. Vera lernt? Nina weiß! Olga malt- Lara da:",
+            "Anna schreibt, Mila liest. Vera lernt? Nina weiss! Olga malt- Lara da:",
             "mama, papa. thema- wasser: \"lava\" buch? nora! berg, mir. tier- rot:",
             "Anna geht? Vera geht! Olga geht, Mila geht. Nina- nah: \"Ira\"",
             "sprung, brücke. maus? faden! karte- ast: \"stift\" punkt.",
             "Fa Qa, De Rv. Gt Cy? Jz Hz! Uj- Ik: \"Ol\" Pö.",
             "form 1, fern 2. gern 3? gurt 4! mut- 5: \"rum\" 6.",
-            "Lara schreibt: \"Mila\" liest. Ira lernt, Nina weiß! Olga- da.",
+            "Lara schreibt: \"Mila\" liest. Ira lernt, Nina weiss! Olga- da.",
             "mix, nix. vim? bin! min- my: \"row\" wort, finger.",
             "12345, qwert. 67890? zuiopü! rtfg- uzjh: \"vbnm\"",
             "Anna Vera, Mila Ira. Nina? Lara! Ella- Olga: \"Jana\""
@@ -287,7 +291,8 @@
           digits: true,
           punctuation: [".", ",", "!", "?", "-", ":", "\""]
         },
-        target: { lines: 15, accuracy: 90, speed: 40, assistants: false },
+        content: { lineCount: 15 },
+        scoring: { accuracy: 90, speed: 40, assistants: false },
         lines: {
           ru: practiceLines([
             "Анна пишет, Мила читает. Вера учит? Нина знает! Оля рисует- Лада дома:",
@@ -307,16 +312,16 @@
             "Утро тихо, Анна встала. Вера? Оля! Мила- Ира: \"Нина\""
           ]),
           de: practiceLines([
-            "Anna schreibt, Mila liest. Vera lernt? Nina weiß! Olga malt- Lara da:",
+            "Anna schreibt, Mila liest. Vera lernt? Nina weiss! Olga malt- Lara da:",
             "mama, papa. thema- wasser: \"lava\" buch? nora! berg, mir. tier- rot:",
             "asdf jklöä, rtfg uzjh. vbnm? qwert! zuiopü- yxcvb: \"nm\"",
             "12345, qwert. 67890? zuiopü! 54321- trewq: \"09876\"",
             "sprung, brücke. maus? faden! karte- ast: \"stift\" punkt.",
-            "Lara liest? Ira schreibt! Olga lernt, Vera weiß. Mila- da:",
+            "Lara liest? Ira schreibt! Olga lernt, Vera weiss. Mila- da:",
             "form 1, fern 2. gern 3? gurt 4! mut- 5: \"rum\" 6.",
             "Fa Qa, De Rv. Gt Cy? Jz Hz! Uj- Ik: \"Ol\" Pö.",
             "mix, nix. vim? bin! min- my: \"row\" wort, finger.",
-            "Lara schreibt: \"Mila\" liest. Ira lernt, Nina weiß! Olga- da.",
+            "Lara schreibt: \"Mila\" liest. Ira lernt, Nina weiss! Olga- da.",
             "fall falls, als das. lass? fass! saal- anna: \"vera\"",
             "Anna Vera, Mila Ira. Nina? Lara! Ella- Olga: \"Jana\"",
             "q1 w2, e3 r4. t5? z6! u7- i8: \"o9\" p0.",

@@ -86,12 +86,9 @@ function renderModuleButtons() {
 
 function formatLessonMeta(lesson, language = currentLanguage) {
   const text = textFor(language);
-  const target = lesson.target || {};
+  const target = lesson.scoring || lesson.target || {};
   const goals = [];
 
-  if (target.lines) {
-    goals.push(`${text.targetLines}: ${target.lines}`);
-  }
   if (target.accuracy) {
     goals.push(`${text.practiceAccuracy}: ≥${target.accuracy}%`);
   }
@@ -141,7 +138,7 @@ function starRatingDetailsForLesson(lesson, progress) {
     return { text: "", isFlying: false };
   }
 
-  const target = lesson.target || {};
+  const target = lesson.scoring || lesson.target || {};
   const accuracy = progress.accuracy || 0;
   let filledStars = 2;
 
@@ -263,30 +260,50 @@ function renderTabs() {
 function renderCloudSyncPanel(message = "") {
   if (!cloudSyncToggle) return;
 
-  const section = cloudSyncToggle.closest(".cloud-section");
   if (!window.FlyKeyApiClient?.isBackendConfigured?.()) {
-    if (section) section.hidden = true;
+    cloudSyncToggle.hidden = true;
+    cloudSyncPanel.hidden = true;
     return;
   }
-  if (section) section.hidden = false;
+  cloudSyncToggle.hidden = false;
 
   const text = textFor();
   const auth = window.FlyKeyCloudSync?.auth?.() || {};
   const isConnected = Boolean(auth.accessToken || auth.refreshToken);
+  const stateText = isConnected ? text.cloudConnected : text.cloudLocal;
+  const mode = isConnected ? "connected" : cloudSyncMode;
 
   cloudSyncToggleText.textContent = text.account;
-  cloudSyncToggle.setAttribute("aria-label", text.account);
-  cloudSyncToggle.closest(".menu-section")?.setAttribute("aria-label", text.account);
-  cloudSyncState.textContent = isConnected ? text.cloudConnected : text.cloudLocal;
+  cloudSyncToggle.setAttribute("aria-label", `${text.account}: ${stateText}`);
+  cloudSyncToggle.setAttribute("title", `${text.account}: ${stateText}`);
+  cloudSyncToggle.classList.toggle("active", isConnected);
+  cloudSyncState.textContent = "";
+  cloudAccountTitle.textContent = mode === "start"
+    ? (text.cloudAuthTitle || `${text.cloudLogin} / ${text.cloudRegister}`)
+    : mode === "login"
+    ? text.cloudLogin
+    : (mode === "create" || mode === "email-create" ? text.cloudRegister : text.account);
+  cloudAccountIntro.textContent = mode === "start" ? (text.cloudAuthIntro || "") : "";
+  cloudAccountIntro.hidden = mode !== "start";
+  cloudAccountState.textContent = isConnected && auth.email
+    ? `${auth.email} · ${stateText}`
+    : stateText;
+  cloudAccountState.hidden = mode === "start";
   cloudEmailLabel.textContent = text.cloudEmail;
   cloudPasswordLabel.textContent = text.cloudPassword;
   cloudProfileLabel.textContent = text.cloudProfile;
+  cloudAuthDivider.querySelector("span").textContent = text.cloudOr || "OR";
+  cloudLoginMode.textContent = text.cloudContinue || "Continue";
+  cloudCreateMode.textContent = text.cloudRegister;
+  cloudCreateEmail.textContent = text.cloudCreateWithEmail || text.cloudRegister;
+  cloudCreateBack.textContent = text.cloudBack || "Back";
+  cloudLoginBack.textContent = text.cloudBack || "Back";
   cloudLogin.textContent = text.cloudLogin;
   cloudRegister.textContent = text.cloudRegister;
   cloudImport.textContent = text.cloudImport;
   cloudLogout.textContent = text.cloudLogout;
   cloudDelete.textContent = text.cloudDelete;
-  cloudEmailInput.placeholder = "user@example.com";
+  cloudEmailInput.placeholder = mode === "start" ? text.cloudEmail : "user@example.com";
   cloudPasswordInput.placeholder = "••••••••";
   cloudProfileInput.placeholder = text.cloudProfile;
 
@@ -300,21 +317,59 @@ function renderCloudSyncPanel(message = "") {
   cloudImport.disabled = !isConnected;
   cloudLogout.disabled = !isConnected;
   cloudDelete.disabled = !isConnected;
+  cloudAuthStart.hidden = mode !== "start";
+  cloudCreateOptions.hidden = mode !== "create";
+  cloudCredentialFields.hidden = !(mode === "start" || mode === "login" || mode === "email-create" || mode === "connected");
+  cloudCredentialFields.classList.toggle("email-only", mode === "start");
+  cloudActions.hidden = mode === "start" || mode === "create";
+  cloudLogin.hidden = mode !== "login";
+  cloudRegister.hidden = mode !== "email-create";
+  cloudImport.hidden = mode !== "connected";
+  cloudLogout.hidden = mode !== "connected";
+  cloudDelete.hidden = mode !== "connected";
+  cloudLoginBack.hidden = mode === "connected";
   cloudStatus.textContent = message || (isConnected ? text.cloudReady : "");
+
+  if (mode === "start" && cloudOauthProviders && !cloudOauthProviders.children.length) {
+    renderCloudOauthProviders([]);
+  }
 }
 
 function renderCloudOauthProviders(providers = []) {
   if (!cloudOauthProviders) return;
 
-  cloudOauthProviders.innerHTML = "";
-  cloudOauthProviders.hidden = !providers.length;
+  const defaultProviders = [
+    { id: "google", label: "Google" },
+    { id: "apple", label: "Apple" },
+    { id: "microsoft", label: "Microsoft" }
+  ];
+  const providerMap = new Map(defaultProviders.map(provider => [provider.id, provider]));
+  providers.forEach(provider => providerMap.set(provider.id, provider));
+  const visibleProviders = Array.from(providerMap.values());
 
-  providers.forEach(provider => {
+  cloudOauthProviders.innerHTML = "";
+  cloudOauthProviders.hidden = false;
+
+  visibleProviders.forEach(provider => {
     const button = document.createElement("button");
     button.type = "button";
     button.className = "nav-btn cloud-oauth-btn";
     button.dataset.provider = provider.id;
-    button.textContent = provider.label;
+    button.dataset.providerIcon = provider.id;
+    const icon = document.createElement("span");
+    icon.className = "cloud-provider-icon";
+    icon.setAttribute("aria-hidden", "true");
+    if (provider.id === "microsoft") {
+      ["#f25022", "#7fba00", "#00a4ef", "#ffb900"].forEach(color => {
+        const tile = document.createElement("span");
+        tile.style.background = color;
+        icon.append(tile);
+      });
+    }
+    const label = document.createElement("span");
+    label.className = "cloud-provider-label";
+    label.textContent = (textFor().cloudContinueWithProvider || "{provider}").replace("{provider}", provider.label);
+    button.append(icon, label);
     button.addEventListener("click", () => handleCloudOAuth(provider.id));
     cloudOauthProviders.append(button);
   });

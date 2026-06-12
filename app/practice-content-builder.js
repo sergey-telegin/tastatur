@@ -16,8 +16,21 @@ function contentLessonLines(lesson, language) {
   if (Array.isArray(lines) && lines.length) return lines;
 
   const fallback = localizedContentText(lesson.title, language) || lesson.id;
-  const count = Math.max(lesson.target?.lines || 10, 10);
+  const count = Math.max(lesson.content?.lineCount || lesson.target?.lines || 10, 10);
   return Array.from({ length: count }, () => fallback);
+}
+
+function contentLessonLineCount(lesson, language) {
+  const explicitCount = lesson.content?.lineCount || lesson.target?.lines;
+  if (Number.isFinite(explicitCount) && explicitCount > 0) return explicitCount;
+  const lines = lesson.lines?.[language];
+  return Array.isArray(lines) ? lines.length : 0;
+}
+
+function contentLessonScoring(lesson) {
+  if (lesson.scoring && typeof lesson.scoring === "object") return lesson.scoring;
+  const { lines, ...scoring } = lesson.target || {};
+  return scoring;
 }
 
 const defaultLessonCompletionText = {
@@ -747,15 +760,15 @@ const kazakhLessonLines = {
     "фыва олджэ дала ал"
   ]),
   lesson2_4: repeatPracticePattern([
-    "ана ата апа мен сен ел",
-    "ата мен ана кел сен кел",
+    "ана ата апа мен ер ел",
+    "ата мен ана кел ер кел",
     "ел мен жер ата ана",
     "апа кел ана кел ата кел",
-    "мен сен ол ел жер",
+    "мен ер ол ел жер",
     "ана апа ата ел мен",
-    "сен кел мен кел ана кел",
+    "ер кел мен кел ана кел",
     "жер ел жол ата ана",
-    "ата ана апа сен мен",
+    "ата ана апа ер мен",
     "ел жер ана ата апа"
   ]),
   lesson2_1: repeatPracticePattern([
@@ -772,100 +785,100 @@ const kazakhLessonLines = {
   ]),
   lesson2_5: repeatPracticePattern([
     "фыва олджэ кеап гнор мить",
-    "ана ата апа мен сен ел",
-    "ата мен ана кел сен кел",
+    "ана ата апа мен ер ел",
+    "ата мен ана кел ер кел",
     "дала жол ел жер ана",
     "кеап гнор мить ана ата",
     "апа кел ана кел ата кел",
     "фыва олджэ ана ата апа",
-    "мен сен ол ел жер",
+    "мен ер ол ел жер",
     "ана апа ата ел мен",
     "гнор кеап мить ел жер",
-    "сен кел мен кел ана кел",
+    "ер кел мен кел ана кел",
     "жер ел жол ата ана",
-    "ата ана апа сен мен",
+    "ата ана апа ер мен",
     "ел жер ана ата апа",
     "фыва олджэ кеап ана"
   ]),
   lesson3_5: repeatPracticePattern([
-    "ана ата апа мен сен ел жер",
+    "ана ата апа мен ер ел жер",
     "дала жол ел жер ана ата",
-    "жолда адам бар адам кел",
-    "сен мен ол ел жер",
+    "жолда адам ер адам кел",
+    "ер мен ол ел жер",
     "ана хат жаз ата хат жаз",
-    "жер мен ел бірге",
-    "алма нан бар ана кел",
+    "жер мен ел кел",
+    "алма нан ана кел",
     "адам жолда ата кел",
     "ел жер дала жол",
-    "сен жаз мен жаз ол жаз",
+    "ер жаз мен жаз ол жаз",
     "ана ата апа жолда",
     "жер ел адам жол",
     "хат жаз адам кел",
-    "далада жол бар",
-    "мен сен ел жер"
+    "далада жол ер",
+    "мен ер ел жер"
   ]),
   lesson4_5: repeatPracticePattern([
     "ана ата апа бала жолда",
-    "адам қалада хат жазды",
-    "сен мен ол бірге кел",
-    "дала жол қала адам",
-    "ана нан алды ата келді",
+    "адам далада хат жазды",
+    "сен мен ол кел",
+    "дала жол адам",
+    "ана нан алды ата кел",
     "бала санады адам жазды",
-    "ел жер қала дала",
-    "апа хат жазды ана оқыды",
+    "ел жер дала жол",
+    "апа хат жазды ана кел",
     "жолда адам аз болды",
     "сен сабырмен тер",
-    "ата ана бала бірге",
-    "қала емес дала кең",
-    "адам келді бала жазды",
-    "жол дала қала ел",
+    "ата ана бала мен",
+    "дала мен жол мол",
+    "адам кел бала жазды",
+    "жол дала адам ел",
     "мен сен ол адам"
   ]),
   lesson5_3: repeatPracticePattern([
-    "Ана келді Ата келді Бала жазды",
-    "Апа оқыды Адам тыңдады Ел тыныш",
-    "Дала кең Қала жақын Жол анық",
-    "Сен жаз Мен жаз Ол оқыды",
-    "Ана хат жазды Ата хат оқыды",
-    "Бала санады Адам жауап берді",
-    "Ел мен жер бірге",
+    "Ана кел Ата кел Бала жазды",
+    "Апа хат жазды Адам жолда Ел тыныш",
+    "Дала мол Жолда адам Ел тыныш",
+    "Сен жаз Мен жаз Ол хат жазды",
+    "Ана хат жазды Ата хат жазды",
+    "Бала санады Адам жауап бер",
+    "Ел мен жер жолда",
     "Жолда адам аз болды",
-    "Апа келді Ана күлді",
-    "Сабыр сақта Теруді жалғастыр"
+    "Апа кел Ана жазды",
+    "Сабыр бол Жолды жаз"
   ]),
   lesson5_4: repeatPracticePattern([
-    "жолда адам қала дала",
+    "жолда адам дала",
     "ана хат бала жауап",
-    "сен мен ол бірге",
-    "дала кең қала жақын",
-    "адам сабыр сақтады",
-    "бала анық терді",
-    "жол ұзақ ой анық",
+    "сен мен ол кел",
+    "дала мол жолда адам",
+    "адам сабыр болды",
+    "бала жауап бер",
+    "жол алыс ой мол",
     "ата ана апа бала",
-    "ел жер жол қала",
-    "хат жауап ой сөз"
+    "ел жер жол дала",
+    "хат жауап ой жол"
   ]),
   lesson5_5: repeatPracticePattern([
-    "Ана хат жазды Ата хат оқыды Бала жауап берді",
-    "жолда адам аз болды қала тыныш дала кең",
-    "Сен анық тер Мен сабыр сақтаймын Ол жалғастырады",
-    "ата ана апа бала бірге келді",
-    "ел мен жер адамға жақын",
-    "Бала санады Адам жазды Ана оқыды",
-    "дала жол қала ел адам",
-    "Апа келді Ана күлді Ата тыңдады",
-    "хат жауап ой сөз жол",
-    "жол ұзақ ой анық темп тыныш",
-    "Сабыр сақта Теруді жалғастыр",
-    "адам жолда қалада далада",
+    "Ана хат жазды Ата хат жазды Бала жауап бер",
+    "жолда адам аз болды дала тыныш ел мол",
+    "Сен тер Мен сабыр боламын Ол жазды",
+    "ата ана апа бала мен кел",
+    "ел мен жер адам жолы",
+    "Бала санады Адам жазды Ана хат жазды",
+    "дала жол ел адам",
+    "Апа кел Ана жазды Ата жазды",
+    "хат жауап ой жол",
+    "жол алыс ой мол темп тыныш",
+    "Сабыр бол Жолды жаз",
+    "адам жолда далада",
     "ана ата бала апа",
-    "ел жер жол қала дала",
-    "Мен жазамын Сен оқисың Ол тыңдайды",
-    "бала анық терді адам сабыр сақтады",
-    "қала емес дала кең",
+    "ел жер жол дала",
+    "Мен жазамын Сен жаз Ол тер",
+    "бала жауап бер адам сабыр болды",
+    "дала емес жол мол",
     "жолда адам бар ел тыныш",
-    "Ана мен Ата бірге келді",
-    "сөз қысқа ой анық"
+    "Ана мен Ата кел",
+    "хат аз ой мол"
   ]),
   lesson8_3: repeatPracticePattern([
     "қазақ тілі әдемі әрі бай",
@@ -1142,7 +1155,12 @@ function buildPracticeContentForLanguage(source, language) {
           intro: contentLessonIntro(lesson, language),
           tips: localizedContentList(lesson.tips, language),
           completion: contentLessonCompletion(lesson, language),
-          target: lesson.target || {},
+          content: {
+            ...(lesson.content || {}),
+            lineCount: contentLessonLineCount(lesson, language)
+          },
+          scoring: contentLessonScoring(lesson),
+          target: contentLessonScoring(lesson),
           lines: contentLessonLines(lesson, language)
         };
 
@@ -1161,6 +1179,7 @@ function buildPracticeContentForLanguage(source, language) {
 function buildPracticeContent() {
   const bundle = window.FlyKeyContentProvider?.getContentBundle?.() || window.PRACTICE_CONTENT_SOURCE || {};
   window.FLYKEY_CONTENT_STORYBOARD = bundle.storyboard || window.FLYKEY_LESSON_STORYBOARD || {};
+  window.FLYKEY_WELCOME_STORYBOARD = bundle.welcomeStoryboard || window.FLYKEY_WELCOME_STORYBOARD || {};
   window.FLYKEY_ONBOARDING_STORYBOARD = bundle.onboardingStoryboard || window.FLYKEY_ONBOARDING_STORYBOARD || {};
   const source = ensureKazakhPracticeContent(ensureUkrainianPracticeContent({
     meta: bundle.meta,

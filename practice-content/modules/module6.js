@@ -48,7 +48,8 @@
           de: ["q", "w", "e", "r", "t", "1", "2", "3", "4", "5"],
           en: ["q", "w", "e", "r", "t", "1", "2", "3", "4", "5"]
         },
-        target: { lines: 5, accuracy: 90, speedMax: 120 },
+        content: { lineCount: 5 },
+      scoring: { accuracy: 90, speedMax: 120 },
         lines: {
           ru: practiceLines([
             "йцуке 12345 йцуке 12345 54321 екуцй йцуке 12345 54321 екуцй йцуке 12345",
@@ -93,7 +94,8 @@
           de: ["z", "u", "i", "o", "p", "ü", "6", "7", "8", "9", "0"],
           en: ["y", "u", "i", "o", "p", "6", "7", "8", "9", "0"]
         },
-        target: { lines: 5, accuracy: 90, speedMax: 120 },
+        content: { lineCount: 5 },
+        scoring: { accuracy: 90, speedMax: 120 },
         lines: {
           ru: practiceLines([
             "нгшщзхъ 67890 нгшщзхъ 67890 09876 ъхзщшгн нгшщзхъ 67890",
@@ -138,7 +140,8 @@
           de: ["q", "w", "e", "r", "t", "z", "u", "i", "o", "p", "ü", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"],
           en: ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]
         },
-        target: { lines: 5, accuracy: 90, speedMax: 120 },
+        content: { lineCount: 5 },
+        scoring: { accuracy: 90, speedMax: 120 },
         lines: {
           ru: practiceLines([
             "йцуке нгшщзхъ 12345 67890 йцуке нгшщзхъ 12345 67890 09876 54321",
@@ -183,7 +186,8 @@
           de: ["q", "w", "e", "r", "t", "z", "u", "i", "o", "p", "ü", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"],
           en: ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]
         },
-        target: { lines: 5, accuracy: 90, speed: 40 },
+        content: { lineCount: 5 },
+        scoring: { accuracy: 90, speed: 40 },
         lines: {
           ru: practiceLines([
             "й1 ц2 у3 к4 е5 н6 г7 ш8 щ9 з0 йцуке 12345 нгшщзхъ 67890",
@@ -230,7 +234,8 @@
           de: ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "ä", "ö", "ü", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
           en: ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
         },
-        target: { lines: 10, accuracy: 90, speed: 40, assistants: false },
+        content: { lineCount: 10 },
+        scoring: { accuracy: 90, speed: 40, assistants: false },
         lines: {
           ru: practiceLines([
             "Анна пишет 12 строк Мила читает 34 слова Вера учит 56 букв Нина знает 78 клавиш",

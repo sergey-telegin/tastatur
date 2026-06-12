@@ -72,6 +72,13 @@ function renderPracticeProgress() {
   practiceProgressBar.style.width = `${linePercent}%`;
 }
 
+function renderPracticeModuleCaption() {
+  if (!practiceModuleCaption) return;
+
+  const lesson = currentPracticeModuleData();
+  practiceModuleCaption.textContent = lesson?.name || "";
+}
+
 function setPracticeInputError(isError) {
   practiceSample.classList.toggle("error", Boolean(isError));
 }

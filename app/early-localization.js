@@ -27,7 +27,6 @@
     start: ui.startPractice,
     next: ui.tourNext,
     close: ui.close,
-    nextModule: ui.nextModuleKicker,
     main: ui.generalSettings,
     sound: ui.sound,
     dark: ui.darkTheme,
@@ -147,7 +146,6 @@
   setText("#onboardingNext", text.next);
   setText("#lessonTipStart", text.start);
   setText("#completionNext", text.next);
-  setText("#nextModuleKicker", text.nextModule);
   setText("#nextModuleNext", text.next);
   setText("#settingsTitle", text.settings);
   setAttr("#settingsClose", "aria-label", text.close);

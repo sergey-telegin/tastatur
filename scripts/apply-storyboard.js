@@ -103,30 +103,58 @@ function normalizedStoryboardFromExport(exportData) {
   return result;
 }
 
-function normalizedOnboardingFromExport(exportData) {
-  const source = exportData.onboardingStoryboard;
+function normalizedScreenStoryboardFromExport(exportData, sourceKey, defaultIdPrefix) {
+  const source = exportData[sourceKey];
   if (!source) return null;
   if (!Array.isArray(source.screens)) {
-    throw new Error("onboardingStoryboard.screens must be an array");
+    throw new Error(`${sourceKey}.screens must be an array`);
   }
 
   return {
     screens: source.screens.map((screen, index) => {
       if (!isPlainObject(screen)) {
-        throw new Error(`onboardingStoryboard.screens[${index}] must be an object`);
+        throw new Error(`${sourceKey}.screens[${index}] must be an object`);
       }
-      if (screen.image) assertImageExists(screen.image, `onboardingStoryboard.screens[${index}].image`);
-      assertLocalizedText(screen.text, `onboardingStoryboard.screens[${index}].text`);
+      if (screen.image) assertImageExists(screen.image, `${sourceKey}.screens[${index}].image`);
+      assertLocalizedText(screen.text, `${sourceKey}.screens[${index}].text`);
+      if (screen.title) assertLocalizedText(screen.title, `${sourceKey}.screens[${index}].title`);
 
       return {
-        id: screen.id || `onboarding_${index + 1}`,
+        id: screen.id || `${defaultIdPrefix}_${index + 1}`,
+        title: screen.title
+          ? Object.fromEntries(languages.map(language => [language, screen.title[language]]))
+          : undefined,
         image: screen.image || null,
         text: Object.fromEntries(languages.map(language => [language, screen.text[language]])),
+        trigger: isPlainObject(screen.trigger)
+          ? {
+              type: String(screen.trigger.type || "firstLaunch"),
+              lessonId: screen.trigger.lessonId || null
+            }
+          : undefined,
         visible: screen.visible !== false,
         showImage: screen.showImage !== false
       };
     })
   };
+}
+
+function normalizedWelcomeFromExport(exportData) {
+  return normalizedScreenStoryboardFromExport(
+    exportData.welcomeStoryboard ? exportData : { welcomeStoryboard: exportData.onboardingStoryboard },
+    "welcomeStoryboard",
+    "welcome storyboard",
+    "welcome"
+  );
+}
+
+function normalizedOnboardingFromExport(exportData) {
+  return normalizedScreenStoryboardFromExport(
+    exportData.appOnboardingStoryboard ? exportData : { appOnboardingStoryboard: exportData.onboardingStoryboard },
+    "appOnboardingStoryboard",
+    "app onboarding",
+    "onboarding"
+  );
 }
 
 function stableLocalizedKey(value) {
@@ -162,7 +190,32 @@ function jsBoolean(value) {
   return value ? "true" : "false";
 }
 
-function storyboardJs(storyboard, onboarding) {
+function appendScreenStoryboardJs(lines, globalName, screenStoryboard) {
+  if (!screenStoryboard) return;
+
+  lines.push(`window.${globalName} = {`);
+  lines.push("  screens: [");
+  screenStoryboard.screens.forEach((screen, index) => {
+    const comma = index === screenStoryboard.screens.length - 1 ? "" : ",";
+    lines.push("    {");
+    lines.push(`      id: ${jsString(screen.id)},`);
+    if (screen.title) {
+      lines.push(`      title: ${jsLocalizedObject(screen.title, "        ").replace(/\n/g, "\n      ")},`);
+    }
+    if (screen.trigger) {
+      lines.push(`      trigger: ${JSON.stringify(screen.trigger)},`);
+    }
+    lines.push(`      image: ${jsString(screen.image)},`);
+    lines.push(`      text: ${jsLocalizedObject(screen.text, "        ").replace(/\n/g, "\n      ")},`);
+    lines.push(`      visible: ${jsBoolean(screen.visible)},`);
+    lines.push(`      showImage: ${jsBoolean(screen.showImage)}`);
+    lines.push(`    }${comma}`);
+  });
+  lines.push("  ]");
+  lines.push("};", "");
+}
+
+function storyboardJs(storyboard, welcome, onboarding) {
   const defaultCompletionText = mostCommonCompletionText(storyboard);
   const defaultKey = stableLocalizedKey(defaultCompletionText);
   const lines = [
@@ -185,22 +238,8 @@ function storyboardJs(storyboard, onboarding) {
     ""
   ];
 
-  if (onboarding) {
-    lines.push("window.FLYKEY_ONBOARDING_STORYBOARD = {");
-    lines.push("  screens: [");
-    onboarding.screens.forEach((screen, index) => {
-      const comma = index === onboarding.screens.length - 1 ? "" : ",";
-      lines.push("    {");
-      lines.push(`      id: ${jsString(screen.id)},`);
-      lines.push(`      image: ${jsString(screen.image)},`);
-      lines.push(`      text: ${jsLocalizedObject(screen.text, "        ").replace(/\n/g, "\n      ")},`);
-      lines.push(`      visible: ${jsBoolean(screen.visible)},`);
-      lines.push(`      showImage: ${jsBoolean(screen.showImage)}`);
-      lines.push(`    }${comma}`);
-    });
-    lines.push("  ]");
-    lines.push("};", "");
-  }
+  appendScreenStoryboardJs(lines, "FLYKEY_WELCOME_STORYBOARD", welcome);
+  appendScreenStoryboardJs(lines, "FLYKEY_ONBOARDING_STORYBOARD", onboarding);
 
   lines.push("window.FLYKEY_LESSON_STORYBOARD = {");
 
@@ -227,6 +266,38 @@ function storyboardJs(storyboard, onboarding) {
   return lines.join("\n");
 }
 
+function visibilityReport(storyboard, welcome) {
+  const hiddenLessonParts = {
+    showIntroImage: [],
+    showIntroTip: [],
+    showNextModuleText: [],
+    showCompletionImage: [],
+    showCompletionText: []
+  };
+
+  Object.entries(storyboard).forEach(([lessonId, entry]) => {
+    Object.keys(hiddenLessonParts).forEach(key => {
+      if (entry[key] === false) hiddenLessonParts[key].push(lessonId);
+    });
+  });
+
+  const hiddenWelcomeScreens = [];
+  const hiddenWelcomeImages = [];
+  (welcome?.screens || []).forEach(screen => {
+    if (screen.visible === false) hiddenWelcomeScreens.push(screen.id);
+    if (screen.showImage === false) hiddenWelcomeImages.push(screen.id);
+  });
+
+  const lines = ["Visibility saved:"];
+  lines.push(`- welcome hidden screens: ${hiddenWelcomeScreens.join(", ") || "none"}`);
+  lines.push(`- welcome hidden images: ${hiddenWelcomeImages.join(", ") || "none"}`);
+  Object.entries(hiddenLessonParts).forEach(([key, lessonIds]) => {
+    lines.push(`- ${key} off: ${lessonIds.join(", ") || "none"}`);
+  });
+
+  return lines.join("\n");
+}
+
 function runNodeScript(scriptPath) {
   const result = spawnSync(process.execPath, [scriptPath], {
     cwd: rootDir,
@@ -245,10 +316,12 @@ if (!inputPath) usage();
 const absoluteInputPath = path.resolve(process.cwd(), inputPath.replace(/^~(?=$|\/)/, process.env.HOME || "~"));
 const exportData = readJson(absoluteInputPath);
 const storyboard = normalizedStoryboardFromExport(exportData);
+const welcome = normalizedWelcomeFromExport(exportData);
 const onboarding = normalizedOnboardingFromExport(exportData);
 
-fs.writeFileSync(storyboardPath, storyboardJs(storyboard, onboarding));
+fs.writeFileSync(storyboardPath, storyboardJs(storyboard, welcome, onboarding));
 console.log(`Updated ${path.relative(rootDir, storyboardPath)}`);
+console.log(visibilityReport(storyboard, welcome));
 
 runNodeScript(path.join(rootDir, "scripts", "build-content-bundle.js"));
 runNodeScript(path.join(rootDir, "scripts", "validate-content-bundle.js"));

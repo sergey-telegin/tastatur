@@ -142,6 +142,11 @@ function bindAppEvents() {
   themeToggle.addEventListener("click", toggleTheme);
   assistantsToggle.addEventListener("click", toggleAssistantsPanel);
   cloudSyncToggle.addEventListener("click", toggleCloudSyncPanel);
+  cloudLoginMode.addEventListener("click", () => setCloudSyncMode("login"));
+  cloudCreateMode.addEventListener("click", () => setCloudSyncMode("create"));
+  cloudCreateEmail.addEventListener("click", () => setCloudSyncMode("email-create"));
+  cloudCreateBack.addEventListener("click", () => setCloudSyncMode("start"));
+  cloudLoginBack.addEventListener("click", () => setCloudSyncMode("start"));
   cloudLogin.addEventListener("click", handleCloudLogin);
   cloudRegister.addEventListener("click", handleCloudRegister);
   cloudImport.addEventListener("click", handleCloudImport);
@@ -259,10 +264,15 @@ function bindAppEvents() {
   });
 
   fingerMapOpen.addEventListener("click", () => {
-    settingsDialog.close();
-    openFingerMapDraft();
-    enterFingerKeyboardMode();
-    updatePracticeTimerPauseState();
+    const openFingerMap = () => {
+      settingsDialog.close();
+      openFingerMapDraft();
+      enterFingerKeyboardMode();
+      updatePracticeTimerPauseState();
+    };
+
+    if (openOnboardingForTrigger("featureOpen", "", { onComplete: openFingerMap })) return;
+    openFingerMap();
   });
 
   keyboardEditorSave.addEventListener("click", () => {

@@ -187,7 +187,7 @@ function openCustomPracticeDialog(moduleId) {
 
   customPracticeDraftModuleId = moduleId;
   customPracticeStatus.textContent = "";
-  customPracticeLineCount.value = String(module.target?.lines || 10);
+  customPracticeLineCount.value = String(module.content?.lineCount || 10);
   customPracticeText.value = module.customPractice.type === "custom" ? (saved.customPracticeText?.[currentLanguage] || "") : "";
   learningProgramDialog.close();
   renderCustomPracticeDialog();

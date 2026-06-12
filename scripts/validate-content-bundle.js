@@ -77,6 +77,9 @@ function imageExists(fileName, fieldPath) {
 
 function collectStoryboardImages(bundle) {
   const images = new Set();
+  (bundle.welcomeStoryboard?.screens || []).forEach(screen => {
+    if (typeof screen.image === "string" && screen.image.trim()) images.add(screen.image.trim());
+  });
   (bundle.onboardingStoryboard?.screens || []).forEach(screen => {
     if (typeof screen.image === "string" && screen.image.trim()) images.add(screen.image.trim());
   });
@@ -135,20 +138,20 @@ function validateLessonStoryboard(storyboard, lessonIds, languages) {
   });
 }
 
-function validateOnboardingStoryboard(onboardingStoryboard, languages) {
-  if (!onboardingStoryboard) return;
-  if (!isPlainObject(onboardingStoryboard)) {
-    fail("onboardingStoryboard must be an object");
+function validateScreenStoryboard(screenStoryboard, languages, fieldName) {
+  if (!screenStoryboard) return;
+  if (!isPlainObject(screenStoryboard)) {
+    fail(`${fieldName} must be an object`);
     return;
   }
-  if (onboardingStoryboard.screens === undefined) return;
-  if (!Array.isArray(onboardingStoryboard.screens)) {
-    fail("onboardingStoryboard.screens must be an array");
+  if (screenStoryboard.screens === undefined) return;
+  if (!Array.isArray(screenStoryboard.screens)) {
+    fail(`${fieldName}.screens must be an array`);
     return;
   }
 
-  onboardingStoryboard.screens.forEach((screen, index) => {
-    const fieldPath = `onboardingStoryboard.screens[${index}]`;
+  screenStoryboard.screens.forEach((screen, index) => {
+    const fieldPath = `${fieldName}.screens[${index}]`;
     if (!isPlainObject(screen)) {
       fail(`${fieldPath} must be an object`);
       return;
@@ -213,12 +216,16 @@ function validateBundle(bundle) {
       localizedObjectHasLanguages(lesson.tips, languages, `${lessonPath}.tips`);
       localizedLinesHaveContent(lesson.lines, languages, `${lessonPath}.lines`);
 
-      if (!isPlainObject(lesson.target)) fail(`${lessonPath}.target must be an object`);
-      if (lesson.target?.lines !== undefined && (!Number.isFinite(lesson.target.lines) || lesson.target.lines <= 0)) {
-        fail(`${lessonPath}.target.lines must be a positive number`);
+      if (!isPlainObject(lesson.content)) fail(`${lessonPath}.content must be an object`);
+      if (lesson.content?.lineCount !== undefined && (!Number.isFinite(lesson.content.lineCount) || lesson.content.lineCount <= 0)) {
+        fail(`${lessonPath}.content.lineCount must be a positive number`);
       }
-      if (lesson.target?.accuracy !== undefined && (!Number.isFinite(lesson.target.accuracy) || lesson.target.accuracy <= 0 || lesson.target.accuracy > 100)) {
-        fail(`${lessonPath}.target.accuracy must be between 1 and 100`);
+      if (!isPlainObject(lesson.scoring)) fail(`${lessonPath}.scoring must be an object`);
+      if (lesson.target?.lines !== undefined) {
+        fail(`${lessonPath}.target.lines is deprecated; use content.lineCount`);
+      }
+      if (lesson.scoring?.accuracy !== undefined && (!Number.isFinite(lesson.scoring.accuracy) || lesson.scoring.accuracy <= 0 || lesson.scoring.accuracy > 100)) {
+        fail(`${lessonPath}.scoring.accuracy must be between 1 and 100`);
       }
 
       imageExists(lesson.introImage, `${lessonPath}.introImage`);
@@ -232,7 +239,8 @@ function validateBundle(bundle) {
 
   validateLessonStoryboard(readLessonStoryboard(), lessonIds, languages);
   validateLessonStoryboard(bundle.storyboard, lessonIds, languages);
-  validateOnboardingStoryboard(bundle.onboardingStoryboard, languages);
+  validateScreenStoryboard(bundle.welcomeStoryboard, languages, "welcomeStoryboard");
+  validateScreenStoryboard(bundle.onboardingStoryboard, languages, "onboardingStoryboard");
 
   const storyboardImages = collectStoryboardImages(bundle);
   storyboardImages.forEach(file => imageExists(file, "storyboard image"));

@@ -65,6 +65,7 @@ function buildFlyKeyLocalStateSnapshot() {
     currentPracticeModule,
     activeFingerId,
     onboardingCompleted,
+    shownOnboardingEventIds: Array.from(shownOnboardingEventIds || []),
     theme: currentTheme,
     practiceTextSize,
     keySoundEnabled,
@@ -160,10 +161,18 @@ async function flyKeyCloudProviders() {
 }
 
 async function flyKeyCloudStartOAuth(provider) {
+  const popup = window.open("", "flykey-oauth", "width=520,height=720,menubar=no,toolbar=no");
   const result = await window.FlyKeyApiClient.oauthStart(provider);
-  if (result.status !== "ok") return result;
+  if (result.status !== "ok") {
+    popup?.close();
+    return result;
+  }
 
-  window.open(result.data.authorizationUrl, "flykey-oauth", "width=520,height=720,menubar=no,toolbar=no");
+  if (popup) {
+    popup.location.href = result.data.authorizationUrl;
+  } else {
+    window.location.href = result.data.authorizationUrl;
+  }
   return result;
 }
 

@@ -14,6 +14,11 @@ function migrateSavedState(savedState) {
     changed = true;
   }
 
+  if (!Array.isArray(nextState.shownOnboardingEventIds)) {
+    nextState.shownOnboardingEventIds = [];
+    changed = true;
+  }
+
   if (nextState.currentLanguage && !languages[nextState.currentLanguage]) {
     delete nextState.currentLanguage;
     changed = true;

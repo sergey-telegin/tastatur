@@ -57,7 +57,8 @@
         },
         description: { ru: "Биграммы и триграммы", de: "Bigramme und Trigramme", en: "Bigrams and trigrams" },
         symbolPolicy: { scope: "program", pattern: "left-hand-frequency", shift: true, punctuation: true, metronome: true },
-        target: { lines: 10, accuracy: 90, rhythmTolerance: 10 },
+        content: { lineCount: 10 },
+      scoring: { accuracy: 90, rhythmTolerance: 10 },
         lines: { ru: practiceLines(withShiftAndPunctuation(seeds.left.ru)), de: practiceLines(withShiftAndPunctuation(seeds.left.de)), en: practiceLines(withShiftAndPunctuation(seeds.left.en)) }
       },
       {
@@ -76,7 +77,8 @@
         },
         description: { ru: "Биграммы и триграммы", de: "Bigramme und Trigramme", en: "Bigrams and trigrams" },
         symbolPolicy: { scope: "program", pattern: "right-hand-frequency", shift: true, punctuation: true, metronome: true },
-        target: { lines: 10, accuracy: 90, rhythmTolerance: 10 },
+        content: { lineCount: 10 },
+        scoring: { accuracy: 90, rhythmTolerance: 10 },
         lines: { ru: practiceLines(withShiftAndPunctuation(seeds.right.ru)), de: practiceLines(withShiftAndPunctuation(seeds.right.de)), en: practiceLines(withShiftAndPunctuation(seeds.right.en)) }
       },
       {
@@ -95,7 +97,8 @@
         },
         description: { ru: "Работа обеих рук", de: "Arbeit beider Hände", en: "Both hands" },
         symbolPolicy: { scope: "program", pattern: "mixed-frequency", shift: true, punctuation: true, metronome: true },
-        target: { lines: 10, accuracy: 90, rhythmTolerance: 10 },
+        content: { lineCount: 10 },
+        scoring: { accuracy: 90, rhythmTolerance: 10 },
         lines: { ru: practiceLines(withShiftAndPunctuation(seeds.mixed.ru)), de: practiceLines(withShiftAndPunctuation(seeds.mixed.de)), en: practiceLines(withShiftAndPunctuation(seeds.mixed.en)) }
       },
       {
@@ -114,7 +117,8 @@
         },
         description: { ru: "15 строк и режим чередования строк", de: "15 Zeilen und jede zweite Zeile", en: "15 lines and alternating-line mode" },
         symbolPolicy: { scope: "program", pattern: "endurance-frequency", shift: true, punctuation: true, metronome: true },
-        target: { lines: 15, accuracy: 90, rhythmTolerance: 10, alternateLines: true },
+        content: { lineCount: 15 },
+        scoring: { accuracy: 90, rhythmTolerance: 10, alternateLines: true },
         lines: { ru: practiceLines(withShiftAndPunctuation(seeds.endurance.ru)), de: practiceLines(withShiftAndPunctuation(seeds.endurance.de)), en: practiceLines(withShiftAndPunctuation(seeds.endurance.en)) }
       },
       {
@@ -133,7 +137,8 @@
         },
         description: { ru: "Все пройденные сочетания", de: "Alle geübten Kombinationen", en: "All practiced patterns" },
         symbolPolicy: { scope: "program", pattern: "frequency-test", shift: true, punctuation: true, metronome: true },
-        target: { lines: 20, accuracy: 95, rhythmTolerance: 10, assistants: false },
+        content: { lineCount: 20 },
+        scoring: { accuracy: 95, rhythmTolerance: 10, assistants: false },
         lines: { ru: practiceLines(withShiftAndPunctuation(seeds.test.ru)), de: practiceLines(withShiftAndPunctuation(seeds.test.de)), en: practiceLines(withShiftAndPunctuation(seeds.test.en)) }
       }
     ]

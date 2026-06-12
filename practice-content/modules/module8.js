@@ -110,27 +110,27 @@
       "ритм строка точность темп пальцы память движение"
     ],
     de: [
-      "stark nora trava kniga pravka stroka gorka tropa smena",
-      "prosto stroka karta gora nit ruchka tochka kniga",
-      "trava rastet nora radom kniga doma ruchka radom",
-      "strana gorod shkola urok kniga stroka smysl ritm",
-      "mama pishet stroku vera chitaet knigu nina znaet temu",
-      "pravaja levaja ruka derzhit rovnyj ritm metronom vedet",
-      "stol radom karta radom kniga radom ruchka radom",
-      "korotkaja stroka rovnaja smena ruk chistaja tochnost",
-      "kazhdaja bukva idet rovno kazhdaja svyazka zvuchit tiho",
-      "ritm stroka tochnost temp palcy pamyat dvizhenie"
+      "starke finger halten ruhigen takt und klare bewegung",
+      "kurze muster wechseln sanft zwischen linker und rechter hand",
+      "die hand bleibt locker der rhythmus traegt jede zeile",
+      "mila liest ruhig vera tippt langsam nina lernt weiter",
+      "gleiches tempo bringt die hand sicher zurueck",
+      "rechte und linke hand teilen den weg ohne hektik",
+      "kleine muster werden mit ruhiger wiederholung sicher",
+      "jede zeile bleibt gleichmaessig und die finger bleiben weich",
+      "genaue bewegung zaehlt mehr als ein kurzer schneller start",
+      "rhythmus genauigkeit tempo finger erinnerung bewegung"
     ],
     en: [
-      "strong nora travel book practice stroke hill path shift",
-      "simple stroke chart hill thread pen point book",
-      "grass grows nora nearby book home pen nearby",
-      "country city school lesson book stroke meaning rhythm",
-      "mama writes a line vera reads a book nina knows a theme",
-      "right left hand keeps even rhythm metronome leads",
-      "table near chart near book near pen near",
-      "short line even hand shift clean accuracy",
-      "each letter goes evenly each pattern sounds quiet",
+      "strong fingers keep a steady beat and clear motion",
+      "simple lines guide the hand through steady practice",
+      "the hand stays relaxed while the rhythm guides each line",
+      "lesson text gives rhythm meaning and calm motion",
+      "mila writes a line vera reads a book nina learns a theme",
+      "right and left hand keep an even rhythm together",
+      "short patterns become stable through quiet repetition",
+      "short line even hand motion clean accuracy",
+      "each letter moves evenly each pattern feels quiet",
       "rhythm line accuracy tempo fingers memory motion"
     ]
   };
@@ -146,15 +146,15 @@
     ],
     de: [
       ...mixed.de,
-      "step radom gorod radom kniga radom tochka radom",
-      "stroka idet rovno palcy derzhat myagkij ritm",
-      "levaja ruka pravaja ruka smenyajut drug druga",
-      "chastye svyazki stroyat rovnoe dvizhenie palcev",
-      "pyatnadcat strok derzhat vnimanie i spokojnyj temp"
+      "lange zeilen pruefen ob der takt ruhig bleibt",
+      "finger halten weiche bewegung trotz langer uebung",
+      "linke hand rechte hand wechseln ohne extra spannung",
+      "haeufige muster bauen eine ruhige bewegung auf",
+      "fuenfzehn zeilen halten aufmerksamkeit und ruhiges tempo"
     ],
     en: [
       ...mixed.en,
-      "steppe nearby city nearby book nearby point nearby",
+      "long lines test whether the beat stays calm",
       "line goes evenly fingers keep a soft rhythm",
       "left hand right hand alternate with each other",
       "common patterns build even finger motion",
@@ -193,7 +193,8 @@
         },
         description: { ru: "Биграммы и триграммы", de: "Bigramme und Trigramme", en: "Bigrams and trigrams" },
         symbolPolicy: { scope: "program", pattern: "left-hand-frequency", metronome: true },
-        target: { lines: 10, accuracy: 90, rhythmTolerance: 10 },
+        content: { lineCount: 10 },
+      scoring: { accuracy: 90, rhythmTolerance: 10 },
         lines: { ru: practiceLines(frequencySeeds.left.ru), de: practiceLines(frequencySeeds.left.de), en: practiceLines(frequencySeeds.left.en) }
       },
       {
@@ -212,7 +213,8 @@
         },
         description: { ru: "Биграммы и триграммы", de: "Bigramme und Trigramme", en: "Bigrams and trigrams" },
         symbolPolicy: { scope: "program", pattern: "right-hand-frequency", metronome: true },
-        target: { lines: 10, accuracy: 90, rhythmTolerance: 10 },
+        content: { lineCount: 10 },
+        scoring: { accuracy: 90, rhythmTolerance: 10 },
         lines: { ru: practiceLines(frequencySeeds.right.ru), de: practiceLines(frequencySeeds.right.de), en: practiceLines(frequencySeeds.right.en) }
       },
       {
@@ -231,7 +233,8 @@
         },
         description: { ru: "Работа обеих рук", de: "Arbeit beider Hände", en: "Both hands" },
         symbolPolicy: { scope: "program", pattern: "mixed-frequency", metronome: true },
-        target: { lines: 10, accuracy: 90, rhythmTolerance: 10 },
+        content: { lineCount: 10 },
+        scoring: { accuracy: 90, rhythmTolerance: 10 },
         lines: { ru: practiceLines(frequencySeeds.mixed.ru), de: practiceLines(frequencySeeds.mixed.de), en: practiceLines(frequencySeeds.mixed.en) }
       },
       {
@@ -250,7 +253,8 @@
         },
         description: { ru: "15 строк и режим чередования строк", de: "15 Zeilen und jede zweite Zeile", en: "15 lines and alternating-line mode" },
         symbolPolicy: { scope: "program", pattern: "endurance-frequency", metronome: true },
-        target: { lines: 15, accuracy: 90, rhythmTolerance: 10, alternateLines: true },
+        content: { lineCount: 15 },
+        scoring: { accuracy: 90, rhythmTolerance: 10, alternateLines: true },
         lines: { ru: practiceLines(frequencySeeds.endurance.ru), de: practiceLines(frequencySeeds.endurance.de), en: practiceLines(frequencySeeds.endurance.en) }
       },
       {
@@ -269,7 +273,8 @@
         },
         description: { ru: "Все пройденные сочетания", de: "Alle geübten Kombinationen", en: "All practiced patterns" },
         symbolPolicy: { scope: "program", pattern: "frequency-test", metronome: true },
-        target: { lines: 20, accuracy: 95, rhythmTolerance: 10, assistants: false },
+        content: { lineCount: 20 },
+        scoring: { accuracy: 95, rhythmTolerance: 10, assistants: false },
         lines: { ru: practiceLines(frequencySeeds.test.ru), de: practiceLines(frequencySeeds.test.de), en: practiceLines(frequencySeeds.test.en) }
       }
     ]

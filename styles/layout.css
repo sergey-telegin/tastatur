@@ -1,4 +1,6 @@
 .app {
+  display: flex;
+  flex-direction: column;
   width: min(1920px, 100%);
   min-width: 0;
   min-height: calc(100svh - 72px);
@@ -113,6 +115,28 @@ h1 {
 .editor,
 .status {
   display: none !important;
+}
+
+.practice-module-caption {
+  display: inline-flex;
+  align-self: flex-end;
+  justify-content: flex-end;
+  width: min(760px, 100%);
+  margin-top: auto;
+  padding-top: 28px;
+  color: var(--sample-rest);
+  font-family: var(--app-font-family);
+  font-size: var(--practice-sample-font-size) !important;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: 0;
+  text-align: right;
+  white-space: nowrap;
+  opacity: 1;
+}
+
+:root[data-theme="light"] .practice-module-caption {
+  font-weight: 650;
 }
 
 .seo-content {

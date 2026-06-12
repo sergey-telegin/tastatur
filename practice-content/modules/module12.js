@@ -1,13 +1,13 @@
 (() => {
   const sample = {
     ru: [
-      "вставьте свой текст в меню перед стартом и настройте ассистенты так как удобно именно для этой тренировки"
+      "вставьте свой текст перед стартом и настройте помощников под задачу которую хотите тренировать сегодня"
     ],
     de: [
-      "fuege deinen eigenen text vor dem start ein und stelle die assistenten fuer diese uebung passend ein"
+      "fuege deinen eigenen text vor dem start ein und passe die hilfen an die heutige uebung an"
     ],
     en: [
-      "paste your own text before starting and set the assistants the way you want for this practice"
+      "paste your own text before starting and tune the helpers for the task you want to practice today"
     ]
   };
 
@@ -28,7 +28,8 @@
         },
         customPractice: { type: "custom" },
         symbolPolicy: { scope: "free-text", custom: true },
-        target: { lines: 10, accuracy: 90 },
+        content: { lineCount: 10 },
+      scoring: { accuracy: 90 },
         lines: sample
       }
     ]

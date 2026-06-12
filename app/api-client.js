@@ -30,8 +30,6 @@ function flyKeyValidBackendUrl(value) {
 }
 
 function flyKeyRuntimeBackendBaseUrl(configuredValue) {
-  if (window.FlyKeyRuntime?.isDesktopProduction) return "";
-
   const configured = flyKeyValidBackendUrl(configuredValue);
   if (configured) return configured;
 

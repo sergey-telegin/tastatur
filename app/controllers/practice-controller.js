@@ -44,7 +44,7 @@ function practiceLinesForModule(language = currentLanguage, moduleId = currentPr
   }
 
   if (module.customPractice && Array.isArray(module.lines) && module.lines.length) {
-    const targetLineCount = Math.max(1, module.target?.lines || module.lines.length);
+    const targetLineCount = Math.max(1, module.content?.lineCount || module.lines.length);
     return Array.from({ length: targetLineCount }, (_, index) => module.lines[index % module.lines.length]);
   }
 
@@ -60,16 +60,17 @@ function normalizePracticeProgressEntry(entry, totalLines) {
   const assistantsUsed = entry && Object.prototype.hasOwnProperty.call(entry, "assistantsUsed")
     ? entry.assistantsUsed === true
     : true;
+  const alternateLineRepeat = entry?.alternateLineRepeat === true;
   const metronomeAccuracy = Number.isFinite(entry?.metronomeAccuracy)
     ? Math.max(0, Math.min(100, Math.round(entry.metronomeAccuracy)))
     : null;
 
   if (safeTotal === 0) {
-    return { currentLine: 0, completedLines: 0, isComplete: true, accuracy, speed, assistantsUsed, metronomeAccuracy };
+    return { currentLine: 0, completedLines: 0, isComplete: true, accuracy, speed, assistantsUsed, alternateLineRepeat: false, metronomeAccuracy };
   }
 
   if (currentLine >= safeTotal || completedLines >= safeTotal) {
-    return { currentLine: safeTotal, completedLines: safeTotal, isComplete: true, accuracy, speed, assistantsUsed, metronomeAccuracy };
+    return { currentLine: safeTotal, completedLines: safeTotal, isComplete: true, accuracy, speed, assistantsUsed, alternateLineRepeat: false, metronomeAccuracy };
   }
 
   completedLines = Math.max(completedLines, Math.min(currentLine, safeTotal));
@@ -81,6 +82,7 @@ function normalizePracticeProgressEntry(entry, totalLines) {
     accuracy,
     speed,
     assistantsUsed,
+    alternateLineRepeat,
     metronomeAccuracy
   };
 }
@@ -105,6 +107,7 @@ function persistModuleProgress(language = currentLanguage, moduleId = currentPra
     accuracy: normalized.accuracy,
     speed: normalized.speed,
     assistantsUsed: normalized.assistantsUsed,
+    alternateLineRepeat: normalized.alternateLineRepeat,
     metronomeAccuracy: normalized.metronomeAccuracy
   };
   persist();
@@ -119,6 +122,7 @@ function restoreCurrentPracticeProgress() {
   normalizeCurrentPracticeModule();
   const progress = moduleProgressFor(currentLanguage, currentPracticeModule);
   practiceCompletedLines = progress.completedLines;
+  practiceAlternateLineRepeat = alternateLinesEnabled && progress.alternateLineRepeat === true;
   practiceAwaitingEnter = false;
   practiceLineIndex = progress.isComplete
     ? Math.max(progress.totalLines - 1, 0)
@@ -207,6 +211,10 @@ function isFingeringTourIntroLesson(lesson = currentPracticeModuleData()) {
   return lesson?.id === "lesson1_4";
 }
 
+function isFingeringTourAfterLesson(lesson = currentPracticeModuleData()) {
+  return lesson?.id === "lesson1_4";
+}
+
 function renderLessonTipDialog(imageSrc = lessonTipAvatarSrcFor(currentPracticeModuleData())) {
   const text = textFor();
   const lesson = currentPracticeModuleData();
@@ -214,10 +222,8 @@ function renderLessonTipDialog(imageSrc = lessonTipAvatarSrcFor(currentPracticeM
   const purpose = currentLessonStartPurpose(lesson);
   const isTourIntro = isFingeringTourIntroLesson(lesson);
 
-  lessonStartKicker.textContent = text.nextModuleKicker;
   lessonStartTitle.textContent = lesson.name || "";
   lessonStartPurpose.textContent = purpose;
-  lessonStartKicker.hidden = !purpose;
   lessonStartTitle.hidden = !purpose;
   lessonStartPurpose.hidden = !purpose;
 
@@ -227,7 +233,7 @@ function renderLessonTipDialog(imageSrc = lessonTipAvatarSrcFor(currentPracticeM
     paragraph.textContent = tip;
     lessonTipText.append(paragraph);
   });
-  lessonTipStart.textContent = isTourIntro ? text.tourNext : text.startPractice;
+  lessonTipStart.textContent = text.startPractice;
   lessonTipExtra.hidden = true;
   lessonTipExtra.textContent = text.showFingeringTour;
   lessonTipCharacter.hidden = !imageSrc;
@@ -255,16 +261,11 @@ function closeLessonTipDialog() {
 }
 
 function handleLessonTipPrimaryAction() {
-  if (isFingeringTourIntroLesson()) {
-    startFingeringTourFromLessonTip();
-    return;
-  }
-
   closeLessonTipDialog();
 }
 
 function canDismissLessonTipDialog() {
-  return !isFingeringTourIntroLesson();
+  return true;
 }
 
 const fingeringTourSteps = [
@@ -317,6 +318,7 @@ const fingeringTourSteps = [
 
 const fingeringTourFingerDemoOrder = fingerIds.concat(fingerIds.slice(1, -1).reverse());
 let fingeringTourFingerDemoTimer = null;
+let advanceLessonAfterFingeringTour = false;
 
 function stopFingeringTourFingerDemo() {
   if (!fingeringTourFingerDemoTimer) return;
@@ -572,14 +574,19 @@ function renderFingeringTourStep() {
   });
 }
 
-function startFingeringTourFromLessonTip() {
-  if (currentPracticeModuleData().id !== "lesson1_4") return;
+function startFingeringTourAfterLesson() {
+  if (!isFingeringTourAfterLesson()) return;
 
+  advanceLessonAfterFingeringTour = true;
   fingeringTourActive = true;
   fingeringTourStepIndex = 0;
   document.documentElement.classList.add("guided-tour-active");
   renderFingeringTourStep();
   updatePracticeTimerPauseState();
+}
+
+function startFingeringTourFromLessonTip() {
+  startFingeringTourAfterLesson();
 }
 
 function advanceFingeringTour() {
@@ -592,17 +599,23 @@ function advanceFingeringTour() {
 function finishFingeringTour({ keepFingerKeyboardMode = false, focusPractice = true } = {}) {
   if (!fingeringTourActive) return;
 
+  const shouldAdvanceLesson = advanceLessonAfterFingeringTour;
+  advanceLessonAfterFingeringTour = false;
   removeFingeringTourCard();
   fingeringTourActive = false;
   fingeringTourStepIndex = 0;
   document.documentElement.classList.remove("guided-tour-active");
-  if (fingerKeyboardMode && !keepFingerKeyboardMode) {
+  if (fingerKeyboardMode && (!keepFingerKeyboardMode || shouldAdvanceLesson)) {
     cancelFingerKeyboardMode();
   }
   if (settingsDialog.open) {
     closeSettingsDialog();
   }
   updatePracticeTimerPauseState();
+  if (shouldAdvanceLesson) {
+    advanceToNextPracticeLessonAfterCompletion();
+    return;
+  }
   if (focusPractice) {
     focusPracticeInputSoon();
   }
@@ -669,7 +682,6 @@ function closeCompletionDialog() {
 
 function renderNextModuleDialog(lesson = currentPracticeModuleData()) {
   const storyboard = lessonStoryboardFor(lesson);
-  nextModuleKicker.textContent = textFor().nextModuleKicker;
   nextModuleTitle.textContent = lesson.name || "";
   nextModulePurpose.textContent = storyboardStepEnabled(storyboard, "showNextModuleText")
     ? localizedTextValue(storyboard.nextModuleText) || lesson.intro?.purpose || ""
@@ -708,28 +720,51 @@ function openFingerMapFromCompletionReminder() {
 }
 
 function goToNextLessonAfterCompletion() {
+  closeCompletionDialog();
+  const lesson = currentPracticeModuleData();
+  if (openOnboardingForTrigger("afterLesson", lesson?.id || "", {
+    onComplete: () => {
+      if (isFingeringTourAfterLesson(lesson)) {
+        startFingeringTourAfterLesson();
+        return;
+      }
+      advanceToNextPracticeLessonAfterCompletion();
+    }
+  })) return;
+
+  if (isFingeringTourAfterLesson()) {
+    startFingeringTourAfterLesson();
+    return;
+  }
+
+  advanceToNextPracticeLessonAfterCompletion();
+}
+
+function advanceToNextPracticeLessonAfterCompletion() {
   const language = currentLanguage;
   const moduleId = currentPracticeModule;
   const nextLessonId = nextPracticeLessonId(language, moduleId);
   const nextLesson = nextLessonId ? practiceModulesFor(language)[nextLessonId] : null;
 
-  closeCompletionDialog();
   if (nextLesson && !nextLesson.customPractice) {
     applySettings({ language, module: nextLessonId });
     renderModuleButtons();
+    if (openOnboardingForTrigger("beforeLesson", nextLessonId, {
+      onComplete: () => openCurrentLessonTip({ force: true })
+    })) return;
     openCurrentLessonTip({ force: true });
   }
 }
 
-function currentOnboardingCopy() {
-  const defaultCopy = textFor().onboarding;
-  const storyboard = onboardingStoryboard();
-  const storyboardScreens = Array.isArray(storyboard.screens)
+function screenStoryboardCopy(storyboard) {
+  const screens = Array.isArray(storyboard?.screens)
     ? storyboard.screens
       .filter(screen => screen.visible !== false)
       .map(screen => {
         const text = localizedTextValue(screen.text);
         return {
+          id: screen.id || "",
+          trigger: screen.trigger || {},
           paragraphs: text ? text.split("\n").map(line => line.trim()).filter(Boolean) : [],
           image: screen.showImage === false ? "" : screen.image || "",
           character: screen.showImage !== false && Boolean(screen.image)
@@ -738,14 +773,58 @@ function currentOnboardingCopy() {
       .filter(screen => screen.paragraphs.length || screen.image)
     : [];
 
+  return screens;
+}
+
+function currentWelcomeCopy() {
+  const defaultCopy = textFor().onboarding;
+  const storyboardScreens = screenStoryboardCopy(welcomeStoryboard());
+
   return {
     ...defaultCopy,
     screens: storyboardScreens.length ? storyboardScreens : defaultCopy.screens
   };
 }
 
+function onboardingEventScreensForTrigger(triggerType, lessonId = "") {
+  return screenStoryboardCopy(onboardingStoryboard()).filter(screen => {
+    const trigger = screen.trigger || {};
+    const type = trigger.type || "manual";
+    const triggerLessonId = trigger.lessonId || "";
+    if (type !== triggerType) return false;
+    if (shownOnboardingEventIds.has(screen.id)) return false;
+    if ((type === "beforeLesson" || type === "afterLesson") && triggerLessonId && triggerLessonId !== lessonId) return false;
+    return true;
+  });
+}
+
+function openOnboardingFlow(copy, flow = {}) {
+  if (!onboardingDialog || onboardingDialog.open || !copy?.screens?.length) return false;
+  activeOnboardingFlow = { ...flow, copy };
+  onboardingStepIndex = 0;
+  renderOnboardingDialog();
+  onboardingDialog.show();
+  updatePracticeTimerPauseState();
+  return true;
+}
+
+function openOnboardingForTrigger(triggerType, lessonId = "", { onComplete } = {}) {
+  const screens = onboardingEventScreensForTrigger(triggerType, lessonId);
+  if (!screens.length) return false;
+
+  const defaultCopy = textFor().onboarding;
+  return openOnboardingFlow({
+    ...defaultCopy,
+    screens
+  }, {
+    type: "event",
+    eventIds: screens.map(screen => screen.id).filter(Boolean),
+    onComplete
+  });
+}
+
 function renderOnboardingDialog() {
-  const copy = currentOnboardingCopy();
+  const copy = activeOnboardingFlow?.copy || currentWelcomeCopy();
   const screen = copy.screens[onboardingStepIndex] || copy.screens[0];
 
   onboardingText.innerHTML = "";
@@ -766,31 +845,43 @@ function renderOnboardingDialog() {
 function openOnboardingIfNeeded() {
   if (onboardingCompleted || !onboardingDialog || onboardingDialog.open) return false;
 
-  const copy = currentOnboardingCopy();
+  const copy = currentWelcomeCopy();
   if (!copy.screens.length) {
     completeOnboarding();
     return false;
   }
 
-  onboardingStepIndex = 0;
-  renderOnboardingDialog();
-  onboardingDialog.show();
-  updatePracticeTimerPauseState();
-  return true;
+  return openOnboardingFlow(copy, {
+    type: "welcome",
+    onComplete: () => {
+      if (!openOnboardingForTrigger("firstLaunch", "", {
+        onComplete: () => openCurrentLessonTip({ force: true })
+      })) {
+        openCurrentLessonTip({ force: true });
+      }
+    }
+  });
 }
 
 function completeOnboarding() {
-  onboardingCompleted = true;
-  saved.onboardingCompleted = true;
+  const flow = activeOnboardingFlow;
+  if (flow?.type === "event") {
+    (flow.eventIds || []).forEach(id => shownOnboardingEventIds.add(id));
+    saved.shownOnboardingEventIds = Array.from(shownOnboardingEventIds);
+  } else {
+    onboardingCompleted = true;
+    saved.onboardingCompleted = true;
+  }
+  activeOnboardingFlow = null;
   persist();
   onboardingDialog.close();
-  openCurrentLessonTip({ force: true });
+  flow?.onComplete?.();
 }
 
 function advanceOnboarding() {
   if (!onboardingDialog?.open) return;
 
-  const copy = currentOnboardingCopy();
+  const copy = activeOnboardingFlow?.copy || currentWelcomeCopy();
   if (onboardingStepIndex < copy.screens.length - 1) {
     onboardingStepIndex += 1;
     renderOnboardingDialog();
@@ -805,7 +896,7 @@ function isAssistantDisabledTestLesson(lesson = currentPracticeModuleData()) {
 }
 
 function currentPracticeAssistantsEnabled() {
-  return !isAssistantDisabledTestLesson();
+  return !isAssistantDisabledTestLesson() && !(alternateLinesEnabled && practiceAlternateLineRepeat);
 }
 
 function effectiveAssistantSetting(value) {
@@ -829,7 +920,7 @@ function isDevCompletePracticeLineHotkey(event) {
   return (
     devCompletePracticeLineHotkeyEnabled &&
     event.key === "ArrowDown" &&
-    devCompletePracticeLineShiftCodes.has("ShiftRight")
+    (event.shiftKey || devCompletePracticeLineShiftCodes.has("ShiftRight"))
   );
 }
 
@@ -913,7 +1004,7 @@ function ensurePracticeSessionStarted() {
     practicePausedAt = 0;
     practicePausedDurationMs = 0;
     practiceAssistantsUsed = visiblePracticeAssistantsEnabled();
-    practiceMetronomeUsed = metronomeBpm > 0;
+    practiceMetronomeUsed = isMetronomeActive();
   } else if (visiblePracticeAssistantsEnabled()) {
     practiceAssistantsUsed = true;
   }
@@ -934,7 +1025,7 @@ function currentPracticeMetronomeAccuracy() {
 }
 
 function recordPracticeMetronomeInput(count = 1) {
-  if (metronomeBpm <= 0 || !practiceSessionStartedAt) return;
+  if (!isMetronomeActive() || !practiceSessionStartedAt) return;
 
   practiceMetronomeUsed = true;
   const intervalMs = 60000 / metronomeBpm;
@@ -1200,10 +1291,12 @@ function renderPracticeLine() {
     practiceLineIndex = Math.min(practiceLineIndex, lines.length - 1);
   } else {
     practiceLineIndex = 0;
+    practiceAlternateLineRepeat = false;
   }
   practiceLastMatchedIndex = 0;
   resetPracticeInputValue();
   renderCurrentPracticeSampleText();
+  renderPracticeModuleCaption();
   renderPracticeStats();
   renderPracticeProgress();
   renderKeyboard();
@@ -1211,14 +1304,21 @@ function renderPracticeLine() {
 
 function advancePracticeLine() {
   const totalLines = currentPracticeLines().length;
-  const lineStep = alternateLinesEnabled ? 2 : 1;
-  const nextCompletedLines = Math.min(practiceCompletedLines + lineStep, totalLines);
+  const shouldRepeatWithoutAssistants = alternateLinesEnabled && !practiceAlternateLineRepeat;
+  const nextCompletedLines = shouldRepeatWithoutAssistants
+    ? practiceCompletedLines
+    : Math.min(practiceCompletedLines + 1, totalLines);
   const isComplete = nextCompletedLines >= totalLines;
+  const nextAlternateLineRepeat = shouldRepeatWithoutAssistants && !isComplete;
 
   practiceCompletedLines = nextCompletedLines;
   practiceLineIndex = isComplete
     ? Math.max(totalLines - 1, 0)
-    : Math.min(practiceLineIndex + lineStep, totalLines - 1);
+    : nextAlternateLineRepeat
+      ? practiceLineIndex
+      : Math.min(practiceLineIndex + 1, totalLines - 1);
+  practiceAlternateLineRepeat = nextAlternateLineRepeat;
+  updateMetronome();
 
   const nextProgress = persistModuleProgress(currentLanguage, currentPracticeModule, {
     currentLine: isComplete ? totalLines : practiceLineIndex,
@@ -1226,6 +1326,7 @@ function advancePracticeLine() {
     accuracy: currentPracticeAccuracy(),
     speed: currentPracticeSpeed(),
     assistantsUsed: practiceAssistantsUsed,
+    alternateLineRepeat: practiceAlternateLineRepeat,
     metronomeAccuracy: currentPracticeMetronomeAccuracy()
   });
 
@@ -1350,6 +1451,21 @@ function isPracticeInputPaused() {
   );
 }
 
+function isDevCompletePracticeLinePaused() {
+  return (
+    fingeringTourActive ||
+    onboardingDialog.open ||
+    settingsDialog.open ||
+    lessonTipDialog.open ||
+    completionDialog.open ||
+    nextModuleDialog.open ||
+    learningProgramDialog.open ||
+    customPracticeDialog.open ||
+    statsDialog.open ||
+    helpDialog.open
+  );
+}
+
 function isSystemKeyCombination(event) {
   if (event.altKey) return true;
   return event.metaKey || event.ctrlKey;
@@ -1458,16 +1574,22 @@ function handleGlobalKeyDown(event) {
     devCompletePracticeLineShiftCodes.add(event.code);
   }
 
-  if (event.defaultPrevented || event.isComposing || isPracticeInputPaused()) return;
-
-  const target = event.target;
-  if (isTrainerTextEntryTarget(target)) return;
-
-  if (isDevCompletePracticeLineHotkey(event)) {
+  if (
+    !event.defaultPrevented &&
+    !event.isComposing &&
+    isDevCompletePracticeLineHotkey(event) &&
+    !isDevCompletePracticeLinePaused() &&
+    !isTrainerTextEntryTarget(event.target)
+  ) {
     event.preventDefault();
     completeCurrentPracticeLineForDev();
     return;
   }
+
+  if (event.defaultPrevented || event.isComposing || isPracticeInputPaused()) return;
+
+  const target = event.target;
+  if (isTrainerTextEntryTarget(target)) return;
 
   if (isSystemKeyCombination(event)) return;
 

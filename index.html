@@ -31,6 +31,24 @@
 
         const supportedLanguages = { ru: true, uk: true, kk: true, de: true, en: true };
         const storageKey = "keyboard-layout-editor-v1";
+        const freshUserKeys = [
+          storageKey,
+          "flykey-content-cache-v1",
+          "flykey-cloud-auth-v1",
+          "flykey-privacy-consent-v1"
+        ];
+
+        if (params.has("freshUser")) {
+          try {
+            freshUserKeys.forEach(key => localStorage.removeItem(key));
+            document.cookie.split(";").forEach(cookie => {
+              const name = cookie.split("=")[0]?.trim();
+              if (name) document.cookie = `${name}=; Max-Age=0; path=/`;
+            });
+          } catch {
+            // A blocked storage/cookie reset should not prevent the preview from opening.
+          }
+        }
 
         const browserLanguage = () => {
           const browserLanguages = Array.isArray(navigator.languages) && navigator.languages.length
@@ -74,6 +92,8 @@
         const isPrivateTool = params.has("lessonStoryboard") ||
           params.has("roadmap") ||
           params.get("mode") === "roadmap" ||
+          params.has("previewWelcome") ||
+          params.has("freshUser") ||
           params.has("calibrateHands") ||
           window.location.hash === "#lessonStoryboard" ||
           window.location.hash === "#roadmap";
@@ -239,7 +259,7 @@
       }
     </script>
     <script src="app/theme-init.js?v=20260514-16"></script>
-    <link rel="stylesheet" href="styles/main.css?v=20260531-12">
+    <link rel="stylesheet" href="styles/main.css?v=20260611-5">
   </head>
   <body>
     <noscript>
@@ -287,18 +307,18 @@
 	        <section class="keyboard-wrap" id="keyboardWrap" aria-label="Keyboard">
 	          <div class="hands" id="handsLayer" aria-label="Fingers">
             <div class="hand left">
-              <img class="finger full" data-finger="left-pinky" src="assets/fingers/left-pinky.svg" alt="">
-              <img class="finger full" data-finger="left-ring" src="assets/fingers/left-ring.svg" alt="">
-              <img class="finger full" data-finger="left-middle" src="assets/fingers/left-middle.svg" alt="">
-              <img class="finger left-index" data-finger="left-index" src="assets/fingers/left-index.svg" alt="">
-              <img class="finger left-thumb" data-finger="left-thumb" src="assets/fingers/left-thumb.svg" alt="">
+              <img class="finger full" data-finger="left-pinky" src="assets/fingers/left-pinky.svg?v=20260611-1" alt="">
+              <img class="finger full" data-finger="left-ring" src="assets/fingers/left-ring.svg?v=20260611-1" alt="">
+              <img class="finger full" data-finger="left-middle" src="assets/fingers/left-middle.svg?v=20260611-1" alt="">
+              <img class="finger left-index" data-finger="left-index" src="assets/fingers/left-index.svg?v=20260611-1" alt="">
+              <img class="finger left-thumb" data-finger="left-thumb" src="assets/fingers/left-thumb.svg?v=20260611-1" alt="">
             </div>
             <div class="hand right">
-              <img class="finger full" data-finger="right-pinky" src="assets/fingers/right-pinky.svg" alt="">
-              <img class="finger full" data-finger="right-ring" src="assets/fingers/right-ring.svg" alt="">
-              <img class="finger full" data-finger="right-middle" src="assets/fingers/right-middle.svg" alt="">
-              <img class="finger right-index" data-finger="right-index" src="assets/fingers/right-index.svg" alt="">
-              <img class="finger right-thumb" data-finger="right-thumb" src="assets/fingers/right-thumb.svg" alt="">
+              <img class="finger full" data-finger="right-pinky" src="assets/fingers/right-pinky.svg?v=20260611-1" alt="">
+              <img class="finger full" data-finger="right-ring" src="assets/fingers/right-ring.svg?v=20260611-1" alt="">
+              <img class="finger full" data-finger="right-middle" src="assets/fingers/right-middle.svg?v=20260611-1" alt="">
+              <img class="finger right-index" data-finger="right-index" src="assets/fingers/right-index.svg?v=20260611-1" alt="">
+              <img class="finger right-thumb" data-finger="right-thumb" src="assets/fingers/right-thumb.svg?v=20260611-1" alt="">
             </div>
           </div>
           <div class="keyboard" id="keyboard"></div>
@@ -317,6 +337,8 @@
           </div>
         </div>
       </section>
+
+      <div class="practice-module-caption" id="practiceModuleCaption" aria-live="polite"></div>
 
 	      <section class="editor" aria-label="Selected key editor">
         <label class="field">
@@ -458,7 +480,6 @@
     <dialog class="lesson-tip-dialog" id="lessonTipDialog">
       <div class="lesson-tip-stage">
         <section class="lesson-tip-message lesson-start-message" aria-describedby="lessonTipText">
-          <p class="lesson-tip-kicker lesson-start-kicker" id="lessonStartKicker">Next module</p>
           <h2 class="next-module-title lesson-start-title" id="lessonStartTitle"></h2>
           <p class="next-module-purpose lesson-start-purpose" id="lessonStartPurpose"></p>
           <div class="lesson-tip-text" id="lessonTipText"></div>
@@ -488,7 +509,6 @@
     <dialog class="lesson-tip-dialog next-module-dialog" id="nextModuleDialog">
       <div class="lesson-tip-stage next-module-stage">
         <section class="lesson-tip-message next-module-message" aria-describedby="nextModulePurpose">
-          <p class="lesson-tip-kicker next-module-kicker" id="nextModuleKicker">Next module</p>
           <h2 class="next-module-title" id="nextModuleTitle"></h2>
           <p class="next-module-purpose" id="nextModulePurpose"></p>
           <button class="apply-btn lesson-tip-start next-module-next" id="nextModuleNext" type="button">Next</button>
@@ -506,20 +526,74 @@
 
         <div class="app-menu">
           <section class="menu-section" aria-label="Basics">
-            <div class="settings-group sound-icon-group" aria-label="Sound">
-              <span class="settings-label visually-hidden" id="soundLabel">Sound</span>
-              <button class="sound-icon-btn" id="themeToggle" type="button" aria-pressed="false">
-                <img class="theme-icon" id="themeIcon" src="assets/theme-toggle.svg" alt="" aria-hidden="true">
-                <span class="visually-hidden" id="themeToggleText">Dark</span>
-              </button>
-              <button class="sound-icon-btn" id="keySoundToggle" type="button" aria-pressed="true">
-                <img class="sound-icon" id="keySoundIcon" src="assets/sound-on.svg" alt="" aria-hidden="true">
-                <span class="visually-hidden" id="keySoundToggleText">On</span>
-              </button>
-              <button class="sound-icon-btn text-size-icon-btn" id="practiceTextSizeToggle" type="button" aria-label="Text size: M">
-                <span class="text-size-icon" id="practiceTextSizeIcon" aria-hidden="true">M</span>
-                <span class="visually-hidden" id="practiceTextSizeToggleText">M</span>
-              </button>
+            <div class="settings-top-row">
+              <div class="settings-group sound-icon-group" aria-label="Sound">
+                <span class="settings-label visually-hidden" id="soundLabel">Sound</span>
+                <button class="sound-icon-btn" id="themeToggle" type="button" aria-pressed="false">
+                  <img class="theme-icon" id="themeIcon" src="assets/theme-toggle.svg" alt="" aria-hidden="true">
+                  <span class="visually-hidden" id="themeToggleText">Dark</span>
+                </button>
+                <button class="sound-icon-btn" id="keySoundToggle" type="button" aria-pressed="true">
+                  <img class="sound-icon" id="keySoundIcon" src="assets/sound-on.svg" alt="" aria-hidden="true">
+                  <span class="visually-hidden" id="keySoundToggleText">On</span>
+                </button>
+                <button class="sound-icon-btn text-size-icon-btn" id="practiceTextSizeToggle" type="button" aria-label="Text size: M">
+                  <span class="text-size-icon" id="practiceTextSizeIcon" aria-hidden="true">M</span>
+                  <span class="visually-hidden" id="practiceTextSizeToggleText">M</span>
+                </button>
+              </div>
+              <div class="account-action-group">
+                <button class="sound-icon-btn account-icon-btn" id="cloudSyncToggle" type="button" aria-expanded="false" aria-controls="cloudSyncPanel">
+                  <span class="account-icon" aria-hidden="true">
+                    <span class="account-icon-head"></span>
+                    <span class="account-icon-body"></span>
+                  </span>
+                  <span class="cloud-sync-state" id="cloudSyncState" aria-hidden="true"></span>
+                  <span class="visually-hidden" id="cloudSyncToggleText">Account</span>
+                </button>
+              </div>
+            </div>
+            <div class="cloud-sync-panel" id="cloudSyncPanel" hidden>
+              <header class="cloud-panel-head">
+                <div>
+                  <h3 class="cloud-title" id="cloudAccountTitle">Account</h3>
+                  <p class="cloud-subtitle" id="cloudAccountState">Local</p>
+                </div>
+                <p class="cloud-intro" id="cloudAccountIntro"></p>
+              </header>
+              <div class="cloud-auth-start" id="cloudAuthStart">
+                <div class="cloud-oauth" id="cloudOauthProviders" hidden></div>
+                <div class="cloud-divider" id="cloudAuthDivider"><span>OR</span></div>
+                <button class="nav-btn cloud-action-btn cloud-primary-btn" id="cloudLoginMode" type="button">Continue</button>
+                <button class="nav-btn cloud-action-btn" id="cloudCreateMode" type="button" hidden>Create account</button>
+              </div>
+              <div class="cloud-create-options" id="cloudCreateOptions" hidden>
+                <button class="nav-btn cloud-action-btn cloud-primary-btn" id="cloudCreateEmail" type="button">Continue with email</button>
+                <button class="nav-btn cloud-action-btn cloud-back-btn" id="cloudCreateBack" type="button">Back</button>
+              </div>
+              <div class="cloud-credential-fields" id="cloudCredentialFields" hidden>
+                <label class="cloud-field cloud-email-field">
+                  <span class="settings-label" id="cloudEmailLabel">Email</span>
+                  <input class="cloud-input" id="cloudEmailInput" type="email" autocomplete="email" inputmode="email">
+                </label>
+                <label class="cloud-field cloud-password-field">
+                  <span class="settings-label" id="cloudPasswordLabel">Password</span>
+                  <input class="cloud-input" id="cloudPasswordInput" type="password" autocomplete="current-password">
+                </label>
+                <label class="cloud-field cloud-profile-field">
+                  <span class="settings-label" id="cloudProfileLabel">Profile</span>
+                  <input class="cloud-input" id="cloudProfileInput" type="text" autocomplete="off" value="Main">
+                </label>
+              </div>
+              <div class="cloud-actions" id="cloudActions">
+                <button class="nav-btn cloud-action-btn" id="cloudLogin" type="button">Sign in</button>
+                <button class="nav-btn cloud-action-btn" id="cloudRegister" type="button">Create</button>
+                <button class="nav-btn cloud-action-btn" id="cloudImport" type="button">Import</button>
+                <button class="nav-btn cloud-action-btn" id="cloudLogout" type="button">Sign out</button>
+                <button class="nav-btn cloud-action-btn" id="cloudDelete" type="button">Delete</button>
+                <button class="nav-btn cloud-action-btn cloud-back-btn" id="cloudLoginBack" type="button">Back</button>
+              </div>
+              <p class="cloud-status" id="cloudStatus" aria-live="polite"></p>
             </div>
             <div class="settings-group" aria-label="Language">
               <span class="settings-label visually-hidden" id="languageLabel">Language</span>
@@ -543,36 +617,6 @@
             <button class="nav-btn menu-nav-btn" id="fingerMapOpen" type="button">
               <span>Assign keys to fingers</span>
             </button>
-          </section>
-
-          <section class="menu-section cloud-section" aria-label="Account">
-            <button class="nav-btn menu-nav-btn disclosure-btn" id="cloudSyncToggle" type="button" aria-expanded="false" aria-controls="cloudSyncPanel">
-              <span id="cloudSyncToggleText">Account</span>
-              <span class="cloud-sync-state" id="cloudSyncState">Local</span>
-            </button>
-            <div class="cloud-sync-panel" id="cloudSyncPanel" hidden>
-              <label class="cloud-field">
-                <span class="settings-label" id="cloudEmailLabel">Email</span>
-                <input class="cloud-input" id="cloudEmailInput" type="email" autocomplete="email" inputmode="email">
-              </label>
-              <label class="cloud-field">
-                <span class="settings-label" id="cloudPasswordLabel">Password</span>
-                <input class="cloud-input" id="cloudPasswordInput" type="password" autocomplete="current-password">
-              </label>
-              <label class="cloud-field">
-                <span class="settings-label" id="cloudProfileLabel">Profile</span>
-                <input class="cloud-input" id="cloudProfileInput" type="text" autocomplete="off" value="Main">
-              </label>
-              <div class="cloud-oauth" id="cloudOauthProviders" hidden></div>
-              <div class="cloud-actions">
-                <button class="nav-btn cloud-action-btn" id="cloudLogin" type="button">Sign in</button>
-                <button class="nav-btn cloud-action-btn" id="cloudRegister" type="button">Create</button>
-                <button class="nav-btn cloud-action-btn" id="cloudImport" type="button">Import</button>
-                <button class="nav-btn cloud-action-btn" id="cloudLogout" type="button">Sign out</button>
-                <button class="nav-btn cloud-action-btn" id="cloudDelete" type="button">Delete</button>
-              </div>
-              <p class="cloud-status" id="cloudStatus" aria-live="polite"></p>
-            </div>
           </section>
 
           <section class="menu-section assistants-section" aria-label="Display">
@@ -779,12 +823,12 @@
       </div>
     </section>
 
-    <script src="app/data.js?v=20260531-12"></script>
-    <script src="app/early-localization.js?v=20260528-1"></script>
+    <script src="app/data.js?v=20260611-3"></script>
+    <script src="app/early-localization.js?v=20260601-1"></script>
 
     <script src="practice-content/content-version.js?v=20260517-1"></script>
     <script src="practice-content.js?v=20260517-1"></script>
-    <script src="practice-content/modules/module1.js?v=20260514-16"></script>
+    <script src="practice-content/modules/module1.js?v=20260601-1"></script>
     <script src="practice-content/modules/module2.js?v=20260514-16"></script>
     <script src="practice-content/modules/module3.js?v=20260514-16"></script>
     <script src="practice-content/modules/module4.js?v=20260514-16"></script>
@@ -796,41 +840,44 @@
     <script src="practice-content/modules/module10.js?v=20260514-16"></script>
     <script src="practice-content/modules/module11.js?v=20260516-1"></script>
     <script src="practice-content/modules/module12.js?v=20260516-1"></script>
-    <script src="practice-content/storyboard.js?v=20260531-6"></script>
-    <script src="app/runtime-config.js?v=20260529-1"></script>
-    <script src="app/api-client.js?v=20260523-4"></script>
-    <script src="app/cloud-sync.js?v=20260523-4"></script>
-    <script src="app/content-provider.js?v=20260531-6"></script>
-    <script src="app/practice-content-builder.js?v=20260531-12"></script>
-    <script src="app/dom.js?v=20260531-12"></script>
-    <script src="app/state.js?v=20260516-1"></script>
+    <script src="practice-content/storyboard.js?v=20260601-2"></script>
+    <script src="app/runtime-config.js?v=20260611-1"></script>
+    <script src="app/api-client.js?v=20260611-1"></script>
+    <script src="app/cloud-sync.js?v=20260612-1"></script>
+    <script src="app/content-provider.js?v=20260601-11"></script>
+    <script src="app/practice-content-builder.js?v=20260601-11"></script>
+    <script src="app/dom.js?v=20260611-2"></script>
+    <script src="app/state.js?v=20260611-1"></script>
     <script src="app/storage.js?v=20260514-16"></script>
-    <script src="app/helpers.js?v=20260531-1"></script>
-    <script src="app/audio.js?v=20260514-16"></script>
+    <script src="app/helpers.js?v=20260601-11"></script>
+    <script src="app/audio.js?v=20260611-1"></script>
     <script src="app/utils/keymap.js?v=20260514-16"></script>
     <script src="app/utils/finger-map.js?v=20260514-16"></script>
     <script src="app/views/keyboard-view.js?v=20260514-16"></script>
-    <script src="app/views/practice-view.js?v=20260514-16"></script>
+    <script src="app/views/practice-view.js?v=20260604-1"></script>
     <script src="app/views/fingering-view.js?v=20260514-16"></script>
-    <script src="app/views/settings-view.js?v=20260523-4"></script>
-    <script src="app/controllers/practice-controller.js?v=20260531-12"></script>
+    <script src="app/views/settings-view.js?v=20260611-8"></script>
+    <script src="app/controllers/practice-controller.js?v=20260611-1"></script>
     <script src="app/controllers/custom-practice-controller.js?v=20260514-16"></script>
     <script src="app/controllers/fingering-draft.js?v=20260514-16"></script>
     <script src="app/controllers/fingering-controller.js?v=20260514-16"></script>
-    <script src="app/controllers/settings-controller.js?v=20260523-4"></script>
-    <script src="app/controllers/app-runtime.js?v=20260514-16"></script>
+    <script src="app/controllers/settings-controller.js?v=20260611-3"></script>
+    <script src="app/controllers/app-runtime.js?v=20260604-1"></script>
     <script src="app/controllers/hand-calibration-controller.js?v=20260514-16"></script>
-    <script src="app/controllers/lesson-storyboard-controller.js?v=20260531-12"></script>
-    <script src="app/controllers/app-bootstrap.js?v=20260523-4"></script>
+    <script src="app/controllers/lesson-storyboard-controller.js?v=20260601-15"></script>
+    <script src="app/controllers/app-bootstrap.js?v=20260611-1"></script>
     <script>
       let keyboardDesignWidth = 0;
       let keyboardDesignHeight = 0;
       let saved = loadSaved();
+      if (new URLSearchParams(window.location.search).has("previewWelcome")) {
+        saved.onboardingCompleted = false;
+      }
       initializeAppState(saved);
 
       const practiceContent = window.PRACTICE_CONTENT || {};
     </script>
-    <script src="app/privacy-consent.js?v=20260516-11"></script>
+    <script src="app/privacy-consent.js?v=20260604-1"></script>
     <script>
       initializeApp();
     </script>

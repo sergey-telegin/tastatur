@@ -1,9 +1,9 @@
 const flyKeyDefaultCompletionText = {
-  ru: "Шаг «Левая рука» закрыт. Движение стало понятнее; держим спокойный темп и идём дальше.",
-  uk: "Крок «Ліва рука» закрито. Рух став зрозумілішим; тримай спокійний темп і рухайся далі.",
-  kk: "«Сол қол» қадамы аяқталды. Қозғалыс түсініктірек болды; ырғақты тыныш сақтап, әрі қарай өтеміз.",
-  de: "Der Schritt „Linke Hand“ ist geschafft. Die Bewegung ist klarer geworden; bleib ruhig im Tempo und geh weiter.",
-  en: "The “Left Hand” step is complete. The movement is clearer now; keep the pace calm and move on."
+  ru: "Практика «Короткие слова» закрепила движение в словах. Осталась проверка, где пальцы должны справиться почти сами.",
+  uk: "Практика «Короткі слова» закріпила рух у словах. Залишилася перевірка, де пальці мають упоратися майже самі.",
+  kk: "«Қысқа сөздер» жаттығуы қозғалысты сөздердің ішінде бекітті. Енді саусақтар дерлік өздері орындайтын тексеріс қалды.",
+  de: "Die Übung „Kurze Wörter“ hat die Bewegung in Wörtern gefestigt. Jetzt bleibt die Prüfung, in der die Finger fast allein arbeiten sollen.",
+  en: "The “Short Words” practice has anchored the movement inside words. One check remains, where the fingers should handle more on their own."
 };
 
 function flyKeyLessonStoryboardEntry(entry) {
@@ -21,10 +21,10 @@ function flyKeyLessonStoryboardEntry(entry) {
   };
 }
 
-window.FLYKEY_ONBOARDING_STORYBOARD = {
+window.FLYKEY_WELCOME_STORYBOARD = {
   screens: [
     {
-      id: "onboarding_1",
+      id: "welcome_1",
       image: "fly_welcome_no_bg.png",
       text: {
               ru: "FlyKey — это тренажёр слепой печати.\nFlyKey — преврати клавиатуру в продолжение твоих мыслей.\nFlyKey — печатай легко, будто пальцы умеют летать.",
@@ -37,7 +37,7 @@ window.FLYKEY_ONBOARDING_STORYBOARD = {
       showImage: false
     },
     {
-      id: "onboarding_2",
+      id: "welcome_2",
       image: "fly_welcome_no_bg.png",
       text: {
               ru: "Лёгкость, скорость и уверенность за клавиатурой тебя уже ждут.",
@@ -46,11 +46,11 @@ window.FLYKEY_ONBOARDING_STORYBOARD = {
               de: "Leichtigkeit, Geschwindigkeit und Sicherheit an der Tastatur warten schon auf dich.",
               en: "Ease, speed, and confidence at the keyboard are already waiting for you."
             },
-      visible: true,
+      visible: false,
       showImage: false
     },
     {
-      id: "onboarding_3",
+      id: "welcome_3",
       image: "fly_welcome_no_bg.png",
       text: {
               ru: "Здесь ты не зубришь клавиши, а постепенно учишься печатать свободно: меньше смотреть вниз, меньше напрягаться и больше доверять пальцам.",
@@ -59,11 +59,11 @@ window.FLYKEY_ONBOARDING_STORYBOARD = {
               de: "Hier paukst du keine Tasten. Du lernst Schritt für Schritt frei zu tippen: weniger nach unten schauen, weniger anspannen und den Fingern mehr vertrauen.",
               en: "Here you do not memorize keys by force. You gradually learn to type freely: look down less, tense up less, and trust your fingers more."
             },
-      visible: true,
+      visible: false,
       showImage: false
     },
     {
-      id: "onboarding_4",
+      id: "welcome_4",
       image: "key-wave.webp",
       text: {
               ru: "Меня зовут Key. Я буду с тобой.\nТвой маленький летающий помощник, который подсказывает, поддерживает и помогает не сбиться. Не строгий учитель, а напарник, с которым тренироваться проще и веселее.",
@@ -78,9 +78,56 @@ window.FLYKEY_ONBOARDING_STORYBOARD = {
   ]
 };
 
+window.FLYKEY_ONBOARDING_STORYBOARD = {
+  screens: [
+    {
+      id: "onboarding_finger_map_after_1_4",
+      title: {
+              ru: "Объяснение карты пальцев",
+              uk: "Пояснення карти пальців",
+              kk: "Саусақ картасын түсіндіру",
+              de: "Fingerkarte erklären",
+              en: "Explain Finger Map"
+            },
+      trigger: {"type":"afterLesson","lessonId":"lesson1_4"},
+      image: "key-explain.webp",
+      text: {
+              ru: "Теперь можно настроить карту пальцев.\nЕсли какая-то клавиша ощущается неудобно, открой карту пальцев и назначь ей тот палец, которым тебе легче двигаться.",
+              uk: "Тепер можна налаштувати карту пальців.\nЯкщо якась клавіша відчувається незручно, відкрий карту пальців і признач їй той палець, яким рухатися легше.",
+              kk: "Енді саусақ картасын баптауға болады.\nЕгер бір перне ыңғайсыз сезілсе, саусақ картасын ашып, оны басуға ыңғайлы саусаққа бекітіңіз.",
+              de: "Jetzt kannst du die Fingerkarte anpassen.\nWenn sich eine Taste unbequem anfühlt, öffne die Fingerkarte und ordne sie dem Finger zu, mit dem die Bewegung leichter wird.",
+              en: "Now you can adjust the Finger Map.\nIf a key feels uncomfortable, open the Finger Map and assign it to the finger that makes the movement easier."
+            },
+      visible: true,
+      showImage: true
+    },
+    {
+      id: "onboarding_finger_map_feature_open",
+      title: {
+              ru: "Открытие карты пальцев",
+              uk: "Відкриття карти пальців",
+              kk: "Саусақ картасын ашу",
+              de: "Fingerkarte öffnen",
+              en: "Open Finger Map"
+            },
+      trigger: {"type":"featureOpen","lessonId":null},
+      image: "key-idea.webp",
+      text: {
+              ru: "Это карта пальцев.\nЗдесь видно, какой палец отвечает за каждую клавишу. Меняй назначение только там, где движение действительно становится удобнее.",
+              uk: "Це карта пальців.\nТут видно, який палець відповідає за кожну клавішу. Змінюй призначення лише там, де рух справді стає зручнішим.",
+              kk: "Бұл саусақ картасы.\nМұнда әр пернеге қай саусақ жауап беретіні көрінеді. Тағайындауды тек қозғалыс шынымен ыңғайлырақ болғанда өзгертіңіз.",
+              de: "Das ist die Fingerkarte.\nHier siehst du, welcher Finger für welche Taste zuständig ist. Ändere die Zuordnung nur dort, wo die Bewegung wirklich bequemer wird.",
+              en: "This is the Finger Map.\nIt shows which finger is responsible for each key. Change an assignment only when the movement truly becomes more comfortable."
+            },
+      visible: true,
+      showImage: true
+    }
+  ]
+};
+
 window.FLYKEY_LESSON_STORYBOARD = {
   lesson1_1: flyKeyLessonStoryboardEntry({
-    introImage: "key-please.webp",
+    introImage: "key-hand-forward-right.webp",
     introTip: {
           ru: "Сначала указательные пальцы положи на клавиши с «пупырышками» — А и О, потом разложи остальные пальцы, потом начинай печатать.",
           uk: "Спочатку покладіть вказівні пальці на клавіші з маленькими мітками — А й О. Потім розкладіть решту пальців і лише тоді починайте друкувати.",
@@ -88,7 +135,21 @@ window.FLYKEY_LESSON_STORYBOARD = {
           de: "Lege zuerst deine Zeigefinger auf die Tasten mit den kleinen Markierungen - F und J. Dann ordne die restlichen Finger ein und beginne erst danach zu tippen.",
           en: "First place your index fingers on the keys with the little bumps - F and J. Then set the rest of your fingers in place and start typing."
         },
+    nextModuleText: {
+          ru: "Почувствовать стартовую позицию левой руки.",
+          uk: "Відчути стартову позицію лівої руки.",
+          kk: "Сол қолдың бастапқы қалпын сезіну.",
+          de: "Die Grundposition der linken Hand fühlen.",
+          en: "Feel the left-hand starting position."
+        },
     completionImage: "key-celebrate.png",
+    completionText: {
+          ru: "Шаг «Левая рука» закрыт. Движение стало понятнее! Держим спокойный темп и идём дальше.",
+          uk: "Крок «Ліва рука» закрито. Рух став зрозумілішим; тримай спокійний темп і рухайся далі.",
+          kk: "«Сол қол» қадамы аяқталды. Қозғалыс түсініктірек болды; ырғақты тыныш сақтап, әрі қарай өтеміз.",
+          de: "Der Schritt „Linke Hand“ ist geschafft. Die Bewegung ist klarer geworden; bleib ruhig im Tempo und geh weiter.",
+          en: "The “Left Hand” step is complete. The movement is clearer now; keep the pace calm and move on."
+        },
     showIntroImage: true,
     showIntroTip: true,
     showNextModuleText: true,
@@ -96,7 +157,7 @@ window.FLYKEY_LESSON_STORYBOARD = {
     showCompletionText: true
   }),
   lesson1_2: flyKeyLessonStoryboardEntry({
-    introImage: "key-wave.webp",
+    introImage: "key-hand-forward-left.webp",
     introTip: {
           ru: "Сиди прямо и не горбись. Твои глаза должны быть на уровне верхней части монитора, а локти — согнуты под углом 90°. Но главное, чтобы удобно было, конечно!",
           uk: "Сидіть рівно, але без напруження. Очі приблизно на рівні верхньої частини екрана, лікті зігнуті близько до прямого кута. Найважливіше — щоб тілу було зручно.",
@@ -104,13 +165,20 @@ window.FLYKEY_LESSON_STORYBOARD = {
           de: "Sitz aufrecht und mach dich nicht krumm. Deine Augen sollten etwa auf Höhe des oberen Monitorbereichs sein, die Ellbogen ungefähr im 90-Grad-Winkel. Am wichtigsten ist natürlich, dass es bequem bleibt!",
           en: "Sit upright and do not hunch over. Your eyes should be level with the upper part of the monitor, and your elbows bent at about 90 degrees. Most importantly, stay comfortable!"
         },
+    nextModuleText: {
+          ru: "Подключить правую руку к домашнему ряду.",
+          uk: "Підключити праву руку до домашнього ряду.",
+          kk: "Оң қолды негізгі қатарға қосу.",
+          de: "Die rechte Hand zur Grundreihe bringen.",
+          en: "Bring the right hand into the home row."
+        },
     completionImage: "key-completion.webp",
     completionText: {
-          ru: "Раздел «Правая рука» добавлен без лишней спешки. Сохраняй базовую позицию и продолжай.",
-          uk: "Розділ «Права рука» додано без зайвого поспіху. Зберігай базову позицію й продовжуй.",
-          kk: "«Оң қол» бөлімі артық асықпай қосылды. Негізгі позицияны сақтап, жалғастырыңыз.",
-          de: "Der Abschnitt „Rechte Hand“ ist ohne unnötige Eile dazugekommen. Halte die Grundposition und mach weiter.",
-          en: "The “Right Hand” section is connected without extra rushing. Keep the home position steady and continue."
+          ru: "Раздел «Правая рука» пройден! Сохраняй базовую позицию и продолжай.",
+          uk: "Розділ «Права рука» пройдено! Зберігай базову позицію й продовжуй.",
+          kk: "«Оң қол» бөлімі өтті! Негізгі позицияны сақтап, жалғастыр.",
+          de: "Der Abschnitt „Rechte Hand“ ist geschafft! Halte die Grundposition und mach weiter.",
+          en: "The “Right Hand” section is complete! Keep the home position steady and continue."
         },
     showIntroImage: true,
     showIntroTip: true,
@@ -121,19 +189,26 @@ window.FLYKEY_LESSON_STORYBOARD = {
   lesson1_3: flyKeyLessonStoryboardEntry({
     introImage: "key-explain.webp",
     introTip: {
-          ru: "Используй все десять пальцев! Не печатай только двумя пальцами. Каждому пальцу — своя зона! Даже моим маленьким крылышкам было бы трудно, если бы я работала в одиночку.",
+          ru: "Теперь все десять пальцев! Не печатай только двумя пальцами. Каждому пальцу — своя зона!",
           uk: "Працюють усі десять пальців. У кожного пальця своя зона, і саме з цього поступово з'являється легкість у наборі.",
           kk: "Барлық он саусақ жұмыс істейді. Әр саусақтың өз аймағы бар, ал жеңілдік осы тәртіптен басталады.",
           de: "Benutze alle zehn Finger! Tippe nicht nur mit zwei Fingern. Jeder Finger hat seine eigene Zone. Selbst meine kleinen Flügel hätten es schwer, wenn sie alles allein machen müssten.",
           en: "Use all ten fingers! Do not type with only two fingers. Every finger has its own zone. Even my little wings would struggle if they had to work alone."
         },
-    completionImage: "key-please.webp",
+    nextModuleText: {
+          ru: "Собрать обе руки в один спокойный ритм.",
+          uk: "Зібрати обидві руки в один спокійний ритм.",
+          kk: "Екі қолды бір тыныш ырғаққа келтіру.",
+          de: "Beide Hände in einen ruhigen Rhythmus bringen.",
+          en: "Bring both hands into one calm rhythm."
+        },
+    completionImage: "key-thumb.webp",
     completionText: {
-          ru: "Блок «Обе руки» начинает собираться в цельный навык. Дальше перенесём движение в более связную печать.",
-          uk: "Блок «Обидві руки» починає складатися в цілісну навичку. Далі перенесемо рух у більш зв’язний набір.",
-          kk: "«Екі қол» блогы біртұтас дағдыға жинала бастады. Енді қозғалысты байланысқан теруге көшіреміз.",
-          de: "Der Block „Beide Hände“ wird zu einer zusammenhängenden Fähigkeit. Als Nächstes geht die Bewegung in flüssigeres Tippen über.",
-          en: "The “Both Hands” block is becoming one connected skill. Next, we move it into more fluent typing."
+          ru: "Ну вот! Обе руки начинают работать вместе. Дальше перенесём движение в более связную печать.",
+          uk: "Ось так! Обидві руки починають працювати разом. Далі перенесемо рух у більш зв’язний набір.",
+          kk: "Міне! Екі қол бірге жұмыс істей бастады. Енді қозғалысты байланысқан теруге көшіреміз.",
+          de: "So ist es gut! Beide Hände beginnen zusammenzuarbeiten. Als Nächstes geht die Bewegung in flüssigeres Tippen über.",
+          en: "There we go! Both hands are starting to work together. Next, we move the movement into more connected typing."
         },
     showIntroImage: true,
     showIntroTip: true,
@@ -150,14 +225,14 @@ window.FLYKEY_LESSON_STORYBOARD = {
           de: "Prüfe vor der Übung kurz die Fingerzuordnung: Fühlen sich die Finger wohl, sind alle Zonen klar, musst du dich irgendwo unnötig strecken?",
           en: "Before practicing, check your fingering settings: do your fingers feel comfortable, are the zones clear, and are you avoiding unnecessary reaching?"
         },
-    completionImage: "key-score-ten.png",
-    completionText: {
-          ru: "Практика «Короткие слова» закрепила движение в словах. Осталась проверка, где пальцы должны справиться почти сами.",
-          uk: "Практика «Короткі слова» закріпила рух у словах. Залишилася перевірка, де пальці мають упоратися майже самі.",
-          kk: "«Қысқа сөздер» жаттығуы қозғалысты сөздердің ішінде бекітті. Енді саусақтар дерлік өздері орындайтын тексеріс қалды.",
-          de: "Die Übung „Kurze Wörter“ hat die Bewegung in Wörtern gefestigt. Jetzt bleibt die Prüfung, in der die Finger fast allein arbeiten sollen.",
-          en: "The “Short Words” practice has anchored the movement inside words. One check remains, where the fingers should handle more on their own."
+    nextModuleText: {
+          ru: "Перенести домашний ряд в короткие слова.",
+          uk: "Перенести домашній ряд у короткі слова.",
+          kk: "Негізгі қатарды қысқа сөздерге көшіру.",
+          de: "Die Grundreihe in kurze Wörter übertragen.",
+          en: "Move the home row into short words."
         },
+    completionImage: "key-score-ten.png",
     showIntroImage: true,
     showIntroTip: true,
     showNextModuleText: true,
@@ -172,6 +247,13 @@ window.FLYKEY_LESSON_STORYBOARD = {
           kk: "Тестте көмекшілер өшеді. Бұл емтихан емес, саусақтардың өз бетімен жұмыс істей бастағанын байқауға арналған тыныш тексеріс.",
           de: "Im Test werden die Assistenten ausgeschaltet, damit deine Finger selbstständig arbeiten können. Keine Sorge: Das ist keine Prüfung, sondern nur ein Check, ob sich die Fähigkeit schon festigt.",
           en: "In the test, assistants are turned off so your fingers can start working on their own. Do not worry: it is not an exam, just a check that the skill is beginning to settle."
+        },
+    nextModuleText: {
+          ru: "Проверить, насколько уверенно держится база.",
+          uk: "Перевірити, наскільки впевнено тримається база.",
+          kk: "Негіздің қаншалықты сенімді бекігенін тексеру.",
+          de: "Prüfen, wie stabil die Basis sitzt.",
+          en: "Check how confidently the base holds."
         },
     completionImage: "key-thumb.webp",
     completionText: {
@@ -196,7 +278,14 @@ window.FLYKEY_LESSON_STORYBOARD = {
           de: "Bring deine Finger nach jedem Anschlag zurück ins Zuhause. So wissen sie immer, von wo aus sie zur nächsten Taste starten.",
           en: "Return your fingers to the home position after every keypress. That way they always know where to start for the next letter."
         },
-    completionImage: "key-wave.webp",
+    nextModuleText: {
+          ru: "Освоить центральные движения левой руки.",
+          uk: "Освоїти центральні рухи лівої руки.",
+          kk: "Сол қолдың орталық қимылдарын меңгеру.",
+          de: "Zentrale Bewegungen der linken Hand üben.",
+          en: "Learn the left-hand center movements."
+        },
+    completionImage: "key-celebrate.png",
     completionText: {
           ru: "Шаг «Центр слева» закрыт. Движение стало понятнее; держим спокойный темп и идём дальше.",
           uk: "Крок «Центр ліворуч» закрито. Рух став зрозумілішим; тримай спокійний темп і рухайся далі.",
@@ -218,6 +307,13 @@ window.FLYKEY_LESSON_STORYBOARD = {
           kk: "Пернетақтаға қажеттен артық қарамаңыз. Бір тыныш кідіріс бірнеше кездейсоқ басудан жақсы.",
           de: "Schau nicht auf die Tastatur! Echte Geschwindigkeit entsteht, wenn die Finger den Weg selbst finden.",
           en: "Do not look at the keyboard! Real speed appears when your fingers find the way on their own."
+        },
+    nextModuleText: {
+          ru: "Освоить центральные движения правой руки.",
+          uk: "Освоїти центральні рухи правої руки.",
+          kk: "Оң қолдың орталық қимылдарын меңгеру.",
+          de: "Zentrale Bewegungen der rechten Hand üben.",
+          en: "Learn the right-hand center movements."
         },
     completionImage: "key-celebrate.png",
     completionText: {
@@ -242,6 +338,13 @@ window.FLYKEY_LESSON_STORYBOARD = {
           de: "Drücken - sofort loslassen. Ein kurzer Rücksprung hilft dir, den Rhythmus zu halten und nicht so schnell müde zu werden.",
           en: "Press, then release right away. A quick rebound helps keep the rhythm steady and prevents fatigue."
         },
+    nextModuleText: {
+          ru: "Добавить первые переходы к нижнему ряду.",
+          uk: "Додати перші переходи до нижнього ряду.",
+          kk: "Төменгі қатарға алғашқы ауысуларды қосу.",
+          de: "Erste Wege zur unteren Reihe hinzufügen.",
+          en: "Add the first moves to the bottom row."
+        },
     completionImage: "key-completion.webp",
     completionText: {
           ru: "Блок «Нижний ряд» начинает собираться в цельный навык. Дальше перенесём движение в более связную печать.",
@@ -265,14 +368,14 @@ window.FLYKEY_LESSON_STORYBOARD = {
           de: "Arbeite zuerst an der Genauigkeit und werde erst danach schneller. Schnelles Tippen mit Fehlern festigt nur schlechte Gewohnheiten.",
           en: "Build accuracy first, then speed up. Fast typing with mistakes only reinforces a bad habit."
         },
-    completionImage: "key-please.webp",
-    completionText: {
-          ru: "Практика «Короткие слова» закрепила движение в словах. Осталась проверка, где пальцы должны справиться почти сами.",
-          uk: "Практика «Короткі слова» закріпила рух у словах. Залишилася перевірка, де пальці мають упоратися майже самі.",
-          kk: "«Қысқа сөздер» жаттығуы қозғалысты сөздердің ішінде бекітті. Енді саусақтар дерлік өздері орындайтын тексеріс қалды.",
-          de: "Die Übung „Kurze Wörter“ hat die Bewegung in Wörtern gefestigt. Jetzt bleibt die Prüfung, in der die Finger fast allein arbeiten sollen.",
-          en: "The “Short Words” practice has anchored the movement inside words. One check remains, where the fingers should handle more on their own."
+    nextModuleText: {
+          ru: "Собрать новые клавиши в короткие слова.",
+          uk: "Зібрати нові клавіші в короткі слова.",
+          kk: "Жаңа пернелерді қысқа сөздерге жинау.",
+          de: "Neue Tasten in kurze Wörter bringen.",
+          en: "Turn the new keys into short words."
         },
+    completionImage: "key-score-ten.png",
     showIntroImage: true,
     showIntroTip: true,
     showNextModuleText: true,
@@ -287,6 +390,13 @@ window.FLYKEY_LESSON_STORYBOARD = {
           kk: "Тестте көмек азаяды, бірақ дағдының қай бөлігі автоматқа айналғаны жақсы көрінеді.",
           de: "Jetzt ohne Hinweise: Es ist Zeit zu prüfen, wie sicher sich deine Hände schon selbst auf der Tastatur orientieren.",
           en: "Now without hints: it is time to check how confidently your hands can navigate the keyboard on their own."
+        },
+    nextModuleText: {
+          ru: "Проверить центр клавиатуры без лишней спешки.",
+          uk: "Перевірити центр клавіатури без зайвого поспіху.",
+          kk: "Пернетақта ортасын артық асықпай тексеру.",
+          de: "Das Tastaturzentrum ruhig prüfen.",
+          en: "Check the keyboard center without rushing."
         },
     completionImage: "key-score-ten.png",
     completionText: {
@@ -311,6 +421,13 @@ window.FLYKEY_LESSON_STORYBOARD = {
           de: "Lege deine Hände so hin, dass die Finger leicht gebogen sind, als läge ein kleiner Apfel darunter. So erreichst du die Tasten schnell und ohne unnötige Anstrengung.",
           en: "Place your hands so your fingers are slightly curved, as if a small apple were resting underneath them. This helps you reach the keys quickly and without strain."
         },
+    nextModuleText: {
+          ru: "Научить левую руку подниматься вверх.",
+          uk: "Навчити ліву руку підніматися вгору.",
+          kk: "Сол қолды жоғары көтерілуге үйрету.",
+          de: "Die linke Hand nach oben führen.",
+          en: "Teach the left hand to move upward."
+        },
     completionImage: "key-thumb.webp",
     completionText: {
           ru: "Шаг «Верх слева» закрыт. Движение стало понятнее; держим спокойный темп и идём дальше.",
@@ -334,7 +451,14 @@ window.FLYKEY_LESSON_STORYBOARD = {
           de: "Die Tastatur wehrt sich nicht! Eine leichte Berührung reicht völlig aus.",
           en: "The keyboard is not fighting back! A light touch is more than enough."
         },
-    completionImage: "key-wave.webp",
+    nextModuleText: {
+          ru: "Научить правую руку подниматься вверх.",
+          uk: "Навчити праву руку підніматися вгору.",
+          kk: "Оң қолды жоғары көтерілуге үйрету.",
+          de: "Die rechte Hand nach oben führen.",
+          en: "Teach the right hand to move upward."
+        },
+    completionImage: "key-completion.webp",
     completionText: {
           ru: "Раздел «Верх справа» добавлен без лишней спешки. Сохраняй базовую позицию и продолжай.",
           uk: "Розділ «Верх праворуч» додано без зайвого поспіху. Зберігай базову позицію й продовжуй.",
@@ -356,6 +480,13 @@ window.FLYKEY_LESSON_STORYBOARD = {
           kk: "Әр ауысудан кейін саусақтарды негізгі қатарға қайтарыңыз. Бұл сіздің тірек нүктеңіз.",
           de: "Hebe die Finger nicht hoch über die Tastatur. Je kürzer der Weg zur Taste, desto schneller und stabiler wird das Tippen.",
           en: "Do not lift your fingers high above the keyboard. The shorter the path to the key, the faster and steadier your typing becomes."
+        },
+    nextModuleText: {
+          ru: "Собрать верхний ряд в цельную зону.",
+          uk: "Зібрати верхній ряд у цілісну зону.",
+          kk: "Жоғарғы қатарды тұтас аймаққа жинау.",
+          de: "Die obere Reihe als ganze Zone festigen.",
+          en: "Build the top row into one clear zone."
         },
     completionImage: "key-celebrate.png",
     completionText: {
@@ -380,14 +511,14 @@ window.FLYKEY_LESSON_STORYBOARD = {
           de: "Behalte vor Wörtern auf der oberen Reihe ein ruhiges Tempo. Gleichmäßige Bewegung ohne Ruckeln ist besser als ein schneller Start mit zu viel Spannung.",
           en: "Keep a calm pace before words on the top row. Smooth movement without jerks is better than a fast start with extra tension."
         },
-    completionImage: "key-completion.webp",
-    completionText: {
-          ru: "Практика «Короткие слова» закрепила движение в словах. Осталась проверка, где пальцы должны справиться почти сами.",
-          uk: "Практика «Короткі слова» закріпила рух у словах. Залишилася перевірка, де пальці мають упоратися майже самі.",
-          kk: "«Қысқа сөздер» жаттығуы қозғалысты сөздердің ішінде бекітті. Енді саусақтар дерлік өздері орындайтын тексеріс қалды.",
-          de: "Die Übung „Kurze Wörter“ hat die Bewegung in Wörtern gefestigt. Jetzt bleibt die Prüfung, in der die Finger fast allein arbeiten sollen.",
-          en: "The “Short Words” practice has anchored the movement inside words. One check remains, where the fingers should handle more on their own."
+    nextModuleText: {
+          ru: "Перенести верхний ряд в короткие слова.",
+          uk: "Перенести верхній ряд у короткі слова.",
+          kk: "Жоғарғы қатарды қысқа сөздерге көшіру.",
+          de: "Die obere Reihe in kurze Wörter übertragen.",
+          en: "Move the top row into short words."
         },
+    completionImage: "key-completion.webp",
     showIntroImage: true,
     showIntroTip: true,
     showNextModuleText: true,
@@ -403,7 +534,14 @@ window.FLYKEY_LESSON_STORYBOARD = {
           de: "Hab keine Angst vor Fehlern im Test. Er ist nicht für ein perfektes Ergebnis da, sondern damit Gehirn und Finger lernen, ohne Assistenten zusammenzuarbeiten.",
           en: "Do not be afraid of mistakes in the test. It is not about a perfect score; it helps your brain and fingers learn to work without assistants."
         },
-    completionImage: "key-please.webp",
+    nextModuleText: {
+          ru: "Проверить верхний ряд в спокойном темпе.",
+          uk: "Перевірити верхній ряд у спокійному темпі.",
+          kk: "Жоғарғы қатарды тыныш қарқында тексеру.",
+          de: "Die obere Reihe ruhig prüfen.",
+          en: "Check the top row at a calm pace."
+        },
+    completionImage: "key-completion.webp",
     completionText: {
           ru: "Модуль «Верхний ряд» пройден. Можно идти дальше без ощущения, что база рассыпается.",
           uk: "Модуль «Верхній ряд» пройдено. Можна йти далі без відчуття, що база розсипається.",
@@ -425,6 +563,13 @@ window.FLYKEY_LESSON_STORYBOARD = {
           kk: "Баяу және мұқият бастаңыз. Саусақтар шатасса, темпті азайтып, бірқалыпты ырғаққа қайтыңыз.",
           de: "Schau nur auf den Bildschirm, auch wenn du gern auf die Tasten schauen würdest. Genau so entsteht Muskelgedächtnis, und daraus wird echtes Blindtippen.",
           en: "Keep your eyes on the screen, even if you really want to peek at the keys. This is how muscle memory grows and turns typing into true touch typing."
+        },
+    nextModuleText: {
+          ru: "Научить левую руку уходить вниз.",
+          uk: "Навчити ліву руку рухатися вниз.",
+          kk: "Сол қолды төмен түсуге үйрету.",
+          de: "Die linke Hand nach unten führen.",
+          en: "Teach the left hand to move downward."
         },
     completionImage: "key-score-ten.png",
     completionText: {
@@ -449,6 +594,13 @@ window.FLYKEY_LESSON_STORYBOARD = {
           de: "Drücke die Leertaste mit dem gegenüberliegenden Daumen: Wenn der letzte Buchstabe mit der rechten Hand kam, drückt der linke Daumen die Leertaste, und umgekehrt. So arbeiten die Hände abwechselnd, die Bewegungen werden flüssiger, und die Finger kommen sich beim schnellen Tippen nicht in die Quere.",
           en: "Press Space with the opposite thumb: if the last letter was typed with the right hand, use the left thumb for Space, and the other way around. This lets the hands alternate, makes movement smoother, and keeps the fingers from getting in each other's way."
         },
+    nextModuleText: {
+          ru: "Научить правую руку уходить вниз.",
+          uk: "Навчити праву руку рухатися вниз.",
+          kk: "Оң қолды төмен түсуге үйрету.",
+          de: "Die rechte Hand nach unten führen.",
+          en: "Teach the right hand to move downward."
+        },
     completionImage: "key-thumb.webp",
     completionText: {
           ru: "Раздел «Низ справа» добавлен без лишней спешки. Сохраняй базовую позицию и продолжай.",
@@ -472,7 +624,14 @@ window.FLYKEY_LESSON_STORYBOARD = {
           de: "Greif nicht mit der ganzen Hand nach den Tasten. Bei guter Technik bewegen sich vor allem die Finger, während die Hand fast an Ort und Stelle bleibt.",
           en: "Do not reach for keys with your whole hand. In good technique, the fingers do most of the movement while the hand stays almost in place."
         },
-    completionImage: "key-wave.webp",
+    nextModuleText: {
+          ru: "Собрать нижний ряд в устойчивую зону.",
+          uk: "Зібрати нижній ряд у стійку зону.",
+          kk: "Төменгі қатарды тұрақты аймаққа жинау.",
+          de: "Die untere Reihe stabilisieren.",
+          en: "Build the bottom row into a stable zone."
+        },
+    completionImage: "key-celebrate.png",
     completionText: {
           ru: "Блок «Нижний ряд» начинает собираться в цельный навык. Дальше перенесём движение в более связную печать.",
           uk: "Блок «Нижній ряд» починає складатися в цілісну навичку. Далі перенесемо рух у більш зв’язний набір.",
@@ -495,14 +654,14 @@ window.FLYKEY_LESSON_STORYBOARD = {
           de: "Wollen wir die Fingerzuordnung noch einmal prüfen? Nutzt du deine Finger optimal? Fühlt es sich bequem an?",
           en: "Shall we check the fingering setup again? Are you using your fingers well? Does it feel comfortable?"
         },
-    completionImage: "key-celebrate.png",
-    completionText: {
-          ru: "Практика «Короткие слова» закрепила движение в словах. Осталась проверка, где пальцы должны справиться почти сами.",
-          uk: "Практика «Короткі слова» закріпила рух у словах. Залишилася перевірка, де пальці мають упоратися майже самі.",
-          kk: "«Қысқа сөздер» жаттығуы қозғалысты сөздердің ішінде бекітті. Енді саусақтар дерлік өздері орындайтын тексеріс қалды.",
-          de: "Die Übung „Kurze Wörter“ hat die Bewegung in Wörtern gefestigt. Jetzt bleibt die Prüfung, in der die Finger fast allein arbeiten sollen.",
-          en: "The “Short Words” practice has anchored the movement inside words. One check remains, where the fingers should handle more on their own."
+    nextModuleText: {
+          ru: "Использовать нижний ряд в коротких словах.",
+          uk: "Використати нижній ряд у коротких словах.",
+          kk: "Төменгі қатарды қысқа сөздерде қолдану.",
+          de: "Die untere Reihe in kurzen Wörtern nutzen.",
+          en: "Use the bottom row in short words."
         },
+    completionImage: "key-celebrate.png",
     showIntroImage: true,
     showIntroTip: true,
     showNextModuleText: true,
@@ -517,6 +676,13 @@ window.FLYKEY_LESSON_STORYBOARD = {
           kk: "Тестте көмек азаяды, бірақ дағдының қай бөлігі автоматқа айналғаны жақсы көрінеді.",
           de: "Die Assistenten sind absichtlich ausgeschaltet: Genau in solchen Momenten wird Blindtippen zu einer echten Fähigkeit.",
           en: "The assistants are off on purpose: moments like this are where touch typing starts becoming a real skill."
+        },
+    nextModuleText: {
+          ru: "Проверить нижний ряд и возврат домой.",
+          uk: "Перевірити нижній ряд і повернення додому.",
+          kk: "Төменгі қатарды және негізгі қатарға оралуды тексеру.",
+          de: "Untere Reihe und Rückkehr prüfen.",
+          en: "Check the bottom row and return home."
         },
     completionImage: "key-completion.webp",
     completionText: {
@@ -541,7 +707,14 @@ window.FLYKEY_LESSON_STORYBOARD = {
           de: "Hebe beim Wechsel zwischen den Reihen nicht die ganze Hand. Zu den oberen und unteren Tasten sollen die Finger greifen, während die Hand fast ruhig bleibt - so werden die Bewegungen schneller und genauer.",
           en: "Do not lift your whole hand when moving between rows. Let the fingers reach the upper and lower keys while the hand stays almost still - the movement will be faster and more accurate."
         },
-    completionImage: "key-please.webp",
+    nextModuleText: {
+          ru: "Освоить вертикальные переходы слева.",
+          uk: "Освоїти вертикальні переходи ліворуч.",
+          kk: "Сол жақтағы тік ауысуларды меңгеру.",
+          de: "Vertikale Wege links üben.",
+          en: "Practice the left-side vertical paths."
+        },
+    completionImage: "key-thumb.webp",
     completionText: {
           ru: "Шаг «Вертикали слева» закрыт. Движение стало понятнее; держим спокойный темп и идём дальше.",
           uk: "Крок «Вертикалі ліворуч» закрито. Рух став зрозумілішим; тримай спокійний темп і рухайся далі.",
@@ -563,6 +736,13 @@ window.FLYKEY_LESSON_STORYBOARD = {
           kk: "Пернетақтаға қажеттен артық қарамаңыз. Бір тыныш кідіріс бірнеше кездейсоқ басудан жақсы.",
           de: "Bring den Finger nach einer Taste aus der oberen oder unteren Reihe sofort zurück in die Grundposition. Das hilft dir, bei langen Wörtern und schnellen Wechseln nicht die Orientierung zu verlieren.",
           en: "After pressing a key from the upper or lower row, return the finger to the base position right away. This helps you stay oriented during long words and fast transitions."
+        },
+    nextModuleText: {
+          ru: "Освоить вертикальные переходы справа.",
+          uk: "Освоїти вертикальні переходи праворуч.",
+          kk: "Оң жақтағы тік ауысуларды меңгеру.",
+          de: "Vertikale Wege rechts üben.",
+          en: "Practice the right-side vertical paths."
         },
     completionImage: "key-score-ten.png",
     completionText: {
@@ -587,6 +767,13 @@ window.FLYKEY_LESSON_STORYBOARD = {
           de: "Drücke Shift mit der Hand gegenüber dem Buchstaben. Für ein großes T benutzt du zum Beispiel die rechte Shift-Taste und drückst den Buchstaben mit der linken Hand - so stoßen die Hände nicht zusammen und das Tippen bleibt flüssig.",
           en: "Press Shift with the hand opposite the main letter. For example, for a capital T, use the right Shift and press the letter with your left hand - this keeps the hands from colliding and typing stays smooth."
         },
+    nextModuleText: {
+          ru: "Добавить Shift без лишнего напряжения.",
+          uk: "Додати Shift без зайвого напруження.",
+          kk: "Shift пернесін артық күшсіз қосу.",
+          de: "Shift ohne unnötige Spannung hinzufügen.",
+          en: "Add Shift without extra tension."
+        },
     completionImage: "key-thumb.webp",
     completionText: {
           ru: "Блок «Регистр» начинает собираться в цельный навык. Дальше перенесём движение в более связную печать.",
@@ -610,7 +797,14 @@ window.FLYKEY_LESSON_STORYBOARD = {
           de: "Bei Wörtern mit großen Sprüngen zwischen den Reihen solltest du die Geschwindigkeit nicht um jeden Preis zurückholen. Halte zuerst die Bewegungen kurz und genau; das Tempo kommt von selbst.",
           en: "With words that jump across rows, do not rush to regain speed at any cost. Keep the movements short and precise first; the pace will catch up on its own."
         },
-    completionImage: "key-wave.webp",
+    nextModuleText: {
+          ru: "Связать дальние движения в слова.",
+          uk: "Пов'язати далекі рухи у слова.",
+          kk: "Алыс қимылдарды сөздерге байланыстыру.",
+          de: "Weite Wege in Wörter verbinden.",
+          en: "Connect longer reaches into words."
+        },
+    completionImage: "key-score-ten.png",
     completionText: {
           ru: "Практика «Слова-прыжки» закрепила движение в словах. Осталась проверка, где пальцы должны справиться почти сами.",
           uk: "Практика «Слова-стрибки» закріпила рух у словах. Залишилася перевірка, де пальці мають упоратися майже самі.",
@@ -632,6 +826,13 @@ window.FLYKEY_LESSON_STORYBOARD = {
           kk: "Тестте көмек азаяды, бірақ дағдының қай бөлігі автоматқа айналғаны жақсы көрінеді.",
           de: "Wenn der Test schwieriger wird, ist das normal. Es bedeutet, dass deine Finger lernen, sich auf Muskelgedächtnis statt auf Hinweise zu verlassen.",
           en: "If the test starts feeling harder, that is normal. It means your fingers are learning to rely on muscle memory instead of hints."
+        },
+    nextModuleText: {
+          ru: "Проверить первую большую часть навыка.",
+          uk: "Перевірити першу велику частину навички.",
+          kk: "Дағдының алғашқы үлкен бөлігін тексеру.",
+          de: "Den ersten großen Lernblock prüfen.",
+          en: "Check the first big skill block."
         },
     completionImage: "key-celebrate.png",
     completionText: {
@@ -656,6 +857,13 @@ window.FLYKEY_LESSON_STORYBOARD = {
           de: "Greif nicht mit der ganzen Hand zu den Zahlen. Die Finger sollen die obere Reihe erreichen, während die Hand in ihrer normalen Position bleibt - so verlierst du nach den Zahlen nicht die Orientierung.",
           en: "Do not reach for numbers with your whole hand. Your fingers should reach the top row while the hand stays in its usual position - that way you will not lose orientation after typing numbers."
         },
+    nextModuleText: {
+          ru: "Добавить левую часть верхнего ряда и цифр.",
+          uk: "Додати ліву частину верхнього ряду й цифр.",
+          kk: "Жоғарғы қатар мен сандардың сол бөлігін қосу.",
+          de: "Linke obere Reihe und Zahlen hinzufügen.",
+          en: "Add the left top row and numbers."
+        },
     completionImage: "key-completion.webp",
     completionText: {
           ru: "Шаг «Левая сторона» закрыт. Движение стало понятнее; держим спокойный темп и идём дальше.",
@@ -679,7 +887,14 @@ window.FLYKEY_LESSON_STORYBOARD = {
           de: "Bring den Finger nach jeder Zahl sofort zurück in die Grundposition. Sonst wandern die Hände nach oben, und die nächsten Buchstaben werden ungenauer.",
           en: "Return the finger to base immediately after pressing a number. Otherwise the hands start drifting upward, and the next letters become less accurate."
         },
-    completionImage: "key-please.webp",
+    nextModuleText: {
+          ru: "Добавить правую часть верхнего ряда и цифр.",
+          uk: "Додати праву частину верхнього ряду й цифр.",
+          kk: "Жоғарғы қатар мен сандардың оң бөлігін қосу.",
+          de: "Rechte obere Reihe und Zahlen hinzufügen.",
+          en: "Add the right top row and numbers."
+        },
+    completionImage: "key-score-ten.png",
     completionText: {
           ru: "Раздел «Правая сторона» добавлен без лишней спешки. Сохраняй базовую позицию и продолжай.",
           uk: "Розділ «Права сторона» додано без зайвого поспіху. Зберігай базову позицію й продовжуй.",
@@ -701,6 +916,13 @@ window.FLYKEY_LESSON_STORYBOARD = {
           kk: "Бұл қатарда қазақ тіліне тән әріптер бірге қайталанады. Мақсат — олардың орнын бөлек-бөлек емес, тұтас аймақ ретінде сезіну.",
           de: "Schau nicht mit den Augen auf die Zahlenreihe. Die Zahlen sollen sich wie eine Fortsetzung der Finger-Spalten anfühlen, nicht wie eine eigene Welt über der Tastatur.",
           en: "Do not look at the number row. Numbers should be remembered as an extension of your finger columns, not as a separate world above the keyboard."
+        },
+    nextModuleText: {
+          ru: "Собрать весь цифровой ряд в порядок.",
+          uk: "Зібрати весь цифровий ряд у порядок.",
+          kk: "Бүкіл сандық қатарды ретке келтіру.",
+          de: "Die ganze Zahlenreihe ordnen.",
+          en: "Bring the full number row into order."
         },
     completionImage: "key-score-ten.png",
     completionText: {
@@ -725,6 +947,13 @@ window.FLYKEY_LESSON_STORYBOARD = {
           de: "Wenn Buchstaben und Zahlen in einer Zeile gemischt sind, ändere die Handhaltung nicht. Zahl drücken, zurück in die Grundposition, dann die Buchstaben im selben ruhigen Rhythmus weiter tippen.",
           en: "When a line mixes letters and numbers, do not change your hand position. Press the number, return to base, and keep typing the letters in the same calm rhythm."
         },
+    nextModuleText: {
+          ru: "Смешать буквы и цифры без потери ритма.",
+          uk: "Змішати літери й цифри без втрати ритму.",
+          kk: "Әріптер мен сандарды ырғақты жоғалтпай араластыру.",
+          de: "Buchstaben und Zahlen rhythmisch mischen.",
+          en: "Mix letters and numbers without losing rhythm."
+        },
     completionImage: "key-thumb.webp",
     completionText: {
           ru: "Практика «Смешанный ввод» закрепила движение в словах. Осталась проверка, где пальцы должны справиться почти сами.",
@@ -748,7 +977,14 @@ window.FLYKEY_LESSON_STORYBOARD = {
           de: "Im Test wird die Zahlenreihe zusammen mit den Buchstaben geprüft. Vertraue den Finger-Spalten und kehre nach jedem Griff nach oben in die Grundposition zurück.",
           en: "In the test, the number row is checked together with letters. Trust your finger columns and return to the base position after every reach upward."
         },
-    completionImage: "key-wave.webp",
+    nextModuleText: {
+          ru: "Проверить цифры вместе с буквами.",
+          uk: "Перевірити цифри разом із літерами.",
+          kk: "Сандарды әріптермен бірге тексеру.",
+          de: "Zahlen zusammen mit Buchstaben prüfen.",
+          en: "Check numbers together with letters."
+        },
+    completionImage: "key-thumb.webp",
     completionText: {
           ru: "Модуль «Верхний ряд + Цифры» пройден. Можно идти дальше без ощущения, что база рассыпается.",
           uk: "Модуль «Верхній ряд + цифри» пройдено. Можна йти далі без відчуття, що база розсипається.",
@@ -770,6 +1006,13 @@ window.FLYKEY_LESSON_STORYBOARD = {
           kk: "Тыныс белгілерінің де өз орны бар. Оларды әріптер сияқты дәл және сабырмен басыңыз.",
           de: "Lerne, ein Zeichen zusammen mit dem Wort wahrzunehmen, nicht als eigene Aktion. Dann beginnen die Finger, Sätze flüssig zu tippen, ohne vor Kommas oder Punkten anzuhalten.",
           en: "Learn to treat a punctuation mark as part of the word, not as a separate action. Then your fingers start typing phrases smoothly, without stopping before commas and periods."
+        },
+    nextModuleText: {
+          ru: "Добавить точку и запятую в привычный ритм.",
+          uk: "Додати крапку й кому у звичний ритм.",
+          kk: "Нүкте мен үтірді үйреншікті ырғаққа қосу.",
+          de: "Punkt und Komma in den Rhythmus bringen.",
+          en: "Add period and comma to the rhythm."
         },
     completionImage: "key-celebrate.png",
     completionText: {
@@ -794,6 +1037,13 @@ window.FLYKEY_LESSON_STORYBOARD = {
           de: "Bei Zeichen mit Shift solltest du nicht beide Hände verkrampfen. Eine Hand hält Shift, die andere drückt das Zeichen frei - so bleiben die Bewegungen schnell und sauber.",
           en: "For symbols that use Shift, do not tense both hands. One hand holds Shift while the other freely presses the symbol - this keeps movement quick and clean."
         },
+    nextModuleText: {
+          ru: "Освоить вопрос и восклицание с Shift.",
+          uk: "Освоїти питання й оклик із Shift.",
+          kk: "Сұрақ пен леп белгілерін Shift арқылы меңгеру.",
+          de: "Frage und Ausruf mit Shift üben.",
+          en: "Practice question and exclamation with Shift."
+        },
     completionImage: "key-completion.webp",
     completionText: {
           ru: "Раздел «Вопрос и восклицание» добавлен без лишней спешки. Сохраняй базовую позицию и продолжай.",
@@ -817,7 +1067,14 @@ window.FLYKEY_LESSON_STORYBOARD = {
           de: "Drücke Shift und die Haupttaste nie mit derselben Hand. Wenn das Zeichen mit der rechten Hand getippt wird, hält die linke Shift, und umgekehrt. So kommen sich die Finger nicht in die Quere und die Bewegungen bleiben schnell und natürlich.",
           en: "Never press Shift and the main key with the same hand. If the symbol is typed with the right hand, the left hand holds Shift, and vice versa. This keeps the fingers out of each other's way and the movement natural."
         },
-    completionImage: "key-please.webp",
+    nextModuleText: {
+          ru: "Разобрать сложные знаки без остановок.",
+          uk: "Розібрати складні знаки без зупинок.",
+          kk: "Күрделі белгілерді тоқтамай меңгеру.",
+          de: "Schwierige Zeichen ohne Stopps üben.",
+          en: "Handle complex signs without stopping."
+        },
+    completionImage: "key-completion.webp",
     completionText: {
           ru: "Блок «Тире, двоеточие, кавычки» начинает собираться в цельный навык. Дальше перенесём движение в более связную печать.",
           uk: "Блок «Тире, двокрапка, лапки» починає складатися в цілісну навичку. Далі перенесемо рух у більш зв’язний набір.",
@@ -839,6 +1096,13 @@ window.FLYKEY_LESSON_STORYBOARD = {
           kk: "Фразада бір-екі таңбаны алдын ала оқыңыз. Сонда саусақтар әр келесі белгіге тоқтап қалмайды.",
           de: "Werde bei Satzzeichen nicht schneller als bei Buchstaben. Die meisten Fehler entstehen genau beim Wechsel zu den Zeichen.",
           en: "Do not speed up on punctuation more than on letters. Most mistakes happen right at the transition to symbols."
+        },
+    nextModuleText: {
+          ru: "Печатать фразы со знаками плавнее.",
+          uk: "Друкувати фрази зі знаками плавніше.",
+          kk: "Белгілері бар тіркестерді жұмсағырақ теру.",
+          de: "Sätze mit Zeichen flüssiger tippen.",
+          en: "Type signed phrases more smoothly."
         },
     completionImage: "key-score-ten.png",
     completionText: {
@@ -863,6 +1127,13 @@ window.FLYKEY_LESSON_STORYBOARD = {
           de: "Dieser Test soll keinen Druck machen. Er festigt die Fähigkeit unter Bedingungen, die dem echten Tippen näherkommen.",
           en: "This test is not about pressure. It helps lock in the skill under conditions closer to real typing."
         },
+    nextModuleText: {
+          ru: "Проверить пунктуацию в живых фразах.",
+          uk: "Перевірити пунктуацію в живих фразах.",
+          kk: "Тірі тіркестердегі тыныс белгілерін тексеру.",
+          de: "Zeichensetzung in echten Sätzen prüfen.",
+          en: "Check punctuation in real phrases."
+        },
     completionImage: "key-thumb.webp",
     completionText: {
           ru: "Модуль «Пунктуация» пройден. Можно идти дальше без ощущения, что база рассыпается.",
@@ -886,7 +1157,21 @@ window.FLYKEY_LESSON_STORYBOARD = {
           de: "Versuche, den Rhythmus des Metronoms zu treffen, statt ihm vorauszueilen. Ein gleichmäßiges Tempo entwickelt eine stabile Technik viel besser als zufällige Beschleunigungen.",
           en: "Try to match the metronome instead of outrunning it. A steady pace builds stable technique much better than random bursts of speed."
         },
-    completionImage: "key-wave.webp",
+    nextModuleText: {
+          ru: "Отработать частые сочетания левой руки.",
+          uk: "Відпрацювати часті поєднання лівої руки.",
+          kk: "Сол қолдың жиі тіркестерін жаттықтыру.",
+          de: "Häufige Kombinationen links üben.",
+          en: "Practice frequent left-hand patterns."
+        },
+    completionImage: "key-celebrate.png",
+    completionText: {
+          ru: "Шаг «Левая рука» закрыт. Движение стало понятнее; держим спокойный темп и идём дальше.",
+          uk: "Крок «Ліва рука» закрито. Рух став зрозумілішим; тримай спокійний темп і рухайся далі.",
+          kk: "«Сол қол» қадамы аяқталды. Қозғалыс түсініктірек болды; ырғақты тыныш сақтап, әрі қарай өтеміз.",
+          de: "Der Schritt „Linke Hand“ ist geschafft. Die Bewegung ist klarer geworden; bleib ruhig im Tempo und geh weiter.",
+          en: "The “Left Hand” step is complete. The movement is clearer now; keep the pace calm and move on."
+        },
     showIntroImage: true,
     showIntroTip: true,
     showNextModuleText: true,
@@ -901,6 +1186,13 @@ window.FLYKEY_LESSON_STORYBOARD = {
           kk: "Пернетақтаға қажеттен артық қарамаңыз. Бір тыныш кідіріс бірнеше кездейсоқ басудан жақсы.",
           de: "Hör beim rhythmischen Tippen auf das Metronom, nicht auf den Klang der Tastatur. Die Hauptaufgabe ist, die Handbewegungen mit einem konstanten Tempo zu synchronisieren.",
           en: "While typing rhythmically, listen to the metronome, not the sound of the keyboard. The main goal is to synchronize your hand movements with a steady tempo."
+        },
+    nextModuleText: {
+          ru: "Отработать частые сочетания правой руки.",
+          uk: "Відпрацювати часті поєднання правої руки.",
+          kk: "Оң қолдың жиі тіркестерін жаттықтыру.",
+          de: "Häufige Kombinationen rechts üben.",
+          en: "Practice frequent right-hand patterns."
         },
     completionImage: "key-celebrate.png",
     completionText: {
@@ -925,6 +1217,13 @@ window.FLYKEY_LESSON_STORYBOARD = {
           de: "Die Arbeit mit dem Metronom lehrt dich, in einem stabilen Rhythmus zu tippen statt in zufälligen Schüben. Ohne Rhythmus werden die Finger oft schneller und langsamer, wodurch mehr Fehler entstehen und die Ermüdung schneller kommt.",
           en: "Working with the metronome teaches you to type in a stable rhythm, not in random bursts. Without rhythm, fingers often speed up and slow down, causing more mistakes and faster fatigue."
         },
+    nextModuleText: {
+          ru: "Смешать частые сочетания обеих рук.",
+          uk: "Змішати часті поєднання обох рук.",
+          kk: "Екі қолдың жиі тіркестерін араластыру.",
+          de: "Häufige Kombinationen beider Hände mischen.",
+          en: "Mix frequent patterns from both hands."
+        },
     completionImage: "key-completion.webp",
     completionText: {
           ru: "Блок «Смешанные сочетания» начинает собираться в цельный навык. Дальше перенесём движение в более связную печать.",
@@ -948,7 +1247,14 @@ window.FLYKEY_LESSON_STORYBOARD = {
           de: "Halte in langen Übungen von Zeile zu Zeile ein ruhiges Tempo. Ausdauer entsteht, wenn die Bewegungen auch bei Müdigkeit gleich genau bleiben.",
           en: "During long practice, keep one calm tempo from line to line. Endurance appears when movements stay equally precise even after fatigue sets in."
         },
-    completionImage: "key-please.webp",
+    nextModuleText: {
+          ru: "Нарастить выносливость без гонки.",
+          uk: "Наростити витривалість без гонитви.",
+          kk: "Жарыспай төзімділікті арттыру.",
+          de: "Ausdauer ohne Hetze aufbauen.",
+          en: "Build endurance without racing."
+        },
+    completionImage: "key-thumb.webp",
     completionText: {
           ru: "Практика «Практика на выносливость» закрепила движение в словах. Осталась проверка, где пальцы должны справиться почти сами.",
           uk: "Практика «Практика на витривалість» закріпила рух у словах. Залишилася перевірка, де пальці мають упоратися майже самі.",
@@ -970,6 +1276,13 @@ window.FLYKEY_LESSON_STORYBOARD = {
           kk: "Тестте көмек азаяды, бірақ дағдының қай бөлігі автоматқа айналғаны жақсы көрінеді.",
           de: "Ausgeschaltete Assistenten helfen dir zu erkennen, welche Bewegungen schon automatisch laufen und welche noch Training brauchen.",
           en: "Turned-off assistants help you see which movements have become automatic and which still need practice."
+        },
+    nextModuleText: {
+          ru: "Проверить частые сочетания и устойчивость.",
+          uk: "Перевірити часті поєднання й стійкість.",
+          kk: "Жиі тіркестер мен тұрақтылықты тексеру.",
+          de: "Kombinationen und Stabilität prüfen.",
+          en: "Check frequent patterns and stability."
         },
     completionImage: "key-score-ten.png",
     completionText: {
@@ -994,7 +1307,21 @@ window.FLYKEY_LESSON_STORYBOARD = {
           de: "Bereite bei Kombinationen mit Großbuchstaben die gegenüberliegende Shift-Taste früh vor, halte sie aber nicht länger als nötig. Der Rhythmus soll genauso gleichmäßig bleiben wie bei normalen Kombinationen.",
           en: "For combinations with capital letters, prepare the opposite Shift in advance, but do not hold it longer than needed. The rhythm should stay as even as in normal combinations."
         },
+    nextModuleText: {
+          ru: "Добавить Shift к левой руке.",
+          uk: "Додати Shift до лівої руки.",
+          kk: "Shift пернесін сол қолға қосу.",
+          de: "Shift zur linken Hand hinzufügen.",
+          en: "Add Shift to the left hand."
+        },
     completionImage: "key-thumb.webp",
+    completionText: {
+          ru: "Шаг «Левая рука» закрыт. Движение стало понятнее; держим спокойный темп и идём дальше.",
+          uk: "Крок «Ліва рука» закрито. Рух став зрозумілішим; тримай спокійний темп і рухайся далі.",
+          kk: "«Сол қол» қадамы аяқталды. Қозғалыс түсініктірек болды; ырғақты тыныш сақтап, әрі қарай өтеміз.",
+          de: "Der Schritt „Linke Hand“ ist geschafft. Die Bewegung ist klarer geworden; bleib ruhig im Tempo und geh weiter.",
+          en: "The “Left Hand” step is complete. The movement is clearer now; keep the pace calm and move on."
+        },
     showIntroImage: true,
     showIntroTip: true,
     showNextModuleText: true,
@@ -1010,7 +1337,14 @@ window.FLYKEY_LESSON_STORYBOARD = {
           de: "Lass Shift das Metronom nicht brechen. Triff zuerst den Takt und füge dann vorsichtig die Großschreibung hinzu.",
           en: "Do not let Shift break the metronome. First land on the beat, then carefully add capitalization."
         },
-    completionImage: "key-wave.webp",
+    nextModuleText: {
+          ru: "Добавить Shift к правой руке.",
+          uk: "Додати Shift до правої руки.",
+          kk: "Shift пернесін оң қолға қосу.",
+          de: "Shift zur rechten Hand hinzufügen.",
+          en: "Add Shift to the right hand."
+        },
+    completionImage: "key-completion.webp",
     completionText: {
           ru: "Раздел «Правая рука» добавлен без лишней спешки. Сохраняй базовую позицию и продолжай.",
           uk: "Розділ «Права рука» додано без зайвого поспіху. Зберігай базову позицію й продовжуй.",
@@ -1032,6 +1366,13 @@ window.FLYKEY_LESSON_STORYBOARD = {
           kk: "Әр ауысудан кейін саусақтарды негізгі қатарға қайтарыңыз. Бұл сіздің тірек нүктеңіз.",
           de: "Wenn beide Hände arbeiten, denke nicht an jede Taste einzeln, sondern an die kurze Bewegung als Ganzes: Kombination, zurück in die Grundposition, nächster Metronomschlag.",
           en: "When both hands are working, do not think about each key separately. Think of the whole short movement: combination, return to base, next metronome beat."
+        },
+    nextModuleText: {
+          ru: "Смешать Shift и частые сочетания.",
+          uk: "Змішати Shift і часті поєднання.",
+          kk: "Shift пен жиі тіркестерді араластыру.",
+          de: "Shift und häufige Kombinationen mischen.",
+          en: "Mix Shift with frequent patterns."
         },
     completionImage: "key-celebrate.png",
     completionText: {
@@ -1056,6 +1397,13 @@ window.FLYKEY_LESSON_STORYBOARD = {
           de: "Schone deine Hände in langen Übungen mit Shift: kurz drücken, kurz loslassen, ruhig zurückkehren. So werden Großbuchstaben nicht zu zusätzlicher Spannung.",
           en: "In long Shift practice, protect your hands: short press, quick release, calm return. That keeps capitals from turning into extra tension."
         },
+    nextModuleText: {
+          ru: "Удержать ритм на длинных строках.",
+          uk: "Утримати ритм на довгих рядках.",
+          kk: "Ұзын жолдарда ырғақты сақтау.",
+          de: "Rhythmus in langen Zeilen halten.",
+          en: "Hold rhythm through longer lines."
+        },
     completionImage: "key-completion.webp",
     completionText: {
           ru: "Практика «Практика на выносливость» закрепила движение в словах. Осталась проверка, где пальцы должны справиться почти сами.",
@@ -1079,7 +1427,14 @@ window.FLYKEY_LESSON_STORYBOARD = {
           de: "Im Test bleibt nur das Metronom. Lass es das Tempo halten, während die Finger die Kombinationen und die Arbeit mit Shift selbst abrufen.",
           en: "In the test, only the metronome remains. Let it hold the pace while your fingers remember the combinations and Shift work on their own."
         },
-    completionImage: "key-please.webp",
+    nextModuleText: {
+          ru: "Проверить Shift в устойчивой практике.",
+          uk: "Перевірити Shift у стійкій практиці.",
+          kk: "Shift пернесін тұрақты жаттығуда тексеру.",
+          de: "Shift in stabiler Praxis prüfen.",
+          en: "Check Shift in steady practice."
+        },
+    completionImage: "key-celebrate.png",
     completionText: {
           ru: "Модуль «Частотные сочетания + Shift» пройден. Можно идти дальше без ощущения, что база рассыпается.",
           uk: "Модуль «Частотні поєднання + Shift» пройдено. Можна йти далі без відчуття, що база розсипається.",
@@ -1102,7 +1457,21 @@ window.FLYKEY_LESSON_STORYBOARD = {
           de: "Mach bei Kombinationen mit Zeichen keine Pause vor der Satzsetzung. Bereite Shift mit der gegenüberliegenden Hand vor und bewege dich weiter im Metronomtempo.",
           en: "In combinations with symbols, do not pause before punctuation. Prepare Shift with the opposite hand and keep moving with the metronome."
         },
+    nextModuleText: {
+          ru: "Соединить левую руку, Shift и знаки.",
+          uk: "Поєднати ліву руку, Shift і знаки.",
+          kk: "Сол қолды, Shift пернесін және белгілерді біріктіру.",
+          de: "Linke Hand, Shift und Zeichen verbinden.",
+          en: "Connect left hand, Shift, and signs."
+        },
     completionImage: "key-score-ten.png",
+    completionText: {
+          ru: "Шаг «Левая рука» закрыт. Движение стало понятнее; держим спокойный темп и идём дальше.",
+          uk: "Крок «Ліва рука» закрито. Рух став зрозумілішим; тримай спокійний темп і рухайся далі.",
+          kk: "«Сол қол» қадамы аяқталды. Қозғалыс түсініктірек болды; ырғақты тыныш сақтап, әрі қарай өтеміз.",
+          de: "Der Schritt „Linke Hand“ ist geschafft. Die Bewegung ist klarer geworden; bleib ruhig im Tempo und geh weiter.",
+          en: "The “Left Hand” step is complete. The movement is clearer now; keep the pace calm and move on."
+        },
     showIntroImage: true,
     showIntroTip: true,
     showNextModuleText: true,
@@ -1112,11 +1481,18 @@ window.FLYKEY_LESSON_STORYBOARD = {
   lesson10_2: flyKeyLessonStoryboardEntry({
     introImage: "key-explain.webp",
     introTip: {
-          ru: "Пунктуация должна быть такой же лёгкой, как буквы. Не бей по знакам сильнее и не задерживай пальцы на Shift.",
+          ru: "Пунктуация должна быть такой же лёгкой, как буквы. Не бей по знакам сильнее и не задерживай пальцы ��а Shift.",
           uk: "Не дивіться на клавіатуру довше, ніж потрібно. Краще одна спокійна пауза, ніж серія випадкових натискань.",
           kk: "Пернетақтаға қажеттен артық қарамаңыз. Бір тыныш кідіріс бірнеше кездейсоқ басудан жақсы.",
           de: "Satzzeichen sollen sich genauso leicht anfühlen wie Buchstaben. Schlage Zeichen nicht härter an und halte die Finger nicht auf Shift fest.",
           en: "Punctuation should feel as light as letters. Do not hit symbols harder, and do not leave your fingers stuck on Shift."
+        },
+    nextModuleText: {
+          ru: "Соединить правую руку, Shift и знаки.",
+          uk: "Поєднати праву руку, Shift і знаки.",
+          kk: "Оң қолды, Shift пернесін және белгілерді біріктіру.",
+          de: "Rechte Hand, Shift und Zeichen verbinden.",
+          en: "Connect right hand, Shift, and signs."
         },
     completionImage: "key-thumb.webp",
     completionText: {
@@ -1136,12 +1512,19 @@ window.FLYKEY_LESSON_STORYBOARD = {
     introImage: "key-stop.webp",
     introTip: {
           ru: "Когда в строке есть регистр и знаки, держи один порядок: увидеть сочетание, нажать нужный Shift другой рукой, сразу вернуться в базу.",
-          uk: "Після кожного переходу повертайте пальці до домашнього ряду. Це ваша опорна точка.",
-          kk: "Әр ауысудан кейін саусақтарды негізгі қатарға қайтарыңыз. Бұл сіздің тірек нүктеңіз.",
+          uk: "Коли в рядку є регістр і знаки, тримай один порядок: побачити поєднання, натиснути потрібний Shift іншою рукою, одразу повернутися в базу.",
+          kk: "Жолда бас әріптер мен белгілер болса, бір тәртіпті ұстан: тіркесті көр, керек Shift пернесін екінші қолмен бас, бірден негізгі орынға қайт.",
           de: "Wenn eine Zeile Großschreibung und Zeichen enthält, halte eine klare Reihenfolge: Kombination sehen, die passende Shift-Taste mit der anderen Hand drücken, sofort zurück in die Grundposition.",
           en: "When a line has capitalization and symbols, keep one order: see the combination, press the needed Shift with the other hand, return to base right away."
         },
-    completionImage: "key-wave.webp",
+    nextModuleText: {
+          ru: "Смешать все частые движения вместе.",
+          uk: "Змішати всі часті рухи разом.",
+          kk: "Барлық жиі қимылдарды бірге араластыру.",
+          de: "Alle häufigen Bewegungen mischen.",
+          en: "Mix all frequent movements together."
+        },
+    completionImage: "key-thumb.webp",
     completionText: {
           ru: "Блок «Смешанные сочетания» начинает собираться в цельный навык. Дальше перенесём движение в более связную печать.",
           uk: "Блок «Змішані поєднання» починає складатися в цілісну навичку. Далі перенесемо рух у більш зв’язний набір.",
@@ -1163,6 +1546,13 @@ window.FLYKEY_LESSON_STORYBOARD = {
           kk: "Сөздерде дұрыс пернені табу ғана емес, қозғалыстың жұмсақ байланысы да маңызды.",
           de: "Versuche in der Ausdauerübung nicht, gegen das Metronom zu gewinnen. Lange Zeilen prüfen Stabilität: gleichmäßiges Tempo, saubere Zeichen, möglichst wenig unnötige Bewegung.",
           en: "In endurance practice, do not try to beat the metronome. Long lines test stability: steady pace, clean symbols, minimal extra movement."
+        },
+    nextModuleText: {
+          ru: "Закрепить навык на длинной практике.",
+          uk: "Закріпити навичку на довгій практиці.",
+          kk: "Дағдыны ұзақ жаттығуда бекіту.",
+          de: "Den Skill in längerer Praxis festigen.",
+          en: "Lock the skill into longer practice."
         },
     completionImage: "key-celebrate.png",
     completionText: {
@@ -1187,6 +1577,13 @@ window.FLYKEY_LESSON_STORYBOARD = {
           de: "Der Abschlusstest bringt Rhythmus, Shift und Satzzeichen zusammen. Die Assistenten sind ausgeschaltet, aber das Metronom bleibt deine Stütze: Hör auf den Takt und tippe ruhig.",
           en: "The final test brings rhythm, Shift, and punctuation together. Assistants are off, but the metronome remains your support: listen to the beat and type calmly."
         },
+    nextModuleText: {
+          ru: "Проверить весь основной курс.",
+          uk: "Перевірити весь основний курс.",
+          kk: "Бүкіл негізгі курсты тексеру.",
+          de: "Den ganzen Grundkurs prüfen.",
+          en: "Check the full core course."
+        },
     completionImage: "key-completion.webp",
     completionText: {
           ru: "Похоже, пришло время прощаться. Я рассказал тебе всё главное о слепой печати: базовые позиции, ряды, Shift, цифры, пунктуацию и ритм. Дальше всё зависит от практики и от того, как часто ты будешь использовать навык в реальной работе. Помни: настоящая скорость приходит не от спешки, а от спокойных и точных движений. Продолжай печатать вслепую в обычной жизни, меньше смотри на клавиатуру и доверяй своим пальцам. У тебя уже есть всё, чтобы расти дальше.",
@@ -1210,7 +1607,14 @@ window.FLYKEY_LESSON_STORYBOARD = {
           de: "Zufällige Texte sind näher am echten Tippen: weniger Wiederholung, mehr echte Sprache und mehr Verantwortung für die Finger.",
           en: "Random text is closer to real typing: less repetition, more living language, and more responsibility for the fingers."
         },
-    completionImage: "key-please.webp",
+    nextModuleText: {
+          ru: "Перейти к случайным живым текстам.",
+          uk: "Перейти до випадкових живих текстів.",
+          kk: "Кездейсоқ тірі мәтіндерге көшу.",
+          de: "Zu zufälligen echten Texten wechseln.",
+          en: "Move into random real text."
+        },
+    completionImage: "key-score-ten.png",
     completionText: {
           ru: "Случайный текст возвращает навык в живую печать: меньше шаблонов, больше настоящего движения.",
           uk: "Випадковий текст повертає навичку в живий набір: менше шаблонів, більше справжнього руху.",
@@ -1225,13 +1629,20 @@ window.FLYKEY_LESSON_STORYBOARD = {
     showCompletionText: true
   }),
   lesson12_1: flyKeyLessonStoryboardEntry({
-    introImage: "fly_welcome_no_bg.png",
+    introImage: "key-book.webp",
     introTip: {
           ru: "Свой текст полезен, когда хочется тренировать именно те слова и фразы, которые вы реально печатаете каждый день.",
           uk: "Власний текст корисний тоді, коли хочеться тренувати саме те, що ви справді друкуєте щодня.",
           kk: "Өз мәтініңізді жаттықтыру күнделікті шынымен теретін сөздерге үйренуге көмектеседі.",
           de: "Eigene Texte helfen, genau die Wörter und Sätze zu üben, die du im Alltag wirklich tippst.",
           en: "Custom text helps you practice the exact words and phrases you really type every day."
+        },
+    nextModuleText: {
+          ru: "Тренировать собственные реальные тексты.",
+          uk: "Тренувати власні реальні тексти.",
+          kk: "Өз нақты мәтіндеріңізді жаттықтыру.",
+          de: "Eigene echte Texte trainieren.",
+          en: "Train your own real texts."
         },
     completionImage: "key-score-ten.png",
     completionText: {
