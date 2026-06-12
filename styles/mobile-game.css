@@ -25,6 +25,10 @@ body {
   overflow: hidden;
 }
 
+body.is-game-overlay {
+  overflow-y: auto;
+}
+
 button,
 input {
   font: inherit;
@@ -41,6 +45,9 @@ input {
 }
 
 .game-shell.is-overlay {
+  height: auto;
+  min-height: 100dvh;
+  overflow: visible;
   touch-action: pan-y;
 }
 
@@ -66,6 +73,18 @@ input {
   background: linear-gradient(180deg, rgba(17, 22, 20, 0.93), rgba(17, 22, 20, 0.76));
 }
 
+.game-shell.is-overlay #flykey-game {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+}
+
+.game-shell.is-overlay .screen {
+  position: relative;
+  z-index: 1;
+  min-height: 100dvh;
+}
+
 .screen.is-visible {
   display: flex;
 }
@@ -73,6 +92,19 @@ input {
 .screen-menu {
   justify-content: flex-start;
   padding-bottom: max(32px, env(safe-area-inset-bottom));
+}
+
+.screen-menu.is-visible {
+  display: block;
+}
+
+.screen-menu > * {
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.screen-menu > * + * {
+  margin-top: 18px;
 }
 
 .menu-mascot {

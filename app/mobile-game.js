@@ -184,6 +184,7 @@
     desktopScreen.classList.toggle("is-visible", mode === "desktop");
     hud.classList.toggle("is-visible", mode === "playing");
     gameShell.classList.toggle("is-overlay", mode !== "playing");
+    document.body.classList.toggle("is-game-overlay", mode !== "playing");
   };
 
   const selectedLanguage = () => {
@@ -641,8 +642,15 @@
 
   startButton.addEventListener("click", startGame);
   restartButton.addEventListener("click", startGame);
-  languagePicker.addEventListener("change", () => {
+  const syncSelectedLanguage = () => {
     applyLanguage(selectedLanguage());
+  };
+  languagePicker.addEventListener("input", syncSelectedLanguage);
+  languagePicker.addEventListener("change", syncSelectedLanguage);
+  languagePicker.querySelectorAll("input[name='game-language']").forEach((input) => {
+    input.addEventListener("click", () => {
+      window.setTimeout(syncSelectedLanguage, 0);
+    });
   });
   canvas.addEventListener("pointerdown", (event) => handlePointer(event, true));
   canvas.addEventListener("pointermove", (event) => handlePointer(event, false));
