@@ -9,6 +9,23 @@ function scheduleKeyboardRefit() {
   setTimeout(refitKeyboardScene, 800);
 }
 
+function navigateAppRoute(route, fallback) {
+  if (window.FlyKeyNavigation?.navigate) {
+    window.FlyKeyNavigation.navigate(route);
+    return;
+  }
+  fallback?.();
+}
+
+function closeAppRoute(routeIds, fallback) {
+  const activeRoute = window.FlyKeyNavigation?.currentRoute?.();
+  if (activeRoute && routeIds.includes(activeRoute.id)) {
+    window.FlyKeyNavigation.closeCurrentRoute();
+    return;
+  }
+  fallback?.();
+}
+
 function bindAppEvents() {
   document.addEventListener("pointerdown", handleFingeringTourPointerGuard, true);
   document.addEventListener("click", handleFingeringTourPointerGuard, true);
@@ -41,7 +58,7 @@ function bindAppEvents() {
   }
 
   settingsToggle.addEventListener("click", () => {
-    openSettingsDialog();
+    navigateAppRoute({ id: "settings" }, openSettingsDialog);
   });
 
   onboardingNext.addEventListener("click", () => {
@@ -162,35 +179,40 @@ function bindAppEvents() {
 
   settingsClose.addEventListener("click", () => {
     if (fingeringTourActive) return;
-    closeSettingsDialog();
+    closeAppRoute(["settings"], closeSettingsDialog);
   });
 
   settingsDialog.addEventListener("click", event => {
     if (fingeringTourActive) return;
     if (event.target === settingsDialog) {
-      closeSettingsDialog();
+      closeAppRoute(["settings"], closeSettingsDialog);
     }
   });
 
   settingsDialog.addEventListener("close", () => {
+    window.FlyKeyNavigation?.handleRouteDialogClosed?.(["settings"]);
     handleSettingsDialogClose();
   });
 
   learningProgramOpen.addEventListener("click", () => {
-    openLearningProgramDialog();
+    navigateAppRoute({
+      id: "settings.learningProgram",
+      params: { language: currentLanguage }
+    }, openLearningProgramDialog);
   });
 
   learningProgramClose.addEventListener("click", () => {
-    closeLearningProgramDialog();
+    closeAppRoute(["settings.learningProgram"], closeLearningProgramDialog);
   });
 
   learningProgramDialog.addEventListener("click", event => {
     if (event.target === learningProgramDialog) {
-      closeLearningProgramDialog();
+      closeAppRoute(["settings.learningProgram"], closeLearningProgramDialog);
     }
   });
 
   learningProgramDialog.addEventListener("close", () => {
+    window.FlyKeyNavigation?.handleRouteDialogClosed?.(["settings.learningProgram"]);
     handleSettingsDialogClose();
   });
 
@@ -228,38 +250,43 @@ function bindAppEvents() {
   });
 
   statsOpen.addEventListener("click", () => {
-    openStatsDialog();
+    navigateAppRoute({
+      id: "settings.stats",
+      params: { language: currentLanguage }
+    }, openStatsDialog);
   });
 
   statsClose.addEventListener("click", () => {
-    closeStatsDialog();
+    closeAppRoute(["settings.stats"], closeStatsDialog);
   });
 
   statsDialog.addEventListener("click", event => {
     if (event.target === statsDialog) {
-      closeStatsDialog();
+      closeAppRoute(["settings.stats"], closeStatsDialog);
     }
   });
 
   statsDialog.addEventListener("close", () => {
+    window.FlyKeyNavigation?.handleRouteDialogClosed?.(["settings.stats"]);
     handleSettingsDialogClose();
   });
 
   helpOpen.addEventListener("click", () => {
-    openHelpDialog();
+    navigateAppRoute({ id: "help" }, openHelpDialog);
   });
 
   helpClose.addEventListener("click", () => {
-    closeHelpDialog();
+    closeAppRoute(["help"], closeHelpDialog);
   });
 
   helpDialog.addEventListener("click", event => {
     if (event.target === helpDialog) {
-      closeHelpDialog();
+      closeAppRoute(["help"], closeHelpDialog);
     }
   });
 
   helpDialog.addEventListener("close", () => {
+    window.FlyKeyNavigation?.handleRouteDialogClosed?.(["help"]);
     handleSettingsDialogClose();
   });
 
@@ -329,6 +356,7 @@ function initializeApp() {
   updateMetronome();
   focusPracticeInputSoon();
   scheduleKeyboardRefit();
+  window.FlyKeyWebNavigation?.initialize?.();
 
   if (initializeLessonStoryboardMode()) {
     return;

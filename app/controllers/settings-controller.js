@@ -1,15 +1,18 @@
 function openSettingsDialog() {
+  if (settingsDialog.open) return;
   settingsDialog.showModal();
   updatePracticeTimerPauseState();
   renderTabs();
 }
 
 function closeSettingsDialog() {
+  if (!settingsDialog.open) return;
   settingsDialog.close();
 }
 
 function openLearningProgramDialog() {
-  settingsDialog.close();
+  if (settingsDialog.open) settingsDialog.close();
+  if (learningProgramDialog.open) return;
   learningProgramDialog.showModal();
   updatePracticeTimerPauseState();
   renderTabs();
@@ -17,27 +20,32 @@ function openLearningProgramDialog() {
 }
 
 function closeLearningProgramDialog() {
+  if (!learningProgramDialog.open) return;
   learningProgramDialog.close();
 }
 
 function openStatsDialog() {
-  settingsDialog.close();
+  if (settingsDialog.open) settingsDialog.close();
+  if (statsDialog.open) return;
   statsDialog.showModal();
   updatePracticeTimerPauseState();
   renderPracticeStats();
 }
 
 function closeStatsDialog() {
+  if (!statsDialog.open) return;
   statsDialog.close();
 }
 
 function openHelpDialog() {
-  settingsDialog.close();
+  if (settingsDialog.open) settingsDialog.close();
+  if (helpDialog.open) return;
   helpDialog.showModal();
   updatePracticeTimerPauseState();
 }
 
 function closeHelpDialog() {
+  if (!helpDialog.open) return;
   helpDialog.close();
 }
 
@@ -54,7 +62,7 @@ function applySettings(nextSettings, { closeDialog = false } = {}) {
   persist();
   window.dispatchEvent(new CustomEvent("flykey:languagechange", { detail: { language: currentLanguage } }));
   render();
-  if (closeDialog) {
+  if (closeDialog && settingsDialog.open) {
     settingsDialog.close();
   }
 }

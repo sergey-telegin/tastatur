@@ -171,6 +171,19 @@ function staticCacheControl(resolvedPath, extension) {
   return "public, max-age=3600";
 }
 
+function isAppRoutePath(pathname) {
+  return pathname === "/settings" ||
+    pathname.startsWith("/settings/learning-program/") ||
+    pathname.startsWith("/settings/fingering/") ||
+    pathname.startsWith("/stats/") ||
+    pathname === "/help" ||
+    pathname.startsWith("/learn/") ||
+    pathname.startsWith("/practice/custom/") ||
+    pathname.startsWith("/practice/random/") ||
+    pathname === "/game/flykey-jump" ||
+    pathname.startsWith("/game/flykey-jump/");
+}
+
 function safeStaticPath(urlPath, staticRoot = rootDir) {
   const normalizedPath = decodeURIComponent(urlPath.split("?")[0]);
   const relativePath = normalizedPath === "/" ? "index.html" : normalizedPath.replace(/^\/+/, "");
@@ -181,6 +194,23 @@ function safeStaticPath(urlPath, staticRoot = rootDir) {
   }
 
   return absolutePath;
+}
+
+async function sendIndexHtml(request, response, staticRoot, { headers = {}, baseHref = "" } = {}) {
+  const indexPath = path.join(staticRoot, "index.html");
+  let file = await fs.readFile(indexPath, "utf8");
+
+  if (baseHref) {
+    file = file.replace("<head>", `<head>\n    <base href="${baseHref}">`);
+  }
+
+  setSecurityHeaders(response);
+  response.writeHead(200, {
+    "Content-Type": "text/html; charset=utf-8",
+    "Cache-Control": "no-store",
+    ...headers
+  });
+  response.end(request.method === "HEAD" ? undefined : file);
 }
 
 async function handleContentRoutes(request, response, pathname, staticRoot) {
@@ -310,6 +340,18 @@ async function handleStatic(request, response, urlOrPath, staticRoot = rootDir) 
     response.end(request.method === "HEAD" ? undefined : file);
   } catch (error) {
     if (error?.code === "ENOENT") {
+      if (isAppRoutePath(pathname)) {
+        try {
+          await sendIndexHtml(request, response, staticRoot, {
+            headers: robotsHeaders,
+            baseHref: "/"
+          });
+        } catch {
+          sendError(request, response, 500, "Server error");
+        }
+        return;
+      }
+
       sendError(request, response, 404, "File not found");
       return;
     }
@@ -378,5 +420,6 @@ if (require.main === module) {
 
 module.exports = {
   createServer,
+  isAppRoutePath,
   startServer
 };
