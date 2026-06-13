@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 184">
+  <g transform="translate(128 0) scale(-1 1)">
+    <defs>
+      <radialGradient id="fur" cx="36%" cy="30%" r="72%">
+        <stop offset="0" stop-color="#8fd8ff"/>
+        <stop offset=".58" stop-color="#2e91d0"/>
+        <stop offset="1" stop-color="#0f5689"/>
+      </radialGradient>
+      <linearGradient id="hoodie" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#ffe36a"/>
+        <stop offset="1" stop-color="#f2a70f"/>
+      </linearGradient>
+      <linearGradient id="leg" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#17344d"/>
+        <stop offset="1" stop-color="#061624"/>
+      </linearGradient>
+    </defs>
+    <ellipse cx="65" cy="166" rx="18" ry="8" fill="#06131d" opacity=".22"/>
+    <path d="M49 96c3-25 15-39 29-38 15 1 23 16 22 42l-2 38c-1 18-12 31-30 30-19-1-29-14-26-32z" fill="url(#fur)"/>
+    <path d="M49 96c10 10 35 12 50 2l-2 40c-1 18-12 31-30 30-19-1-29-14-26-32z" fill="url(#hoodie)"/>
+    <path d="M53 113c10 7 28 8 39 0l-2 42c-8 7-31 6-38-1z" fill="#ffc72c"/>
+    <ellipse cx="63" cy="59" rx="33" ry="43" fill="url(#fur)"/>
+    <path d="M37 67c-5-6-4-13 2-18 12-11 32-12 48-5 9 4 12 15 6 23-6 9-20 12-35 11-10-1-17-4-21-11z" fill="url(#fur)"/>
+    <ellipse cx="45" cy="58" rx="16" ry="18" fill="#fff"/>
+    <circle cx="40" cy="61" r="8" fill="#07223a"/>
+    <circle cx="43" cy="56" r="3" fill="#fff"/>
+    <path d="M38 79c8 7 20 7 27 0" fill="none" stroke="#061624" stroke-width="5" stroke-linecap="round"/>
+    <path d="M39 47c8-6 16-6 24-1" fill="none" stroke="#07304a" stroke-width="4" stroke-linecap="round" opacity=".7"/>
+    <ellipse cx="34" cy="74" rx="7" ry="5" fill="#ff7ea0" opacity=".62"/>
+    <path d="M53 107c-16 5-23 19-18 31 3 7 11 6 17-3 5-8 7-18 9-27z" fill="#18344c"/>
+    <path d="M86 108c10 9 12 21 7 30-3 5-9 4-12-5-3-8-2-17-1-25z" fill="#18344c"/>
+    <path d="M61 166l-8 16" stroke="url(#leg)" stroke-width="8" stroke-linecap="round"/>
+    <path d="M76 166l5 16" stroke="url(#leg)" stroke-width="8" stroke-linecap="round"/>
+    <path d="M48 181c-8 0-14-2-15-6 5-5 14-5 21-1 2 4 0 7-6 7z" fill="#071827"/>
+    <path d="M84 181c6 0 11-2 12-5-4-4-11-4-17-1-1 4 0 6 5 6z" fill="#071827"/>
+    <path d="M63 118h10v37H63z" fill="#fff" opacity=".94"/>
+    <path d="M75 136l10-18h11l-12 21 12 16H84l-9-13z" fill="#fff" opacity=".94"/>
+  </g>
+</svg>

@@ -136,9 +136,21 @@
       targetX: null
     },
     sprites: {
-      body: loadSprite("assets/game/key/key-body.svg"),
-      wingLeft: loadSprite("assets/game/key/key-wing-left.svg"),
-      wingRight: loadSprite("assets/game/key/key-wing-right.svg"),
+      bodies: {
+        front: loadSprite("assets/game/key/key-body.svg"),
+        left: loadSprite("assets/game/key/key-body-left.svg"),
+        right: loadSprite("assets/game/key/key-body-right.svg"),
+        sideLeft: loadSprite("assets/game/key/key-body-side-left.svg"),
+        sideRight: loadSprite("assets/game/key/key-body-side-right.svg")
+      },
+      wingFrames: {
+        left: Array.from({ length: 20 }, (_, index) => (
+          loadSprite(`assets/game/key/wings-separated/left/wing-left-${String(index + 1).padStart(2, "0")}.png`)
+        )),
+        right: Array.from({ length: 20 }, (_, index) => (
+          loadSprite(`assets/game/key/wings-separated/right/wing-right-${String(index + 1).padStart(2, "0")}.png`)
+        ))
+      },
       antennaLeft: loadSprite("assets/game/key/key-antenna-left.svg"),
       antennaRight: loadSprite("assets/game/key/key-antenna-right.svg"),
       shadow: loadSprite("assets/game/key/key-shadow.svg")
@@ -299,6 +311,8 @@
     wobble: 0,
     direction: 1,
     lean: 0,
+    turn: 0,
+    turnIntent: 0,
     jumpPulse: 1
   });
 
@@ -448,6 +462,13 @@
     const y = event.clientY - rect.top + state.cameraY;
     state.pointerX = x;
     state.moving = true;
+    if (state.player) {
+      const pointerDelta = x - state.player.x;
+      if (Math.abs(pointerDelta) > 4) {
+        state.player.turnIntent = clamp(pointerDelta / 36, -1, 1);
+        state.player.direction = pointerDelta < 0 ? -1 : 1;
+      }
+    }
     if (shouldShoot) shootAt(x, y);
   };
 
@@ -456,23 +477,28 @@
     const previousX = player.x;
     const tiltTarget = state.tilt.active && state.tilt.targetX !== null ? state.tilt.targetX : null;
     const targetX = state.moving ? state.pointerX : tiltTarget ?? player.x + player.vx * dt;
+    const targetDeltaX = targetX - player.x;
     player.x += (targetX - player.x) * clamp(dt * 8, 0, 1);
     player.vy += 1260 * dt;
     player.y += player.vy * dt;
     player.wobble += dt * 12;
 
     const motionX = player.x - previousX;
-    if (Math.abs(motionX) > 0.1) {
-      player.direction = motionX < 0 ? -1 : 1;
+    const intentX = Math.abs(targetDeltaX) > 8 ? targetDeltaX : motionX;
+    if (Math.abs(intentX) > 0.1) {
+      player.direction = intentX < 0 ? -1 : 1;
     }
-    const targetLean = clamp(motionX * 0.2, -0.48, 0.48);
+    const targetTurn = Math.abs(intentX) > 5 ? clamp(intentX / 36, -1, 1) : player.turnIntent;
+    player.turnIntent = targetTurn;
+    player.turn += (player.turnIntent - player.turn) * clamp(dt * 22, 0, 1);
+    const targetLean = clamp(motionX * 0.08, -0.16, 0.16);
     player.lean += (targetLean - player.lean) * clamp(dt * 12, 0, 1);
     player.jumpPulse += (1 - player.jumpPulse) * clamp(dt * 10, 0, 1);
 
     if (!state.moving) {
       if (player.x < 34 || player.x > state.width - 34) player.vx *= -1;
     }
-    player.x = clamp(player.x, 28, state.width - 28);
+    player.x = clamp(player.x, 58, state.width - 58);
 
     if (player.vy > 0) {
       for (const platform of state.platforms) {
@@ -603,39 +629,53 @@
   };
 
   const drawAnimatedWings = (player) => {
-    const wingBeat = Math.sin(player.wobble * 3.8);
-    const wingLift = 0.38 + Math.abs(wingBeat) * 0.58;
-    const wingSkew = wingBeat * 0.36;
+    const airborne = Math.abs(player.vy) > 120;
+    const frames = state.sprites.wingFrames.left;
+    const frameSpeed = airborne ? 2.75 : 0.95;
+    const frameIndex = Math.floor(player.wobble * frameSpeed) % frames.length;
+    const wingPulse = airborne ? 1.02 : 0.96 + Math.sin(player.wobble * 0.7) * 0.025;
+    const turnSquash = 1 - Math.abs(player.turn) * 0.18;
     ctx.save();
+    ctx.translate(player.turn * -4, 7);
+    ctx.scale(clamp(turnSquash, 0.68, 1), wingPulse);
 
-    for (const side of [-1, 1]) {
-      const wing = side === -1 ? state.sprites.wingLeft : state.sprites.wingRight;
+    for (const side of ["left", "right"]) {
+      const wingFrame = state.sprites.wingFrames[side][frameIndex];
+      if (!isSpriteReady(wingFrame)) continue;
       ctx.save();
-      ctx.translate(side * 35, 17);
-      ctx.rotate(side * (0.62 + wingSkew));
-      ctx.scale(1, wingLift);
-      if (isSpriteReady(wing)) {
-        ctx.drawImage(wing, side === -1 ? -80 : -6, -56, 86, 132);
-      }
+      ctx.globalAlpha = 0.92;
+      ctx.drawImage(wingFrame, -126, -78, 252, 142);
       ctx.restore();
     }
+
     ctx.restore();
   };
 
   const drawAnimatedAntennae = (player) => {
     const sway = Math.sin(player.wobble * 1.55) * 9 + player.lean * 24;
+    const turnShift = player.turn * 14;
     ctx.save();
 
     for (const side of [-1, 1]) {
       const antenna = side === -1 ? state.sprites.antennaLeft : state.sprites.antennaRight;
       if (!isSpriteReady(antenna)) continue;
       ctx.save();
-      ctx.translate(side * 17 + sway * 0.4, -58);
+      ctx.globalAlpha = clamp(0.9 - side * player.turn * 0.32, 0.34, 1);
+      ctx.translate(side * 17 + sway * 0.4 - turnShift * 0.55, -58);
       ctx.rotate(side * 0.1 + sway * 0.006);
+      ctx.scale(clamp(1 - side * player.turn * 0.22, 0.62, 1.18), 1);
       ctx.drawImage(antenna, side === -1 ? -70 : -6, -92, 76, 112);
       ctx.restore();
     }
     ctx.restore();
+  };
+
+  const bodySpriteForTurn = (turn) => {
+    if (turn < -0.42) return state.sprites.bodies.sideLeft;
+    if (turn < -0.08) return state.sprites.bodies.left;
+    if (turn > 0.42) return state.sprites.bodies.sideRight;
+    if (turn > 0.08) return state.sprites.bodies.right;
+    return state.sprites.bodies.front;
   };
 
   const drawPlayer = () => {
@@ -646,12 +686,14 @@
     const tilt = player.lean + jumpStretch * 0.18;
     ctx.save();
     ctx.translate(player.x, y);
-    ctx.rotate(tilt);
+    ctx.rotate(jumpStretch * 0.06 + tilt * 0.08);
     const squash = (1 + Math.sin(player.wobble) * 0.025) * player.jumpPulse;
     const stretch = 1 + jumpStretch;
-    ctx.scale(player.direction * (1 / squash), squash * stretch);
+    ctx.scale(1 / squash, squash * stretch);
 
-    if (isSpriteReady(state.sprites.body)) {
+    const bodySprite = bodySpriteForTurn(player.turn);
+
+    if (isSpriteReady(bodySprite)) {
       ctx.shadowColor = "rgba(0, 0, 0, 0.28)";
       ctx.shadowBlur = 12;
       ctx.shadowOffsetY = 6;
@@ -662,7 +704,7 @@
         ctx.restore();
       }
       drawAnimatedWings(player);
-      ctx.drawImage(state.sprites.body, -52, -88, 104, 178);
+      ctx.drawImage(bodySprite, -52, -88, 104, 178);
       ctx.shadowColor = "transparent";
       drawAnimatedAntennae(player);
     } else {
