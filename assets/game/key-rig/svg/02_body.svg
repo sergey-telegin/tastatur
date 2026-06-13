@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <radialGradient id="fur" cx="42%" cy="34%" r="62%">
+      <stop offset="0" stop-color="#9ee2ff"/>
+      <stop offset="0.58" stop-color="#3b9fdb"/>
+      <stop offset="1" stop-color="#11679c"/>
+    </radialGradient>
+    <linearGradient id="hoodie" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffe66d"/>
+      <stop offset="1" stop-color="#f2ad13"/>
+    </linearGradient>
+    <linearGradient id="dark" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#17354e"/>
+      <stop offset="1" stop-color="#061624"/>
+    </linearGradient>
+    <linearGradient id="wing" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.96"/>
+      <stop offset="0.62" stop-color="#e9fbff" stop-opacity="0.72"/>
+      <stop offset="1" stop-color="#adcfd9" stop-opacity="0.46"/>
+    </linearGradient>
+  </defs>
+    <path d="M328 384c27-119 105-188 184-188s157 69 184 188l36 246c15 104-72 178-220 178s-235-74-220-178z" fill="url(#fur)"/>
+    <path d="M336 392c63 64 290 64 353 0l39 241c15 101-72 175-216 175s-231-74-216-175z" fill="url(#hoodie)"/>
+    <path d="M392 504c46 42 194 45 240 0l26 236c-48 43-244 43-292 0z" fill="#ffc72c"/>
+    <path d="M452 392c14-43 38-69 60-69s46 26 60 69c-34 36-86 36-120 0z" fill="#0d4d75"/>
+    <path d="M486 535h56v188h-56z" fill="#fff" opacity=".95"/>
+    <path d="M553 626l81-91h67l-95 105 102 83h-75l-80-64z" fill="#fff" opacity=".95"/></svg>

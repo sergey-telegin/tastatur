@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 180">
+  <defs>
+    <linearGradient id="wingFill" x1="0.2" y1="0.05" x2="0.9" y2="0.95">
+      <stop offset="0" stop-color="#ffffff" stop-opacity=".92"/>
+      <stop offset=".58" stop-color="#f4fbff" stop-opacity=".62"/>
+      <stop offset="1" stop-color="#d7eef5" stop-opacity=".36"/>
+    </linearGradient>
+  </defs>
+  <path d="M101 11C58 20 22 58 10 109c-8 36 7 61 36 58 35-4 58-48 62-92 3-29 0-51-7-64z" fill="url(#wingFill)" stroke="#a7b8be" stroke-width="3.2"/>
+  <path d="M94 27C70 56 48 93 31 151M82 31C61 65 47 103 41 157M65 48c-2 30 2 59 15 88M45 77c19 4 36 12 51 24M31 112c21 2 40 8 57 20" fill="none" stroke="#7d8e94" stroke-width="2" opacity=".58" stroke-linecap="round"/>
+</svg>

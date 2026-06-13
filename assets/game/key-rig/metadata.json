@@ -1,0 +1,253 @@
+{
+  "canvas": {
+    "width": 1024,
+    "height": 1024,
+    "background": "transparent"
+  },
+  "visualReference": "/var/folders/c2/nv51x8yd527crhwx_b0xp5w80000gn/T/codex-clipboard-141cca90-dd87-451b-af6c-ec316c719133.png",
+  "parts": {
+    "01_head": {
+      "png": "parts/01_head.png",
+      "svg": "svg/01_head.svg",
+      "pivot": {
+        "x": 512,
+        "y": 512
+      }
+    },
+    "02_body": {
+      "png": "parts/02_body.png",
+      "svg": "svg/02_body.svg",
+      "pivot": {
+        "x": 512,
+        "y": 512
+      }
+    },
+    "03_left_antenna": {
+      "png": "parts/03_left_antenna.png",
+      "svg": "svg/03_left_antenna.svg",
+      "pivot": {
+        "x": 512,
+        "y": 512
+      }
+    },
+    "04_right_antenna": {
+      "png": "parts/04_right_antenna.png",
+      "svg": "svg/04_right_antenna.svg",
+      "pivot": {
+        "x": 512,
+        "y": 512
+      }
+    },
+    "05_left_eye": {
+      "png": "parts/05_left_eye.png",
+      "svg": "svg/05_left_eye.svg",
+      "pivot": {
+        "x": 512,
+        "y": 512
+      }
+    },
+    "06_right_eye": {
+      "png": "parts/06_right_eye.png",
+      "svg": "svg/06_right_eye.svg",
+      "pivot": {
+        "x": 512,
+        "y": 512
+      }
+    },
+    "07_left_wing": {
+      "png": "parts/07_left_wing.png",
+      "svg": "svg/07_left_wing.svg",
+      "pivot": {
+        "x": 512,
+        "y": 512
+      }
+    },
+    "08_right_wing": {
+      "png": "parts/08_right_wing.png",
+      "svg": "svg/08_right_wing.svg",
+      "pivot": {
+        "x": 512,
+        "y": 512
+      }
+    },
+    "09_left_arm": {
+      "png": "parts/09_left_arm.png",
+      "svg": "svg/09_left_arm.svg",
+      "pivot": {
+        "x": 512,
+        "y": 512
+      }
+    },
+    "10_right_arm": {
+      "png": "parts/10_right_arm.png",
+      "svg": "svg/10_right_arm.svg",
+      "pivot": {
+        "x": 512,
+        "y": 512
+      }
+    },
+    "11_left_leg": {
+      "png": "parts/11_left_leg.png",
+      "svg": "svg/11_left_leg.svg",
+      "pivot": {
+        "x": 512,
+        "y": 512
+      }
+    },
+    "12_right_leg": {
+      "png": "parts/12_right_leg.png",
+      "svg": "svg/12_right_leg.svg",
+      "pivot": {
+        "x": 512,
+        "y": 512
+      }
+    },
+    "13_left_foot": {
+      "png": "parts/13_left_foot.png",
+      "svg": "svg/13_left_foot.svg",
+      "pivot": {
+        "x": 512,
+        "y": 512
+      }
+    },
+    "14_right_foot": {
+      "png": "parts/14_right_foot.png",
+      "svg": "svg/14_right_foot.svg",
+      "pivot": {
+        "x": 512,
+        "y": 512
+      }
+    },
+    "15_closed_eyes": {
+      "png": "parts/15_closed_eyes.png",
+      "svg": "svg/15_closed_eyes.svg",
+      "pivot": {
+        "x": 512,
+        "y": 512
+      }
+    },
+    "16_surprised_eyes": {
+      "png": "parts/16_surprised_eyes.png",
+      "svg": "svg/16_surprised_eyes.svg",
+      "pivot": {
+        "x": 512,
+        "y": 512
+      }
+    },
+    "17_scared_eyes": {
+      "png": "parts/17_scared_eyes.png",
+      "svg": "svg/17_scared_eyes.svg",
+      "pivot": {
+        "x": 512,
+        "y": 512
+      }
+    },
+    "18_focused_angry_eyes": {
+      "png": "parts/18_focused_angry_eyes.png",
+      "svg": "svg/18_focused_angry_eyes.svg",
+      "pivot": {
+        "x": 512,
+        "y": 512
+      }
+    }
+  },
+  "pivotsAndAttachments": {
+    "head": {
+      "rotationPoint": {
+        "x": 512,
+        "y": 694
+      },
+      "bodyAttachment": {
+        "x": 512,
+        "y": 330
+      }
+    },
+    "antennae": {
+      "leftHeadAttachment": {
+        "x": 425,
+        "y": 305
+      },
+      "rightHeadAttachment": {
+        "x": 599,
+        "y": 305
+      }
+    },
+    "wings": {
+      "leftBodyAttachment": {
+        "x": 420,
+        "y": 430
+      },
+      "rightBodyAttachment": {
+        "x": 604,
+        "y": 430
+      }
+    },
+    "arms": {
+      "leftShoulder": {
+        "x": 370,
+        "y": 410
+      },
+      "rightShoulder": {
+        "x": 654,
+        "y": 410
+      }
+    },
+    "legs": {
+      "leftHip": {
+        "x": 468,
+        "y": 760
+      },
+      "rightHip": {
+        "x": 556,
+        "y": 760
+      }
+    },
+    "feet": {
+      "leftAnkle": {
+        "x": 498,
+        "y": 712
+      },
+      "rightAnkle": {
+        "x": 526,
+        "y": 712
+      }
+    },
+    "eyes": {
+      "headFaceAttachment": {
+        "x": 512,
+        "y": 500
+      }
+    }
+  },
+  "animationStateMachine": {
+    "states": [
+      "idle",
+      "blink",
+      "hover",
+      "jump",
+      "fall",
+      "land",
+      "turnLeft",
+      "turnRight",
+      "shoot",
+      "recoil",
+      "hit",
+      "celebrate",
+      "think"
+    ],
+    "blendPaths": [
+      "idle->jump->fall->land->idle",
+      "idle<->turnLeft",
+      "idle<->turnRight",
+      "idle->shoot->recoil->idle",
+      "any->hit->idle"
+    ],
+    "secondaryMotion": [
+      "antenna spring",
+      "wing micro flutter",
+      "hoodie bounce",
+      "eye darts",
+      "breathing scale"
+    ]
+  }
+}
