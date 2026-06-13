@@ -105,6 +105,12 @@
     }
   };
 
+  const loadSprite = (src) => {
+    const image = new Image();
+    image.src = src;
+    return image;
+  };
+
   const state = {
     mode: "menu",
     width: 0,
@@ -129,14 +135,20 @@
       baseGamma: null,
       targetX: null
     },
-    mascot: new Image()
+    sprites: {
+      body: loadSprite("assets/game/key/key-body.svg"),
+      wingLeft: loadSprite("assets/game/key/key-wing-left.svg"),
+      wingRight: loadSprite("assets/game/key/key-wing-right.svg"),
+      antennaLeft: loadSprite("assets/game/key/key-antenna-left.svg"),
+      antennaRight: loadSprite("assets/game/key/key-antenna-right.svg"),
+      shadow: loadSprite("assets/game/key/key-shadow.svg")
+    }
   };
-
-  state.mascot.src = "assets/key/fly_welcome_no_bg.png";
 
   const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
   const rand = (min, max) => min + Math.random() * (max - min);
   const choice = (items) => items[Math.floor(Math.random() * items.length)];
+  const isSpriteReady = (image) => image.complete && image.naturalWidth > 0;
   const highScoreKey = () => `flykey_mobile_highscore_${state.language}`;
   const abyssTop = () => state.cameraY + state.height - 26;
   const onDeviceOrientation = (event) => {
@@ -171,6 +183,8 @@
   };
 
   const isPhone = () => {
+    const localPreview = ["localhost", "127.0.0.1", ""].includes(location.hostname);
+    if (localPreview && new URLSearchParams(location.search).get("phone") === "1") return true;
     const coarsePointer = window.matchMedia?.("(pointer: coarse)")?.matches === true;
     const fineHover = window.matchMedia?.("(hover: hover) and (pointer: fine)")?.matches === true;
     const narrowScreen = Math.min(window.screen?.width || window.innerWidth, window.screen?.height || window.innerHeight) <= 820;
@@ -276,13 +290,16 @@
 
   const makePlayer = () => ({
     x: state.width * 0.5,
-    y: state.height - 130,
+    y: state.height - 150,
     radius: 25,
-    footOffset: 43,
+    footOffset: 74,
     vx: 80,
     vy: -620,
     aimX: state.width * 0.5,
-    wobble: 0
+    wobble: 0,
+    direction: 1,
+    lean: 0,
+    jumpPulse: 1
   });
 
   const makePlatform = (y, forcedX) => {
@@ -436,12 +453,21 @@
 
   const updatePlayer = (dt) => {
     const player = state.player;
+    const previousX = player.x;
     const tiltTarget = state.tilt.active && state.tilt.targetX !== null ? state.tilt.targetX : null;
     const targetX = state.moving ? state.pointerX : tiltTarget ?? player.x + player.vx * dt;
     player.x += (targetX - player.x) * clamp(dt * 8, 0, 1);
     player.vy += 1260 * dt;
     player.y += player.vy * dt;
     player.wobble += dt * 12;
+
+    const motionX = player.x - previousX;
+    if (Math.abs(motionX) > 0.1) {
+      player.direction = motionX < 0 ? -1 : 1;
+    }
+    const targetLean = clamp(motionX * 0.2, -0.48, 0.48);
+    player.lean += (targetLean - player.lean) * clamp(dt * 12, 0, 1);
+    player.jumpPulse += (1 - player.jumpPulse) * clamp(dt * 10, 0, 1);
 
     if (!state.moving) {
       if (player.x < 34 || player.x > state.width - 34) player.vx *= -1;
@@ -458,6 +484,7 @@
         if (withinX && crossesTop) {
           player.y = platform.y - player.footOffset;
           player.vy = -650;
+          player.jumpPulse = 1.16;
           break;
         }
       }
@@ -575,19 +602,69 @@
     ctx.restore();
   };
 
+  const drawAnimatedWings = (player) => {
+    const wingBeat = Math.sin(player.wobble * 3.8);
+    const wingLift = 0.38 + Math.abs(wingBeat) * 0.58;
+    const wingSkew = wingBeat * 0.36;
+    ctx.save();
+
+    for (const side of [-1, 1]) {
+      const wing = side === -1 ? state.sprites.wingLeft : state.sprites.wingRight;
+      ctx.save();
+      ctx.translate(side * 35, 17);
+      ctx.rotate(side * (0.62 + wingSkew));
+      ctx.scale(1, wingLift);
+      if (isSpriteReady(wing)) {
+        ctx.drawImage(wing, side === -1 ? -80 : -6, -56, 86, 132);
+      }
+      ctx.restore();
+    }
+    ctx.restore();
+  };
+
+  const drawAnimatedAntennae = (player) => {
+    const sway = Math.sin(player.wobble * 1.55) * 9 + player.lean * 24;
+    ctx.save();
+
+    for (const side of [-1, 1]) {
+      const antenna = side === -1 ? state.sprites.antennaLeft : state.sprites.antennaRight;
+      if (!isSpriteReady(antenna)) continue;
+      ctx.save();
+      ctx.translate(side * 17 + sway * 0.4, -58);
+      ctx.rotate(side * 0.1 + sway * 0.006);
+      ctx.drawImage(antenna, side === -1 ? -70 : -6, -92, 76, 112);
+      ctx.restore();
+    }
+    ctx.restore();
+  };
+
   const drawPlayer = () => {
     const player = state.player;
     if (!player) return;
     const y = player.y - state.cameraY;
-    const tilt = clamp((state.pointerX - player.x) / 180, -0.25, 0.25);
+    const jumpStretch = clamp(-player.vy / 900, -0.18, 0.2);
+    const tilt = player.lean + jumpStretch * 0.18;
     ctx.save();
     ctx.translate(player.x, y);
     ctx.rotate(tilt);
-    const squash = 1 + Math.sin(player.wobble) * 0.035;
-    ctx.scale(1 / squash, squash);
+    const squash = (1 + Math.sin(player.wobble) * 0.025) * player.jumpPulse;
+    const stretch = 1 + jumpStretch;
+    ctx.scale(player.direction * (1 / squash), squash * stretch);
 
-    if (state.mascot.complete && state.mascot.naturalWidth) {
-      ctx.drawImage(state.mascot, -35, -48, 70, 92);
+    if (isSpriteReady(state.sprites.body)) {
+      ctx.shadowColor = "rgba(0, 0, 0, 0.28)";
+      ctx.shadowBlur = 12;
+      ctx.shadowOffsetY = 6;
+      if (isSpriteReady(state.sprites.shadow)) {
+        ctx.save();
+        ctx.globalAlpha = clamp(1 - Math.abs(player.vy) / 950, 0.25, 0.75);
+        ctx.drawImage(state.sprites.shadow, -64, 54, 128, 38);
+        ctx.restore();
+      }
+      drawAnimatedWings(player);
+      ctx.drawImage(state.sprites.body, -52, -88, 104, 178);
+      ctx.shadowColor = "transparent";
+      drawAnimatedAntennae(player);
     } else {
       ctx.fillStyle = "#1d9bf0";
       ctx.beginPath();

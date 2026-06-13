@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 86 132">
+  <defs>
+    <linearGradient id="wing" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity=".92"/>
+      <stop offset=".58" stop-color="#dff7ff" stop-opacity=".64"/>
+      <stop offset="1" stop-color="#a9ddec" stop-opacity=".38"/>
+    </linearGradient>
+  </defs>
+  <path d="M78 12C35 17 7 55 12 100c2 18 16 25 31 13 23-18 38-56 35-101z" fill="url(#wing)" stroke="#9ac4d0" stroke-width="3"/>
+  <path d="M70 28C48 44 32 69 26 103M61 25c-7 28-9 55-7 80M48 35c-10 22-15 45-14 68" fill="none" stroke="#7d9ba6" stroke-width="2" opacity=".55" stroke-linecap="round"/>
+</svg>
