@@ -103,7 +103,7 @@ input {
 .screen-menu {
   justify-content: flex-start;
   padding-top: max(14px, env(safe-area-inset-top));
-  padding-bottom: max(96px, calc(env(safe-area-inset-bottom) + 96px));
+  padding-bottom: max(28px, calc(env(safe-area-inset-bottom) + 28px));
 }
 
 .screen-menu.is-visible {
